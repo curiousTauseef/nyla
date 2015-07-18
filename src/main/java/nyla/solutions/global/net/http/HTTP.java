@@ -424,7 +424,8 @@ public abstract class HTTP implements Disposable
     * @return the HTTP code and data response
     * @throws IOException
     */
-   private  HTTPResult invoke(String  HTTPConnURL,
+   @SuppressWarnings("restriction")
+ protected  HTTPResult invoke(String  HTTPConnURL,
                                String  QueryStr,
                                int     TimeoutSecs,
                                String  ContentType,

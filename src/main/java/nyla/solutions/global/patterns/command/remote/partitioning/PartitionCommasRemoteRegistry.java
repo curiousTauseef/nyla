@@ -1,8 +1,11 @@
 package nyla.solutions.global.patterns.command.remote.partitioning;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.server.RemoteObject;
 import java.util.Collection;
 
+import nyla.solutions.global.exception.ConnectionException;
 import nyla.solutions.global.exception.RequiredException;
 import nyla.solutions.global.net.rmi.RMI;
 import nyla.solutions.global.patterns.command.commas.CommandFacts;
@@ -15,14 +18,14 @@ import nyla.solutions.global.util.Debugger;
  * Configuration properties
  * 
  * 
-	solutions.global.patterns.command.remote.partitioning.RemoteCommasRegistry.host=localhost
-	solutions.global.patterns.command.remote.partitioning.RemoteCommasRegistry.port=27001
-	solutions.global.patterns.command.remote.partitioning.RemoteCommasRegistry.name=commasRegistry
+	nyla.solutions.global.patterns.command.remote.partitioning.RemoteCommasRegistry.host=localhost
+	nyla.solutions.global.patterns.command.remote.partitioning.RemoteCommasRegistry.port=27001
+	nyla.solutions.global.patterns.command.remote.partitioning.RemoteCommasRegistry.name=commasRegistry
 
  * @author Gregory Green
  *
  */
-public class PartitionCommasRemoteRegistry implements CommasRemoteRegistry<String,String>
+public class PartitionCommasRemoteRegistry implements CommasRemoteRegistry<String,String>, Remote
 {
 	public PartitionCommasRemoteRegistry()
 	{
@@ -82,11 +85,17 @@ public class PartitionCommasRemoteRegistry implements CommasRemoteRegistry<Strin
 	public static CommasRemoteRegistry<String,String> getRegistry()
 	throws RemoteException
 	{
-		
-		 
 		RMI rmi = new RMI(host,port);
-		
-		return rmi.lookup(name);
+		try
+		{
+			Remote remote = rmi.lookup("commasRegistry");
+				
+			return (CommasRemoteRegistry<String,String>)remote;
+		}
+		catch (Exception e)
+		{
+			throw new ConnectionException("name:"+name+" ERROR:"+e.getMessage()+" rmi"+Debugger.toString(rmi.list()),e);
+		}
 	}// --------------------------------------------------------
 
 	

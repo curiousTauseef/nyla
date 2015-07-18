@@ -114,10 +114,10 @@ public class Debugger
 			defaultLogger = (Log) logClass.newInstance();
 
 			
-			String configFile = Config.getLocation();
-			if(configFile != null)
-				getLog(Debugger.class).debug(
-					"CONFIG: properties loaded from " +configFile );
+			//String configFile = Config.getLocation();
+			//if(configFile != null)
+			//	getLog(Debugger.class).debug(
+			//		"CONFIG: properties loaded from " +configFile );
 			//else
 				//getLog(Debugger.class).debug(
 				//		"CONFIG: NO properties loaded");

@@ -3,6 +3,7 @@ package nyla.solutions.global.patterns.command.remote.partitioning;
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Collection;
 import java.util.Map;
 
 import nyla.solutions.global.data.Envelope;
@@ -16,6 +17,8 @@ import nyla.solutions.global.patterns.command.remote.RemoteCommand;
 import nyla.solutions.global.util.Debugger;
 import nyla.solutions.global.util.Text;
 
+
+
 /**
  * 
  * RMI Server wrapper for execute COMMANDS using the COMMAS framework.
@@ -24,7 +27,7 @@ import nyla.solutions.global.util.Text;
  * 
  * Example:
  * 
- * java -Xms512 -Xmx3gb solutions.global.patterns.command.remote.partitioning.RemoteCommasServer wpp commasRegistry localhost 27001 solutions.office.msoffice.excel.patterns.ExcelFileDirDbLoaderCommand.execute
+ * java -Xms512 -Xmx3gb nyla.solutions.global.patterns.command.remote.partitioning.RemoteCommasServer wpp commasRegistry localhost 27001 solutions.office.msoffice.excel.patterns.ExcelFileDirDbLoaderCommand.execute
  * 
  * @author Gregory Green
  *
@@ -88,14 +91,21 @@ public class RemoteCommasServer implements RemoteCommand<Serializable, Envelope<
 			if(args.length < 4 )
 			{
 				System.out.println("Usage java "+RemoteCommasServer.class.getName()+" name registryName host port (loadCommandsSepartedBy|)* (cmdArgs)*");
+				return;
 			}
+			
+			Collection<?> collection = CommasServiceFactory.getCommasServiceFactory().getCommasInfos();
+			
+			if(collection == null || collection.isEmpty())
+				throw new RuntimeException("No commands registered with the @COMMAS annotation");
+			
 			
 			//TODO: execute startup commands
 			if(args.length > 4)
 			{
 				String commas = args[4];
 				
-				MacroCommand<Object,String[]> macroCmd = CommasServiceFactory.getCommasServiceFactory().createCommandMacro(Text.split(commas, "I"));
+				MacroCommand<Object,String[]> macroCmd = CommasServiceFactory.getCommasServiceFactory().createCommandMacro(Text.split(commas, "|"));
 				macroCmd.execute(args);
 			}
 			
@@ -106,6 +116,8 @@ public class RemoteCommasServer implements RemoteCommand<Serializable, Envelope<
 			String host = args[2];
 			
 			int port = Integer.parseInt(args[3]);
+			
+			//RMI.startRmiRegistry(port);
 		
 			Remote remote = new RemoteCommasServer();
 			
@@ -115,6 +127,8 @@ public class RemoteCommasServer implements RemoteCommand<Serializable, Envelope<
 
 			CommasRemoteRegistry<?, String> registry = rmi.lookup(registryName);
 			
+			//rmi.rebind(registryName, registry);
+			
 			registry.registerLocation(new StringBuilder("rmi://").append(host).append(":").append(port).append("/").append(name).toString());
 			
 		}
@@ -123,4 +137,9 @@ public class RemoteCommasServer implements RemoteCommand<Serializable, Envelope<
 			e.printStackTrace();
 		}
 	}// --------------------------------------------------------
+	
+	void te()
+	{
+		
+	}
 }

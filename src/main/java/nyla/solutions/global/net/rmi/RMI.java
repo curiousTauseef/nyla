@@ -2,6 +2,7 @@ package nyla.solutions.global.net.rmi;
 
 //import java.rmi.Naming;
 import java.net.URI;
+import java.rmi.AccessException;
 import java.rmi.Naming;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -17,6 +18,7 @@ import nyla.solutions.global.util.Debugger;
 import nyla.solutions.global.util.Text;
 
 /**
+ * <pre>
  * Starting the Server
 
 Before starting the compute engine, you need to start the RMI registry. 
@@ -43,7 +45,7 @@ start rmiregistry 2001
  rmi = new RMI("usxxgreeng3m1.corp.emc.com",27001);
  
  Remote command = rmi.lookup("commas");
-
+</pre>
  * 
  * @author Gregory Green
  *
@@ -83,7 +85,16 @@ public class RMI
 	}
 	catch(Exception e)
 	{
-	   throw new ConnectionException("rmi//:"+host+":"+port+"/"+name+" ERROR:"+Debugger.stackTrace(e));
+		String [] list = null;
+		try
+		{
+			list = registry.list();
+		}
+		catch(Exception exp)
+		{
+			Debugger.printWarn(this,exp.getMessage());
+		}
+	   throw new ConnectionException("Cannot find:"+name+" in list "+Debugger.toString(list)+" rmi//:"+host+":"+port+"/"+name+" ERROR:"+e.getMessage(),e);
 	}	
    }// ---------------------------------------------- 
    
@@ -125,6 +136,18 @@ public class RMI
 	   throw new ConfigException(Debugger.stackTrace(e));
 	}	
    }// ----------------------------------------------
+   public String[] list ()
+   {
+	  try
+		{
+			return this.registry.list();
+		}
+	
+		catch (Exception e)
+		{
+			return null;
+		}
+   }
    /**
     * 
     * @param rmiUrl rmi://localhost:port/serviceName
@@ -216,7 +239,25 @@ public class RMI
    {
 	return LocateRegistry.getRegistry(host, port);
    }// ----------------------------------------------
-   
+   public static void startRmiRegistry(int port)
+   throws RemoteException
+   {
+	   LocateRegistry.createRegistry(port);
+   }// --------------------------------------------------------
+   public static void main(String[] args)
+	{
+	   
+		try
+		{
+			RMI.startRmiRegistry(Integer.parseInt(args[0]));
+			System.in.read();
+		}
+		catch (Exception e)
+		{
+		
+			e.printStackTrace();
+		}
+	}
    private final String host;
    private final int port;
    private final Registry registry; 

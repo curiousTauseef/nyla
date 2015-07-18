@@ -5,7 +5,7 @@ import org.junit.Ignore;
 import nyla.solutions.global.util.Debugger;
 import junit.framework.TestCase;
 
-@Ignore
+//@Ignore
 public class DebuggerTest extends TestCase
 {
 

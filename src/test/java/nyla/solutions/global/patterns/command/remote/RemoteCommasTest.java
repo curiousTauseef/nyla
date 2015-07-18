@@ -4,7 +4,11 @@ import java.io.Serializable;
 import java.net.URI;
 import java.util.Collection;
 
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.Test;
 
 import nyla.solutions.global.data.Criteria;
 import nyla.solutions.global.data.Envelope;
@@ -19,33 +23,50 @@ import nyla.solutions.global.patterns.servicefactory.ConfigServiceFactory;
 import nyla.solutions.global.patterns.servicefactory.ServiceFactory;
 import nyla.solutions.global.security.user.data.User;
 import nyla.solutions.global.security.user.data.UserProfile;
-import junit.framework.TestCase;
 
 @Ignore
-public class RemoteCommasTest extends TestCase
+public class RemoteCommasTest
 {
-	@Override
-	protected void setUp() throws Exception
+	@BeforeClass
+	public static void init()
+	throws Exception
 	{
-		  rmi = new RMI("usxxgreeng3m1.corp.emc.com",27001);
+		//int port = 27001;
+		
+		//RMI.startRmiRegistry(port);
+		
+		//Remote remote = new RemoteCommasServer();
+		
+		//RMI rmi =new RMI("localhost",port);
+			
+		//rmi.rebind("commasRegistry", remote);
+		
+	}// --------------------------------------------------------
+	@Before
+	public  void setUp()
+	throws Exception
+	{
+		
+		  rmi = new RMI("localhost",27001);
 		  factory = ConfigServiceFactory.getConfigServiceFactoryInstance();
 	}// --------------------------------------------------------
 	
+	@Test
 	public void testLookup()
 	throws Exception
 	{
 		
 		
-		
 		RemoteCommand<Serializable,Envelope<UserProfile>> command = rmi.lookup("demo");
 		
-		assertNotNull(command);
+		Assert.assertNotNull(command);
 		
-		String rmiUrl = "rmi://usxxgreeng3m1.corp.emc.com:27001/demo";
+		String rmiUrl = "rmi://localhost:27001/demo";
 		command = RMI.lookup(new URI(rmiUrl));
 		
-		assertNotNull(command);
+		Assert.assertNotNull(command);
 	}// --------------------------------------------------------
+	@Test
 	public void testSingleRoute()
 	{	
 		
@@ -54,9 +75,9 @@ public class RemoteCommasTest extends TestCase
 		
 		String filePath = registry.getPropertyFilePath();
 		
-		assertTrue(filePath != null && filePath.length() > 0);
+		Assert.assertTrue(filePath != null && filePath.length() > 0);
 		
-		assertEquals("./runtime/tmp/loadbalance.properties", filePath);
+		Assert.assertEquals("./runtime/tmp/loadbalance.properties", filePath);
 		
 		String name = RealSingleRouteCommand.class.getName()+".findUsers";
 		Command<Collection<User>,Criteria> cmd = CommasServiceFactory.getCommasServiceFactory().createCommand(name);
@@ -65,13 +86,14 @@ public class RemoteCommasTest extends TestCase
 		{
 			Criteria input = new Criteria(i);
 			Collection<User> users = cmd.execute(input);		
-			assertNotNull(users);
+			Assert.assertNotNull(users);
 		
 		}
 			
 		
 	}// --------------------------------------------------------
 	
+	@Test
 	public void testAllRoutes() throws Exception
 	{
 		String name = RealSingleRouteCommand.class.getName()+".findUsersEveryWhere";
@@ -82,11 +104,11 @@ public class RemoteCommasTest extends TestCase
 		{
 			Criteria input = new Criteria(i);
 			Collection<User> users = cmd.execute(input);		
-			assertNotNull(users);
+			Assert.assertNotNull(users);
 			
 			for (User user : users)
 			{
-				assertNotNull(user);
+				Assert.assertNotNull(user);
 			}
 		}
 	}// --------------------------------------------------------

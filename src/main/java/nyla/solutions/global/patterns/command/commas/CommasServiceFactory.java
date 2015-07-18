@@ -68,14 +68,6 @@ public class CommasServiceFactory extends ServiceFactory
 		if(!lazyLoad)
 			init();
 	}// -----------------------------------------------
-	/**
-	 * 
-	 */
-	public CommasServiceFactory(boolean isClientCache)
-	{
-		//CommasServiceFactory.isClientCache = isClientCache;
-		
-	}// -----------------------------------------------
     /**
      * 
      * @return

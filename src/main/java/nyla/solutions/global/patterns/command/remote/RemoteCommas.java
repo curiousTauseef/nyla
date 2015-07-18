@@ -24,6 +24,10 @@ public class RemoteCommas implements RemoteCommand<Serializable, Envelope<Serial
 		return input;
 	}// --------------------------------------------------------
 	
+	/**
+	 * Usage: RemoteCommas host port name
+	 * @param args
+	 */
 	public static void main(String[] args)
 	{
 		if(args.length !=  3)

@@ -11,8 +11,7 @@ import nyla.solutions.global.patterns.transaction.Transactional.TransactionType;
 
 
 /**
- * Indicates that the execute method for this function
- * is onRegion and it's region name.
+ * Indicates that the execute command method
  * 
  * @author Gregory Green
  */
@@ -22,17 +21,14 @@ import nyla.solutions.global.patterns.transaction.Transactional.TransactionType;
 @Documented
 public @interface CMD
 {
-	/** The unique function name .  Please note that function names can be overwritten by 
+	/** The unique name .  Please note that  names can be overwritten by 
 	 * other modules with the same name.
 	 * @return the module name
 	 */
 	public String name() default "";
 	
 	/**
-	 * The name of the grid function set in the server.xml.
-	 * 
-	 * Ex: bridgeFunction, commasBridgeFunction,transactionNameBridgeFunction, etc.
-	 * 
+	 * Placeholder for a controller method execution pattern 
 	 * 
 	 * Default "controller"
 	 * @return @see controller
@@ -40,7 +36,7 @@ public @interface CMD
 	public String controller() default "controller";
 	
 	/**
-	 * The container name to read from if any.
+	 * The placeholder for an input container
 	 * @return
 	 */
 	public String inputName() default "";
@@ -53,12 +49,12 @@ public @interface CMD
 	
 	/**
 	 * 
-	 * @return alias names for the function
+	 * @return alias names for the methods
 	 */
 	public String[] aliases() default {};
 	
 	/**
-	 * Description of function
+	 * Description of command method
 	 */
 	public String notes() default "";
 
@@ -77,12 +73,20 @@ public @interface CMD
 	public String advice()  default "";
 	
 	/**
-	 * Function attributes
+	 * Command method attributes
 	 * @return
 	 */
 	public Attribute[] attributes() default {};
 	
+	/**
+	 * 
+	 * @return the input class
+	 */
 	public Class<?> inputClass() default Object.class;
 	
+	/**
+	 * 
+	 * @return the return class
+	 */
 	public Class<?> returnClass() default Object.class;
 }
