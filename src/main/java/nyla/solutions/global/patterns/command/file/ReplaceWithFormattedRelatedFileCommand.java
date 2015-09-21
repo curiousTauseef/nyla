@@ -22,14 +22,14 @@ import nyla.solutions.global.util.Text;
  * @author Gregory Green
  *
  */
-public class ReplaceWithFormattedRelatedFileCommand  implements FileCommand
+public class ReplaceWithFormattedRelatedFileCommand  implements FileCommand<Void>
 {
 
 	/**
 	 * Implement the file processing
 	 * @param 
 	 */
-	public void execute(File file)
+	public Void execute(File file)
 	{	
 		if( template == null || template.length() == 0)
 			throw new RequiredException("this.template");
@@ -56,6 +56,8 @@ public class ReplaceWithFormattedRelatedFileCommand  implements FileCommand
 			//replace text in processMapHTMLFile with formatted output
 			io.writeFile(file.getAbsolutePath(),Text.replaceForRegExprWith(fileText,
 					this.replacementRE,formattedOutput));
+			
+			return null;
 		} 
 		catch (Exception e) 
 		{

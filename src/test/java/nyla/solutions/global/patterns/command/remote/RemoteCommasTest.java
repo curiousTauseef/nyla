@@ -2,11 +2,11 @@ package nyla.solutions.global.patterns.command.remote;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.rmi.RemoteException;
 import java.util.Collection;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -17,6 +17,8 @@ import nyla.solutions.global.net.rmi.RMI;
 import nyla.solutions.global.patterns.command.Command;
 import nyla.solutions.global.patterns.command.commas.CommasServiceFactory;
 import nyla.solutions.global.patterns.command.remote.RemoteCommand;
+import nyla.solutions.global.patterns.command.remote.partitioning.PartitionCommasRemoteRegistry;
+import nyla.solutions.global.patterns.command.remote.partitioning.RemoteCommasServer;
 import nyla.solutions.global.patterns.loadbalancer.LoadBalanceRegistry;
 import nyla.solutions.global.patterns.loadbalancer.PropertiesLoadBalanceRegistry;
 import nyla.solutions.global.patterns.servicefactory.ConfigServiceFactory;
@@ -27,19 +29,39 @@ import nyla.solutions.global.security.user.data.UserProfile;
 @Ignore
 public class RemoteCommasTest
 {
-	@BeforeClass
+	//@BeforeClass
 	public static void init()
 	throws Exception
 	{
-		//int port = 27001;
-		
-		//RMI.startRmiRegistry(port);
-		
-		//Remote remote = new RemoteCommasServer();
-		
-		//RMI rmi =new RMI("localhost",port);
+		Thread t = new Thread(new Runnable()
+		{
 			
-		//rmi.rebind("commasRegistry", remote);
+			@Override
+			public void run()
+			{
+				try
+				{
+					//start RMI registry
+					String host = "localhost";
+					int port = 27001;
+					String name = "commasRegistry";
+					
+					RMI.startRmiRegistry(port);
+					
+					PartitionCommasRemoteRegistry.startRegistry(host, port, name);
+					
+					RemoteCommasServer.startServer(host, port, "demo", name, null);
+				}
+				catch (RemoteException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		});
+	
+	t.start();
+	
+	Thread.sleep(1000*5);
 		
 	}// --------------------------------------------------------
 	@Before

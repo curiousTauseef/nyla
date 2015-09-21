@@ -11,12 +11,12 @@ import nyla.solutions.global.util.Debugger;
 import nyla.solutions.global.util.Text;
 
 
-public class ParseReplaceCommand implements FileCommand
+public class ParseReplaceCommand implements FileCommand<Void>
 {
 	/**
 	 * Parse text content and replace file with results
 	 */
-	public void execute(File file)
+	public Void execute(File file)
 	{		
 		try 
 		{
@@ -24,6 +24,8 @@ public class ParseReplaceCommand implements FileCommand
 			content = Text.parseText(content, start, end);
 			//overwrite file
 			SynchronizedIO.getInstance().writeFile(file.getAbsolutePath(), content);
+			
+			return null;
 		} 
 		catch (Exception e) 
 		{

@@ -5,6 +5,8 @@ import java.io.IOException;
 
 
 
+
+
 import nyla.solutions.global.data.Textable;
 import nyla.solutions.global.exception.RequiredException;
 import nyla.solutions.global.exception.SystemException;
@@ -21,12 +23,12 @@ import nyla.solutions.global.util.Text;
  * @author Gregory Green
  *
  */
-public class ReplaceWithTextCommand implements FileCommand
+public class ReplaceWithTextCommand implements FileCommand<Void>
 {
 	/**
 	 * Overwrite file with text output 
 	 */
-	public void execute(File file)
+	public Void execute(File file)
 	{		
 		if(this.textable == null)
 			throw new RequiredException("this.textable in ReplaceWithTextCommand");
@@ -45,6 +47,8 @@ public class ReplaceWithTextCommand implements FileCommand
 				throw new RequiredException("textable in ReplaceWithTextCommand");
 			
 			SynchronizedIO.getInstance().writeFile(file.getAbsolutePath(),Text.replaceForRegExprWith(text,this.regExp,this.textable.getText()));
+			
+			return null;
 		} 
 		catch (IOException e)
 		{

@@ -20,12 +20,12 @@ import nyla.solutions.global.util.Text;
  * @author Gregory Green
  *
  */
-public class FileFormatCommand implements FileCommand
+public class FileFormatCommand implements FileCommand<Object>
 {
 	/**
 	 * Applied formatting to the file content
 	 */
-	public void execute(File file)
+	public Object execute(File file)
 	{		
 		try 
 		{
@@ -37,6 +37,8 @@ public class FileFormatCommand implements FileCommand
 			String output = Text.format(template, map);
 			//overwrite output
 			SynchronizedIO.getInstance().writeFile(file.getAbsolutePath(),output);
+			
+			return null;
 		} 
 		catch (Exception e) 
 		{

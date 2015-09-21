@@ -34,7 +34,7 @@ public class BackupDirectoryExecutable implements Executable
 	/**
 	 * Delete a given backup directory and overwrite with a source directory
 	 */
-	public void execute(Environment env, String[] args)
+	public Integer execute(Environment env)
 	{
 		if(this.sourcePath == null || this.sourcePath.length() == 0)
 			throw new RequiredException("this.sourcePath in BackupDirectoryExecutable");
@@ -74,6 +74,9 @@ public class BackupDirectoryExecutable implements Executable
 			
 			//copy file to backup folder
 			IO.copyDirectory(new File(this.sourcePath), backupFolder);
+			
+			
+			return 0;
 		}
 		catch (IOException e) 
 		{

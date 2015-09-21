@@ -4,10 +4,11 @@ import java.util.Hashtable;
 
 
 
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-import nyla.solutions.global.operations.Log;
+import nyla.solutions.global.operations.logging.Log;
 import nyla.solutions.global.util.Config;
 import nyla.solutions.global.util.Debugger;
 

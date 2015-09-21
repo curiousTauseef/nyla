@@ -10,7 +10,7 @@ public class TrueFalseBooleanExpression<T> implements BooleanExpression<T>
 	/**
 	 * 
 	 */
-	public boolean getBoolean(T obj)
+	public Boolean execute(T obj)
 	{		
 		return value;
 	}//---------------------------------------------

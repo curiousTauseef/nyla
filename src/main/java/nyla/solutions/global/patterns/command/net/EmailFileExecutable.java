@@ -6,7 +6,6 @@ import nyla.solutions.global.exception.ConfigException;
 import nyla.solutions.global.exception.SystemException;
 import nyla.solutions.global.io.Fileable;
 import nyla.solutions.global.net.email.Email;
-import nyla.solutions.global.patterns.command.Command;
 import nyla.solutions.global.patterns.command.Environment;
 import nyla.solutions.global.patterns.command.Executable;
 import nyla.solutions.global.util.Config;
@@ -16,14 +15,16 @@ import nyla.solutions.global.util.Config;
  * @author Gregory Green
  *
  */
-public class EmailFileExecutable implements Executable, Command<Object,Object>
+public class EmailFileExecutable implements Executable
 {
 	/**
 	 * Send a file via email
 	 */
-	public void execute(Environment env, String[] args)
+	public Integer execute(Environment env)
 	{
 		sendMail();
+		
+		return 0;
 	}//---------------------------------------------
 
 	public void sendMail()
@@ -42,12 +43,7 @@ public class EmailFileExecutable implements Executable, Command<Object,Object>
 			throw new SystemException(e);
 		}
 	}// --------------------------------------------------------
-	@Override
-	public Object execute(Object input)
-	{
-		this.sendMail();
-		return null;
-	}// --------------------------------------------------------
+
 	
 	/**
 	 * @return the to

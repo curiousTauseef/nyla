@@ -4,6 +4,7 @@ import java.io.File;
 
 
 
+
 import nyla.solutions.global.exception.RequiredException;
 import nyla.solutions.global.exception.SystemException;
 import nyla.solutions.global.io.IO;
@@ -20,14 +21,14 @@ import nyla.solutions.global.util.Text;
  * @author Gregory Green
  *
  */
-public class ReplaceIncludeRelatedFileCommand  implements FileCommand
+public class ReplaceIncludeRelatedFileCommand  implements FileCommand<Void>
 {
 
 	/**
 	 * Implement the file processing
 	 * @param 
 	 */
-	public void execute(File file)
+	public Void execute(File file)
 	{			
 		if(this.replacementRE == null)
 			throw new RequiredException("this. in ReplaceWithFormattedFileCommand");
@@ -43,6 +44,9 @@ public class ReplaceIncludeRelatedFileCommand  implements FileCommand
 			//replace text in processMapHTMLFile with formatted output
 			SynchronizedIO.getInstance().writeFile(file.getAbsolutePath(),Text.replaceForRegExprWith(fileText,
 					this.replacementRE,includeFileContent));
+			
+			
+			return null;
 		} 
 		catch (Exception e) 
 		{

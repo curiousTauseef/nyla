@@ -17,7 +17,7 @@ import nyla.solutions.global.util.Config;
  * 
  * Override the default service factory with the following config.properties entry
  * 
- * solutions.global.patterns.servicefactory.ServiceFactory=someOtherFactory
+ * ServiceFactory.config=someOtherFactory
  * #example
  * 
  * nyla.solutions.global.patterns.servicefactory.ServiceFactory=nyla.solutions.global.patterns.servicefactory.ConfigServiceFactory
@@ -35,12 +35,6 @@ import nyla.solutions.global.util.Config;
 public abstract class ServiceFactory
 {
    /**
-    * Spring XML file
-    * DEFAULT_SYSTEM_XML ="system.xml"
-    */
-   public static final String SERVICE_FACTORY_CONFIG = Config.getProperty(ServiceFactory.class,"SERVICE_FACTORY_CONFIG");
-   
-   /**
     * SERVICE_FACTORY_PROP_NM = ServiceFactory.class.getName()
     */
    public final static String SERVICE_FACTORY_PROP_NM = ServiceFactory.class.getName();
@@ -50,6 +44,20 @@ public abstract class ServiceFactory
     */
    public static final String DEFAULT_SERVICE_FACTORY = "nyla.solutions.global.patterns.servicefactory.SpringFactory";
 
+   
+   /**
+    * SERVICE_FACTORY_CONFIG_PROP = "ServiceFactory.config"
+    */
+   public static final String SERVICE_FACTORY_CONFIG_PROP = "ServiceFactory.config";
+   
+   /**
+    * 
+    * @return Config.getProperty("ServiceFactory.config")
+    */
+   public static String getConfigProperty()
+   {
+	  return Config.getProperty(SERVICE_FACTORY_CONFIG_PROP);
+   }
    /**
     * Singleton factory method
     * @return a single instance of the ServiceFactory object 
@@ -127,10 +135,14 @@ public abstract class ServiceFactory
                
               return (ServiceFactory)factoryClass.getConstructor(parameterTypes).newInstance(inputs);                
          }
+         catch (SetupException e)
+         {
+        	 throw e;
+         }
          catch (Exception e)
          {
         	 
-            throw new SetupException(e);
+            throw new SetupException(e.getMessage(),e);
          }
       }// --------------------------------------------
 

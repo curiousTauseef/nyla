@@ -301,6 +301,13 @@ public class IO
 		   
 		   return readFile(file.getAbsolutePath());
 	   }// ---------------------------------------------
+	   /**
+	    * 
+	    * @param inputStream the input stream
+	    * @param closeInputStream
+	    * @return
+	    * @throws IOException
+	    */
 	   public static String readText(InputStream inputStream, boolean closeInputStream)
 	   throws IOException
 	   {
@@ -316,14 +323,16 @@ public class IO
 			   	if (tmp == null)
 			   		return null;
 
-				StringBuffer line = new StringBuffer(tmp);
+				StringBuilder line = new StringBuilder(tmp);
 	
 				while (tmp != null)
 				{
+					line.append("\n");
 					tmp = buffreader.readLine();
 					if (tmp != null)
-						line.append(tmp).append(IO.newline());
+						line.append(tmp);
 				}
+
 	
 				return line.toString();
 		} 
@@ -340,7 +349,6 @@ public class IO
 							
 			}
 		}
-		   
 	}// --------------------------------------------
 	/**
 	 * 

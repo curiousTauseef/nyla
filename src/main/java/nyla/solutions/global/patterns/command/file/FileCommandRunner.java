@@ -15,14 +15,14 @@ import nyla.solutions.global.util.Debugger;
  * @author Gregory Green
  *
  */
-public class FileCommandRunner implements FileCommand, Runnable
+public class FileCommandRunner implements FileCommand<Object>, Runnable
 {
 	/**
 	 * Constructor
 	 * @param fileCommand the file command
 	 * @param file the file runner
 	 */
-	public FileCommandRunner(FileCommand fileCommand, File file, Subject errorSubject)
+	public FileCommandRunner(FileCommand<Object> fileCommand, File file, Subject errorSubject)
 	{
 		if(file == null)
 			throw new RequiredException("file in FileCommandRunner");
@@ -40,7 +40,7 @@ public class FileCommandRunner implements FileCommand, Runnable
 	/**
 	 * The execute the file command on a given file
 	 */
-	public void execute(File file)
+	public Object execute(File file)
 	{
 		if(file == null)
 			throw new RequiredException("file command required");
@@ -51,7 +51,7 @@ public class FileCommandRunner implements FileCommand, Runnable
 		//synchronize access to the file
 		synchronized(file)
 		{
-			this.fileCommand.execute(file);	
+			return this.fileCommand.execute(file);	
 		}
 		
 	}//---------------------------------------------
@@ -77,14 +77,14 @@ public class FileCommandRunner implements FileCommand, Runnable
 	/**
 	 * @return the fileCommand
 	 */
-	public FileCommand getFileCommand()
+	public FileCommand<Object> getFileCommand()
 	{
 		return fileCommand;
 	}//---------------------------------------------
 	/**
 	 * @param fileCommand the fileCommand to set
 	 */
-	public void setFileCommand(FileCommand fileCommand)
+	public void setFileCommand(FileCommand<Object> fileCommand)
 	{
 		this.fileCommand = fileCommand;
 	}//---------------------------------------------
@@ -120,5 +120,5 @@ public class FileCommandRunner implements FileCommand, Runnable
 
 	private Subject errorSubject = null;
 	private File file = null;
-	private FileCommand fileCommand = null;
+	private FileCommand<Object> fileCommand = null;
 }

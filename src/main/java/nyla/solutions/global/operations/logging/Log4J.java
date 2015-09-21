@@ -1,4 +1,4 @@
-package nyla.solutions.global.operations;
+package nyla.solutions.global.operations.logging;
 
 import java.util.Properties;
 
@@ -48,7 +48,7 @@ public class Log4J implements Log
     	 this.logger = Logger.getLogger(Log4J.class);
      }// --------------------------------------------------------
 	/**
-	 * @see nyla.solutions.global.operations.Log#setLoggingClass(java.lang.Class)
+	 * @see nyla.solutions.global.operations.logging.Log#setLoggingClass(java.lang.Class)
 	 */
 	public void setLoggingClass(Class<?> aClass)
 	{
@@ -58,7 +58,7 @@ public class Log4J implements Log
 
 
 	/**
-	 * @see nyla.solutions.global.operations.Log#debug(java.lang.Object)
+	 * @see nyla.solutions.global.operations.logging.Log#debug(java.lang.Object)
 	 */
 	public void debug(Object message)
 	{
@@ -67,7 +67,7 @@ public class Log4J implements Log
 	}
 
 	/**
-	 * @see nyla.solutions.global.operations.Log#debug(java.lang.Object, java.lang.Throwable)
+	 * @see nyla.solutions.global.operations.logging.Log#debug(java.lang.Object, java.lang.Throwable)
 	 */
 	public void debug(Object message, Throwable t)
 	{
@@ -75,7 +75,7 @@ public class Log4J implements Log
 	}// --------------------------------------------------------
 
 	/**
-	 * @see nyla.solutions.global.operations.Log#info(java.lang.Object)
+	 * @see nyla.solutions.global.operations.logging.Log#info(java.lang.Object)
 	 */
 	public void info(Object message)
 	{
@@ -83,7 +83,7 @@ public class Log4J implements Log
 	}// --------------------------------------------------------
 
 	/**
-	 * @see nyla.solutions.global.operations.Log#info(java.lang.Object, java.lang.Throwable)
+	 * @see nyla.solutions.global.operations.logging.Log#info(java.lang.Object, java.lang.Throwable)
 	 */
 	public void info(Object message, Throwable t)
 	{
@@ -91,7 +91,7 @@ public class Log4J implements Log
 	}// --------------------------------------------------------
 
 	/**
-	 * @see nyla.solutions.global.operations.Log#error(java.lang.Object)
+	 * @see nyla.solutions.global.operations.logging.Log#error(java.lang.Object)
 	 */
 	public void error(Object message)
 	{
@@ -100,7 +100,7 @@ public class Log4J implements Log
 	}// --------------------------------------------------------
 
 	/**
-	 * @see nyla.solutions.global.operations.Log#error(java.lang.Object, java.lang.Throwable)
+	 * @see nyla.solutions.global.operations.logging.Log#error(java.lang.Object, java.lang.Throwable)
 	 */
 	public void error(Object message, Throwable t)
 	{
@@ -109,7 +109,7 @@ public class Log4J implements Log
 	}// --------------------------------------------------------
 
 	/**
-	 * @see nyla.solutions.global.operations.Log#fatal(java.lang.Object)
+	 * @see nyla.solutions.global.operations.logging.Log#fatal(java.lang.Object)
 	 */
 	public void fatal(Object message)
 	{
@@ -117,7 +117,7 @@ public class Log4J implements Log
 	}// --------------------------------------------------------
 
 	/**
-	 * @see nyla.solutions.global.operations.Log#fatal(java.lang.Object, java.lang.Throwable)
+	 * @see nyla.solutions.global.operations.logging.Log#fatal(java.lang.Object, java.lang.Throwable)
 	 */
 	public void fatal(Object message, Throwable t)
 	{
@@ -125,7 +125,7 @@ public class Log4J implements Log
 	}// --------------------------------------------------------
 
 	/**
-	 * @see nyla.solutions.global.operations.Log#warn(java.lang.Object)
+	 * @see nyla.solutions.global.operations.logging.Log#warn(java.lang.Object)
 	 */
 	public void warn(Object message)
 	{
@@ -134,7 +134,7 @@ public class Log4J implements Log
 	}// --------------------------------------------------------
 
 	/**
-	 * @see nyla.solutions.global.operations.Log#warn(java.lang.Object, java.lang.Throwable)
+	 * @see nyla.solutions.global.operations.logging.Log#warn(java.lang.Object, java.lang.Throwable)
 	 */
 	public void warn(Object message, Throwable t)
 	{

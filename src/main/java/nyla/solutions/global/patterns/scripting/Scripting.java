@@ -7,19 +7,19 @@ import java.util.Map;
  * @author Gregory Green
  *
  */
-public interface Scripting
+public interface Scripting<ReturnType,EvalObjectType>
 {
-	Object interpret(String expression, Object evaluationObject);
+	ReturnType interpret(String expression, EvalObjectType evaluationObject);
 	
 	/**
 	 * @return the variables
 	 */
-	Map<Object,Object> getVariables();
+	Map<String,?> getVariables();
 	
 	/**
 	 * @param variables the variables to set
 	 */
-	void setVariables(Map<Object,Object> variables);
+	void setVariables(Map<String,?> variables);
 	
 	
 }

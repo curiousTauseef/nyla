@@ -714,5 +714,12 @@ The name of the Advice is specified through the Aspect annotation
 	}
 
 
+#Release Notes
+
+- Updated the Executable interface to be a sub class of Command
+- Update BooleanExpression to be a sub class of Command
+- Added support for Groovy Scripting instance
+- Update to Settings object to allow runtime updates
+- Added support for Log4J2
 
 	

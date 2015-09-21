@@ -4,14 +4,18 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.operations.Log;
+import nyla.solutions.global.operations.logging.Log;
 import nyla.solutions.global.util.Cryption;
 import nyla.solutions.global.util.Debugger;
 import nyla.solutions.global.util.Setting;
 
 /**
- * Setting <p/><p/><p/>This class provides read access to key/value pairs
- * loaded from the <p/>properties file properties. <p/><p/><p/><p/><p/>
+ * Setting <p/><p/><p/>This class provides read/write access to key/value pairs
+ * loaded from the <p/>properties file properties. <br/>
+ * 
+ *  Additional to adding additional objects at runtime
+ *  
+ *  <p/><p/><p/><p/><p/>
  * <UL>
  * Defaults <p/>
  * <LI><CODE>..\Setting.properties</CODE> <p/>
@@ -38,11 +42,19 @@ import nyla.solutions.global.util.Setting;
 
 public class Setting
 {
-
    public static final String CRYPTION_PREFIX = "{cryption}";
 
    public static final String RESOURCE_BUNDLE_NAME = "Setting";
 
+   /**
+    * 
+    * @param map the settings map
+    */
+   public Setting(Map<Object, Object> map)
+   {
+	   this.settingMap =  map;
+	   
+   }// --------------------------------------------------------
   
    /**
     * Retrieves a Settings property as a String object. <p/>Loads the file
@@ -237,7 +249,15 @@ public class Setting
       }
       return iVal;
    }//------------------------------------------------------------
+   public void setStringArray(String  key,String[] args)
+   {
+	   this.settingMap.put(key,args);
+   }// --------------------------------------------------------
 
+   public String[] getStringArray(String key)
+   {
+	   return (String[])this.settingMap.get(key);
+   }// --------------------------------------------------------
    /**
     * Get a Setting property as a Boolean object.
     * 
@@ -346,22 +366,21 @@ public class Setting
 
    }//------------------------------------------------------------
 
-   public final synchronized static Setting getInstance()
+   public final synchronized static Setting getSingletonInstance()
    {
 	   if(_instance == null) {
-		   _instance = new Setting();
-		   _instance.setSettingMap(Config.getProperties());
+		   _instance = new Setting(Config.getProperties());
 	   }
 	   
 	   return _instance;
 	   
    }// --------------------------------------------------------
-   private static Setting _instance = null;
+ 
    /**
     * @return a copy of the Setting properties
     */
    @SuppressWarnings("unchecked")
-   public <K,V> Map<K,V> getSettingMap()
+   protected <K,V> Map<K,V> getSettingMap()
    {
 
       //return copy
@@ -371,16 +390,16 @@ public class Setting
       
       return prop;
    }//------------------------------------------------------------
-
-   public <K,V> void setSettingMap(Map<K,V> map)
+   
+   public void setProperty(Object key, Object value)
    {
-      this.settingMap = new Hashtable<Object,Object> (map);
-   }// --------------------------------------------
-   private  Map<Object,Object> settingMap = new Hashtable<Object,Object>(); // Setting properties
+	   this.settingMap.put(key, value);
+   }// --------------------------------------------------------
+   private  final  Map<Object,Object> settingMap; // Setting properties
 
    //private static long lastCheckTime = 0;
 
-
+   private static Setting _instance = null;
    protected transient Log logger = Debugger.getLog(Setting.class);;
 }
 

@@ -18,12 +18,14 @@ public class CopyDirectoryExecutable implements Executable
 	/**
 	 * Copy directory
 	 */
-	public void execute(Environment env, String[] args)
+	public Integer execute(Environment env)
 	{
 		try
 		{
 			Debugger.println(this,"copy from "+source+" to "+destination);
 			IO.copyDirectory(source, destination, pattern);
+			
+			return 0;
 		} 
 		catch (IOException e)
 		{

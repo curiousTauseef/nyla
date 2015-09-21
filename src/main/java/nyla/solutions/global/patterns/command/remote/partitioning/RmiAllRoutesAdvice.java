@@ -244,7 +244,7 @@ public class RmiAllRoutesAdvice implements Advice, SetUpable
 				
 					
 				if(locations == null || locations.isEmpty())
-						throw new SetupException("No register location found. Please start a remote server.");
+						throw new SetupException("No register location found. Please start a remote commas server.");
 					
 					
 				 //get input 	

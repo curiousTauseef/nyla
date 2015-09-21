@@ -14,7 +14,7 @@ import nyla.solutions.global.data.PrimaryKey;
 import nyla.solutions.global.data.Property;
 import nyla.solutions.global.exception.RequiredException;
 import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.operations.Log;
+import nyla.solutions.global.operations.logging.Log;
 import nyla.solutions.global.patterns.expression.BooleanExpression;
 import nyla.solutions.global.patterns.iteration.PageCriteria;
 import nyla.solutions.global.patterns.iteration.Paging;
@@ -236,7 +236,7 @@ public final class Organizer
 		{
 			for (T obj : paging)
 			{
-				if(filter.getBoolean(obj))
+				if(filter.execute(obj))
 					pagingResults.add(obj);			
 			}
 		}

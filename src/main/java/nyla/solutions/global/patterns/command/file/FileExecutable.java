@@ -4,6 +4,8 @@ import java.io.File;
 
 
 
+
+
 import nyla.solutions.global.exception.RequiredException;
 import nyla.solutions.global.io.IO;
 import nyla.solutions.global.patterns.command.Environment;
@@ -125,13 +127,15 @@ import nyla.solutions.global.util.Debugger;
 		/**
 		 * 
 		 */
-		public void execute(Environment env, String[] args)
+		public Integer execute(Environment env)
 		{
 			Debugger.printInfo(this,"Configured execute directory path:"+executeDirectoryPath);
 			
 			process(new File(executeDirectoryPath));
 			
 			Debugger.printInfo(this,"Processing DONE");
+			
+			return 0;
 			
 		}//---------------------------------------------
 		
@@ -152,14 +156,14 @@ import nyla.solutions.global.util.Debugger;
 		/**
 		 * @return the fileCommand
 		 */
-		public FileCommand getFileCommand()
+		public FileCommand<Object> getFileCommand()
 		{
 			return fileCommand;
 		}//---------------------------------------------
 		/**
 		 * @param fileCommand the fileCommand to set
 		 */
-		public void setFileCommand(FileCommand fileCommand)
+		public void setFileCommand(FileCommand<Object> fileCommand)
 		{
 			this.fileCommand = fileCommand;
 		}//---------------------------------------------
@@ -181,7 +185,7 @@ import nyla.solutions.global.util.Debugger;
 
 
 		private String executeDirectoryPath  =  Config.getProperty(FileExecutable.class,"executeDirectoryPath");
-		private FileCommand fileCommand = null;
+		private FileCommand<Object> fileCommand = null;
 		private String listFilter = Config.getProperty(FileExecutable.class,"listFilter","*.*");
 		private String outputRootPath = Config.getProperty(FileExecutable.class,"outputRootPath","./output");
 		private String nameRegExpFilter = Config.getProperty(FileExecutable.class,"fileNameRegExpFilter",".*");

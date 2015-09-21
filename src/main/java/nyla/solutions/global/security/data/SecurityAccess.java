@@ -6,7 +6,7 @@ import java.security.acl.*;
 import java.util.*;
 
 import nyla.solutions.global.data.*;
-import nyla.solutions.global.operations.Log;
+import nyla.solutions.global.operations.logging.Log;
 import nyla.solutions.global.util.*;
 /**
  * <pre>

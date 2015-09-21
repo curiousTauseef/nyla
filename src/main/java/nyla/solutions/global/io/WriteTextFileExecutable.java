@@ -38,7 +38,7 @@ public class WriteTextFileExecutable implements Fileable, Executable
    /**
     * Write file context with Textable.getText results
     */
-   public void execute(Environment env, String[] args)
+   public Integer execute(Environment env)
    {
 	if (this.text == null)
 	   throw new RequiredException("this.text");
@@ -48,6 +48,8 @@ public class WriteTextFileExecutable implements Fileable, Executable
 	try
 	{
 	   IO.writeFile(file.getAbsolutePath(), text.getText(),this.append);
+	   
+	   return 0;
 	} 
 	catch (IOException e)
 	{

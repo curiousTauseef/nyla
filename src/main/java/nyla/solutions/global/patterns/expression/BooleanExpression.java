@@ -1,6 +1,7 @@
 package nyla.solutions.global.patterns.expression;
 
-public interface BooleanExpression<T>
+import nyla.solutions.global.patterns.command.Command;
+
+public interface BooleanExpression<T> extends Command<Boolean,T>
 {
-	public boolean getBoolean(T condition);
 }

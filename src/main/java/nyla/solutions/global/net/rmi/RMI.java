@@ -2,7 +2,6 @@ package nyla.solutions.global.net.rmi;
 
 //import java.rmi.Naming;
 import java.net.URI;
-import java.rmi.AccessException;
 import java.rmi.Naming;
 import java.rmi.Remote;
 import java.rmi.RemoteException;

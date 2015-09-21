@@ -148,6 +148,20 @@ public class Environment
 		this.map = map;
 	}
 
+	
+
+	public String[] getArgs()
+	{
+		return args;
+	}
+
+	public void setArgs(String[] args)
+	{
+		this.args = args;
+	}
+
+
 
 	private Map<Object,Object> map = new Hashtable<Object,Object>();
+	private String[] args;
 }

@@ -18,7 +18,7 @@ import nyla.solutions.global.util.Debugger;
  * @author Gregory Green
  *
  */
-public class BackupFileCommand implements FileCommand
+public class BackupFileCommand implements FileCommand<Void>
 {
 
 	/**
@@ -37,7 +37,7 @@ public class BackupFileCommand implements FileCommand
 	/**
 	 * Implement the back logic
 	 */
-	public void execute(File file)
+	public Void execute(File file)
 	{
 		if(backupFolder == null)
 			throw new RequiredException("backupFolder in BackupFileCommand");
@@ -56,6 +56,9 @@ public class BackupFileCommand implements FileCommand
 			
 			//copy file to backup folder
 			IO.copyDirectory(file, backupFolder);
+			
+			
+			return null;
 		} 
 		catch (IOException e) 
 		{

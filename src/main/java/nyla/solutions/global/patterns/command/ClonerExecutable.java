@@ -11,7 +11,7 @@ public class ClonerExecutable implements Executable
    /**
     * Clone the executable to execute the method
     */
-   public void execute(Environment env, String[] args)
+   public Integer execute(Environment env)
    {
 	if (this.executable == null)
 	   throw new RequiredException("this.executable");
@@ -23,10 +23,12 @@ public class ClonerExecutable implements Executable
 		{
 		   clone = (Executable)this.executable.clone();
 		   
-		   clone.execute(env,args);
+		   clone.execute(env);
 		   
 		   Thread.sleep(pausePeriod);
 		} 
+		
+		return 0;
 	} 
 	catch (Exception e)
 	{

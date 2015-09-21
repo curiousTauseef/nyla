@@ -19,12 +19,12 @@ import nyla.solutions.global.util.Debugger;
  * @author Gregory Green
  *
  */
-public class RotateImageFileCommand implements FileCommand
+public class RotateImageFileCommand implements FileCommand<Void>
 {
 	/**
 	 * Rotate the file image
 	 */
-	public void execute(File file)
+	public Void execute(File file)
 	{	
 		try 
 		{
@@ -32,7 +32,8 @@ public class RotateImageFileCommand implements FileCommand
 			if(!IO.exists(this.outputPath))
 				IO.mkdir(new File(this.outputPath));
 			
-			Graphics.rotateImage(file, new File(this.outputPath+Config.getFileSeparator()+file.getName()), format, degrees);	
+			Graphics.rotateImage(file, new File(this.outputPath+Config.getFileSeparator()+file.getName()), format, degrees);
+			return null;
 		} 
 		catch (Exception e) 
 		{

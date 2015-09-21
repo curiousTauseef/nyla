@@ -22,11 +22,11 @@ public class MainExecutable implements Executable
 	 * Execute executables with name that matches this class
 	 * @param args the first argument may contain the 
 	 */
-	public void execute(Environment env,String[] args)
+	public Integer execute(Environment env)
 	{	
-	   String executableName = (String)env.get(MainExecutable.class.getName());
+	   String executableName = (String)env.get(MainExecutable.class.getSimpleName());
 	   if(executableName == null || executableName.length() == 0)
-		executableName = mainExecutable;
+		   executableName = mainExecutable;
 	   
 		try
 		{
@@ -34,7 +34,9 @@ public class MainExecutable implements Executable
 		   
 			Executable executable = (Executable)ServiceFactory.getInstance().create(executableName);
 			
-			executable.execute(env,args);
+			executable.execute(env);
+			
+			return 0;
 		} 
 		catch (RuntimeException e)
 		{			
@@ -49,9 +51,12 @@ public class MainExecutable implements Executable
 			MainExecutable program = new MainExecutable();
 			
 			Environment env = new Environment();
+			
+			env.setArgs(args);
+			
 			env.putAll(System.getProperties());
 			
-			program.execute(env, args);
+			program.execute(env);
 			
 		} 
 		catch (Exception e) 
@@ -77,6 +82,6 @@ public class MainExecutable implements Executable
 		this.mainExecutable = mainExecutable;
 	}//---------------------------------------------
 
-	private String mainExecutable = Config.getProperty(this.getClass(),"mainExecutable",this.getClass().getName());
+	private String mainExecutable = Config.getProperty(this.getClass(),"mainExecutable",this.getClass().getSimpleName());
 
 }

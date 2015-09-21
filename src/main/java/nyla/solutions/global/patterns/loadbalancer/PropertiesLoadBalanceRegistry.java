@@ -10,6 +10,7 @@ import nyla.solutions.global.exception.SetupException;
 import nyla.solutions.global.exception.SystemException;
 import nyla.solutions.global.io.IO;
 import nyla.solutions.global.patterns.SetUpable;
+import nyla.solutions.global.util.Config;
 
 
 /**
@@ -205,6 +206,6 @@ public class PropertiesLoadBalanceRegistry implements LoadBalanceRegistry<String
 
 	private RoundRobin<String> roundRobin = new RoundRobin<String>();
 	private Properties properties;
-	private String propertyFilePath;
+	private String propertyFilePath = Config.getProperty(PropertiesLoadBalanceRegistry.class,"propertyFilePath");
 	
 }

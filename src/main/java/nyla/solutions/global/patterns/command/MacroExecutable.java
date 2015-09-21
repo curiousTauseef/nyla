@@ -37,7 +37,7 @@ public class MacroExecutable implements Executable, CloneableExecutable
 	/**
 	 * Execute all given executables
 	 */
-	public void execute(Environment env,String[] args)
+	public Integer execute(Environment env)
 	{
 		if(this.executables == null)
 			throw new RequiredException("Executable not set on "+this.getClass().getName());
@@ -49,9 +49,12 @@ public class MacroExecutable implements Executable, CloneableExecutable
 			for(Iterator<Executable> i = this.executables.iterator();i.hasNext();)
 			{
 			   Debugger.println(this,"execute #"+(++cnt));
-				((Executable)i.next()).execute(env, args);
+				((Executable)i.next()).execute(env);
 			}		   
 		}
+		
+		
+		return 0;
 	}//---------------------------------------------
 	/**
 	 * @return the executables

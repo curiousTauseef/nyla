@@ -47,12 +47,8 @@ public class SpringExecutable implements Executable
 	 * Evaluation the boolean based on the evaluation object
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void execute(Environment env, String[] args)
-	{		
-		//if(this.evaluationObject == null)
-		//	throw new RequiredException
-		//	("this.evaluationObject in SpringExecutable");
-		
+	public Integer execute(Environment env)
+	{
 		 try
 		{
 			StandardEvaluationContext context = new StandardEvaluationContext(this.evaluationObject);
@@ -85,6 +81,8 @@ public class SpringExecutable implements Executable
 				//put results in environment variable
 				env.put(valueKey,object);				
 			}
+			
+			return 0;
 			 
 		} 
 		catch (Exception e)

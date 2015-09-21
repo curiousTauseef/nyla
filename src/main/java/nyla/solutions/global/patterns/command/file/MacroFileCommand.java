@@ -12,28 +12,30 @@ import nyla.solutions.global.exception.RequiredException;
  * @author Gregory Green
  *
  */
-public class MacroFileCommand implements FileCommand
+public class MacroFileCommand implements FileCommand<Object>
 {
 	/**
 	 * Execute the file on each given file command
 	 */
-	public synchronized void execute(File file)
+	public synchronized Void execute(File file)
 	{
 		if(this.fileCommands == null)
 			throw new RequiredException("this.fileCommands in MacroFileCommand");
 
-		FileCommand fileCommand = null;
-		for(Iterator<FileCommand> i = (Iterator<FileCommand>)this.fileCommands.iterator();i.hasNext();)
+		FileCommand<Object> fileCommand = null;
+		for(Iterator<FileCommand<Object>> i = this.fileCommands.iterator();i.hasNext();)
 		{
 			fileCommand = i.next();
 			
 			fileCommand.execute(file);
 		}
+		
+		return null;
 	}//---------------------------------------------
 	/**
 	 * @return the fileCommands
 	 */
-	public synchronized Collection<FileCommand> getFileCommands()
+	public synchronized Collection<FileCommand<Object>> getFileCommands()
 	{
 		return fileCommands;
 	}//---------------------------------------------
@@ -42,13 +44,13 @@ public class MacroFileCommand implements FileCommand
 	/**
 	 * @param fileCommands the fileCommands to set
 	 */
-	public synchronized void setFileCommands(Collection<FileCommand> fileCommands)
+	public synchronized void setFileCommands(Collection<FileCommand<Object>> fileCommands)
 	{
 		this.fileCommands = fileCommands;
 	}
 
 
-	private Collection<FileCommand> fileCommands = null;
+	private Collection<FileCommand<Object>> fileCommands = null;
 	
 
 }

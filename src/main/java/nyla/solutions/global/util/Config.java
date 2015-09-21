@@ -76,6 +76,7 @@ public class Config
 	 */
 	public static final String SYS_PROPERTY = "config.properties";
 
+	public static final String DEFAULT_PROP_FILE_NAME = SYS_PROPERTY;
 
 	/**
 	 * Property may reference properties in example ${prop.name}+somethingElse

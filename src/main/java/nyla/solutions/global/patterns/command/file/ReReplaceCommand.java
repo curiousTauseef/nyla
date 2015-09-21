@@ -15,12 +15,12 @@ import nyla.solutions.global.util.JavaBean;
 import nyla.solutions.global.util.Text;
 
 
-public class ReReplaceCommand implements FileCommand
+public class ReReplaceCommand implements FileCommand<Void>
 {
 		/**
 		 * Use a regular expression replacing matches in the source content to an output location
 		 */
-		public void execute(File file)
+		public Void execute(File file)
 		{	
 			try
 			{	
@@ -50,6 +50,9 @@ public class ReReplaceCommand implements FileCommand
 				
 				//save text to output file
 				SynchronizedIO.getInstance().writeFile(file.getAbsolutePath(), fileContent);
+				
+				
+				return null;
 			}
 			catch (Exception e)
 			{

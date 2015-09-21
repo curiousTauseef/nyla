@@ -152,16 +152,9 @@ public class SpringFactory extends ServiceFactory
 	   
 	   if(url == null || url.length() == 0 )
 	   {
-		   try
-		   {
-		   	factory = new ClassPathXmlApplicationContext(SERVICE_FACTORY_CONFIG);
-		   }
-		   catch(RuntimeException e)
-		   {
-			   throw new ConfigException("Spring XML File Path:"+SERVICE_FACTORY_CONFIG+" CLASSPATH:"+ClassPath.getSystemResource(SERVICE_FACTORY_CONFIG),e);
-		   }
+			   
+		   	factory = new ClassPathXmlApplicationContext(ServiceFactory.getConfigProperty());
 
-		   Debugger.println(this,"LOADED:"+ClassPath.getSystemResource(SERVICE_FACTORY_CONFIG));
 		   
 	   }
 	   else
@@ -180,7 +173,7 @@ public class SpringFactory extends ServiceFactory
    {
       if(serviceFactoryXMLPath == null || serviceFactoryXMLPath.length() == 0)
       {
-         serviceFactoryXMLPath = Config.getProperty("spring.xml.path", SERVICE_FACTORY_CONFIG);
+         serviceFactoryXMLPath = Config.getProperty("spring.xml.path", ServiceFactory.getConfigProperty());
       }
       
       //Resource resource = new ClassPathResource(serviceFactoryXMLPath);

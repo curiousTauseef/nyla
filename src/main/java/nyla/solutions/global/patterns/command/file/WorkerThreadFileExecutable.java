@@ -33,9 +33,9 @@ public class WorkerThreadFileExecutable extends FileExecutable implements Subjec
 	/**
 	 * 
 	 */
-	public void execute(Environment env, String[] args)
+	public Integer execute(Environment env)
 	{
-		super.execute(env, args);
+		super.execute(env);
 		
 		Boss boss = new Boss(workQueue);
 		
@@ -43,6 +43,8 @@ public class WorkerThreadFileExecutable extends FileExecutable implements Subjec
 		
 		if(!summaryException.isEmpty())
 			throw summaryException;
+		
+		return 0;
 	}//---------------------------------------------
 	/**
 	 * Created a file runner worker thread

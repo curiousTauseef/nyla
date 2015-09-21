@@ -31,7 +31,7 @@ public class SpringBooleanExpression implements ObjectBooleanExpression
 	 * Evaluation the boolean based on the evaluation object
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public synchronized boolean getBoolean(Object obj)
+	public synchronized Boolean execute(Object obj)
 	{
 		if(this.evaluationObject == null)
 			throw new RequiredException

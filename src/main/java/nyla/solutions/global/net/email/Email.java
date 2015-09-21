@@ -27,7 +27,7 @@ import javax.naming.InitialContext;
 import nyla.solutions.global.data.Data;
 import nyla.solutions.global.exception.CommunicationException;
 import nyla.solutions.global.exception.SetupException;
-import nyla.solutions.global.operations.Log;
+import nyla.solutions.global.operations.logging.Log;
 import nyla.solutions.global.patterns.Disposable;
 import nyla.solutions.global.util.Config;
 import nyla.solutions.global.util.Debugger;

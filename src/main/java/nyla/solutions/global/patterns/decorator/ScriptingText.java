@@ -44,7 +44,6 @@ public class ScriptingText implements Textable
     */
    public ScriptingText()
    {
-	// TODO Auto-generated constructor stub
    }// ----------------------------------------------
    /**
     * 
@@ -63,7 +62,7 @@ public class ScriptingText implements Textable
    /**
     * @return the scripting
     */
-   public Scripting getScripting()
+   public Scripting<?,?> getScripting()
    {
       return scripting;
    }
@@ -71,23 +70,24 @@ public class ScriptingText implements Textable
    /**
     * @param scripting the scripting to set
     */
-   public void setScripting(Scripting scripting)
+   @SuppressWarnings("unchecked")
+   public void setScripting(Scripting<?,?> scripting)
    {
-      this.scripting = scripting;
+      this.scripting = (Scripting<Object,Object>)scripting;
    }// ----------------------------------------------
    
    
    /**
     * @return the variables
     */
-   public Map<Object,Object> getVariables()
+   public Map<String,?> getVariables()
    {
       return variables;
    }// ----------------------------------------------
    /**
     * @param variables the variables to set
     */
-   public void setVariables(Map<Object,Object> variables)
+   public void setVariables(Map<String,?> variables)
    {
       this.variables = variables;
    }
@@ -121,9 +121,9 @@ public class ScriptingText implements Textable
    }
 
 
-   private Map<Object,Object> variables = null;
+   private Map<String,?> variables = null;
    private Object evaluationObject = null;
    private String expression = null;
-   private Scripting scripting = null;
+   private Scripting<Object,Object> scripting = null;
 
 }

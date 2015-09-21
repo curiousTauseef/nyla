@@ -86,13 +86,33 @@ public class RemoteCommasServer implements RemoteCommand<Serializable, Envelope<
 	 */
 	public static void main(String[] args)
 	{
+		if(args.length < 4 )
+		{
+			System.out.println("Usage java "+RemoteCommasServer.class.getName()+" name registryName host port (loadCommandsSepartedBy|)* (cmdArgs)*");
+			return;
+		}
+		
+		String name = args[0];
+		
+		String registryName = args[1];
+		
+		String host = args[2];
+		
+		int port = Integer.parseInt(args[3]);
+		
+		String commas = null;
+		if(args.length > 4)
+		{
+			commas = args[4];
+		}
+		
+		startServer(host,port,name,registryName,commas);
+		
+	}// --------------------------------------------------------
+	public static void startServer(String host, int port, String name, String registryName, String commas)
+	{
 		try
 		{
-			if(args.length < 4 )
-			{
-				System.out.println("Usage java "+RemoteCommasServer.class.getName()+" name registryName host port (loadCommandsSepartedBy|)* (cmdArgs)*");
-				return;
-			}
 			
 			Collection<?> collection = CommasServiceFactory.getCommasServiceFactory().getCommasInfos();
 			
@@ -101,22 +121,14 @@ public class RemoteCommasServer implements RemoteCommand<Serializable, Envelope<
 			
 			
 			//TODO: execute startup commands
-			if(args.length > 4)
+			if(commas != null)
 			{
-				String commas = args[4];
 				
 				MacroCommand<Object,String[]> macroCmd = CommasServiceFactory.getCommasServiceFactory().createCommandMacro(Text.split(commas, "|"));
-				macroCmd.execute(args);
+				macroCmd.execute(null);
 			}
 			
-			String name = args[0];
-			
-			String registryName = args[1];
-			
-			String host = args[2];
-			
-			int port = Integer.parseInt(args[3]);
-			
+
 			//RMI.startRmiRegistry(port);
 		
 			Remote remote = new RemoteCommasServer();
@@ -138,8 +150,5 @@ public class RemoteCommasServer implements RemoteCommand<Serializable, Envelope<
 		}
 	}// --------------------------------------------------------
 	
-	void te()
-	{
-		
-	}
+ 
 }

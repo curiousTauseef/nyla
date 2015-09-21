@@ -8,8 +8,7 @@ import nyla.solutions.global.patterns.command.Environment;
  * @author Gregory Green
  *
  */
-public interface Executable
+public interface Executable extends Command<Integer, Environment>
 {
-	public void execute(Environment env, String[] args);
 	
 }

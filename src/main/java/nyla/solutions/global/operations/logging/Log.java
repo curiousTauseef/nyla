@@ -1,4 +1,4 @@
-package nyla.solutions.global.operations;
+package nyla.solutions.global.operations.logging;
 
 /**
  * Interface to logging messages

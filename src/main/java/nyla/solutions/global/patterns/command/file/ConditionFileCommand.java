@@ -18,12 +18,12 @@ import nyla.solutions.global.util.Debugger;
  *
  */
 @NotThreadSafe
-public class ConditionFileCommand implements FileCommand
+public class ConditionFileCommand implements FileCommand<Object>
 {
 	/**
 	 * Execute fileCommand if expression is true
 	 */
-	public synchronized void execute(File file)
+	public synchronized Object execute(File file)
 	{	
 		if(this.objectBooleanExpression == null)
 			throw new RequiredException("this.booleanExpression in ConditionFileCommand");
@@ -33,11 +33,15 @@ public class ConditionFileCommand implements FileCommand
 		
 		objectBooleanExpression.setEvaluationObject(file);
 
-		if(objectBooleanExpression.getBoolean(file))
+		if(objectBooleanExpression.execute(file))
 		{
 			Debugger.println(this,"Executing "+this.fileCommand.getClass().getName());
-			this.fileCommand.execute(file);
+			return this.fileCommand.execute(file);
 		}
+		
+		
+		return null;
+
 	}//---------------------------------------------
 
 	
@@ -66,7 +70,7 @@ public class ConditionFileCommand implements FileCommand
 	/**
 	 * @return the fileCommand
 	 */
-	public FileCommand getFileCommand()
+	public FileCommand<Object> getFileCommand()
 	{
 		return fileCommand;
 	}//---------------------------------------------
@@ -74,12 +78,12 @@ public class ConditionFileCommand implements FileCommand
 	/**
 	 * @param fileCommand the fileCommand to set
 	 */
-	public void setFileCommand(FileCommand fileCommand)
+	public void setFileCommand(FileCommand<Object> fileCommand)
 	{
 		this.fileCommand = fileCommand;
 	}
 
-	private FileCommand fileCommand = null;
+	private FileCommand<Object> fileCommand = null;
 	private ObjectBooleanExpression objectBooleanExpression = null;
 	
 }

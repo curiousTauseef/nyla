@@ -2,7 +2,6 @@ package nyla.solutions.global.patterns.command.remote.partitioning;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.rmi.server.RemoteObject;
 import java.util.Collection;
 
 import nyla.solutions.global.exception.ConnectionException;
@@ -73,7 +72,7 @@ public class PartitionCommasRemoteRegistry implements CommasRemoteRegistry<Strin
 		this.loadBalanceRegistry.register(key, location);
 	}// --------------------------------------------------------
 	/**
-	 * Regsiter a location
+	 * Register a location
 	 * @see nyla.solutions.global.patterns.command.remote.partitioning.CommasRemoteRegistry#registerLocation(java.lang.Object)
 	 */
 	public void registerLocation(String location)
@@ -88,9 +87,9 @@ public class PartitionCommasRemoteRegistry implements CommasRemoteRegistry<Strin
 		RMI rmi = new RMI(host,port);
 		try
 		{
-			Remote remote = rmi.lookup("commasRegistry");
+			CommasRemoteRegistry<String,String> remote = rmi.lookup("commasRegistry");
 				
-			return (CommasRemoteRegistry<String,String>)remote;
+			return remote;
 		}
 		catch (Exception e)
 		{
@@ -98,8 +97,31 @@ public class PartitionCommasRemoteRegistry implements CommasRemoteRegistry<Strin
 		}
 	}// --------------------------------------------------------
 
-	
+	/**
+	 * 
+	 * @param args 0=host 1=port 2=name
+	 */
 	public static void main(String[] args)
+	{
+		if(args.length != 3)
+		{
+			System.err.println("Usage "+PartitionCommasRemoteRegistry.class.getSimpleName()+" host port name");
+			return;
+		}
+		
+		String host =args[0];
+		int port = Integer.parseInt(args[1]);
+		String name = args[2];
+		
+		startRegistry(host,port, name);
+	}// --------------------------------------------------------
+	/**
+	 * Starts the partition commas registry
+	 * @param host the host name where the RMI registry is running
+	 * @param port the port the RMI port
+	 * @param name the name of the PartitionCommasRemoteRegistry to registerb
+	 */
+	public static void startRegistry(String host,int port, String name)
 	{
 		try
 		{

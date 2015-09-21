@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import nyla.solutions.global.exception.RequiredException;
-import nyla.solutions.global.operations.Log;
+import nyla.solutions.global.operations.logging.Log;
 import nyla.solutions.global.util.Config;
 import nyla.solutions.global.util.Debugger;
 import nyla.solutions.global.util.Text;
@@ -16,7 +16,7 @@ import nyla.solutions.global.util.Text;
  * @author Gregory Green
  *
  */
-public class ReLookupCommand implements FileCommand
+public class ReLookupCommand implements FileCommand<Void>
 {
    /**
     *
@@ -31,7 +31,7 @@ public class ReLookupCommand implements FileCommand
     * @param file the file to process
     * 
     */
-   public synchronized void execute(File file)
+   public synchronized Void execute(File file)
    {
 
          log.debug("Entering the transform method");
@@ -41,12 +41,12 @@ public class ReLookupCommand implements FileCommand
 
              //loop thru values
            String fileName = file.getName();
-           FileCommand fileCommand = null;
+           FileCommand<Object> fileCommand = null;
 
            if(lookupTable == null)
 			throw new RequiredException("lookupTable in ReLookupCommand");
 		
-           for (Map.Entry<String,FileCommand> entry : lookupTable.entrySet())
+           for (Map.Entry<String,FileCommand<Object>> entry : lookupTable.entrySet())
            {
                      //process next source value
                     re = entry.getKey();
@@ -65,7 +65,9 @@ public class ReLookupCommand implements FileCommand
                        
                     }//end for re iteration
                     
-                }//end lookup re     
+                }//end lookup re    
+           
+           return null;
    }// --------------------------------------------
 
    /**
@@ -84,7 +86,7 @@ public class ReLookupCommand implements FileCommand
    /**
     * @return the lookupTable
     */
-   public synchronized Map<String,FileCommand>  getLookupTable()
+   public synchronized Map<String,FileCommand<Object>>  getLookupTable()
    {
       return lookupTable;
    }
@@ -92,9 +94,9 @@ public class ReLookupCommand implements FileCommand
    /**
     * @param lookupTable the lookupTable to set
     */
-   public synchronized void setLookupTable(Map<String,FileCommand>  lookupTable)
+   public synchronized void setLookupTable(Map<String,FileCommand<Object>>  lookupTable)
    {
-      this.lookupTable = new TreeMap<String,FileCommand> (lookupTable);
+      this.lookupTable = new TreeMap<String,FileCommand<Object>> (lookupTable);
    }
 
 
@@ -103,6 +105,6 @@ public class ReLookupCommand implements FileCommand
    private boolean manyMatches = Config.getPropertyBoolean(getClass(),"manyMatches",true).booleanValue();   
    //private Attribute targetAttribute = null;
    //private Attribute sourceAttribute = null;
-   private TreeMap<String,FileCommand> lookupTable;
+   private TreeMap<String,FileCommand<Object>> lookupTable;
    private Log log = Debugger.getLog(this.getClass());
 }

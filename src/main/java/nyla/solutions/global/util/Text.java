@@ -689,7 +689,7 @@ public static String[] toStrings(Object object)
    public static String parseText(String aContent, String aStart, String aEnd)
    {
       //TODO: parse single
-      Collection<Object> results = parse(aContent, aStart, aEnd);
+      Collection<String> results = parse(aContent, aStart, aEnd);
       
       if(results == null || results.isEmpty())
       {
@@ -721,7 +721,7 @@ public static String[] toStrings(Object object)
     * 
     * @return 
     */
-   public static Collection<Object> parse(String aContent, String aStart, String aEnd)
+   public static Collection<String> parse(String aContent, String aStart, String aEnd)
    {
       return parse(aContent,aStart,aEnd,false);
    }// --------------------------------------------
@@ -748,7 +748,7 @@ public static String[] toStrings(Object object)
     * @param aIgnoreCase
     * @return 
     */
-   public static Collection<Object> parse(String aContent, String aStart, String aEnd, boolean aIgnoreCase)
+   public static Collection<String> parse(String aContent, String aStart, String aEnd, boolean aIgnoreCase)
    {
        String compareContent = null;
        if (aIgnoreCase)
@@ -762,7 +762,7 @@ public static String[] toStrings(Object object)
            compareContent = aContent;
        }
 
-       ArrayList<Object> results = new ArrayList<Object>();
+       ArrayList<String> results = new ArrayList<String>();
        int indexOfHref = indexOf(compareContent, aStart);
        
        int startText = indexOfHref + aStart.length();

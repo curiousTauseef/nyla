@@ -2,20 +2,18 @@ package nyla.solutions.global.patterns.decorator;
 
 import java.io.IOException;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Map;
 
 import nyla.solutions.global.data.Mapped;
 import nyla.solutions.global.data.Textable;
 import nyla.solutions.global.exception.RequiredException;
+import nyla.solutions.global.exception.SetupException;
 import nyla.solutions.global.exception.SystemException;
 import nyla.solutions.global.io.IO;
 import nyla.solutions.global.patterns.decorator.MappedTextFormatDecorator;
 import nyla.solutions.global.util.Config;
 import nyla.solutions.global.util.Debugger;
 import nyla.solutions.global.util.Text;
-
-
 
 
 /**
@@ -25,14 +23,14 @@ import nyla.solutions.global.util.Text;
  * @author Gregory Green
  *
  */
-public class MappedTextFormatDecorator implements Mapped<Object,Object>, Textable
+public class MappedTextFormatDecorator implements Mapped<String,Textable>, Textable
 {
    /**
     * 
     *
     * @see nyla.solutions.global.data.Mapped#getMap()
     */
-   public Map<Object,Object> getMap()
+   public Map<String,Textable> getMap()
    {      
       return map;
    }//--------------------------------------------
@@ -42,18 +40,12 @@ public class MappedTextFormatDecorator implements Mapped<Object,Object>, Textabl
     * @see nyla.solutions.global.data.Mapped#setMap(java.util.Map)
     */
    @Override
-   public void setMap(Map<Object,Object> map)
+   public void setMap(Map<String,Textable> map)
    {
       if(map == null)
          throw new RequiredException("map in MappedTextFormatDecorator.setMap");
       
       //asset all values are Textable
-      
-      for(Iterator<Object> i = map.values().iterator();i.hasNext(); )
-      {
-         if(!(i.next() instanceof Textable))
-        	 throw new RequiredException("Textable in map values "+map);
-      }
       
       //set map
       this.map = map;
@@ -89,18 +81,25 @@ public class MappedTextFormatDecorator implements Mapped<Object,Object>, Textabl
    {
       
      //convert textable to map of text
-      
+	   Object key = null;
       try 
       {
     	  //read bindTemplate
           String bindTemplate = getTemplate();
          Map<Object,String> textMap = new Hashtable<Object,String>();
-         Object key = null;
-         for(Map.Entry<Object, Object> entry: map.entrySet())
+    
+         for(Map.Entry<String, Textable> entry: map.entrySet())
          {
             key = entry.getKey();
-            //convert to text
-            textMap.put(key,((Textable)entry.getValue()).getText());         
+            try
+			{
+				//convert to text
+				textMap.put(key,(entry.getValue()).getText());
+			}
+			catch (Exception e)
+			{
+				throw new SystemException("Unable to build text for key:"+key+" error:"+e.getMessage(),e);
+			}         
          }
          
          Debugger.println(this, "bindTemplate="+bindTemplate);
@@ -109,9 +108,13 @@ public class MappedTextFormatDecorator implements Mapped<Object,Object>, Textabl
          return formattedOutput;
          
       } 
+      catch (RuntimeException e) 
+      {
+         throw e;
+      }
       catch (Exception e) 
       {
-         throw new SystemException(Debugger.stackTrace(e));
+         throw new SetupException(e.getMessage(),e);
       }
    }//--------------------------------------------   
    /**
@@ -142,6 +145,6 @@ public class MappedTextFormatDecorator implements Mapped<Object,Object>, Textabl
 	}
 
 	private String templateUrl = Config.getProperty(MappedTextFormatDecorator.class.getName()+".templateUrl","");
-   private Map<Object,Object> map = new Hashtable<Object,Object>();
+   private Map<String,Textable> map = new Hashtable<String,Textable>();
    private String template = Config.getProperty(MappedTextFormatDecorator.class.getName()+".template","");
 }

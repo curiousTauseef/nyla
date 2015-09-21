@@ -6,7 +6,7 @@ import java.lang.reflect.*;
 
 import nyla.solutions.global.exception.ConfigException;
 import nyla.solutions.global.exception.SetupException;
-import nyla.solutions.global.operations.Log;
+import nyla.solutions.global.operations.logging.Log;
 import nyla.solutions.global.util.Config;
 import nyla.solutions.global.util.Debugger;
 import nyla.solutions.global.util.JavaBean;
@@ -27,10 +27,10 @@ import nyla.solutions.global.util.JavaBean;
  * 
  * Set the configuration property  to plug-in another logger (@see Config more information);
  * 
- * solutions.global.util.Debugger.logClass=className
+ * Log.class=className
  * 
  * The logClass class name indicated must implement the 
- * solutions.global.operations.Log interface.
+ * nyla.solutions.global.operations.Log interface.
  * 
  * Sample Property File
  * 
@@ -96,9 +96,9 @@ import nyla.solutions.global.util.JavaBean;
 public class Debugger
 {
 	/**
-	 * LOG_CLASS_NAME_PROP = "solutions.global.util.Debugger.logClass"
+	 * LOG_CLASS_NAME_PROP = "Log.logClass"
 	 */
-	public static final String LOG_CLASS_NAME_PROP = "nyla.solutions.global.util.Debugger.logClass";
+	public static final String LOG_CLASS_NAME_PROP = "Log.class";
 
 	private static Class<?> logClass;
 	private static HashMap<Class<?>, Log> logMap = new HashMap<Class<?>, Log>();
@@ -107,9 +107,8 @@ public class Debugger
 
 		try
 		{
-
 			logClass = Class.forName(Config.getProperty(LOG_CLASS_NAME_PROP,
-					"nyla.solutions.global.operations.Log4J"));
+					"nyla.solutions.global.operations.logging.Log4J"));
 			         
 			defaultLogger = (Log) logClass.newInstance();
 
@@ -163,37 +162,6 @@ public class Debugger
 	 * 
 	 * @return the log 4 J category
 	 */
-
-	/*
-	 * public static Category getLog(Class c)
-	 * 
-	 * {
-	 * 
-	 * try
-	 * 
-	 * {
-	 * 
-	 * 
-	 * 
-	 * return Logger.getLogger(c);
-	 * 
-	 * }
-	 * 
-	 * catch(Exception e)
-	 * 
-	 * {
-	 * 
-	 * e.printStackTrace();
-	 * 
-	 * BasicConfigurator.configure();
-	 * 
-	 * return Logger.getLogger(c);
-	 * 
-	 * }
-	 * 
-	 * }
-	 */
-	// -----------------------------------------------
 
 	/**
 	 * 
@@ -462,38 +430,25 @@ public class Debugger
 		
 		if (DEBUG)
 		{
-			StringBuilder text = new StringBuilder();
-
 
 			if (aCaller != null)
 			{
+				
+				Class<?> callerClass = aCaller.getClass();
 
-				if (aCaller instanceof Class)
-
+				if (callerClass.isAssignableFrom(Class.class))
 				{
 
 					c = (Class<?>) aCaller;
-
-					text.append(c.getName()).append(": ");
-
-				}
-				else
-
-				if (aCaller instanceof String)
-				{
-
-					text.append(aCaller).append(": ");
-
 				}
 				else
 				{
 
 					c = aCaller.getClass();
-					text.append(c.getName()).append(": ");
 				}
 			}
 
-			getLog(c).debug(text.append(message));
+			getLog(c).debug(message);
 
 		}
 

@@ -45,7 +45,7 @@ public class TimerTaskExecutable extends TimerTask implements Executable, Clonea
     * 
     * @see nyla.solutions.global.patterns.command.Executable#execute(nyla.solutions.global.patterns.command.Environment, java.lang.String[])
     */
-   public void execute(Environment env, String[] args)
+   public Integer execute(Environment env)
    {
 	if (this.executable == null)
 	   throw new RequiredException("this.executable");
@@ -76,6 +76,8 @@ public class TimerTaskExecutable extends TimerTask implements Executable, Clonea
 	{
 	   schedule(timer);
 	}
+	
+	return 0;
    }// ----------------------------------------------
    public Object clone()
    throws CloneNotSupportedException
@@ -148,7 +150,7 @@ public class TimerTaskExecutable extends TimerTask implements Executable, Clonea
    public void run()
    {
 	Debugger.println(this,"Executing the timer task");
-	executable.execute(env, args);
+	executable.execute(env);
    }// ----------------------------------------------
    /**
     * @return the firstTime
