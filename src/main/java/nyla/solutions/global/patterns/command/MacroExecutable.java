@@ -8,10 +8,6 @@ import nyla.solutions.global.exception.RequiredException;
 import nyla.solutions.global.patterns.command.Environment;
 import nyla.solutions.global.patterns.command.Executable;
 import nyla.solutions.global.patterns.command.MacroExecutable;
-import nyla.solutions.global.util.Debugger;
-
-
-
 
 /**
  * <pre>
@@ -42,13 +38,11 @@ public class MacroExecutable implements Executable, CloneableExecutable
 		if(this.executables == null)
 			throw new RequiredException("Executable not set on "+this.getClass().getName());
 		
-		int cnt = 0;
 		synchronized(executables)
 		{
 			//execute each executable
 			for(Iterator<Executable> i = this.executables.iterator();i.hasNext();)
 			{
-			   Debugger.println(this,"execute #"+(++cnt));
 				((Executable)i.next()).execute(env);
 			}		   
 		}

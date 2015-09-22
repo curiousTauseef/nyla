@@ -324,7 +324,7 @@ public class Config
 		}
 		catch(FileNotFoundException e)
 		{
-			throw new ConfigException(e.getMessage());
+			throw new ConfigException(e.getMessage(),e);
 		}
 		catch (Exception e)
 		{

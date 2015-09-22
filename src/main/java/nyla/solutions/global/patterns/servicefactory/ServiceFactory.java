@@ -51,12 +51,25 @@ public abstract class ServiceFactory
    public static final String SERVICE_FACTORY_CONFIG_PROP = "ServiceFactory.config";
    
    /**
+    * DEFAULT_CONFIG_PROP_VALUE = "service.factory.xml"
+    */
+   public static final String DEFAULT_CONFIG_PROP_VALUE = "service.factory.xml";
+   
+   /**
     * 
     * @return Config.getProperty("ServiceFactory.config")
     */
    public static String getConfigProperty()
    {
-	  return Config.getProperty(SERVICE_FACTORY_CONFIG_PROP);
+	  String property = Config.getProperty(SERVICE_FACTORY_CONFIG_PROP,"");
+	  
+	  if(property.length() == 0)
+	  {
+		  //check if System property is set
+		  property = System.getProperty(SERVICE_FACTORY_CONFIG_PROP,DEFAULT_CONFIG_PROP_VALUE);
+	  }
+	  
+	  return property;
    }
    /**
     * Singleton factory method
