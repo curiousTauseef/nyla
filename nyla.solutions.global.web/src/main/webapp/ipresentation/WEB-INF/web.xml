@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.0 U (http://www.xmlspy.com) by Gregory Green (BusinessEdge Solutions, Inc) -->
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app id="WebApp_1">
+	<display-name>frontController</display-name>
+	<description>frontController</description>
+	<servlet>
+		<servlet-name>frontController</servlet-name>
+		<description>The Front Controller for the Smart Application</description>
+		<servlet-class>solutions.global.web.controller.FrontControllerServlet</servlet-class>
+		<init-param>
+			<param-name>cmd</param-name>
+			<param-value>solutions.global.web.controller.DefaultCommand</param-value>
+		</init-param>
+	</servlet>
+    <!-- Servlet Mapping -->
+	<servlet-mapping>
+		<servlet-name>frontController</servlet-name>
+		<url-pattern>/service/*</url-pattern>
+	</servlet-mapping>
+   <!-- Error Pages -->
+	<error-page>
+		<error-code>401</error-code>
+		<location>/themes/default/errors/unauthorized.jsp.so</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/themes/default/errors/notfound.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/themes/default/errors/internal_server_error.jsp</location>
+	</error-page>
+	<!-- Tag Libs -->
+  <!--  taglib>
+    <  taglib-uri>security</taglib-uri>
+    <taglib-location>/WEB-INF/tlds/security.tld</taglib-location>
+  </taglib-->	
+</web-app>

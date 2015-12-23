@@ -1,0 +1,130 @@
+body {
+   width: 600px;
+   padding-left: 50%;
+   background-color:#CCCCFF;
+}
+
+h1
+{
+ font-family: Script;
+}
+
+#frame {
+   width: 600px;
+   margin-left: -300px;
+   background-color:#FFFFFF;
+   height: 100%;
+}
+
+#navsite h5 {
+   display: none;
+   }
+#navsite ul {
+   padding: 3px 0;
+  margin-left: 0;
+  border-bottom: 1px dolid #788;
+  font: bold 12 px Verdana, sans-serif;  
+ }
+ 
+ #navsite ul li {
+   list-style: none;
+  margin: 0;
+  display: inline;
+ }
+ 
+#navsite ul li a{
+  padding: 3px 0.5em;
+  margin-left: 3px;
+  border: 1px solid #788;
+  border-bottom: none;
+  background: #DDE;
+  text-decoration: none;
+}
+   
+   
+   #navsite ul li a:link {
+      color: #667;
+  }
+  
+  #navsite ul li a:link:hover, #navsite ul lli a:visited:hover
+  {
+     color: #000;
+     background: #AAE;
+     border-color: #227;
+  }
+  
+  #navsite ul li a#current
+  {
+     background: white;
+     border-bottom: 1px solid white;
+   }
+   
+	
+#main {
+margin-left: 150px;
+margin-top: 0px;
+padding: 0px;
+}
+
+div#sideNav {
+float:left;
+margin-top:0px;
+padding:0px;
+width: 120px;
+}
+
+
+
+div#sideNav ul {
+  background-color: #036;
+  list-style-type: none; /* get rid of the bullets */
+  padding:0;             /* no padding */
+  margin:0;              /* no margin for IE either */
+}
+
+div#sideNav ul li {
+  margin: 0;
+  padding: 0;
+  background-color: #036;
+  display:block;
+  border-top: 1px solid white; /* lines */
+}
+
+div#sideNav ul li a {
+  display: block;         /* lines extend to right, make area clickable */
+  border-color: #227;
+  color:white;
+  padding: 5px 5px 5px;
+  margin:0;
+  text-decoration: none;
+  height:15px;           /* hint for IE, alternatively remove whitespace from HTML */ 
+}
+
+div#sideNav ul li a#current {
+  display: block;         /* lines extend to right, make area clickable */  
+  padding: 5px 5px 5px;
+  margin:0;
+  font-weight:bold;
+  text-decoration: none;
+  height:15px;           /* hint for IE, alternatively remove whitespace from HTML */ 
+
+  background:white none repeat scroll 0% 50%;
+  border-left:1px solid black;
+  border-top:1px solid white;
+  border-bottom:1px solid black;
+  color:#0033CC;
+}
+
+
+
+div#sideNav ul ul li a {
+  margin-left: 20px;     /* indent level 1 */
+}
+
+div#sideNav ul ul ul li a {
+  margin-left: 40px;     /* indent level 2 */
+}
+
+div#sideNav ul li a:hover {
+  color: red;
+}
