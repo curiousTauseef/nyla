@@ -3,7 +3,6 @@ package nyla.solutions.global.patterns.scripting;
 import groovy.lang.Binding;
 import groovy.lang.GroovyRuntimeException;
 import groovy.lang.GroovyShell;
-import groovy.lang.MissingPropertyException;
 
 import java.util.Map;
 

@@ -2,8 +2,6 @@ package nyla.solutions.global.patterns.expression;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import nyla.solutions.global.exception.SetupException;
 import nyla.solutions.global.exception.SystemException;
 import nyla.solutions.global.exception.fault.FaultException;
 import nyla.solutions.global.patterns.scripting.Scripting;

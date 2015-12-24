@@ -61,7 +61,7 @@ public class CsvSelectSummaryExecutable extends AbstractDaoOperation implements 
       /**
 	 * Execute an insert statement
 	 */
-	public void execute(Environment env, String[] args)
+	public Integer execute(Environment env)
 	{		
 		 if(this.getSql() == null || this.getSql().length() == 0)
 	         throw new ConfigException("Property \"sqlQuery\"  not setin "+this.getClass().getName());
@@ -125,6 +125,8 @@ public class CsvSelectSummaryExecutable extends AbstractDaoOperation implements 
 	         //write line
 		    Object[] cells = {label, Text.formatDate(this.dateFormat, Calendar.getInstance().getTime()),Integer.valueOf(count),Long.valueOf(exe_time),Double.valueOf(avg_fetch)};
 		    CSV.appendFile(csvFile, cells);
+		    
+		    return 1;
 	         
 	      }
 	      catch(Exception e)

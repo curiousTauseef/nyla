@@ -10,7 +10,6 @@ import nyla.solutions.dao.AbstractDaoOperation;
 import nyla.solutions.dao.SQL;
 import nyla.solutions.global.exception.NoDataFoundException;
 import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.patterns.command.Command;
 import nyla.solutions.global.patterns.command.Environment;
 import nyla.solutions.global.patterns.command.Executable;
 import nyla.solutions.global.util.Debugger;
@@ -20,13 +19,15 @@ import nyla.solutions.global.util.Debugger;
  * @author Gregory Green
  *
  */
-public class InsertLargeClobExecutable extends AbstractDaoOperation implements Executable, Command<Object, Environment>
+@Deprecated
+public class InsertLargeClobExecutable 
+extends AbstractDaoOperation implements Executable
 {
 	/**
 	 * 
 	 * @see solutions.global.patterns.command.Executable#execute(solutions.global.patterns.command.Environment, java.lang.String[])
 	 */
-   public void execute(Environment env, String[] args)
+   public Integer execute(Environment env)
    {
 	Statement statement = null;
 	   
@@ -63,6 +64,7 @@ public class InsertLargeClobExecutable extends AbstractDaoOperation implements E
                    
           statement.getConnection().commit();
           
+          return 1;
 
       }
       catch(Exception e)
@@ -89,12 +91,12 @@ public class InsertLargeClobExecutable extends AbstractDaoOperation implements E
 	 * @source
 	 * @see solutions.global.patterns.command.Command#execute(java.lang.Object)
 	 */
-	public Object execute(Environment source)
-	{
-		execute(null,null);
+	//public Object execute(Environment source)
+	//{
+	//	execute(null,null);
 		
-		return null;
-	}
+	//	return null;
+	//}
    
    
    /**

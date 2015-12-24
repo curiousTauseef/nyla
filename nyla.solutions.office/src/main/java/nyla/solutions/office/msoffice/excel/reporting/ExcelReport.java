@@ -135,15 +135,16 @@ public class ExcelReport  extends AbstractReport implements Executable
 	 }
 	
       Environment env = new Environment();
+      env.setArgs(args);
       
      ExcelReport report = new ExcelReport();
      report.filePath = args[0];
      report.sql = args[1];
-     report.execute(env, args);
+     report.execute(env);
       
    }// --------------------------------------------
    
-   public void execute(Environment env, String[] args)
+   public Integer execute(Environment env)
    {
 	if (this.filePath == null || this.filePath.length() == 0)
 	   throw new RequiredException("this.filePath");
@@ -154,7 +155,7 @@ public class ExcelReport  extends AbstractReport implements Executable
 	try
 	{
 	         
-	         if(args.length == 1)
+	         if(env.getArgs().length == 1)
 	         {
 	            printReport();   
 	         }
@@ -163,6 +164,8 @@ public class ExcelReport  extends AbstractReport implements Executable
 	            
 	            printReport(sql);
 	         }
+	         
+	         return 1;
 	         
 	      }
 	      finally

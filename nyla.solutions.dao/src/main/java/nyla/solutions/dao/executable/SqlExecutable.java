@@ -4,10 +4,7 @@ import nyla.solutions.dao.AbstractDaoOperation;
 import nyla.solutions.dao.SQL;
 import nyla.solutions.global.exception.ConfigException;
 import nyla.solutions.global.exception.SystemException;
-
 import java.sql.*;
-
-import nyla.solutions.global.patterns.command.Command;
 import nyla.solutions.global.patterns.command.Environment;
 import nyla.solutions.global.patterns.command.Executable;
 
@@ -20,16 +17,15 @@ import nyla.solutions.global.patterns.command.Executable;
  * <pre>
  * <b>SqlExecutable</b>  represents an executed SQL statement
  * 
-
- * 
  */
+@Deprecated
 public class  SqlExecutable extends AbstractDaoOperation
-implements Executable, Command<Object, Environment>
+implements Executable
 {
 	/**
 	 * Execute a single SQL statement
 	 */
-	public void execute(Environment env, String[] args)
+	public Integer execute(Environment env)
 	{		
 		 if(this.getSql() == null || this.getSql().length() == 0)
 	         throw new ConfigException("Property \"sqlQuery\"  not setin "+this.getClass().getName());
@@ -41,6 +37,8 @@ implements Executable, Command<Object, Environment>
 	         
 	         sql.execute(this.getSql());
 	         sql.commit();
+	         
+	         return 1;
 	      }
 	      catch(SQLException e)
 	      {
@@ -59,10 +57,10 @@ implements Executable, Command<Object, Environment>
 	 * @source
 	 * @see solutions.global.patterns.command.Command#execute(java.lang.Object)
 	 */
-	public Object execute(Environment source)
-	{
-		execute(null,null);
+	///public Object execute(Environment source)
+	//{
+	//	execute(null,null);
 		
-		return null;
-	}
+	//	return null;
+	//}
 }

@@ -7,7 +7,6 @@ import nyla.solutions.dao.AbstractDaoOperation;
 import nyla.solutions.dao.SQL;
 import nyla.solutions.global.exception.ConfigException;
 import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.patterns.command.Command;
 import nyla.solutions.global.patterns.command.Environment;
 import nyla.solutions.global.patterns.command.Executable;
 
@@ -31,12 +30,13 @@ import nyla.solutions.global.patterns.command.Executable;
  * @author Gregory Green
  *
  */
-public class SelectNoResultsExecutable extends AbstractDaoOperation implements Executable, Command<Object, Environment>
+@Deprecated
+public class SelectNoResultsExecutable extends AbstractDaoOperation implements Executable
 {
 	/**
 	 * Execute an insert statement
 	 */
-	public void execute(Environment env, String[] args)
+	public Integer execute(Environment env)
 	{		
 		 if(this.getSql() == null || this.getSql().length() == 0)
 	         throw new ConfigException("Property \"sqlQuery\"  not setin "+this.getClass().getName());
@@ -63,6 +63,7 @@ public class SelectNoResultsExecutable extends AbstractDaoOperation implements E
 	      	count++;
 	         }*/
 	         
+	         return 1;
 	         
 	      }
 	      catch(Exception e)
@@ -85,11 +86,11 @@ public class SelectNoResultsExecutable extends AbstractDaoOperation implements E
 	 * @source
 	 * @see solutions.global.patterns.command.Command#execute(java.lang.Object)
 	 */
-	public Object execute(Environment source)
-	{
-		execute(null,null);
+	//public Object execute(Environment source)
+	//{
+	//	execute(null,null);
 		
-		return null;
-	}
+	//	return null;
+	//}
 
 }

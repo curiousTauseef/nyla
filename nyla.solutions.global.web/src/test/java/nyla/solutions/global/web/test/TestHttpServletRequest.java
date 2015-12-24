@@ -430,7 +430,7 @@ public class TestHttpServletRequest implements HttpServletRequest
 	 * 
 	 * @see javax.servlet.ServletRequest#getParameterMap()
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "rawtypes" })
 	public Map getParameterMap()
 	{
 
@@ -714,7 +714,7 @@ public class TestHttpServletRequest implements HttpServletRequest
 	}
 
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "rawtypes" })
 	public Collection getParts() throws IOException, IllegalStateException,
 			ServletException
 	{

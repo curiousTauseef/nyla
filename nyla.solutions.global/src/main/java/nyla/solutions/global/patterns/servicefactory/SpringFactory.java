@@ -1,8 +1,6 @@
 package nyla.solutions.global.patterns.servicefactory;
 
-import nyla.solutions.global.exception.ConfigException;
 import nyla.solutions.global.exception.RequiredException;
-import nyla.solutions.global.operations.ClassPath;
 import nyla.solutions.global.util.Config;
 import nyla.solutions.global.util.Debugger;
 

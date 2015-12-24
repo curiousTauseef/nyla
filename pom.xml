@@ -13,6 +13,8 @@
     <modules>
         <module>nyla.solutions.global</module>
         <module>nyla.solutions.global.web</module>
+        <module>nyla.solutions.dao</module>
+        <module>nyla.solutions.office</module>
     </modules>
 
     <build>

@@ -16,7 +16,6 @@ import nyla.solutions.dao.SQL;
 import nyla.solutions.global.exception.ConfigException;
 import nyla.solutions.global.exception.RequiredException;
 import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.patterns.command.Command;
 import nyla.solutions.global.patterns.command.Environment;
 import nyla.solutions.global.patterns.command.Executable;
 import nyla.solutions.global.util.Config;
@@ -46,13 +45,15 @@ import nyla.solutions.global.util.Debugger;
  * @author Gregory Green
  *
  */
-public class PreparedSqlBridgeExecutable extends  AbstractDaoOperation implements Executable, Command<Object, Environment>
+@Deprecated
+public class PreparedSqlBridgeExecutable 
+extends  AbstractDaoOperation implements Executable
 {
    
    /**
 	 * Execute an insert statement
 	 */
-	public void execute(Environment env, String[] args)
+	public Integer execute(Environment env)
 	{		
 		 if(this.getSql() == null || this.getSql().length() == 0)
 	         throw new ConfigException("Property \"sqlQuery\"  not setin "+this.getClass().getName());
@@ -121,6 +122,8 @@ public class PreparedSqlBridgeExecutable extends  AbstractDaoOperation implement
 	         	         
 	         
 	         targetSQL.commit();
+	         
+	         return 1;
 	      }
 	      catch(SQLException e)
 	      {
@@ -153,12 +156,12 @@ public class PreparedSqlBridgeExecutable extends  AbstractDaoOperation implement
 	 * @source
 	 * @see solutions.global.patterns.command.Command#execute(java.lang.Object)
 	 */
-	public Object execute(Environment source)
-	{
-		execute(null,null);
+	//public Object execute(Environment source)
+	//{
+	//	execute(null,null);
 		
-		return null;
-	}
+	//	return null;
+	//}
 	
 	/**
     * @return the bridgeQuerySql

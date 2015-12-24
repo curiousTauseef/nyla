@@ -17,7 +17,7 @@ import nyla.solutions.global.util.Text;
  * This class uses FO XML to generate a PDF file contains a given image file contain
  * @author Gregory Green
  */
-public class PdfFileCommand implements FileCommand
+public class PdfFileCommand implements FileCommand<Boolean>
 {
 	/**
 	 * Implements the the FileCommand interface
@@ -26,7 +26,7 @@ public class PdfFileCommand implements FileCommand
 	 * 
 	 * this.outputPath/<file-name>.pdf
 	 */
-	public void execute(File file)
+	public Boolean execute(File file)
 	{		
 		try 
 		{
@@ -43,7 +43,8 @@ public class PdfFileCommand implements FileCommand
 			String foXML = Text.format(foTemplate, map);
 			
 			//created PDF output
-			FOP.writePDF(foXML, new File(outputPath+Config.getFileSeparator()+file.getName()+".pdf"));			
+			FOP.writePDF(foXML, new File(outputPath+Config.getFileSeparator()+file.getName()+".pdf"));
+			return true;
 		} 
 		catch (Exception e) 
 		{

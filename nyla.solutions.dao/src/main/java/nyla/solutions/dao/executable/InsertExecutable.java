@@ -4,12 +4,8 @@ import nyla.solutions.dao.AbstractDaoOperation;
 import nyla.solutions.dao.SQL;
 import nyla.solutions.global.exception.ConfigException;
 import nyla.solutions.global.exception.SystemException;
-
 import java.sql.*;
-
-import nyla.solutions.global.patterns.command.Command;
 import nyla.solutions.global.patterns.command.Environment;
-import nyla.solutions.global.patterns.command.Executable;
 
 /**
  * @author Gregory Green
@@ -20,8 +16,9 @@ import nyla.solutions.global.patterns.command.Executable;
  * 
  * 
  */
+@Deprecated
 public class  InsertExecutable extends AbstractDaoOperation
-implements Executable, Command<Object, Environment>
+//implements Executable, Command<Object, Environment>
 {
 	/**
 	 * Execute an insert statement

@@ -5,13 +5,13 @@ import nyla.solutions.office.msoffice.excel.ExcelSheet;
 import jxl.Cell;
 import jxl.Sheet;
 
+/**
+ * Facade for the JXL Excel API to the implement the ExcelSheet interface
+ * @author Gregory Green
+ *
+ */
 public class JxlSheet implements ExcelSheet
 {
-   /**
-	 * 
-	 */
-	private static final long serialVersionUID = -2618749411548196973L;
-
 
   public JxlSheet(Sheet sheet)
    {

@@ -33,11 +33,13 @@ public class FileableChartExecutable implements Executable, ChartDecorator, File
 	/**
 	 * Save the chart to a file
 	 */
-	public void execute(Environment environment, String[] args)
+	public Integer execute(Environment environment)
 	{
 		checkChart();
 		
 		toFile();
+		
+		return 1;
 	}//---------------------------------------------
 	/**
 	 * @return the chart

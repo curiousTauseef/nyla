@@ -6,10 +6,7 @@ import nyla.solutions.global.exception.RequiredException;
 import nyla.solutions.global.exception.SystemException;
 
 import java.sql.*;
-
-import nyla.solutions.global.patterns.command.Command;
 import nyla.solutions.global.patterns.command.Environment;
-import nyla.solutions.global.patterns.command.Executable;
 import nyla.solutions.global.util.Debugger;
 
 /**
@@ -35,8 +32,9 @@ import nyla.solutions.global.util.Debugger;
 	&lt;/bean&gt;
  * </pre>
  */
+@Deprecated
 public class  BatchSqlExecutable extends AbstractDaoOperation
-implements Executable, Command<Object, Environment>
+//implements Executable, Command<Object, Environment>
 {
 	/**
 	 * Execute an Batch Sqls statement
