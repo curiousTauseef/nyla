@@ -1,0 +1,13 @@
+
+ <table class="${styleClass}" id="${tableId}" width="100%" border="0"  cellspacing="0">
+	<input type="hidden" name="tableRowNumbers_${tableId}">
+	<thead>
+   <tr  class="questionTableHeader">
+      <td width="100%" colspan="${colspan}"> ${questionNumber} ${questionText} <input type="button" name="btnAdd_${tableId}" value="Add" onclick="addRow('${tableId}');"> ${help} </td>
+   </tr> 
+  ${columns}
+  	</thead>
+  	<tbody>
+   ${rows}
+   	</tbody>
+ </table>

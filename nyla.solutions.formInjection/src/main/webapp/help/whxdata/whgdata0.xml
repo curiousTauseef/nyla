@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='windows-1252' ?>
+<glossarydata>
+ <entry name="Alert" value="A system generated message delivered within clinSIGHT or for some roles through email to inform the user of:  1) An activity they must perform.  2) Information on an activity that has taken place.  3) A reminder when an activity is overdue. (Reminder level 1).  4) A management notification of an activity that has not taken place. (Reminder level 2)" />
+ <entry name="BackWeb" value="BackWeb is a software that enables web pages to be off-lined i.e. the pages are cached on the client system and provided to the user as if the system is still connected to the intranet.  The client side plug-in determines intranet availability and ensures the pages are provided either directly from the server or from the client cache." />
+ <entry name="Broadcast Alert" value="An Alert generated from the Protocol Manager or the Operations Lead having information related to the study. Broadcast Alerts are the only manually generated alerts." />
+ <entry name="clinSIGHT Library" value="The Library is a dynamic repository of documentation and reports relating to a specific site. When a visit type is scheduled, the system retrieves current information for the scheduled visit and stores this information in the Library." />
+ <entry name="Drug Reconciliation Worksheet (DRW)" value="The form used to track the receipt and return of investigational product at the Investigator site." />
+ <entry name="My Forms" value="A tab in clinSIGHT where the user can see all forms they have generated for a site." />
+ <entry name="On-Site Investigator File Form (OSIFF)" value="This form is an electronic tracking form of the essential documents available in the on-site file. It will stay within clinSIGHT for the duration of the study." />
+ <entry name="Potential Site Assessment Form (PSAF)" value="The form completed by the Site Monitor in the New Site Identification process for potential sites to be considered for participation in future BMS clinical studies." />
+ <entry name="Pre-Study Evaluation Form (PSEF)" value="The PSEF following submission to clinSIGHT by the author." />
+ <entry name="Pre-Study Evaluation Report (PSER)" value="The form completed during the early study start up process for sites that are being considered for a current BMS clinical trial." />
+ <entry name="Significant Ad-hoc Site Contact Form (SASCF)" value="The Form used to capture information from site communications other than Pre-Study Evaluation, Initiation, Monitoring, and Closure Visits and when the contact with the clinical site is not recorded in Issue Management or Deviations." />
+ <entry name="Significant Ad hoc Site Contact Report (SASCR)" value="The report generated from the Significant Ad hoc Site Contact form." />
+ <entry name="Site Closure Form (SCF)" value="The form completed during a Site Closure Visit." />
+ <entry name="Site Closure Report (SCR)" value="The report generated from the Site Closure Form." />
+ <entry name="Site Initiation Visit Form (SIVF)" value="The form completed during the Site Initiation Visit." />
+ <entry name="Site Initiation Visit Report (SIVR)" value="The report generated from the Site Initiation Visit form." />
+ <entry name="Site Monitoring Visit Form (SMVF)" value="The form completed during a Site Monitoring Visit other than the PSE, SIV or closure visits." />
+ <entry name="Site Monitoring Visit Report (SMVR)" value="The report generated from the Site Monitoring Vsit Form." />
+ <entry name="Structured Interview Text" value="Created in the Site Monitor Plan and used to conduct a Phone Visit/Assessment. The text will serve as a prompt for further information while conducting the visit. It is available on the Site Monitor Visit Form on questions with a phone icon." />
+ <entry name="User Roles" value="clinSIGHT utilizes the roles as established in IMPACT to control access to studies, sites, homepages and reports. The roles are:  DM - Data Manager, LD - Limited Database Administrator, LMM - Local Medical Monitor, MM - Medical Monitor, MSM - Manager Site Management, OPL - Operations Lea, PTM - Protocol Manager, SMM - Site Monitor Manager, SMN - Site Monitor, STM - Site Manager, USM - Unblinded Site Monitor, WRC - Worldwide Regulatory Compliance." />
+
+</glossarydata>

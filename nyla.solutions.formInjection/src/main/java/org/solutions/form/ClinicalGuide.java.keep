@@ -1,0 +1,1022 @@
+package com.bms.informatics.gcsm.form;
+
+import java.security.acl.NotOwnerException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+
+import javax.ejb.EJBException;
+
+import org.apache.log4j.Category;
+
+import com.bms.informatics.gcsm.common.data.*;
+import com.bms.informatics.gcsm.common.exception.FatalException;
+import com.bms.informatics.gcsm.common.exception.NoDataFoundException;
+import com.bms.informatics.gcsm.common.exception.SystemException;
+import com.bms.informatics.gcsm.form.data.*;
+import com.bms.informatics.gcsm.form.visitor.SearchVisitor;
+import com.bms.informatics.gcsm.common.util.*;
+import com.bms.informatics.gcsm.protocol.ProtocolSiteDAO;
+import com.bms.informatics.gcsm.protocol.data.Location;
+import com.bms.informatics.gcsm.protocol.data.SiteOverview;
+import com.bms.informatics.gcsm.protocol.data.Study;
+import com.bms.informatics.gcsm.protocol.data.StudyLeg;
+import com.bms.informatics.gcsm.protocol.data.StudySiteLeg;
+import com.bms.informatics.gcsm.protocol.data.StudySiteList;
+import com.bms.informatics.gcsm.schedule.VisitScheduleDAO;
+import com.bms.informatics.gcsm.schedule.VisitScheduleDelegate;
+import com.bms.informatics.gcsm.schedule.data.VisitSchedule;
+import com.bms.informatics.gcsm.schedule.data.VisitType;
+import com.bms.informatics.gcsm.security.data.ClinicalAcl;
+import com.bms.informatics.gcsm.security.data.SecurityCredential;
+import com.bms.informatics.gcsm.security.user.UserDAO;
+import com.bms.informatics.gcsm.security.user.UserDelegate;
+import com.bms.informatics.gcsm.security.user.data.ClinicalUser;
+import com.bms.informatics.gcsm.security.user.data.GCSMUser;
+
+/**
+ * <pre>
+ *
+ *  ClinicalGuide form helper class
+ *
+ * </pre>
+ *
+ * @author Gregory Green
+ * @version 1.0
+ */
+public abstract class ClinicalGuide extends FormGuide 
+{
+   public static final String PLAN_TYPE_PROP = "plan_type";//venu added this constant on Dec21 for SMP(params required for SMP to submit to ESF)
+	
+	/**
+    * SASC_FORM_NM = "Significant Ad-hoc Site Contact"
+    */
+   public static final String SASC_FORM_NM = "Significant Ad-hoc Site Contact";
+   
+   /**
+    * SAE_PROP_NM = "sae"
+    */
+   public static final String SAE_PROP_NM = "sae";
+   
+   /**
+    * SAVED_SCHEDULE_EVENT_NM = "saveUnScheduled"
+    */
+   public static final String SAVED_SCHEDULE_EVENT_NM = "saveUnScheduled";
+   
+	/**
+	 * DONE_PROP_NM = "done"
+	 */
+   public static final String DONE_PROP_NM = "done";
+
+	/**
+	 * PHONE_PROP_NM = "phone"
+	 */
+	public static final String PHONE_PROP_NM = "phone";
+
+	/**
+	 * STUDY_HELP_TEXT_ATTRIB_NM_PREFIX = "helpText_study="
+	 */
+	public static final String STUDY_HELP_TEXT_ATTRIB_NM_PREFIX = "helpText_study=";
+
+	/**
+	 * DOCUMENT_LEVEL_PROP = "documentLevel"
+	 */
+	public static final String DOCUMENT_LEVEL_PROP = "documentLevel";
+
+	/**
+	 * DOCUMENT_TYPE_PROP = "document_type"
+	 */
+	public static final String DOCUMENT_TYPE_PROP = "document_type";//venu changed the value on Dec21
+
+	/**
+	 * DOCUMENT_SUB_TYPE_PROP ="document_sub_type"
+	 */
+	public static final String DOCUMENT_SUB_TYPE_PROP = "document_sub_type"; //venu changed the value on Dec21
+
+	/**
+	 * DOCUMENT_GROUP_PROP = "documentGroup"
+	 */
+	public static final String DOCUMENT_GROUP_PROP = "documentGroup";
+
+	/**
+	 * ESF_PREVIOUS_DOCUMENT_ID_PROP = "previousEsfDocumentId"
+	 */
+	public static final String ESF_PREVIOUS_DOCUMENT_ID_PROP = "previousEsfDocumentId";
+
+	/**
+	 * ESF_DOCUMENT_ID_PROP = "esfDocumentId"
+	 */
+	public static final String ESF_DOCUMENT_ID_PROP = "esfDocumentId";
+
+	/**
+	 * PRIMARY_LOCATION_UNIT_NUMBER = 1
+	 */
+	public static final int PRIMARY_LOCATION_UNIT_NUMBER = 1;
+
+	/**
+	 * PROTOCOL_SITE_SEPARATOR = "-"
+	 */
+	public static final String PROTOCOL_SITE_SEPARATOR = "-";
+
+	/**
+	 * LT = "LT" leg
+	 */
+	public static final String LT = "LT";
+
+	/**
+	 * ST = "ST" leg
+	 */
+	public static final String ST = "ST";
+
+	/**
+	 * PROTOCOL_SITE_PROP = "protocolSite"
+	 */
+	public static final String PROTOCOL_SITE_PROP = "protocolSite";
+
+	/**
+	 * INVESTIGATOR_PROP investigator property
+	 */
+	public static final String INVESTIGATOR_PK_PROP = "investigatorPK";
+
+	/**
+	 * PROTOCOL_PROP investigator property
+	 */
+	public static final String SITE_PK_PROP = "sitePK";
+
+	/**
+	 * site_PROP investigator property
+	 */
+	public static final String STUDY_PK_PROP = "studyPK";
+
+	/**
+	 * LPLV_STATUS = "LPLV"
+	 */
+	public static final String LPLV_STATUS = "LPLV";
+
+   /**
+    * SIV_FORM_NM = "Site Initiation Visit"
+    */
+   public static final String SIV_FORM_NM = "Site Initiation Visit";
+	
+   /**
+	 * Site closure form type code
+	 */
+	public static final String SITE_CLOSURE_FORM_TYPE_CODE = "SCV";
+
+   /**
+    * SMP_FORM_NM = "Site Monitoring Plan"
+    */
+   public static final String SMP_FORM_NM = "Site Monitoring Plan";
+   
+   /**
+    * SMP_FORM_CD = "SMP"
+    */
+   public static final String SMP_FORM_CD = "SMP";
+   
+	/**
+	 * PROTOCOL_EXCEPTION_FORM_NM form name
+	 */
+	public static final String PROTOCOL_EXCEPTION_FORM_NM = "Protocol Exception";
+   
+   /**
+    * PROTOCOL_EXCEPTION_FORM_CD = "PE"
+    */
+   public static final String PROTOCOL_EXCEPTION_FORM_CD = "PE";
+
+	/**
+	 * PSA_FORM_NM = "Potential Site Assessment"
+	 */
+	public static final String PSA_FORM_NM = "Potential Site Assessment";
+   
+   /**
+    * PSA_FORM_CD ="PSA"
+    */
+   public static final String PSA_FORM_CD ="PSA";
+
+	/**
+	 * PSE_FORM_NM = "Pre-Study Evaluation"
+	 */
+	public static final String PSE_FORM_NM = "Pre-Study Evaluation";
+
+	/**
+	 * OSIF_FORM_NM = "On-Site Investigator File"
+	 */
+	public static final String OSIF_FORM_NM = "On-Site Investigator File";
+   
+   /**
+    * OSIF_FORM_CD = "OSIF"
+    */
+   public static final String OSIF_FORM_CD = "OSIF";
+
+	/**
+	 * PROTOCOL_DEVIATION form name
+	 */
+	public static final String PROTOCOL_DEVIATION_FORM_NM = "Protocol Deviation";
+   
+   /**
+    * PROTOCOL_DEVIATION_FORM_CD = "PD"
+    */
+   public static final String PROTOCOL_DEVIATION_FORM_CD = "PD";
+   
+	/**
+	 * DRW_FORM_NM = "Drug Reconciliation Worksheet"
+	 */
+	public static final String DRW_FORM_NM = "Drug Reconciliation Worksheet";
+
+	/**
+	 * DRW_FORM_CD = "DRW"
+	 */
+	public static final String DRW_FORM_CD = "DRW";
+
+	/**
+	 * Site Monitor Visit form name
+	 */
+	public static final String SMV_FORM_NM = "Site Monitoring Visit";
+   
+   /**
+    * SCV_FORM_NM = "Site Closure Visit"
+    */
+   public static final String SCV_FORM_NM = "Site Closure Visit";
+   
+	/**
+	 * SMV_FORM_CD = "SMV"
+	 */
+	public static final String SMV_FORM_CD = "SMV";
+
+	/**
+	 * Sig. Ad-hoc Contact form name
+	 */
+	public static final String SITE_CONTACT = "Significant Ad-hoc Site Contact";
+
+	/**
+	 * Means that a form question with this attribute set to true contains the
+	 * reviewers for the form
+	 */
+	public static final String REVIEWERS_ATTR = "isReviewers";
+   
+   /**
+    * String EDITED_PROP_NM = "edited"
+    */
+   public static final String EDITED_PROP_NM = "edited";
+
+	/**
+	 *
+	 * @param aStudySiteList
+	 * @return Location UNIT NUMBER 1
+	 */
+	public static Location retrievePrimaryLocation(StudySiteList aStudySiteList)
+			throws NoDataFoundException {
+		if (aStudySiteList == null)
+			throw new IllegalArgumentException(
+					"aStudySiteList required in ClinicalGuide.retrievePrimaryLocation");
+
+		Collection locations = aStudySiteList.getLocationTblCollection();
+
+		if (locations == null || locations.isEmpty())
+			throw new NoDataFoundException("No locations in site "
+					+ aStudySiteList);
+
+		Location location = null;
+		for (Iterator i = locations.iterator(); i.hasNext();) {
+			location = (Location) i.next();
+
+			if (location.getUnitLocationNbr() == PRIMARY_LOCATION_UNIT_NUMBER)
+				return location;
+		}
+
+		throw new NoDataFoundException("Location unit number "
+				+ PRIMARY_LOCATION_UNIT_NUMBER + " not found in "
+				+ aStudySiteList.getStudySiteId());
+	}//--------------------------------------------
+   /**
+    * 
+    * @param aScheduleID the visit schedule ID
+    * @param aUser the user
+    * @return VisitScheduleDAO.selectVisitByPrimaryKey(aScheduleID);
+    */
+   public static VisitSchedule retrieveVisitScheduleByID(Integer aScheduleID, ClinicalUser aUser)
+   throws Exception
+   {
+      VisitScheduleDelegate vsd = new VisitScheduleDelegate(aUser);
+      return vsd.retrieveVisitByVisitId(aScheduleID);
+      
+   }//--------------------------------------------
+   /**
+    * 
+    * @param aVisitTypeID primary key
+    * @param aUser the access user
+    * @return VisitType with aVisitTypeID
+    */
+   public static VisitType retrieveVisitTypeByID(Integer aVisitTypeID, ClinicalUser aUser) throws Exception
+   {
+      VisitScheduleDelegate vsd = new VisitScheduleDelegate(aUser);
+      return vsd.retrieveVisitTypeByVisitTypeId(aVisitTypeID);
+   }//--------------------------------------------
+	/**
+	 * Determine whether a user can edit the form
+	 * Most forms are readonly after submission, and
+    * can only be edited by the originator.
+    * 
+    * OSIF can Only be edited by the SMN or SMB assigned to the site.  
+    * Anyone else assigned to the site can view the OSIF.  
+    * Keep in mind this form is different 
+    * from visit forms/reports in that it is the SMN or SMB assigned to 
+    * the site regardless of who the originator is.
+    * 
+    * Actually the same applies to the DRW, in this case include the 
+    * USM as someone who can edit the DRW.
+    * 
+	 * @param aClinicalForm   the clincial form
+	 * @param aUser the user accessing the form
+	 * @return true if the form cannot be edited by the user
+	 */
+	public static boolean isReadOnly(GCSMForm aClinicalForm,
+			SecurityCredential aUser) {
+		if (aClinicalForm == null)
+			throw new IllegalArgumentException(
+					"aClinicalForm required in ClinicalGuide.isReadOnly");
+
+		if (aUser == null)
+			throw new IllegalArgumentException("aUser required in GCSMForm");
+
+		if (aUser.getId() == null)
+			throw new IllegalArgumentException(
+					"Security credential user ID not provided login="
+							+ aUser.getLoginID());
+      
+      ClinicalUser clinicalUser =retrieveClinicalUser(aUser);
+      
+       if(OSIF_FORM_NM.equals(aClinicalForm.getName())
+         && aClinicalForm.getSitePK() != null)
+      {
+
+         //true is users is not in list
+         
+         //CHECK if user in roles SMB or SMN in site
+         String [] roles = {"SMN","SMB", "USM"};
+         
+         //return false user in in role
+          return !isUserInSiteFormRole(aClinicalForm, clinicalUser, roles);
+      }      
+      else if (isSubmitted(aClinicalForm)) 
+      {
+			return true;
+		}
+      else if(aUser.getId().equals(aClinicalForm.getCreateUserID()))
+      {
+         //creator have always edit a not submitted form
+         return false;
+      }
+      else if(aClinicalForm.getSchedulePK() != null &&
+       !aClinicalForm.isEdited())
+      {
+           //incomplete schedule site
+           if(aClinicalForm.getSitePK() != null)
+           {
+              //allows roles SMN, SMB, USM, STM, or STB
+              String []  roles = {"SMN", "SMB", "USM", "STM", "STB"};
+              //return false user in in role
+              return !isUserInSiteFormRole(aClinicalForm, clinicalUser, roles);            
+           }
+           else
+           {
+              //anyone can edit an unedited form
+              return false;
+           }
+      }
+      else if(DRW_FORM_NM.equals(aClinicalForm.getName())
+      && aClinicalForm.getSitePK() != null)
+      {
+         //not submitted DRW
+         //true is users is not in list
+         
+         //CHECK if user in roles SMB or SMN in site
+         String [] roles = {"SMN","SMB","USM"};
+         //return false user in in role
+         return !isUserInSiteFormRole(aClinicalForm, clinicalUser, roles);
+      }      
+      else
+      {
+         //is not orginate
+         return !aUser.getId().equals(aClinicalForm.getCreateUserID());
+      }
+     
+	}//--------------------------------------------
+   /**
+    * @param aClinicalForm the clinical form
+    * @param clinicalUser the the clinical user
+    * @param roles the roles 
+    * @return
+    * @throws NotOwnerException
+    */
+   public static boolean isUserInSiteFormRole(ClinicalForm aClinicalForm, ClinicalUser clinicalUser, String[] roles)    
+   {
+      try
+      {
+         ClinicalAcl siteAcl = ClinicalAcl.getClinicalAcl(clinicalUser)
+         .scanSite(clinicalUser,aClinicalForm.getSitePK());
+         
+         return siteAcl.hasRole(clinicalUser, roles);
+      }
+      catch(NotOwnerException e)
+      {
+         throw new SecurityException(Debugger.stackTrace(e));
+      }
+   }//--------------------------------------------
+   /**
+    * 
+    * @param aId the user id
+    * @return Clinical user
+    */
+   public static ClinicalUser retrieveClinicalUser(SecurityCredential aUser)   
+   {
+      
+      if (aUser instanceof ClinicalUser &&
+          !Organizer.isEmpty(((ClinicalUser)aUser).getClinicalAccessPrivileges()))
+      {
+        return (ClinicalUser) aUser;
+      }
+      
+      UserDelegate ud = new UserDelegate();
+      try
+      {
+          return ud.retrieveUserById(aUser.getId());
+      }
+      catch(Exception e)
+      {
+         throw new SystemException(Debugger.stackTrace(e));
+      }
+   }//--------------------------------------------
+	public static String retrieveStudyStatus(Study aStudy)
+			throws NoDataFoundException {
+		if (aStudy == null)
+			throw new IllegalArgumentException(
+					"aStudy required in ClinicalGuide.retrieveStudyStatus");
+
+		StudyLeg studyLeg = retrieveStudyLeg(aStudy);
+		return studyLeg.getStudyStatus();
+	}//--------------------------------------------
+
+	public static StudyLeg retrieveStudyLeg(Study aStudy)
+			throws NoDataFoundException {
+		StudyLeg study = retrieveSTStudyLeg(aStudy);
+
+		//Short term not close return it
+		if (!isClosed(study))
+			return study;
+
+		//Short study closed, look at long term
+		boolean hasLt = Data.YES.equals(aStudy.getHasLt());
+		if (hasLt) {
+			study = retrieveLTStudyLeg(aStudy);
+		}
+
+		return study;
+	}//--------------------------------------------
+
+	public static boolean isClosed(StudyLeg aStudyLeg) {
+		if (aStudyLeg == null)
+			throw new IllegalArgumentException(
+					"aStudyLeg required in ClinicalGuide.isClosed");
+
+		return LPLV_STATUS.equals(aStudyLeg.getStudyStatus());
+	}//--------------------------------------------
+
+	public static StudyLeg retrieveLTStudyLeg(Study aStudy)
+			throws NoDataFoundException {
+		return retrieveStudyLegByTerm(aStudy, LT);
+	}//--------------------------------------------
+
+	public static StudyLeg retrieveSTStudyLeg(Study aStudy)
+			throws NoDataFoundException {
+		return retrieveStudyLegByTerm(aStudy, ST);
+	}//--------------------------------------------
+
+	public static StudyLeg retrieveStudyLegByTerm(Study aStudy, String aTerm)
+			throws NoDataFoundException {
+		if (aStudy == null)
+			throw new IllegalArgumentException(
+					"aStudy required in ClinicalGuide.retrieveSTStudyLeg");
+
+		StudyLeg studyLeg = null;
+		for (Iterator i = aStudy.getStudyLegTblCollection().iterator(); i
+				.hasNext();) {
+			studyLeg = (StudyLeg) i.next();
+			if (aTerm.equals(studyLeg.getStudyLeg()))
+				return studyLeg;
+		}
+
+		throw new NoDataFoundException(" ST study leg in " + aStudy);
+	}//--------------------------------------------
+
+	public static StudySiteLeg findLongTermStudySiteLeg(Collection aCollection)
+			throws NoDataFoundException {
+		if (aCollection == null || aCollection.isEmpty())
+			return null;
+
+		StudySiteLeg studySiteLeg = null;
+		for (Iterator i = aCollection.iterator(); i.hasNext();) {
+			studySiteLeg = (StudySiteLeg) i.next();
+			if (studySiteLeg == null)
+				continue;
+
+			if (ClinicalGuide.LT.equals(studySiteLeg.getStudyLeg()))
+				return studySiteLeg;
+		}
+
+		throw new NoDataFoundException("Long term leg in " + aCollection);
+	}//--------------------------------------------
+
+	/**
+	 *
+	 * @param aStudySiteList
+	 * @return
+	 * @throws NoDataFoundException
+	 */
+	public static StudySiteLeg retrieveStudySiteLeg(StudySiteList aStudySiteList)
+			throws NoDataFoundException {
+		if (aStudySiteList == null)
+			throw new IllegalArgumentException(
+					"aStudySiteList required in ClinicalGuide.retrieveStudySiteLeg");
+
+		//test if study site has long term and short term has LPLV
+		if (Data.YES.equals(aStudySiteList.getHasLt())
+				&& Data.YES.equals(aStudySiteList.getHasStLplv())) {
+			return findLongTermStudySiteLeg(aStudySiteList
+					.getStudySiteLegTblCollection());
+
+		} else {
+			//get first study leg
+			return (StudySiteLeg) aStudySiteList.getStudySiteLegTblCollection()
+					.iterator().next();
+		}
+	}//--------------------------------------------
+
+	/**
+	 *
+	 * @param aClinicalForm
+	 *            the clinical form
+	 * @return SITE_CLOSURE_FORM_TYPE_CODE.equals(type.getCode())
+	 */
+	public static boolean isSiteClosure(ClinicalForm aClinicalForm) {
+
+		if (aClinicalForm == null)
+			throw new IllegalArgumentException(
+					"aClinicalForm required in ClinicalGuide.isSiteClosure");
+
+		FormType type = aClinicalForm.getType();
+		if (type == null)
+			throw new IllegalArgumentException(
+					"aClinicalForm.getType() required in ClinicalGuide.isSiteClosure");
+
+		return SITE_CLOSURE_FORM_TYPE_CODE.equals(type.getCode());
+	}//--------------------------------------------
+
+	/**
+	 * Retrievel Protocol Site i.e. CC01-01-01
+	 *
+	 * @param aForm
+	 * @param filer
+	 * @param dps
+	 * @return
+	 * @throws NoDataFoundException
+	 * @throws SQLException
+	 */
+	public static String retrieveProtocolSiteNumber(ClinicalForm aForm,
+			ClinicalUser aUser) throws Exception {
+		if (aForm.getProtocolSite() != null)
+			return aForm.getProtocolSite();
+
+		if (aForm.getSitePK() == null) {
+			return retrieveProtocolNumber(aForm, aUser);
+		}
+
+		String protocolSiteNbr = retrieveSiteOverview(aForm, aUser)
+				.getProtocolSiteNbr();
+
+		aForm.setProtocolSite(protocolSiteNbr);
+
+		return protocolSiteNbr;
+	}//--------------------------------------------
+
+	/**
+	 * i.e. CC01-01
+	 *
+	 * @param aForm
+	 * @param aUser
+	 * @return
+	 */
+	public static String retrieveProtocolNumber(ClinicalForm aForm,
+			ClinicalUser aUser) throws Exception {
+		if (aForm.getStudyPK() == null)
+			return "";
+
+		Study study = retrieveStudy(aForm, aUser);
+
+		return study.getProtocolNbr();
+
+	}//--------------------------------------------
+
+	/**
+	 * Retrieve study for the form
+	 *
+	 * @param aForm
+	 *            the PDF form
+	 * @param aUser
+	 *            the user
+	 * @return the study
+	 */
+	public static Study retrieveStudy(ClinicalForm aForm, ClinicalUser aUser)
+			throws Exception {
+		if (aForm == null)
+			throw new IllegalArgumentException(
+					"aForm required in ClinicalGuide.retrieveStudy");
+
+		if (aForm.getStudyPK() == null)
+			throw new IllegalArgumentException(
+					"aForm.getStudyPK() required in ClinicalGuide.retrieveStudy");
+
+		ProtocolSiteDAO dao = null;
+		try {
+			dao = ProtocolSiteDAO.getInstance(aUser);
+
+			return dao.retrieveStudyByPK(aForm.getStudyPK().intValue());
+		} finally {
+			if (dao != null)
+				dao.dispose();
+		}
+	}//--------------------------------------------
+
+	/**
+	 *
+	 * @param aClinicalForm
+	 *            the clinical form
+	 * @param aClinicalUser
+	 *            the user
+	 * @return the SiteOverview
+	 * @throws Exception
+	 */
+	public static final SiteOverview retrieveSiteOverview(
+			ClinicalForm aClinicalForm, ClinicalUser aClinicalUser)
+			throws Exception {
+		if (aClinicalForm.getSitePK() == null)
+			throw new IllegalArgumentException("Form pk "
+					+ aClinicalForm.getPrimaryKey()
+					+ " has no site association");
+
+		ProtocolSiteDAO dao = null;
+		try {
+			dao = ProtocolSiteDAO.getInstance(aClinicalUser);
+			return dao.getSiteOverviewBySiteID(aClinicalForm.getSitePK()
+					.intValue());
+		} finally {
+			if (dao != null)
+				dao.dispose();
+		}
+
+	}//--------------------------------------------
+
+	/**
+	 * @return the user who filed the form
+	 * @param aForm
+	 *            the form
+	 */
+	public static ClinicalUser retrieveClinicalFiler(GCSMForm aForm)
+			throws Exception {
+		SecurityCredential user = aForm.getAccessUser();
+
+		if (user != null && user instanceof ClinicalUser
+				&& !Text.isNull(((ClinicalUser) user).getLoginID()))
+			return (ClinicalUser) user;
+
+		UserDAO dao = null;
+		try {
+			GCSMUser gcsmUser = new GCSMUser();
+
+			dao = UserDAO.getUserDAOInstance(gcsmUser);
+
+			if (user != null) {
+				gcsmUser.setPrimaryKey(user.getId().intValue());
+				gcsmUser.setLoginID(user.getLoginID());
+			} else {
+				Integer reviewerPK = aForm.getReviewerPK();
+
+				if (reviewerPK == null)
+					throw new FatalException("Reviwer id is null in formPK: "
+							+ aForm.getPrimaryKey());
+
+				gcsmUser.setPrimaryKey(reviewerPK.intValue());
+			}
+
+			return dao.selectUserByPrimaryKey(gcsmUser.getId());
+
+		} finally {
+			if (dao != null)
+				dao.dispose();
+		}
+	}//--------------------------------------------
+
+	/**
+	 *
+	 * @param aClinicalForm
+	 * @return
+	 */
+	public static Map retrieveGCSMQuestionsWithStudyHelp(
+			ClinicalForm aClinicalForm) {
+		if (aClinicalForm == null)
+			throw new IllegalArgumentException(
+					"aClinicalForm required in ClinicalGuide.retrieveFormQuestionsWithStudyHelp");
+
+		SearchVisitor visitor = SearchVisitor
+				.gcsmQuestionsNonBlankAttributeNameContains(STUDY_HELP_TEXT_ATTRIB_NM_PREFIX);
+		aClinicalForm.accept(visitor);
+
+		Collection c = visitor.getResults();
+		Map m = new HashMap();
+		for (Iterator i = c.iterator(); i.hasNext(); ) {
+		    FormQuestion q = (FormQuestion) i.next();
+		    m.put(q.getQuestionId(), q);
+		}
+		return m;
+	}//--------------------------------------------
+
+	/**
+	 *
+	 * @param aFormQuestion
+	 *            the form question
+	 * @return !Text.isNull(aFormQuestion.getQuestion().getHelp())
+	 */
+	public static boolean hasHelp(FormQuestion aFormQuestion) {
+		if (aFormQuestion == null)
+			throw new IllegalArgumentException(
+					"aFormQuestion required in ClinicalGuide.hasHelp");
+
+		return !Text.isNull(aFormQuestion.getHelp());
+	}//--------------------------------------------
+
+	/**
+	 *
+	 * @param aFormQuestion
+	 *            the form question
+	 * @return !Organizer.isEmpty(retrieveStudyHelp(aFormQuestion))
+	 */
+	public static boolean hasStudyHelp(FormQuestion aFormQuestion) {
+		if (aFormQuestion == null)
+			throw new IllegalArgumentException(
+					"aFormQuestion required in ClinicalGuide.hasHelp");
+
+		return !Organizer.isEmpty(retrieveStudyHelp(aFormQuestion));
+	}//--------------------------------------------
+
+	/**
+	 *
+	 * @param aQuestion
+	 *            the question
+	 * @return collection of help text string
+	 */
+	public static Collection retrieveStudyHelp(FormQuestion aFormQuestion) {
+		if (aFormQuestion == null)
+			throw new IllegalArgumentException(
+					"aQuestion required in ClinicalGuide.retrieveStudyHelp");
+
+		if (isSubmitted(aFormQuestion.retrieveForm())) {
+			//check if form table exists
+			if (aFormQuestion.getResponseType().isTable()) {
+				return findStudyHelpInMappables(aFormQuestion.getFormTable()
+						.getProperties());
+			} else {
+				return retrieveStudyHelpTextFromAnswerProperties(aFormQuestion
+						.getAnswer());
+			}
+		} else {
+			return retrieveStudyHelpTextFromQuestionAttributes(aFormQuestion);
+		}
+	}//--------------------------------------------
+
+	/**
+	 *
+	 * @param aAnswer
+	 *            the answer
+	 * @return the collection of string help text
+	 */
+	protected static Collection retrieveStudyHelpTextFromAnswerProperties(
+			FormAnswer aAnswer) {
+		if (aAnswer == null || aAnswer.getProperties() == null
+				|| aAnswer.getProperties().isEmpty()) {
+			//TODO: support form tables
+			return new ArrayList(); //empty
+		}
+
+		return findStudyHelpInMappables(aAnswer.getAnswerProps().values());
+	}//--------------------------------------------
+
+	/**
+	 * @return retrieve Help Text From a Question Attributes
+	 */
+	protected static Collection retrieveStudyHelpTextFromQuestionAttributes(
+			FormQuestion aQuestion) {
+		Collection attributes = aQuestion.getAttributes();
+
+		return findStudyHelpInMappables(attributes);
+	}//--------------------------------------------
+
+	/**
+	 * @param aAttributes
+	 *            find Study Help In Mappables
+	 * @return
+	 */
+	private static Collection findStudyHelpInMappables(Collection aMappables) {
+		Mappable mappable = null;
+		HashSet results = new HashSet();
+		for (Iterator i = aMappables.iterator(); i.hasNext();) {
+			mappable = (Mappable) i.next();
+			if (mappable == null)
+				continue;
+
+			if (mappable.getKey().toString().indexOf(
+					STUDY_HELP_TEXT_ATTRIB_NM_PREFIX) > -1
+					&& mappable.getValue() != null) {
+				results.add(mappable.getValue());
+			}
+		}
+		return results;
+	}//--------------------------------------------
+   /**
+    * true if form is an SMV
+    * @param aForm the form
+    * @return SMV_FORM_NM.equals(aForm.getName())
+        || SMV_FORM_CD.equals(aForm.getType().getCode())
+    */
+   public static boolean isSMV(ClinicalForm aForm)
+   {
+      if (aForm == null)
+         throw new IllegalArgumentException(
+         "aForm required in ClinicalGuide.isSMV");
+      
+      
+      return SMV_FORM_NM.equals(aForm.getName())
+        || SMV_FORM_CD.equals(aForm.getType().getCode());
+   }//--------------------------------------------
+   /**
+    * 
+    * @param aForm the clinical form
+    * @return PROTOCOL_EXCEPTION_FORM_NM.equalsIgnoreCase(aForm.getName())
+            || PROTOCOL_EXCEPTION_FORM_CD.equals(aForm.getType().getCode())
+    */
+   public static boolean isPE(ClinicalForm aForm)
+   {
+      if (aForm == null)
+         throw new IllegalArgumentException(
+         "aForm required in ClinicalGuide.isPE");
+      
+      return PROTOCOL_EXCEPTION_FORM_NM.equalsIgnoreCase(aForm.getName())
+            || PROTOCOL_EXCEPTION_FORM_CD.equals(aForm.getType().getCode());
+      
+   }//--------------------------------------------
+   public static boolean isDRW(ClinicalForm aForm)
+   {
+      if (aForm == null)
+         throw new IllegalArgumentException(
+         "aForm required in ClinicalGuide.isDRW");
+      return DRW_FORM_NM.equals(aForm.getName()) ||
+      DRW_FORM_CD.equals(aForm.getType().getCode());
+   }//--------------------------------------------
+   /**
+    * 
+    * @param aForm the clinical form
+    * @return PROTOCOL_DEVIATION_FORM_CD.equals(aForm.getType().getCode())
+    *  || PROTOCOL_DEVIATION_FORM_CD.equals(aForm.getType().getCode())
+    */
+   public static boolean isPD(ClinicalForm aForm)
+   {
+      if (aForm == null)
+         throw new IllegalArgumentException(
+         "aForm required in ClinicalGuide.isPD");
+      return PROTOCOL_DEVIATION_FORM_NM.equals(aForm.getName())
+      || PROTOCOL_DEVIATION_FORM_CD.equals(aForm.getType().getCode());
+   }//--------------------------------------------
+   /**
+    * 
+    * @param aForm the clinical form
+    * @return 
+    */
+   public static boolean isSMP(ClinicalForm aForm)
+   {
+      return SMP_FORM_NM.equals(aForm.getName()) ||
+      SMP_FORM_CD.equals(aForm.getType().getCode());
+   }//--------------------------------------------
+   /**
+    * 
+    * @param aForm the clinical form
+    * @return OSIF_FORM_NM.equals(aForm.getName())
+          || OSIF_FORM_CD.equals(aForm.getType().getCode())
+    */
+   public static boolean isOSIF(ClinicalForm aForm)
+   {
+      return OSIF_FORM_NM.equals(aForm.getName())
+          || OSIF_FORM_CD.equals(aForm.getType().getCode());
+   }//--------------------------------------------
+   /**
+    * 
+    * @param aForm the form type
+    * @return PSA_FORM_NM.equals(aForm.getName())
+       || PSA_FORM_CD.equals(aForm.getType().getCode())
+    */
+   public static boolean isPSA(ClinicalForm aForm)
+   {
+      if (aForm == null)
+         throw new IllegalArgumentException(
+         "aForm required in ClinicalGuide.isPSA");
+      
+      return PSA_FORM_NM.equals(aForm.getName())
+       || PSA_FORM_CD.equals(aForm.getType().getCode());
+   }//--------------------------------------------
+	/**
+	 *
+	 * @param form
+	 *            GCSMForm object
+	 * @return Collection of Integer objects
+	 */
+	public static Collection retrieveReviewers(GCSMForm form) {
+
+		QuestionAttribute attr = new QuestionAttribute();
+		attr.setName(ClinicalGuide.REVIEWERS_ATTR);
+		attr.setValue("true");
+
+		Collection questions = form.findQuestionsWithAttribute(ClinicalGuide.REVIEWERS_ATTR, "true");
+
+		// assume only one question is marked as isReviewers
+		if (questions.size() > 1)
+			logger.error("Form with id: " + form.getPrimaryKey()
+					+ " contains more than one set of reviewers");
+
+		// if form contains no reviewers return null
+		if (questions.isEmpty()) {
+			logger.info("No question set with reviewers for form with id: "
+					+ form.getPrimaryKey());
+			return null;
+		}
+
+		FormQuestion question = (FormQuestion) questions.iterator().next();
+
+		FormAnswer answer = question.getAnswer();
+		if (answer == null || answer.getValue() == null) {
+			logger.info("No reviewers for form id: " + form.getPrimaryKey()
+					+ " stored in question");
+			return null;
+		}
+
+		String value = (String) answer.getValue();
+
+		//logger.debug("Got reviewer list: " + value);
+
+		String[] vals = value.split(",");
+
+		if (vals.length < 1) {
+			logger.info("No reviewers for form with id: "
+					+ form.getPrimaryKey());
+			return null;
+		}
+
+		// convert to array of Integers
+		Integer[] intVals = new Integer[vals.length];
+		for (int i = 0; i < vals.length; i++) {
+			try {
+				intVals[i] = new Integer(vals[i]);
+			} catch (NumberFormatException nfe) {
+				logger.error(nfe);
+			}
+		}
+
+		return Arrays.asList(intVals);
+	}//--------------------------------------------
+   /**
+    * Retrieve the site overview with given protcol site number
+    * @param aProtocolSiteNumber the protocol site number
+    * @param aUser the user
+    * @return the site overview
+    */
+   public static SiteOverview retrieveSiteOverviewByProtocolSiteNumber(String aProtocolSiteNumber, ClinicalUser aUser)
+   throws Exception
+   {
+      ProtocolSiteDAO dao = null;
+      try
+      {
+         dao = ProtocolSiteDAO.getInstance(aUser);
+         return dao.selectSiteOverviewByProtocolSiteNumber(aProtocolSiteNumber);
+         
+      }
+      finally
+      {
+         if (dao != null)
+            dao.dispose();
+      }
+   }//--------------------------------------------
+
+	private static Category logger = Debugger.getCategory(ClinicalGuide.class);
+}

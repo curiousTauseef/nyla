@@ -6,6 +6,9 @@
 <web-app id="WebApp_1">
 	<display-name>frontController</display-name>
 	<description>frontController</description>	
+	<listener>
+	   <listener-class>solutions.global.web.commas.SessionCommandListener</listener-class>
+	</listener>
 
 	<servlet>
 		<servlet-name>frontController</servlet-name>
@@ -16,9 +19,6 @@
 			<param-value>solutions.global.web.commas.CommasWebBridgeCommand</param-value>
 		</init-param>
 	</servlet>
-	<listener>
-	   <listener-class>solutions.global.web.commas.SessionCommandListener</listener-class>
-	</listener>
     <!-- Servlet Mapping -->
 	<servlet-mapping>
 		<servlet-name>frontController</servlet-name>

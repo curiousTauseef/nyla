@@ -1,0 +1,76 @@
+<XML ID="sicList" src="sic.xml"></XML>
+<script>
+   function search(aForm)
+   {
+       var criteria = aForm.code.value;
+
+       //get Results list
+       var resultList = aForm.resultList;
+       resultList.options.length = 0;
+
+       var rec = sicList.recordset;
+       rec.moveFirst();
+
+       var str = "";
+       while(!rec.EOF)
+       {
+          str = rec("CODE");
+          if(str == criteria)
+          {
+             //found a match
+             resultList.options.length += 1;
+             resultList.options(resultList.options.length -1).text = 
+             "   code=" + rec("CODE") + " : "+ "company=" + rec("COMPANY")+
+             "        ";
+        
+          }
+           rec.moveNext();
+       }
+       resultList.size = resultList.options.length;
+   } 
+</script>
+<body bgcolor="#FFFFFF" text="#996666" link="#FF0000" alink="#FF9999" vlink="#663333">
+<h1>Minority Business Directory Database</h1>
+<table border="1">
+  <tr> 
+    <td><a href="index.html"><img src="image/home.jpg" width="80" height="41" border="0"></a></td>
+    <td><a href="list_all_sic.html"><img src="image/list.jpg" width="80" height="41" border="0"></a></td>
+    <td><a href="search_sic.html"><img src="image/search.jpg" width="80" height="41" border="1"></a></td>
+  </tr>
+</table>
+<p>This site is a poof of concept database for the Minority Business Directory 
+  Corporation.<br>
+  This database is built upon the industry standard Extensible Markup Language 
+  &quot;XML&quot; technologies. <br>
+  These pages are best viewed with Internet Explorer version 5.0 or higher.</p>
+<table width="58%" border="0">
+  <tr bgcolor="#FFFF99"> 
+    <td width="10%"> 
+      <UL><LI></UL></td>
+    <td width="90%"><a href="list_all_sic.html">Click Here To List All</a> </td>
+  </tr>
+  <tr bgcolor="#FFFF99"> 
+    <td width="10%"> 
+      <UL><LI></UL></td>
+    <td width="90%"><a href="search_sic.html">Click Here To Search By SIC Code</a></td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td width="10%">&nbsp;</td>
+    <td width="90%">&nbsp;</td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td width="10%">&nbsp;</td>
+    <td width="90%">&nbsp;</td>
+  </tr>
+  <tr bgcolor="#FFFF33"> 
+    <td width="10%" bgcolor="#FFFF99">
+      <UL>
+        <LI></UL></td>
+    <td width="90%" bgcolor="#FFFF99"><a href="sic.xml">Click Here To View theXML 
+      database</a></td>
+  </tr>
+</table>
+<p>&nbsp; </p>
+<form name="aForm" method="post" action="">
+</form>
+<p>&nbsp;</p>

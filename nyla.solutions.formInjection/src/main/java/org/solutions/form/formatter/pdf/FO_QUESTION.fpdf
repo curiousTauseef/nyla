@@ -1,0 +1,7 @@
+<fo:block  font-size="10pt" font-family="Helvetica">${number} ${question}</fo:block>
+${table}
+ <#if phone> 
+	<fo:block  font-size="10pt" font-style="italic" font-family="Helvetica">
+	   <fo:external-graphic src="url(${templateDIR}/IMG_PHONE.jpg)"/> ${phoneHelp}
+	</fo:block>
+  </#if>   

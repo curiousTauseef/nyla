@@ -1,0 +1,12 @@
+    <tr id="row${rowNumber}">
+      <td>
+         <table width="100%" class="horizontalRow">
+            ${answers}
+         </table>
+         <br/>
+		<#if canDeleteRow>
+			<img src="${imgPath}/form_delete_dynamic_row.gif" onclick="deleteRow('${tableId}', ${rowNumber});"/>
+		</#if>
+         <hr/>
+         </td>
+      </tr>

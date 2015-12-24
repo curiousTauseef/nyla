@@ -1,0 +1,1273 @@
+package com.bms.informatics.gcsm.form;
+
+import java.util.*;
+import java.util.Date;
+import java.io.Serializable;
+import java.sql.*;
+
+import oracle.toplink.jdo.JDOTransaction;
+
+import com.bms.informatics.gcsm.form.data.*;
+import com.bms.informatics.gcsm.form.exception.BreException;
+import com.bms.informatics.gcsm.common.dao.jdo.*;
+import com.bms.informatics.gcsm.common.data.Data;
+import com.bms.informatics.gcsm.common.util.*;
+import com.bms.informatics.gcsm.common.exception.*;
+import com.bms.informatics.gcsm.common.exception.NoDataFoundException;
+import com.bms.informatics.gcsm.protocol.data.Investigator;
+import com.bms.informatics.gcsm.protocol.data.SiteOverview;
+import com.bms.informatics.gcsm.security.data.SecurityCredential;
+import com.bms.informatics.gcsm.security.user.data.GCSMUser;
+
+/**
+ * <pre>
+ * 
+ *  FormDAO is a data access object for Form data management
+ *  
+ * </pre>
+ * 
+ * @author Gregory Green
+ * @version 1.0
+ */
+public class FormDAO extends BreDAO
+{
+   /**
+    * Constructor for FormDAO initalizes internal data settings.
+    *  
+    */
+   protected FormDAO()
+   {
+      super();
+      super.setAutoCommit(false);
+   }//-------------------------------------------
+   /**
+    * Constructor for FormDAO initalizes internal data settings.
+    * 
+    * @param aDAO
+    */
+   protected FormDAO(JDODAO aDAO)
+   {
+      super(aDAO);
+      super.setAutoCommit(false);
+   }//--------------------------------------------
+
+   /**
+    * Constructor for FormDAO initalizes internal data settings.
+    * 
+    * @param aUser
+    */
+   protected FormDAO(SecurityCredential aUser)
+   {
+      super(aUser);
+      super.setAutoCommit(false);
+   }//--------------------------------------------
+   /**
+    * 
+    * @see com.bms.informatics.gcsm.common.dao.jdo.JDODAO#commit()
+    */
+   public void commit()
+   {
+      super.commit();
+      
+   }//----------------------------------------
+   /**
+    * 
+    * @see com.bms.informatics.gcsm.common.dao.jdo.JDODAO#rollback()
+    */
+   public void rollback()
+   {
+      super.rollback();
+   }//--------------------------------------------
+   /**
+    * 
+    * @see com.bms.informatics.gcsm.common.dao.jdo.JDODAO#setAutoCommit(boolean)
+    */
+   public void setAutoCommit(boolean autoCommit)
+   {
+      super.setAutoCommit(autoCommit);
+   }//--------------------------------------------
+
+   public static FormDAO getFormDAOInstance()
+   {
+      return new FormDAO();
+   }//--------------------------------------------
+
+   /**
+    * 
+    * @param aUser
+    *           the user
+    * @return new instance of the form dao
+    */
+   public static FormDAO getFormDAOInstance(SecurityCredential aUser)
+   {
+      return new FormDAO(aUser);
+   }//--------------------------------------------
+   /**
+    * 
+    * @param aUserID the user access
+    * @return new instance of forJspExceptionm DAO for user
+    */
+   public static FormDAO getFormDAOInstance(Integer aUserID)
+   {
+      if (aUserID == null)
+         throw new IllegalArgumentException(
+         "aUserID required in FormDAO.getInstance");
+      
+      GCSMUser client = new GCSMUser();
+      client.setPrimaryKey(aUserID.intValue());
+      return new FormDAO(client);
+   }//--------------------------------------------
+   /**
+    * 
+    * @param aFormStatusName the form status name
+    * @return
+    * @throws SQLException
+    * @throws NoDataFoundException
+    */
+   public FormStatus selectStatusByName(String aFormStatusName)
+   throws SQLException, NoDataFoundException
+   {
+      if (aFormStatusName == null)
+         throw new IllegalArgumentException("aFormStatus required in FormDAO");
+
+      JDOQueryBuilder query = this.createQueryBuilder(FormStatus.class);
+      JDOQueryBuilder notDeletedQuery = query.getColumn("deletedCode").equal(
+      Data.NO);
+
+      JDOQueryBuilder nameQuery = query.getColumn("name").trim().toUpperCase().equal(
+      aFormStatusName.trim().toUpperCase());
+      
+      return (FormStatus) ((Collection) this.select(nameQuery.and(notDeletedQuery))).iterator().next();
+   }//--------------------------------------------
+   /**
+    * 
+    * @return collection of FormStatus objects
+    * @throws SQLException
+    * @throws NoDataFoundException
+    */
+   public Collection selectStatuses()
+   throws SQLException, NoDataFoundException
+   {
+
+      JDOQueryBuilder query = this.createQueryBuilder(FormStatus.class);
+      JDOQueryBuilder notDeletedQuery = query.getColumn("deletedCode").equal(
+      Data.NO);
+      query = query.and(notDeletedQuery);
+      return (Collection) this.select(query);
+   }//--------------------------------------------
+
+   /**
+    * Insert the form into the database
+    * 
+    * @param form the form to insert
+    * @throws SQLException
+    * @throws  NoDataFoundException when the INCOMPLETE status cannot be found
+    */
+   public GCSMForm insertForm(GCSMForm form) 
+   throws SQLException, NoDataFoundException
+   {
+      if (form == null)
+         throw new IllegalArgumentException("form required in FormDAO");
+      
+      if (form.getTypeID() <  1)
+         throw new IllegalArgumentException("form.getTypeID() 'FORM_TYPE_ID cannot be less than 1 in FormDAO.insert");
+      
+      form.setAccessUser(getUser());
+      form.updateAudit(getUser().getId());
+      
+      if(form.getStatusPK() < 1)
+         form.setStatusPK(
+            new Integer(this.selectStatusByName(ClinicalGuide.INCOMPLETE_STATUS).getPrimaryKey()));
+
+      Map properties = form.clearProperties();
+      
+      //insert form
+      super.insert(form.getManagedObject());
+      commit();	// make sure we add to db now so we get a generated pk
+      
+      form.setProperties(properties);
+      super.insert(form.getProperties());
+     
+      Integer formId = form.getFormId();
+      Collection c = new LinkedList(form.getManagedAnswers().values());
+      for (Iterator i = c.iterator(); i.hasNext(); ) {
+          Answer answer = (Answer) i.next();
+          answer.setFormId(formId);
+          answer.generateKey();
+      }
+      
+      this.makePersistentAll(c);
+      form.setAnswers(c);
+      
+      /*
+      for (Iterator i = form.getProperties().iterator(); i.hasNext(); )
+          ((FormProperty) i.next()).setFormId(formId);
+      this.makePersistentAll(properties.values());
+      form.setProperties(properties);
+      */
+      return form;
+   }//--------------------------------------------
+   
+   /**
+    * 
+    * @param aSiteID the site primary key
+    * @return list of non-deleted forms for a given site
+    * @throws NoDataFoundException
+    * @throws SQLException
+    */
+   public Collection selectFormsBySitePK(int aSiteID)
+   throws NoDataFoundException, SQLException
+   {
+      JDOQueryBuilder query = this.createQueryBuilder(ManagedForm.class);
+      JDOQueryBuilder siteQuery = query.getColumn("studySiteId").equal(aSiteID);      
+      Collection c = (Collection)super.select(
+                            siteQuery.and(query.getColumn("deletedCode").equal(Data.NO)));
+      
+      return toGCSMForms(c);
+   }//--------------------------------------------
+   private Collection toGCSMForms(Collection managedForms) {
+       Collection forms = new LinkedList();
+       for (Iterator i = managedForms.iterator(); i.hasNext(); ) {
+           ManagedForm form = (ManagedForm) i.next();
+           GCSMForm gcsmForm = new GCSMForm(form);
+           forms.add(gcsmForm);
+       }
+       return forms;
+   }
+   /**
+    * Update or create new of unschedules form of a given type for a site 
+    * @param aSitePK the site primary jey
+    * @param aFormTypeName the form type name
+    * @param aFormStatusName the form status name
+    * @return single instance of the unschedule form
+    * @throws NoDataFoundException if form type or status not found
+    * @throws SQLException
+    * @throws BreException
+    */
+   public GCSMForm saveUnscheduledSiteFormByTypeAndStatus(int aSitePK, String aFormTypeName,String aFormStatusName)
+   throws NoDataFoundException, SQLException, BreException
+   {  
+      //select form type
+      FormType  formType = this.selectFormTypeByName(aFormTypeName);
+      
+      //select status
+      FormStatus formStatus =this.selectStatusByName(aFormStatusName);
+      
+      GCSMForm form = null;
+      try
+      {
+          form = this.selectSiteUnScheduledFormByTypeAndStatus(aSitePK, formType.getPrimaryKey(), formStatus.getPrimaryKey());
+        
+        //if(form.isNew())
+        //   throw new SystemException("Existing form does not have primary key");
+        
+      }
+      catch(NoDataFoundException e)
+      {
+         //create new one
+          form = this.constructBlankForm(aSitePK,formType.getPrimaryKey(), formStatus.getPrimaryKey());
+         
+      }
+      
+      form.setType(formType);
+      
+      form.unDelete();
+      
+      //apply rules 
+      if(form.isNew())
+      {
+         form = saveForm(form);
+      }
+      
+      return form;
+   }//--------------------------------------------
+   /**
+    * he application must maintain a relationship between some created forms 
+    * and the orginating form (i.e. SMV). 
+    * It will added as a form property "relatedFormID". 
+    * @param aSitePK
+    * @param aFormTypeName
+    * @param aFormStatusName
+    * @param aRelatedFormID the 
+    * @return GCSMForm 
+    */
+   public GCSMForm saveUnscheduledUserSiteFormByTypeAndStatusAndProperty(
+        int aSitePK, String aFormTypeName,String aFormStatusName, String aPropertyName, Serializable aPropertyValue)
+   throws NoDataFoundException, SQLException
+   {
+      //select form type
+      FormType  formType = this.selectFormTypeByName(aFormTypeName);
+      
+      //select status
+      FormStatus formStatus =this.selectStatusByName(aFormStatusName);
+      
+      GCSMForm form = null;
+      try
+      {
+        form = this.selectUserSiteUnScheduledFormByTypeAndStatusAndProperty(
+        aSitePK, formType.getPrimaryKey(), formStatus.getPrimaryKey(), aPropertyName, aPropertyValue);
+        
+      }
+      catch(NoDataFoundException e)
+      {
+         //create new one
+         form = this.constructBlankForm(aSitePK,formType.getPrimaryKey(), formStatus.getPrimaryKey());
+         
+         
+      }
+      
+      form.setAccessUser(getUser());
+      form.addProperty(aPropertyName, aPropertyValue);
+      form.setType(formType);
+      
+      form.unDelete();            
+      
+      this.makePersistent(form.getManagedObject());
+      
+      return form;
+      
+   }//--------------------------------------------
+   /**
+    * 
+    * @param aSitePK the site primary key
+    * @param aFormTypeName the form type name
+    * @param aFormStatusName the form status name
+    * @return existed or newly created form
+    * @throws NoDataFoundException
+    * @throws SQLException
+    */
+   public GCSMForm saveUnscheduledUserSiteFormByTypeAndStatus(int aSitePK, String aFormTypeName,String aFormStatusName)
+   throws NoDataFoundException, SQLException, BreException
+   {  
+      //select form type
+      FormType  formType = this.selectFormTypeByName(aFormTypeName);
+      
+      //select status
+      FormStatus formStatus =this.selectStatusByName(aFormStatusName);
+      
+      GCSMForm form = null;
+      try
+      {
+        form = this.selectUserSiteUnScheduledFormByTypeAndStatus(aSitePK, formType.getPrimaryKey(), formStatus.getPrimaryKey());
+        
+        //if(form.isNew())
+        //   throw new SystemException("Existing form does not have primary key");
+        
+      }
+      catch(NoDataFoundException e)
+      {
+         //create new one
+         form = this.constructBlankForm(aSitePK,formType.getPrimaryKey(), formStatus.getPrimaryKey());
+         
+      }
+      
+      form.setType(formType);
+      
+      form.unDelete();      
+      
+      //apply rules 
+      //TODO: applySaveUnScheduledRules(form);
+      
+      
+      if(form.isNew())
+         form =  saveForm(form); 
+      
+      return form;
+   }//--------------------------------------------
+   /**
+    * Return existing "complete" unscheduled form of a particular type created
+    * by the user or create a new one
+    * @param aFormTypeName
+    * @param aFormStatusName
+    * @return
+    * @throws SQLException
+    * @throws NoDataFoundException
+    */
+   public GCSMForm saveUnscheduledUserFormByTypeAndStatus(String aFormTypeName,String aFormStatusName)
+   throws SQLException, NoDataFoundException
+   {
+      //select form type
+      FormType  formType = this.selectFormTypeByName(aFormTypeName);
+      
+      //select status
+      FormStatus formStatus =this.selectStatusByName(aFormStatusName);
+      
+      GCSMForm form = null;
+      try
+      {
+        form = this.selectUserUnScheduledFormByTypeAndStatus(formType.getPrimaryKey(), formStatus.getPrimaryKey());
+      }
+      catch(NoDataFoundException e)
+      {
+         //create new one
+         form = this.constructBlankForm(formType.getPrimaryKey(), formStatus.getPrimaryKey());             
+      }
+      
+      form.setType(formType);
+      
+      form.unDelete();
+      
+      //applySaveUnScheduledRules(form);
+      
+      return saveForm(form);      
+   }//--------------------------------------------
+   /**
+    * @param form
+    * @throws BreException
+    * @throws NoDataFoundException
+    * @throws SQLException
+    */
+   private void applySaveUnScheduledRules(GCSMForm form) 
+   throws NoDataFoundException, SQLException
+   {
+      try
+      {
+         //    Set event for registered operations
+         form.addAttribute(FormGuide.EVENT_ATTRIB_NM, ClinicalGuide.SAVED_SCHEDULE_EVENT_NM);
+         this.constructBRE(form).applyRules(form);
+      }
+      catch(BreException e)
+      {
+         throw new SystemException(e);
+      }
+   }//--------------------------------------------
+   /**
+    * Insert or update form
+    * @param aForm the form to save
+    * @return saved from
+    * @throws SQLException
+    * @throws NoDataFoundException
+    */
+   public GCSMForm saveForm(GCSMForm aForm)
+   throws SQLException, NoDataFoundException
+   {
+      if(aForm.isNew())
+      {
+         //insert form
+         aForm = this.insertForm(aForm);         
+      }
+      else
+      {
+         aForm = this.updateForm(aForm);
+      }
+      return aForm;
+   }//--------------------------------------------
+   /**
+    * Select form for user by type and statue Name
+    * @param aFormTypeName the form type name
+    * @param aFormStatusName the form status name
+    * @return GCSM form 
+    * @throws NoDataFoundException
+    * @throws SQLException
+    */
+   public GCSMForm selectUserSiteUnScheduledFormByTypeAndStatus(int aSiteID, String aFormTypeName, String aFormStatusName)
+   throws NoDataFoundException, SQLException
+   {
+      //select form type
+      FormType  formType = this.selectFormTypeByName(aFormTypeName);
+      
+      //select status
+      FormStatus formStatus =this.selectStatusByName(aFormStatusName);
+      
+      return selectUserSiteUnScheduledFormByTypeAndStatus(aSiteID, formType.getPrimaryKey(),formStatus.getPrimaryKey());
+   }//--------------------------------------------
+   //selectSiteUnScheduledFormByTypeAndStatus
+   public GCSMForm selectSiteUnScheduledFormByTypeAndStatus(int aSitePK, int aFormTypePK, int aFormStatusPK)
+   throws NoDataFoundException, SQLException
+   {
+      
+      JDOQueryBuilder formQuery = this.createQueryBuilder(ManagedForm.class);
+      
+      JDOQueryBuilder siteQuery = formQuery.getColumn("studySiteId").equal(aSitePK);
+      
+      JDOQueryBuilder formTypeQuery = formQuery.getColumn("formTypeId").equal(aFormTypePK);
+      
+      JDOQueryBuilder formStatusQuery = formQuery.getColumn("formStatusId").equal(aFormStatusPK);
+      
+      JDOQueryBuilder unscheduledQuery = formQuery.getColumn("scheduleId").isNull();
+      
+      JDOQueryBuilder deleteQuery = formQuery.getColumn("deletedCode").equal(Data.NO);
+      
+      //type and status and orginator
+      ManagedForm form = (ManagedForm)((Collection)super.select(
+              siteQuery.and(formTypeQuery)
+                       .and(formStatusQuery)
+                       .and(unscheduledQuery)
+                       .and(deleteQuery))).iterator().next();
+      
+      return selectQuestionsAndAnswers(form);
+   }//--------------------------------------------
+   private GCSMForm selectQuestionsAndAnswers(ManagedForm managedForm) throws SQLException, NoDataFoundException {
+       GCSMForm form = new GCSMForm(managedForm);
+       form.setAccessUser(this.getUser());
+       Collection answers = this.selectManagedAnswers(form.getPrimaryKey());
+       Questionaire q = this.constructQuestioniareByFormTypePK(managedForm.getFormTypeId().intValue());
+       form.setQuestionaire(q);
+       form.addAnswers(answers);
+       return form;
+   }
+   /**
+    * Select Gcms form by given  characteristics.
+    * @param aSitePK the site primary key
+    * @param aFormTypePK the form type PK
+    * @param aFormStatusPK the form status
+    * @param aPropertyName a given property name
+    * @param aPropertyValue the property value
+    * @return the form
+    * @throws NoDataFoundException
+    * @throws SQLException
+    */
+   public GCSMForm selectUserSiteUnScheduledFormByTypeAndStatusAndProperty
+   (int aSitePK, int aFormTypePK, int aFormStatusPK, String aPropertyName, Serializable aPropertyValue)
+   throws NoDataFoundException, SQLException
+   {
+      JDOQueryBuilder formQuery = this.createQueryBuilder(ManagedForm.class);
+      
+      JDOQueryBuilder siteQuery = formQuery.getColumn("studySiteId").equal(aSitePK);
+      
+      JDOQueryBuilder formTypeQuery = formQuery.getColumn("formTypeId").equal(aFormTypePK);
+      
+      JDOQueryBuilder formStatusQuery = formQuery.getColumn("formStatusId").equal(aFormStatusPK);
+      
+      JDOQueryBuilder originatorQuery = formQuery.getColumn("createUserID").equal(getUser().getId());
+      
+      JDOQueryBuilder unscheduledQuery = formQuery.getColumn("scheduleId").isNull();
+      
+      JDOQueryBuilder formPropertyMapQuery = formQuery.anyOf("formProps");
+      
+      JDOQueryBuilder propertyNameQuery = formPropertyMapQuery.getColumn("key").equal(aPropertyName);
+      
+      JDOQueryBuilder propertyValueQuery = formPropertyMapQuery.getColumn("value").equal(String.valueOf(aPropertyValue));
+      
+      JDOQueryBuilder deleteQuery = formQuery.getColumn("deletedCode").equal(Data.NO);
+      
+      //type and status and orginator
+      ManagedForm form = (ManagedForm)((Collection)super.select(
+              siteQuery.and(formTypeQuery)
+                       .and(formStatusQuery)
+                       .and(originatorQuery)
+                       .and(unscheduledQuery)
+                       .and(propertyNameQuery)
+                       .and(propertyValueQuery)                       
+                       .and(deleteQuery))).iterator().next();
+      
+      return this.selectQuestionsAndAnswers(form);
+   }//--------------------------------------------
+   /**
+    * Select form for user by type and statue PK
+    * @param aFormTypePK
+    * @param aFormStatusPK
+    * @return
+    * @throws NoDataFoundException
+    * @throws SQLException
+    */
+   public GCSMForm selectUserSiteUnScheduledFormByTypeAndStatus(int aSitePK, int aFormTypePK, int aFormStatusPK)
+   throws NoDataFoundException, SQLException
+   {
+      
+      JDOQueryBuilder formQuery = this.createQueryBuilder(ManagedForm.class);
+      
+      JDOQueryBuilder siteQuery = formQuery.getColumn("studySiteId").equal(aSitePK);
+      
+      JDOQueryBuilder formTypeQuery = formQuery.getColumn("formTypeId").equal(aFormTypePK);
+      
+      JDOQueryBuilder formStatusQuery = formQuery.getColumn("formStatusId").equal(aFormStatusPK);
+      
+      JDOQueryBuilder originatorQuery = formQuery.getColumn("createUserID").equal(getUser().getId());
+      
+      JDOQueryBuilder unscheduledQuery = formQuery.getColumn("scheduleId").isNull();
+      
+      JDOQueryBuilder deleteQuery = formQuery.getColumn("deletedCode").equal(Data.NO);
+      
+      //type and status and orginator
+      ManagedForm form = (ManagedForm)((Collection)super.select(
+              siteQuery.and(formTypeQuery)
+                       .and(formStatusQuery)
+                       .and(originatorQuery)
+                       .and(unscheduledQuery)
+                       .and(deleteQuery))).iterator().next();
+      
+      return this.selectQuestionsAndAnswers(form);
+   }//--------------------------------------------
+   /**
+    * Select first occurences of a GCSM form
+    * for a given form type, with a status,
+    * created by a given user,
+    * that is unscheduled and not deleted.
+    * @param aFormTypePK the form type primary key
+    * @param aFormStatusPK the form status primary key
+    * @return the single instance of the GCSMForm
+    */
+   public GCSMForm selectUserUnScheduledFormByTypeAndStatus(int aFormTypePK, int aFormStatusPK)
+   throws NoDataFoundException, SQLException
+   {
+      JDOQueryBuilder formQuery = this.createQueryBuilder(ManagedForm.class).getColumn("formId").ascending();
+      
+      
+      JDOQueryBuilder formTypeQuery = formQuery.getColumn("formTypeId").equal(aFormTypePK);
+      
+      JDOQueryBuilder formStatusQuery = formQuery.getColumn("formStatusId").equal(aFormStatusPK);
+      
+      JDOQueryBuilder originatorQuery = formQuery.getColumn("createUserID").equal(getUser().getId());
+      
+      JDOQueryBuilder unscheduledQuery = formQuery.getColumn("scheduleId").isNull();
+      
+      JDOQueryBuilder deleteQuery = formQuery.getColumn("deletedCode").equal(Data.NO);
+      
+      JDOQueryBuilder studyNullQuery = formQuery.getColumn("studyId").isNull();
+      
+      JDOQueryBuilder siteNullQuery = formQuery.getColumn("studySiteId").isNull();
+      
+
+      //type and status and orginator
+      ManagedForm form= (ManagedForm)((Collection)super.select(
+                       formTypeQuery
+                       .and(formStatusQuery)
+                       .and(originatorQuery)
+                       .and(unscheduledQuery)
+                       .and(studyNullQuery)
+                       .and(siteNullQuery)                       
+                       .and(deleteQuery))).iterator().next();
+      
+      return this.selectQuestionsAndAnswers(form); 
+   }//--------------------------------------------
+   /**
+    * Select form by PK
+    * @param aFormPK  a form primary key
+    * @return the GCSM form that matches the given primary key
+    * @throws NoDataFoundException when the form does not exist
+    */
+   public GCSMForm selectFormByPK(int formPK)
+   throws NoDataFoundException, SQLException
+   {
+       long startTime = System.currentTimeMillis();
+       ManagedForm form = selectManagedForm(formPK);
+       GCSMForm gcsmForm = this.selectQuestionsAndAnswers(form);
+       long endTime = System.currentTimeMillis();
+       logger.debug("selectFormByPK(): " + (endTime-startTime) + " ms");
+       return gcsmForm;
+   }//--------------------------------------------
+
+   public ManagedForm selectManagedForm(int formPK) throws SQLException, NoDataFoundException {
+       return selectManagedForm(formPK, false);
+   }
+   
+   public ManagedForm selectManagedForm(int formPK, boolean includeDeleted) throws SQLException, NoDataFoundException {
+       long startTime = System.currentTimeMillis();
+       JDOQueryBuilder query = this.createQueryBuilder(ManagedForm.class);
+       JDOQueryBuilder pkQuery = query.getColumn("formId").equal(formPK);
+       if (!includeDeleted)
+           pkQuery = pkQuery.and(query.getColumn("deletedCode").equal(Data.NO));
+
+       ManagedForm form = (ManagedForm)((Collection)super.select(pkQuery)).iterator().next();
+       long endTime = System.currentTimeMillis();
+       logger.debug("time to select form: " + (endTime-startTime) + " ms");   
+       return form;
+   }
+   private Collection selectManagedAnswers(int formPK) throws SQLException {
+       return selectManagedAnswers(formPK, false);
+   }
+   public Collection selectDeletedAnswers(int formPK) throws SQLException {
+       JDOQueryBuilder query = this.createQueryBuilder(Answer.class);
+       JDOQueryBuilder formQuery = query.getColumn("formId").equal(formPK);
+       formQuery = formQuery.and(query.getColumn("deletedCode").equal(Data.YES));
+       Collection answers = null;
+       try {
+           answers = (Collection)super.select(formQuery);
+       }
+       catch (NoDataFoundException e) {
+           answers = Collections.EMPTY_LIST;
+       }
+       return answers;
+   }
+   private Collection selectManagedAnswers(int formPK, boolean includeDeleted) throws SQLException {
+       long startTime = System.currentTimeMillis();
+       JDOQueryBuilder query = this.createQueryBuilder(Answer.class);
+       JDOQueryBuilder formQuery = query.getColumn("formId").equal(formPK);
+       if (!includeDeleted) {
+           formQuery = formQuery.and(query.getColumn("deletedCode").equal(Data.NO));
+       }
+       Collection answers = null;
+       try {
+           answers = (Collection)super.select(formQuery);
+       }
+       catch (NoDataFoundException e) {
+           answers = Collections.EMPTY_LIST;
+       }
+       long endTime = System.currentTimeMillis();
+       logger.debug("time to select answers: " + (endTime-startTime) + " ms");
+       return answers;
+   }
+   public void purgeAnswers(Collection answers) throws SQLException, NoDataFoundException {
+       super.deleteAll(answers);
+   }
+   /**
+    * Selected forms where getColumn("sitePK").equal(aSitePK)
+    * @param aSitePK the site primary key
+    * @return collection of GCSMForm object associated with the site
+    * @throws NoDataFoundException
+    * @throws SQLException
+    */
+   public Collection selectFormsBySitePK(Integer aSitePK)
+   throws NoDataFoundException, SQLException
+   {
+      JDOQueryBuilder query = this.createQueryBuilder(ManagedForm.class);
+      JDOQueryBuilder pkQuery = query.getColumn("studySiteId").equal(aSitePK);
+      Collection forms = (Collection)super.select(pkQuery.and(query.getColumn("deletedCode").equal(Data.NO)));
+      return this.toGCSMForms(forms);
+   }//--------------------------------------------
+   /**
+    * 
+    * @param aSitePK the site ID to query
+    * @return Collection of Clinical FormOVerviews
+    * @throws NoDataFoundException
+    * @throws SQLException
+    */
+   public Collection selectClinicalFormOverviewsBySitePK(Integer aSitePK)
+   throws NoDataFoundException, SQLException
+   {
+      JDOQueryBuilder query = this.createQueryBuilder(ClinicalFormOverview.class);
+      JDOQueryBuilder pkQuery = query.getColumn("sitePK").equal(aSitePK);
+      Collection forms = (Collection)super.select(pkQuery.and(query.getColumn("deletedCode").equal(Data.NO)));
+      return forms;
+   }//--------------------------------------------   
+   public void saveAnswers(GCSMForm aForm) throws SQLException {
+       Collection oldAnswers = this.selectManagedAnswers(aForm.getPrimaryKey(), true);
+       Map newAnswers = aForm.getManagedAnswers();
+
+      //FormAnswer a = aForm.getAnswer(new Integer(22), 1, 7);
+
+       /*
+       for (Iterator i = oldAnswers.iterator(); i.hasNext(); ) {
+           Answer a = (Answer) i.next();
+           System.out.println(a.getAnswerId());
+       }
+       for (Iterator i = newAnswers.keySet().iterator(); i.hasNext(); ) {
+           String key = (String) i.next();
+           Answer a = (Answer) newAnswers.get(key);
+           String answerId = a.getAnswerId();
+           System.out.println(key + "=" + key + ", answerId=" + answerId);
+       }
+       */
+       Collection answers = new LinkedList();
+       for (Iterator i = oldAnswers.iterator(); i.hasNext(); ) {
+           Answer answer = (Answer) i.next();
+           Answer newAnswer = (Answer) newAnswers.remove(answer.getAnswerId());
+           //do not delete answers from a submitted or completed form
+           if (newAnswer == null && aForm.getFormStatusId().intValue() < 2) {
+               answer.setDeletedCode("Y");
+           }
+           if (newAnswer != null) {
+               answer.copy(newAnswer);
+               copyAttributes(newAnswer.getAnswerProps(), answer.getAnswerProps());
+           }
+           answers.add(answer);
+       }
+       // add the rest of the answers for insert
+       answers.addAll(newAnswers.values());
+       
+       super.makePersistentAll(answers); //fix debug
+       aForm.setAnswers(answers);
+   }
+   /**
+    * Update the form
+    * @param aForm the form to update
+    * @throws SQLException
+    * @throws NoDataFoundException
+    */
+   public GCSMForm updateForm(GCSMForm aForm)
+   throws SQLException, NoDataFoundException
+   {
+      if (aForm == null)
+         throw new IllegalArgumentException("aForm required in FormDAO.update");
+
+      ManagedForm form = this.selectManagedForm(aForm.getPrimaryKey(), true);
+      logger.debug("Form status: "+form.getFormStatusId());
+      form.copy((ManagedForm) aForm.getManagedObject());
+        
+      // properties aren't wrapped
+      copyAttributes(aForm.getFormProps(), form.getFormProps());
+      
+      GCSMForm managedForm = new GCSMForm(form);
+      Map formPropsCopy = new HashMap(form.getFormProps());
+      form.getFormProps().clear();
+      super.makePersistent(form);
+      
+      managedForm.addAllProperties(formPropsCopy);
+      super.makePersistentAll(managedForm.getFormProps().values());
+      
+      // reset question & answer mappings, copy over the form context
+      // so we don't lose dynamic choices
+      managedForm.setQuestionaire(aForm.getQuestionaire());
+      managedForm.setFormContext(aForm.getFormContext());
+      managedForm.setAnswers(aForm.getAnswers());
+      this.saveAnswers(managedForm);
+      return managedForm;
+      
+   }//--------------------------------------------
+
+   private void copyAttributes(Map src, Map dest) {
+       if (src == dest) {
+           return;
+       }
+       for (Iterator i = dest.keySet().iterator(); i.hasNext(); ) {
+           String key = (String) i.next();
+           FormComponentAttribute oldProp = (FormComponentAttribute) dest.get(key);
+           FormComponentAttribute newProp = (FormComponentAttribute) src.remove(key);
+           if (newProp != null)
+               oldProp.copy(newProp);
+           else
+               oldProp.delete();
+       }
+       dest.putAll(src);
+   }
+   
+   /**
+    * Mark form as deleted form 
+    * @param aFormPK the form primary key
+    * @throws NoDataFoundException
+    * @throws SQLException
+    */
+   public void deleteFormByPK(int aFormPK)
+   throws NoDataFoundException, SQLException
+   {
+      deleteForm(this.selectFormByPK(aFormPK));
+   }//-------------------------------------------
+   /**
+    * Mark form as deleted form 
+    * @param aFormPK the form primary key
+    * @throws NoDataFoundException
+    * @throws SQLException
+    */
+   public void submitFormByPK(int aFormPK)
+   throws NoDataFoundException, SQLException
+   {
+      submitForm(this.selectFormByPK(aFormPK));
+   }//-------------------------------------------   
+   /**
+    * Update ESF file date for form
+    * @param aForm
+    * @return
+    * @throws SQLException
+    * @throws NoDataFoundException
+    */
+   protected GCSMForm updateFiling(GCSMForm aForm)
+   throws SQLException, NoDataFoundException
+   {
+      if (aForm == null)
+         throw new IllegalArgumentException(
+         "aForm required in FormDAO.updateFiling");
+      
+      aForm.setEsfFileDate(new Date());
+            
+      return updateForm(aForm);      
+          
+   }//--------------------------------------------
+   /**
+    * Submit the form
+    * @param form
+    * @return
+    * @throws NoDataFoundException
+    * @throws SQLException
+    */
+   public Form submitForm(Form form)
+   throws NoDataFoundException, SQLException
+   {
+      if (form == null)
+         throw new IllegalArgumentException(
+         "form required in FormDAO.submitForm");
+      
+      form.setSubmitDate(new Date());
+      
+      //set Submit current
+      FormStatus submitStatus = this.selectStatusByName(FormGuide.SUBMIT_STATUS);
+      form.setStatus(submitStatus);
+      
+      return updateForm((GCSMForm)form);
+      
+   }//--------------------------------------------   
+   /**
+    * Complete the form
+    * @param form the form data
+    * @return the completed form
+    * @throws NoDataFoundException
+    * @throws SQLException
+    */
+   public Form completeForm(Form form)
+   throws NoDataFoundException, SQLException
+   {
+      if (form == null)
+         throw new IllegalArgumentException(
+         "form required in FormDAO.completeForm");
+      
+      if(form.getSubmitDate() == null)
+         throw new IllegalArgumentException("Form submit data is required. form pk"+form.getPrimaryKey());
+   
+      form.setCompleteDate(new Date());
+      
+      //set Complete status
+      FormStatus completeStatus = this.selectStatusByName(FormGuide.COMPLETE_STATUS);
+      form.setStatus(completeStatus);
+      
+      return this.updateForm((GCSMForm)form);
+      
+   }//--------------------------------------------      
+   /**
+    * Mark form as deleted
+    * @param form the form to delete
+    * @throws NoDataFoundException
+    * @throws SQLException
+    */
+   public Form deleteForm(Form form)
+   throws NoDataFoundException, SQLException
+   {
+      GCSMForm managedForm = this.selectFormByPK(form.getPrimaryKey());
+      managedForm.setDeletedCode(Data.YES);
+      this.makePersistent(managedForm.getManagedObject());
+      return managedForm;
+      
+   }//--------------------------------------------   
+   /**
+    * 
+    * @param aScheduleID the visit schedule ID
+    * @return Form object with the schedule
+    * @throws NoDataFoundException
+    * @throws SQLException
+    */
+   public GCSMForm selectFormByScheduleID(Integer aScheduleID)
+   throws NoDataFoundException, SQLException
+   {
+      if (aScheduleID == null)
+         throw new IllegalArgumentException(
+         "aScheduleID required in FormDAO.selectFormByScheduleID");
+      
+      JDOQueryBuilder formQuery = this.createQueryBuilder(ManagedForm.class);
+      JDOQueryBuilder formSchedule = formQuery.getColumn("scheduleId").equal(aScheduleID);
+      JDOQueryBuilder deleteQuery = formQuery.getColumn("deletedCode").equal(Data.NO);
+      
+      ManagedForm form =  (ManagedForm)((Collection)select(formSchedule.and(deleteQuery))).iterator().next();
+      return this.selectQuestionsAndAnswers(form);
+   }//--------------------------------------------
+   /**
+    * 
+    * @param aStudySitePK the study site primary key
+    * @param aFormTypeID the form type
+    * @return a blank form
+    * @throws NoDataFoundException study site or form type not found
+    * @throws SQLException
+    */
+   public GCSMForm constructBlankForm(int aStudySitePK, int aFormTypePK, int aFormStatusPK)
+   throws NoDataFoundException, SQLException
+   {
+      Integer sitePK = null;
+      
+      if(aStudySitePK > 0)
+         sitePK = new Integer(aStudySitePK);
+      
+      return constructBlankForm(sitePK,aFormTypePK, aFormStatusPK);
+   }//--------------------------------------------
+   /**
+    * 
+    * @param aStudySitePK the study site primary key
+    * @param aFormTypeID the form type
+    * @return a blank form
+    * @throws NoDataFoundException study site or form type not found
+    * @throws SQLException
+    */
+   public GCSMForm constructBlankForm(int aFormTypePK, int aFormStatusPK)
+   throws NoDataFoundException, SQLException
+   {
+       return   constructBlankForm(null,aFormTypePK,aFormStatusPK);
+   }//--------------------------------------------
+   /**
+    * 
+    * @param aStudySitePK the study site primary key
+    * @param aFormTypeID the form type
+    * @return a blank form
+    * @throws NoDataFoundException study site or form type not found
+    * @throws SQLException
+    */
+   public GCSMForm constructBlankForm(Integer aStudySitePK, int aFormTypePK, int aFormStatusPK)
+   throws NoDataFoundException, SQLException
+   {
+      //Previous form not found
+      //insert a new one
+      GCSMForm form = new GCSMForm();
+      form.setAccessUser(getUser());
+      
+      //Set site information if aStudySitePK is not null
+      if(aStudySitePK != null)
+      {
+         SiteOverview site= this.selectSiteOverviewByPK(aStudySitePK.intValue());
+         form.setSitePK(aStudySitePK);
+                  
+         form.setSiteInfo(site);
+      }
+      
+      form.setTypeID(new Integer(aFormTypePK));      
+      
+      form.setStatusPK(new Integer(aFormStatusPK));
+      
+      //set questionaite
+      Questionaire questionaire = this.constructQuestioniareByFormTypePK(aFormTypePK);
+      form.setQuestionaire(questionaire);
+      
+      return form;
+   }//--------------------------------------------
+   /**
+    * Retrieve the investigator
+    * param aInvestigaorPK the investigator primary key
+    * @return the investigator
+    * @throws SQLException
+    * @throws NoDataFoundException
+    */
+   /*
+   public Investigator selectInvestigatorByPK(Integer aInvestigaorPK)
+   throws SQLException, NoDataFoundException
+   {
+      if (aInvestigaorPK == null)
+         throw new IllegalArgumentException(
+         "aInvestigaorPK required in FormDAO.selectInvestigatorByPK");
+      
+      return this.getProtocolSiteDAO().retrieveInvestigatorByPK(aInvestigaorPK.intValue());
+   }//--------------------------------------------
+   */
+   /**
+    * Select forms that match the given search criteria
+    * @param aSearchCriteria the search criteria
+    * @return collection of ClinicalFormOverviews
+    */
+   public Collection searchForClinicalFormOverviews(FormSearchCriteria aSearchCriteria)
+   throws NoDataFoundException, SQLException
+   {
+      if (aSearchCriteria == null)
+         throw new IllegalArgumentException(
+         "aSearchCriteria required in FormDAO.searchForForms");
+      
+      JDOQueryBuilder formQuery = this.createQueryBuilder(ClinicalFormOverview.class);
+      JDOQueryBuilder resultQuery = null;
+      JDOQueryBuilder notdeletedQuery = formQuery.getColumn("deletedCode").equal(Data.NO);
+      
+      switch(aSearchCriteria.getType())
+      {
+         case FormSearchCriteria.BY_CreateUser_AND_FormType: 
+            resultQuery = 
+               createByOriginatorQuery(aSearchCriteria,formQuery).and(
+                              this.createByFormTypeNameQuery(aSearchCriteria, formQuery));               
+         break;
+         case FormSearchCriteria.BY_SitePK_AND_FormType:
+            resultQuery = createSitePKAndTypeNameQuery(aSearchCriteria, formQuery);  
+         break;     
+         case FormSearchCriteria.BY_SitePK_AND_FormTypeCode:
+            resultQuery = createSitePKAndTypeCodeQuery(aSearchCriteria, formQuery);  
+         break;     
+         case FormSearchCriteria.BY_CreateUser:
+            resultQuery = createByOriginatorQuery(aSearchCriteria, formQuery);
+         break;   
+         case FormSearchCriteria.BY_FormType:
+            resultQuery = createByFormTypeNameQuery(aSearchCriteria, formQuery);
+         break;   
+         case FormSearchCriteria.BY_FormTypeCode:
+            resultQuery = createByFormTypeCodeQuery(aSearchCriteria, formQuery);
+         break;   
+         case FormSearchCriteria.BY_CreateUserOrNotStatus:
+            resultQuery = createByOrginatorOrNotStatusQuery(aSearchCriteria, formQuery);
+         break;            
+
+         case FormSearchCriteria.BY_SitePKAndCreateUserOrNotStatus:
+            resultQuery = createBySitePKAndOrginatorOrNotStatusQuery(aSearchCriteria, formQuery);
+         break;    
+         default: throw new NoDataFoundException("Unknown form search criteria type "+aSearchCriteria.getType());
+      }
+      
+      Set forms = new HashSet();
+      try {
+          forms.addAll((Collection)super.select(resultQuery.and(notdeletedQuery)));
+      }
+      catch (NoDataFoundException e) {
+          logger.error(e);
+          throw e;
+      }
+      catch (SQLException e) {
+          logger.error(e);
+          throw e;
+      }
+      
+      return forms;
+   }//--------------------------------------------
+   /**
+    * Search for forms by a given FormSearchCriteria
+    * @param aSearchCriteria the form search criteria
+    * @return the collection for Form objects
+    */
+   public Collection searchForForms(FormSearchCriteria aSearchCriteria)
+   throws NoDataFoundException, SQLException
+   {
+      if (aSearchCriteria == null)
+         throw new IllegalArgumentException(
+         "aSearchCriteria required in FormDAO.searchForForms");
+      
+      JDOQueryBuilder formQuery = this.createQueryBuilder(ManagedForm.class);
+      JDOQueryBuilder resultQuery = null;
+      JDOQueryBuilder notdeletedQuery = formQuery.getColumn("deletedCode").equal(Data.NO);
+      
+      switch(aSearchCriteria.getType())
+      {
+         case FormSearchCriteria.BY_CreateUser_AND_FormType: 
+            resultQuery = createByCreateUserQuery(aSearchCriteria, formQuery)
+                        .and(
+                              formQuery.getColumn("type").getColumn("name")
+                                   .equal(aSearchCriteria.getFormTypeName()));               
+         break;             
+         case FormSearchCriteria.BY_SitePK_AND_FormType:
+            resultQuery = createSitePKAndTypeNameQuery(aSearchCriteria, formQuery);  
+         break;
+         case FormSearchCriteria.BY_SitePK_AND_FormTypeCode:
+            resultQuery = createSitePKAndTypeCodeQuery(aSearchCriteria, formQuery);  
+         break;        
+         case FormSearchCriteria.BY_CreateUser:
+            resultQuery = createByCreateUserQuery(aSearchCriteria, formQuery);
+         break;   
+         case FormSearchCriteria.BY_FormType:
+            resultQuery = createByFormTypeNameQuery(aSearchCriteria, formQuery);
+         break;   
+         case FormSearchCriteria.BY_FormTypeCode:
+            resultQuery = createByFormTypeCodeQuery(aSearchCriteria, formQuery);
+         break;       
+         case FormSearchCriteria.BY_CreateUserOrNotStatus:
+            resultQuery = createByCreateUserOrNotStatusQuery(aSearchCriteria, formQuery);
+         break;        
+         case FormSearchCriteria.BY_SitePKAndCreateUserOrNotStatus:
+            resultQuery = createBySitePKAndCreateUserOrNotStatusQuery(aSearchCriteria, formQuery);
+         break;       
+         default: throw new NoDataFoundException("Unknown form search criteria type "+aSearchCriteria.getType());
+      }
+      
+      HashSet forms =new HashSet();
+      forms.addAll((Collection)super.select(resultQuery.and(notdeletedQuery)));
+      return toGCSMForms(forms);
+   }//--------------------------------------------
+   /**
+    * Select form answers for question with a given row number 
+    * @param aFormPK the form primary key
+    * @param aQuestionPK the question primary key
+    * @param aRowNumber the row number
+    * @return collection of answer objects
+    * @throws SQLException
+    * @throws NoDataFoundException
+    */
+   public Collection selectAnswersByFormAndQuestionAndRow(int aFormPK, int aQuestionPK, Integer aRowNumber)
+   throws SQLException, NoDataFoundException
+   {
+      JDOQueryBuilder answerQuery = this.createQueryBuilder(Answer.class);
+      JDOQueryBuilder formQuery = answerQuery.getColumn("formId").equal(aFormPK);
+      JDOQueryBuilder questionQuery = answerQuery.getColumn("questionId").equal(aQuestionPK);
+      
+      //TODO: make sure row is not deleted
+      JDOQueryBuilder rowQuery = answerQuery.getColumn("row").equal(aRowNumber);
+      
+      return (Collection)select(formQuery
+                                  .and(questionQuery)
+                                  .and(rowQuery)
+                                  .and(this.createNotDeletedQuery(answerQuery)));
+   }//--------------------------------------------
+   /**
+    * @param aSearchCriteria
+    * @param formQuery
+    * @return
+    */
+   private JDOQueryBuilder createByCreateUserQuery(FormSearchCriteria aSearchCriteria, JDOQueryBuilder formQuery)
+   {
+      return formQuery.getColumn("createUserID").equal(aSearchCriteria.getUserPK());
+   }
+   /**
+    * Createu Query by originator
+    * @param aSearchCriteria the criteria contain originator
+    * @param aFormQuery the form query
+    * @return JDOQueryBuilder
+    */
+   private JDOQueryBuilder createByOriginatorQuery(FormSearchCriteria aSearchCriteria, JDOQueryBuilder aFormQuery)
+   {
+      //return aFormQuery.getColumn("originator").getColumn("primaryKey").equal(aSearchCriteria.getUserPK());
+       return createByCreateUserQuery(aSearchCriteria, aFormQuery);
+   }//--------------------------------------------
+   /**
+    * Build statement SITE_PK = ? and Form.FORM_TYPE.NAME = ?
+    * @param aSearchCriteria
+    * @param aFormQuery
+    * @return JDOQueryBuilder
+    */
+   private JDOQueryBuilder createSitePKAndTypeNameQuery(FormSearchCriteria aSearchCriteria, JDOQueryBuilder aFormQuery)
+   {
+      return aFormQuery.getColumn("sitePK").equal(aSearchCriteria.getAlternatePK())
+      .and(createByFormTypeNameQuery(aSearchCriteria, aFormQuery));
+   }//--------------------------------------------
+   /**
+    * 
+    * @param aSearchCriteria the search criteria
+    * @param aFormQuery the form query 
+    * @return JDOQueryBuilder
+    */
+   private JDOQueryBuilder createByFormTypeNameQuery(FormSearchCriteria aSearchCriteria, JDOQueryBuilder aFormQuery)
+   {
+       FormType type = FormHelper.getFormType(aSearchCriteria.getFormTypeName());
+       return aFormQuery.getColumn("formTypeId").equal(type.getPrimaryKey());
+   }//--------------------------------------------
+   /**
+    * 
+    * @param aSearchCriteria
+    * @param aFormQuery
+    * @return JDOQueryBuilder
+    */
+   private JDOQueryBuilder createSitePKAndTypeCodeQuery(FormSearchCriteria aSearchCriteria, JDOQueryBuilder aFormQuery)
+   {
+      return aFormQuery.getColumn("sitePK").equal(aSearchCriteria.getAlternatePK())
+      .and(createByFormTypeCodeQuery(aSearchCriteria, aFormQuery));
+   }//--------------------------------------------
+   /**
+    * 
+    * @param aSearchCriteria
+    * @param aFormQuery the form query
+    * @return the JDOQueryBuilder instance
+    */
+   private JDOQueryBuilder createByFormTypeCodeQuery(FormSearchCriteria aSearchCriteria, JDOQueryBuilder aFormQuery)
+   {  
+       FormType type = FormHelper.getFormType(aSearchCriteria.getFormTypeCode());
+      return aFormQuery.getColumn("formTypeId").equal(type.getFormTypeId());
+   }//--------------------------------------------
+   private JDOQueryBuilder createByCreateUserOrNotStatusQuery(FormSearchCriteria aSearchCriteria, JDOQueryBuilder aFormQuery)
+   {
+      FormStatus status = FormHelper.getFormStatus(aSearchCriteria.getStatusName());
+      JDOQueryBuilder createUserQuery =aFormQuery.getColumn("createUserID").equal(aSearchCriteria.getUserPK());
+      JDOQueryBuilder notStatus = aFormQuery.getColumn("formStatusId").equal(status.getPrimaryKey()).not();
+      
+      return createUserQuery.or(notStatus).distinct();
+   }//--------------------------------------------
+   private JDOQueryBuilder createByOrginatorOrNotStatusQuery(FormSearchCriteria aSearchCriteria, JDOQueryBuilder aFormQuery)
+   {      
+      
+      FormStatus status = FormHelper.getFormStatus(aSearchCriteria.getStatusName());
+      JDOQueryBuilder createUserQuery =aFormQuery.getColumn("createUserID").equal(aSearchCriteria.getUserPK());
+      JDOQueryBuilder notStatusQuery = aFormQuery.getColumn("formStatusId").equal(status.getPrimaryKey()).not();
+      return createUserQuery.or(notStatusQuery);
+   }//--------------------------------------------   
+   private JDOQueryBuilder createBySitePKAndCreateUserOrNotStatusQuery(FormSearchCriteria aSearchCriteria, JDOQueryBuilder aFormQuery)
+   {
+      FormStatus status = FormHelper.getFormStatus(aSearchCriteria.getStatusName());
+      JDOQueryBuilder sitePKQuery = aFormQuery.getColumn("sitePK").equal(aSearchCriteria.getAlternatePK());
+      JDOQueryBuilder createUserQuery =aFormQuery.getColumn("createUserID").equal(aSearchCriteria.getUserPK());
+      JDOQueryBuilder notStatus = aFormQuery.getColumn("formStatusId").equal(status.getPrimaryKey()).not();
+      
+      return sitePKQuery.and(createUserQuery.or(notStatus));
+   }//--------------------------------------------
+   private JDOQueryBuilder createBySitePKAndOrginatorOrNotStatusQuery(FormSearchCriteria aSearchCriteria, JDOQueryBuilder aFormQuery)
+   {      
+      FormStatus status = FormHelper.getFormStatus(aSearchCriteria.getStatusName());
+      JDOQueryBuilder sitePKQuery = aFormQuery.getColumn("sitePK").equal(aSearchCriteria.getAlternatePK());
+      JDOQueryBuilder createUserQuery =aFormQuery.getColumn("createUserID").equal(aSearchCriteria.getUserPK());
+      JDOQueryBuilder notStatusQuery = aFormQuery.getColumn("formStatusId").equal(status.getPrimaryKey()).not();
+      JDOQueryBuilder createUserOrNotStatusQuery = createUserQuery.or(notStatusQuery);
+      
+      return sitePKQuery.and(createUserOrNotStatusQuery);
+   }//--------------------------------------------      
+}

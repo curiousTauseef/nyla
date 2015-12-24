@@ -1,0 +1,6 @@
+ <table width="100%" border="0" cellspacing="0" cellpadding="3">
+	<tr class="${styleClass}">
+	   <td colspan="2" class="sectionText"><a name="section${number}">${number}- ${text}</a></td>
+	</tr>
+	${questions}
+ </table>

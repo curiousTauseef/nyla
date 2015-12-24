@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar PUBLIC '-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN' 'http://java.sun.com/dtd/ejb-jar_2_0.dtd'>
+<ejb-jar>
+  <enterprise-beans>
+      <session>
+          <description>Form Enterprise Java Bean</description>
+          <display-name>form_ejb</display-name>
+          <ejb-name>form_ejb</ejb-name>
+          <home>com.bms.informatics.gcsm.form.ejb.session.FormBeanHomeRemote</home>
+          <remote>com.bms.informatics.gcsm.form.ejb.session.FormBeanRemote</remote>
+          <local-home>com.bms.informatics.gcsm.form.ejb.session.FormBeanHomeLocal</local-home>
+          <local>com.bms.informatics.gcsm.form.ejb.session.FormBeanLocal</local>
+          <ejb-class>com.bms.informatics.gcsm.form.FormBean</ejb-class>
+          <session-type>Stateless</session-type>
+          <transaction-type>Container</transaction-type>
+      </session>
+  </enterprise-beans>
+	<assembly-descriptor>
+		<container-transaction>
+			<method>
+				<ejb-name> form_ejb</ejb-name>
+				<method-name>*</method-name>
+			</method>
+			<trans-attribute>RequiresNew</trans-attribute>
+		</container-transaction>	
+	</assembly-descriptor>
+</ejb-jar>

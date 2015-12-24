@@ -1,0 +1,4 @@
+            <tr id="col${colNumber}">          
+                <td id="columnText" width="${questionWidth}"><span class="indent"><span class="${textStyleClass}">${numberLabel} ${columnText}</span></span></td>
+                <td id="answer" width="${answerWidth}"><span class="${answerStyleClass}">${answer}</span></td>
+            </tr>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="org.solutions.form.data.Application"
+		discriminator-value="F">
+		<id name="formId"></id>
+        <property name="formTypeCode"/>
+		 <set name="answers">
+			<key column="formId" not-null="false" />
+			<one-to-many class="org.solutions.form.data.Answer" />  
+		</set>
+		
+	</class>
+</hibernate-mapping>

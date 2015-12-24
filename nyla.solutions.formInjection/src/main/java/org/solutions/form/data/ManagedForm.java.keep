@@ -1,0 +1,155 @@
+/*
+ * Created on Nov 6, 2005
+ *
+ * TODO To change the template for this generated file go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
+package com.bms.informatics.gcsm.form.data;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import oracle.toplink.publicinterface.DescriptorEvent;
+
+
+/**
+ * @author JIsrael
+ *
+ * TODO To change the template for this generated type comment go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
+public class ManagedForm extends FormComponent {
+    private Integer formId;
+    private Integer scheduleId;
+    private Integer investigatorId;
+    private Integer reviewUserId;
+    private Integer studyId;
+    private Integer formTypeId;
+    private Integer formStatusId;
+    private Integer raUserId;
+    private Date completeDate;
+    private Date contactDate;
+    private Date submitDate;
+    private Date esfFileDate;
+    private Integer studySiteId;
+    private Map formProps = new HashMap();
+
+    public Date getCompleteDate() {
+        return completeDate;
+    }
+    public void setCompleteDate(Date completeDate) {
+        this.completeDate = completeDate;
+    }
+    public Date getContactDate() {
+        return contactDate;
+    }
+    public void setContactDate(Date contactDate) {
+        this.contactDate = contactDate;
+    }
+    public Date getEsfFileDate() {
+        return esfFileDate;
+    }
+    public void setEsfFileDate(Date esfFileDate) {
+        this.esfFileDate = esfFileDate;
+    }
+    public Integer getFormId() {
+        return replaceWithNull(formId);
+    }
+    protected void setFormId(Integer formId) {
+        this.formId = replaceWithNull(formId);
+    }
+    public Object getKey() {
+        return getFormId();
+    }
+    public Integer getFormStatusId() {
+        return replaceWithNull(formStatusId);
+    }
+    public void setFormStatusId(Integer formStatusId) {
+        this.formStatusId = replaceWithNull(formStatusId);
+    }
+    public Integer getFormTypeId() {
+        return formTypeId;
+    }
+    public void setFormTypeId(Integer formTypeId) {
+        this.formTypeId = formTypeId;
+    }
+    public Integer getInvestigatorId() {
+        return investigatorId;
+    }
+    public void setInvestigatorId(Integer investigatorId) {
+        this.investigatorId = investigatorId;
+    }
+    public Integer getRaUserId() {
+        return replaceWithNull(raUserId);
+    }
+    public void setRaUserId(Integer raUserId) {
+        this.raUserId = replaceWithNull(raUserId);
+    }
+    public Integer getReviewUserId() {
+        return replaceWithNull(reviewUserId);
+    }
+    public void setReviewUserId(Integer reviewUserId) {
+        this.reviewUserId = replaceWithNull(reviewUserId);
+    }
+    public Integer getScheduleId() {
+        return scheduleId;
+    }
+    public void setScheduleId(Integer scheduleId) {
+        this.scheduleId = scheduleId;
+    }
+    public Integer getStudyId() {
+        return studyId;
+    }
+    public void setStudyId(Integer studyId) {
+        this.studyId = studyId;
+    }
+    public Integer getStudySiteId() {
+        return studySiteId;
+    }
+    public void setStudySiteId(Integer studySiteId) {
+        this.studySiteId = studySiteId;
+    }
+    public Date getSubmitDate() {
+        return submitDate;
+    }
+    public void setSubmitDate(Date submitDate) {
+        this.submitDate = submitDate;
+    }
+    public Map getFormProps() {
+        return formProps;
+    }
+    protected void setFormProps(Map formProps) {
+    	if (formProps == null)
+    		this.formProps.clear();
+        for (Iterator i = formProps.values().iterator(); i.hasNext(); ) {
+        	FormProperty prop = (FormProperty) i.next();
+        	addProperty(prop);
+        }
+    }
+    public void addProperty(FormProperty property) {
+    	if (formProps == null)
+    		formProps = new HashMap();
+        if (property != null) {
+            property.setFormId(getFormId());
+            formProps.put(property.getName(), property);
+        }
+    }
+    public FormProperty getProperty(String key) {
+        return (FormProperty) formProps.get(key);
+    }
+    public FormProperty removeProperty(String key) {
+        return (FormProperty) formProps.remove(key);
+    }
+    public String getText() {
+        return getFormId() != null ? String.valueOf(getFormId()) : "";
+    }
+    public void handlePostWrite(DescriptorEvent event) {
+        for (Iterator i = this.getFormProps().values().iterator(); i.hasNext(); ) {
+            FormProperty property = (FormProperty) i.next();
+            property.setFormId(formId);
+        }
+    }
+}

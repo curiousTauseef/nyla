@@ -1,4 +1,4 @@
-<%@page import="solutions.gedi.exception.GediException"%>
+<%@page import="nyla.solutions.global.util.Debugger"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" isErrorPage="true" %>
 	<h2>Test error</h2>
@@ -6,7 +6,7 @@
 		# <%= exception.toString() %>
 	</p>
 	<p>
-		# <%=FaultException.stackTrace(exception)%> 
+		# <%=Debugger.stackTrace(exception)%> 
 	</p>
 
    <p>

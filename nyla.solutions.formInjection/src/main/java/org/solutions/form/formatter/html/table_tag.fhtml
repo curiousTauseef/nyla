@@ -1,0 +1,15 @@
+<!-- BEGIN TABLE ID=${tableId} -->
+<table id="${tableId}" border="${border}" cellpadding="${cellpadding}" cellspacing="${cellspacing}" width="${width}" class="${styleClass}">
+	<thead>
+	<input type="hidden" name="tableRowNumbers_${tableId}">
+    <tr height="20" id="tableHeader" class="questionTableHeader">
+      <td width="95%">${numberLabel} ${questionText} <input type="button" name="btnAdd_${tableId}" value="Add" onclick="addHorizontalRow('${tableId}');"/> ${help} </td>      
+    </tr>
+    </thead>
+    <!-- BEGIN ROWDATA -->
+    <tbody>
+	${rowdata}
+	</tbody>
+    <!-- END ROWDATA -->
+</table>
+<!-- END TABLE ID=${tableId} -->

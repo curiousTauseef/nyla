@@ -1,0 +1,12 @@
+  <div class="answer">
+    <input id="${answer.inputName}" name="${answer.inputName}" type="hidden" value="${answer.value}"/>
+   <span id="${answer.inputName}_Text" class="answer">
+       ${answer.readOnlyValue}
+    </span>
+    <br/>        
+    <div class="hidden" id="${answer.inputName}_Choices">
+    	<#list answer.options as opt>${opt.key}=${answer.urlEncode(opt.text)};</#list>
+    </div>
+    <a href="#" onclick="javascript:showMultiSelect('${answer.multiSelectLabel}','${answer.inputName}');return false;"> ${answer.multiSelectAction} ${answer.multiSelectLabel}</a>
+    <span id="${answer.inputName}Error" class="error"></span>
+  </div>

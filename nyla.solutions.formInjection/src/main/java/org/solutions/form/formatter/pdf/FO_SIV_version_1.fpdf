@@ -1,0 +1,832 @@
+<?xml version="1.0" encoding="ASCII"?>
+<!--
+  Free Marker default data format
+<#setting date_format="dd-MMM-yyyy">
+-->
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+	<fo:layout-master-set>
+		<!-- fo:layout-master-set defines in its children the page layout:
+       the pagination and layout specifications
+      - page-masters: have the role of describing the intended subdivisions
+                       of a page and the geometry of these subdivisions
+                      In this case there is only a simple-page-master which defines the
+                      layout for all pages of the text
+          -->
+		<!-- layout information -->
+		<fo:simple-page-master master-name="simple" page-height="29.7cm" page-width="21cm" margin-top="0.2cm" margin-bottom="1cm" margin-left="1cm" margin-right="1cm">
+			<fo:region-body margin-top="1cm" margin-bottom="1.5cm"/>
+			<fo:region-before extent="3cm"/>
+			<fo:region-after extent="1.5cm"/>
+		</fo:simple-page-master>
+	</fo:layout-master-set>
+	<!-- end: defines page layout -->
+	<!-- start page-sequence
+       here comes the text (contained in flow objects)
+       the page-sequence can contain different fo:flows
+       the attribute value of master-name refers to the page layout
+       which is to be used to layout the text contained in this
+       page-sequence-->
+	<fo:page-sequence master-reference="simple">
+		<!-- start fo:flow
+           each flow is targeted
+           at one (and only one) of the following:
+           xsl-region-body (usually: normal text)
+           xsl-region-before (usually: header)
+           xsl-region-after  (usually: footer)
+           xsl-region-start  (usually: left margin)
+           xsl-region-end    (usually: right margin)
+           ['usually' applies here to languages with left-right and top-down
+            writing direction like English]
+           in this case there is only one target: xsl-region-body
+        -->
+		<!-- usage of page layout -->
+		<!-- header -->
+		<!--<fo:static-content flow-name="xsl-region-before"> </fo:static-content>  -->
+		<!-- End header -->
+		<!-- ====================================  -->
+		<fo:static-content flow-name="xsl-region-after">
+			<!-- FOOTER -->
+			<!-- start line -->
+			<fo:block>
+				<fo:leader leader-length="100%" leader-pattern="rule" rule-style="solid" color="black" rule-thickness="0.3mm"/>
+			</fo:block>
+			<!-- end line -->
+			<fo:table table-layout="fixed">
+				<fo:table-column column-width="7cm"/>
+				<fo:table-column column-width="5cm"/>
+				<fo:table-column column-width="7.cm"/>
+				<fo:table-body>
+					<fo:table-row>
+						<fo:table-cell text-align="left">
+							<fo:block font-family="Helvetica" font-size="8pt">
+           All rights reserved to  Bristol-Myers Squibb Company
+Pharmaceutical Research Institute
+ </fo:block>
+						</fo:table-cell>
+						<fo:table-cell text-align="center">
+							<fo:block font-family="Helvetica" font-size="8pt">Generated as an output of the Global Clinical Site Monitoring application process</fo:block>
+						</fo:table-cell>
+						<fo:table-cell text-align="right">
+							<fo:block font-family="Helvetica" font-size="8pt"> ${statusName} ${updateDate?date}</fo:block>
+							<fo:block font-family="Helvetica" font-size="8pt">Page <fo:page-number/>
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+				</fo:table-body>
+			</fo:table>
+		</fo:static-content>
+		<!-- END FOOTER -->
+		<!-- BODY -->
+		<fo:flow flow-name="xsl-region-body">
+			<!-- START Form HEADER Sections -->
+			<fo:block background-color="#CCFFCC" font-family="Helvetica" font-size="10pt">
+				<fo:block font-family="Helvetica" font-size="12pt" space-before.optimum="5pt" space-after.optimum="10pt" font-weight="bold" padding-top="3pt">
+                      ${name} Report
+                </fo:block>
+                ${sectionName1} | ${sectionName2}| ${sectionName3} | ${sectionName4} | ${sectionName5} | ${sectionName6} | ${sectionName7} | ${sectionName8} |
+${sectionName9}
+			</fo:block>
+			<!-- Start Form Questions  -->
+<fo:block>
+<!-- SECTION 0                             -->
+    <#assign questions = {"2":"${question2}","3":"${question3}","4":"${question4}","5":"${question5}"}>
+    <#assign answers = {"2":"${answer2}","3":"${answer3}","4":"${answer4}","5":"${answer5}"}>
+    <#assign keys = questions?keys>
+    <#assign counter=1>
+    <#list keys as key>
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="4.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="14.cm"/>
+                    <fo:table-body>
+                    <fo:table-row>
+                        <fo:table-cell>${questions[key]}</fo:table-cell>
+                        <fo:table-cell/>
+                        <fo:table-cell>${answers[key]}</fo:table-cell>
+                    </fo:table-row>
+                    </fo:table-body>
+        </fo:table>
+       </#list>
+    <!-- SECTION 1   -->
+${sectionHeader1}
+    ${question6}
+   <!-- Other BMS Present table -->
+    ${question7}
+    <!-- Site Personanel Present -->
+     ${question8}
+    <!-- SECTION 2  -->
+${sectionHeader2}
+    <fo:block>
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="7.cm"/>
+            <fo:table-column column-width="11.cm"/>
+            <fo:table-body>
+                <fo:table-row>
+                    <fo:table-cell/>
+                    <fo:table-cell >${question9} </fo:table-cell>
+                    <fo:table-cell>${answer9}</fo:table-cell>
+                </fo:table-row>
+            </fo:table-body>
+        </fo:table>
+    </fo:block>
+    <#assign section=2>
+    <#assign subsection=1>
+    <fo:block background-color="#E0E0E0">
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="7.cm"/>
+            <fo:table-column column-width="11.cm"/>
+            <fo:table-body>
+                <fo:table-row>
+                    <fo:table-cell/>
+                   <fo:table-cell> <fo:block font-family="Helvetica"
+                                font-size="10pt"
+                                space-before.optimum="5pt"
+                                space-after.optimum="10pt"
+                                font-weight="bold"
+                                padding-top="3pt"
+                                background-color="#E0E0E0">Address </fo:block></fo:table-cell>
+                    <fo:table-cell/>
+                </fo:table-row>
+            </fo:table-body>
+        </fo:table>
+    </fo:block>
+    <#assign questions = {"1":"${question10}", "2":"${question11}","3":"${question12}","4":"${question13}","5":"${question54}","6":"${question55}","7":"${question56}"}>
+    <#assign answers = {"1":"${answer10}", "2":"${answer11}","3":"${answer12}","4":"${answer13}","5":"${answer14}","6":"${answer15}","7":"${answer16}"}>
+    <#assign keys = questions?keys>
+    <#list keys as key>
+    <fo:table table-layout="fixed">
+        <fo:table-column column-width="1.cm"/>
+        <fo:table-column column-width="1.cm"/>
+        <fo:table-column column-width="1.cm"/>
+        <fo:table-column column-width="7.cm"/>
+        <fo:table-column column-width="1.cm"/>
+        <fo:table-column column-width="8.cm"/>
+        <fo:table-body background-color="#E0E0E0">
+             <fo:table-row>
+                 <fo:table-cell/>
+                 <fo:table-cell/>
+                 <fo:table-cell>
+                     <fo:block font-family="Helvetica"
+                     font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                 <fo:table-cell>${questions[key]}</fo:table-cell>
+                 <fo:table-cell/>
+                 <fo:table-cell>${answers[key]}</fo:table-cell>
+             </fo:table-row>
+         </fo:table-body>
+        </fo:table>
+       </#list>
+    <#assign questionHeader = {"8":"Phone", "9":"Fax","10":"Email"}>
+    <#assign questions = {"8":"${question17}", "9":"${question18}","10":"${question19}"}>
+    <#assign answers = {"8":"${answer17}", "9":"${answer18}","10":"${answer19}"}>
+    <#assign keys = questions?keys>
+    <#assign counter=1>
+    <#list keys as key>
+        <#if (counter % 2) = 0>
+            <fo:table table-layout="fixed">
+                <fo:table-column column-width="1.cm"/>
+                <fo:table-column column-width="7.cm"/>
+                <fo:table-column column-width="11.cm"/>
+                <fo:table-body background-color="#E0E0E0">
+                    <fo:table-row>
+                        <fo:table-cell/>
+                       <fo:table-cell><fo:block font-family="Helvetica"
+                                font-size="10pt"
+                                space-before.optimum="5pt"
+                                space-after.optimum="10pt"
+                                font-weight="bold"
+                                padding-top="3pt"
+                                background-color="#E0E0E0"> ${questionHeader[key]} </fo:block></fo:table-cell>
+                         <fo:table-cell/>
+                    </fo:table-row>
+                </fo:table-body>
+            </fo:table>
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="7.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+               <fo:table-body background-color="#E0E0E0">
+                    <fo:table-row>
+                        <fo:table-cell/>
+                        <fo:table-cell/>
+                        <fo:table-cell>
+                            <fo:block font-family="Helvetica"
+                            font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                        <fo:table-cell>${questions[key]}</fo:table-cell>
+                        <fo:table-cell/>
+                        <fo:table-cell>${answers[key]}</fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            </fo:table>
+            <#else>
+                <fo:table table-layout="fixed">
+                    <fo:table-column column-width="1.cm"/>
+                    <fo:table-column column-width="7.cm"/>
+                    <fo:table-column column-width="11.cm"/>
+                    <fo:table-body>
+                        <fo:table-row>
+                            <fo:table-cell/>
+                           <fo:table-cell><fo:block font-family="Helvetica"
+                                font-size="10pt"
+                                space-before.optimum="5pt"
+                                space-after.optimum="10pt"
+                                font-weight="bold"
+                                padding-top="3pt">${questionHeader[key]}</fo:block></fo:table-cell>
+                            <fo:table-cell/>
+                        </fo:table-row>
+                    </fo:table-body>
+                </fo:table>
+
+                <fo:table table-layout="fixed">
+                    <fo:table-column column-width="1.cm"/>
+                    <fo:table-column column-width="1.cm"/>
+                    <fo:table-column column-width="1.cm"/>
+                    <fo:table-column column-width="7.cm"/>
+                    <fo:table-column column-width="1.cm"/>
+                    <fo:table-column column-width="8.cm"/>
+                       <fo:table-body>
+                        <fo:table-row>
+                            <fo:table-cell/>
+                            <fo:table-cell/>
+                            <fo:table-cell>
+                                <fo:block font-family="Helvetica"
+                                font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                            <fo:table-cell>${questions[key]}</fo:table-cell>
+                            <fo:table-cell/>
+                            <fo:table-cell>${answers[key]}</fo:table-cell>
+                        </fo:table-row>
+                    </fo:table-body>
+                </fo:table>
+            </#if>
+            <#assign counter= counter + 1>
+
+       </#list>
+
+    <!-- SECTION 3                             -->
+${sectionHeader3}
+    <#assign section=3>
+    <#assign subsection=1>
+    <#assign questions = {"1":"${question20}", "2":"${question21}","3":"${question22}","4":"${question23}"}>
+    <#assign answers = {"1":"${answer20}", "2":"${answer21}","3":"${answer22}","4":"${answer23}"}>
+    <#assign keys = questions?keys>
+    <#assign counter=1>
+    <#list keys as key>
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <#if (counter % 2) = 0>
+               <fo:table-body background-color="#E0E0E0">
+                    <fo:table-row>
+                        <fo:table-cell/>
+                        <fo:table-cell>
+                            <fo:block font-family="Helvetica"
+                            font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                        <fo:table-cell>${questions[key]}</fo:table-cell>
+                        <fo:table-cell/>
+                        <fo:table-cell>${answers[key]}</fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            <#else>
+                   <fo:table-body>
+                    <fo:table-row>
+                        <fo:table-cell/>
+                        <fo:table-cell>
+                            <fo:block font-family="Helvetica"
+                            font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                        <fo:table-cell>${questions[key]}</fo:table-cell>
+                        <fo:table-cell/>
+                        <fo:table-cell>${answers[key]}</fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            </#if>
+            <#assign counter= counter + 1>
+        </fo:table>
+       </#list>
+
+    <!-- SECTION 4                             -->
+${sectionHeader4}
+    <#assign section=4>
+    <#assign subsection=1>
+    <#assign questions = {"1":"${question24}", "2":"${question25}","3":"${question26}","4":"${question27}","5":"${question28}","6":"${question29}","7":"${question30}","8":"${question31}","9":"${question32}","10":"${question33}","11":"${question34}","12":"${question35}","13":"${question36}"}>
+    <#assign answers = {"1":"${answer24}", "2":"${answer25}","3":"${answer26}","4":"${answer27}","5":"${answer28}","6":"${answer29}","7":"${answer30}","8":"${answer31}","9":"${answer32}","10":"${answer33}","11":"${answer34}","12":"${answer35}","13":"${answer36}"}>
+    <#assign keys = questions?keys>
+    <#assign counter=1>
+    <#list keys as key>
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <#if (counter % 2) = 0>
+               <fo:table-body background-color="#E0E0E0">
+                    <fo:table-row>
+                        <fo:table-cell/>
+                        <fo:table-cell>
+                            <fo:block font-family="Helvetica"
+                            font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                        <fo:table-cell>${questions[key]}</fo:table-cell>
+                        <fo:table-cell/>
+                        <fo:table-cell>${answers[key]}</fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            <#else>
+                   <fo:table-body>
+                    <fo:table-row>
+                        <fo:table-cell/>
+                        <fo:table-cell>
+                            <fo:block font-family="Helvetica"
+                            font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                        <fo:table-cell>${questions[key]}</fo:table-cell>
+                        <fo:table-cell/>
+                        <fo:table-cell>${answers[key]}</fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            </#if>
+            <#assign counter= counter + 1>
+        </fo:table>
+       </#list>
+
+    <!-- SECTION 5                             -->
+${sectionHeader5}
+    <#assign section=5>
+    <#assign subsection=1>
+    <#assign questions = {"1":"${question37}", "2":"${question38}","3":"${question39}","4":"${question40}"}>
+    <#assign answers = {"1":"${answer37}", "2":"${answer38}","3":"${answer39}","4":"${answer40}"}>
+    <#assign keys = questions?keys>
+    <#assign counter=1>
+    <#list keys as key>
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <#if (counter % 2) = 0>
+               <fo:table-body background-color="#E0E0E0">
+                    <fo:table-row>
+                        <fo:table-cell/>
+                        <fo:table-cell>
+                            <fo:block font-family="Helvetica"
+                            font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                        <fo:table-cell>${questions[key]}</fo:table-cell>
+                        <fo:table-cell/>
+                        <fo:table-cell>${answers[key]}</fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            <#else>
+                   <fo:table-body>
+                    <fo:table-row>
+                        <fo:table-cell/>
+                        <fo:table-cell>
+                            <fo:block font-family="Helvetica"
+                            font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                        <fo:table-cell>${questions[key]}</fo:table-cell>
+                        <fo:table-cell/>
+                        <fo:table-cell>${answers[key]}</fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            </#if>
+            <#assign counter= counter + 1>
+        </fo:table>
+       </#list>
+
+    <!-- SECTION 6                             -->
+${sectionHeader6}
+    <#assign section=6>
+    <#assign questions = {"1":"${question41}", "2":"${question42}","3":"${question43}","4":"${question44}","5":"${question45}"}>
+    <#assign answers = {"1":"${answer41}", "2":"${answer42}","3":"${answer43}","4":"${answer44}","5":"${answer45}"}>
+    <#assign keys = questions?keys>
+    <#assign counter=1>
+    <#list keys as key>
+
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <#if (counter % 2) = 0>
+               <fo:table-body background-color="#E0E0E0">
+                    <fo:table-row>
+                        <fo:table-cell/>
+                        <fo:table-cell>
+                            <fo:block font-family="Helvetica"
+                            font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                        <fo:table-cell>${questions[key]}</fo:table-cell>
+                        <fo:table-cell/>
+                        <fo:table-cell>${answers[key]}</fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            <#else>
+                   <fo:table-body>
+                    <fo:table-row>
+                        <fo:table-cell/>
+                        <fo:table-cell>
+                            <fo:block font-family="Helvetica"
+                            font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                        <fo:table-cell>${questions[key]}</fo:table-cell>
+                        <fo:table-cell/>
+                        <fo:table-cell>${answers[key]}</fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            </#if>
+        </fo:table>
+        <#assign counter= counter + 1>
+       </#list>
+    <fo:block>
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="7.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <fo:table-body>
+             <fo:table-row>
+                 <fo:table-cell/>
+                 <fo:table-cell/>
+                 <fo:table-cell>
+                     <fo:block font-family="Helvetica"
+                     font-size="10pt">${section}-5.1</fo:block></fo:table-cell>
+                 <fo:table-cell>${question46}</fo:table-cell>
+                 <fo:table-cell/>
+                 <fo:table-cell>${answer46}</fo:table-cell>
+             </fo:table-row>
+         </fo:table-body>
+        </fo:table>
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="6.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <fo:table-body>
+             <fo:table-row>
+                 <fo:table-cell/>
+                 <fo:table-cell/>
+                 <fo:table-cell/>
+                 <fo:table-cell>
+                     <fo:block font-family="Helvetica"
+                     font-size="10pt">${section}-5.1.1</fo:block></fo:table-cell>
+                 <fo:table-cell>${question47}</fo:table-cell>
+                 <fo:table-cell/>
+                 <fo:table-cell>${answer47}</fo:table-cell>
+             </fo:table-row>
+         </fo:table-body>
+        </fo:table>
+    </fo:block>
+    <fo:block background-color="#E0E0E0">
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+              <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="17.cm"/>
+            <fo:table-body>
+                <fo:table-row>
+                    <fo:table-cell/>
+                    <fo:table-cell/>
+                   <fo:table-cell> ${question6111} </fo:table-cell>
+                </fo:table-row>
+            </fo:table-body>
+        </fo:table>
+    </fo:block>
+    <#assign questions = {"6":"${question48}", "7":"${question49}","8":"${question50}","9":"${question51}","10":"${question52}","11":"${question53}","12":"${question54}"}>
+    <#assign answers = {"6":"${answer48}", "7":"${answer49}","8":"${answer50}","9":"${answer51}","10":"${answer52}","11":"${answer53}","12":"${answer54}"}>
+    <#assign keys = questions?keys>
+    <#list keys as key>
+    <fo:table table-layout="fixed">
+        <fo:table-column column-width="1.cm"/>
+        <fo:table-column column-width="1.cm"/>
+        <fo:table-column column-width="1.cm"/>
+        <fo:table-column column-width="7.cm"/>
+        <fo:table-column column-width="1.cm"/>
+        <fo:table-column column-width="8.cm"/>
+        <fo:table-body background-color="#E0E0E0">
+             <fo:table-row>
+                 <fo:table-cell/>
+                 <fo:table-cell/>
+                 <fo:table-cell>
+                     <fo:block font-family="Helvetica"
+                     font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                 <fo:table-cell>${questions[key]}</fo:table-cell>
+                 <fo:table-cell/>
+                 <fo:table-cell>${answers[key]}</fo:table-cell>
+             </fo:table-row>
+         </fo:table-body>
+        </fo:table>
+       </#list>
+
+    <#assign questions = {"13":"${question55}", "14":"${question56}","15":"${question57}","16":"${question58}"}>
+    <#assign answers = {"13":"${answer55}", "14":"${answer56}","15":"${answer57}","16":"${answer58}"}>
+    <#assign keys = questions?keys>
+    <#assign counter=1>
+    <#list keys as key>
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <#if (counter % 2) = 0>
+               <fo:table-body background-color="#E0E0E0">
+                    <fo:table-row>
+                        <fo:table-cell/>
+                        <fo:table-cell>
+                            <fo:block font-family="Helvetica"
+                            font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                        <fo:table-cell>${questions[key]}</fo:table-cell>
+                        <fo:table-cell/>
+                        <fo:table-cell>${answers[key]}</fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            <#else>
+                   <fo:table-body>
+                    <fo:table-row>
+                        <fo:table-cell/>
+                        <fo:table-cell>
+                            <fo:block font-family="Helvetica"
+                            font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                        <fo:table-cell>${questions[key]}</fo:table-cell>
+                        <fo:table-cell/>
+                        <fo:table-cell>${answers[key]}</fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            </#if>
+            <#assign counter= counter + 1>
+        </fo:table>
+       </#list>
+    ${question59}
+    <fo:block>
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <fo:table-body>
+             <fo:table-row>
+                 <fo:table-cell/>
+                 <fo:table-cell>
+                     <fo:block font-family="Helvetica"
+                     font-size="10pt">${section}-17</fo:block></fo:table-cell>
+                 <fo:table-cell>${question60}</fo:table-cell>
+                 <fo:table-cell/>
+                 <fo:table-cell>${answer60}</fo:table-cell>
+             </fo:table-row>
+         </fo:table-body>
+        </fo:table>
+    </fo:block>
+
+    <!-- SECTION 7                             -->
+${sectionHeader7}
+    <fo:block background-color="#E0E0E0">
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="18.cm"/>
+            <fo:table-body>
+                <fo:table-row>
+                    <fo:table-cell/>
+                   <fo:table-cell> ${question6112} </fo:table-cell>
+                </fo:table-row>
+            </fo:table-body>
+        </fo:table>
+    </fo:block>
+
+    <#assign section=7>
+    <#assign questions = {"1":"${question61}", "2":"${question62}","3":"${question63}","4":"${question64}","5":"${question65}","6":"${question66}","7":"${question67}","8":"${question68}","9":"${question69}","10":"${question70}"}>
+    <#assign answers = {"1":"${answer61}", "2":"${answer62}","3":"${answer63}","4":"${answer64}","5":"${answer65}","6":"${answer66}","7":"${answer67}","8":"${answer68}","9":"${answer69}","10":"${answer70}"}>
+    <#assign keys = questions?keys>
+    <#list keys as key>
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <fo:table-body background-color="#E0E0E0">
+                 <fo:table-row>
+                     <fo:table-cell/>
+                     <fo:table-cell>
+                         <fo:block font-family="Helvetica"
+                         font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                     <fo:table-cell>${questions[key]}</fo:table-cell>
+                     <fo:table-cell/>
+                     <fo:table-cell>${answers[key]}</fo:table-cell>
+                 </fo:table-row>
+             </fo:table-body>
+        </fo:table>
+       </#list>
+    <#assign questions = {"11":"${question71}", "12":"${question72}","13":"${question73}"}>
+    <#assign answers = {"11":"${answer71}", "12":"${answer72}","13":"${answer73}"}>
+    <#assign keys = questions?keys>
+    <#assign counter=1>
+    <#list keys as key>
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <#if (counter % 2) = 0>
+               <fo:table-body background-color="#E0E0E0">
+                    <fo:table-row>
+                        <fo:table-cell/>
+                        <fo:table-cell>
+                            <fo:block font-family="Helvetica"
+                            font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                        <fo:table-cell>${questions[key]}</fo:table-cell>
+                        <fo:table-cell/>
+                        <fo:table-cell>${answers[key]}</fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            <#else>
+                   <fo:table-body>
+                    <fo:table-row>
+                        <fo:table-cell/>
+                        <fo:table-cell>
+                            <fo:block font-family="Helvetica"
+                            font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                        <fo:table-cell>${questions[key]}</fo:table-cell>
+                        <fo:table-cell/>
+                        <fo:table-cell>${answers[key]}</fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            </#if>
+            <#assign counter= counter + 1>
+        </fo:table>
+       </#list>
+
+    <!-- SECTION 8                             -->
+${sectionHeader8}
+    ${question74}
+    <fo:block background-color="#E0E0E0">
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="19.cm"/>
+            <fo:table-body>
+                <fo:table-row>
+                   <fo:table-cell> ${question75} </fo:table-cell>
+                </fo:table-row>
+                <fo:table-row>
+                   <fo:table-cell/>
+                </fo:table-row>
+            </fo:table-body>
+        </fo:table>
+    </fo:block>
+    <#assign section=8>
+    <#assign subsection=1>
+    <#assign questions = {"1":"${question76}", "2":"${question77}","3":"${question78}"}>
+    <#assign answers = {"1":"${answer76}", "2":"${answer77}","3":"${answer78}"}>
+    <#assign keys = questions?keys>
+    <#list keys as key>
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <fo:table-body>
+                <fo:table-row>
+                    <fo:table-cell/>
+                    <fo:table-cell>
+                        <fo:block font-family="Helvetica"
+                        font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                    <fo:table-cell>${questions[key]}</fo:table-cell>
+                    <fo:table-cell/>
+                    <fo:table-cell>${answers[key]}</fo:table-cell>
+                </fo:table-row>
+            </fo:table-body>
+        </fo:table>
+       </#list>
+
+    <!-- SECTION 9                             -->
+${sectionHeader9}
+    <#assign section=9>
+    <#assign questions = {"1":"${question79}", "2":"${question80}","3":"${question81}"}>
+    <#assign answers = {"1":"${answer79}", "2":"${answer80}","3":"${answer81}"}>
+    <#assign keys = questions?keys>
+    <#assign counter=1>
+    <#list keys as key>
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <#if (counter % 2) = 0>
+               <fo:table-body background-color="#E0E0E0">
+                    <fo:table-row>
+                        <fo:table-cell/>
+                        <fo:table-cell>
+                            <fo:block font-family="Helvetica"
+                            font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                        <fo:table-cell>${questions[key]}</fo:table-cell>
+                        <fo:table-cell/>
+                        <fo:table-cell>${answers[key]}</fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            <#else>
+                   <fo:table-body>
+                    <fo:table-row>
+                        <fo:table-cell/>
+                        <fo:table-cell>
+                            <fo:block font-family="Helvetica"
+                            font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                        <fo:table-cell>${questions[key]}</fo:table-cell>
+                        <fo:table-cell/>
+                        <fo:table-cell>${answers[key]}</fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            </#if>
+            <#assign counter= counter + 1>
+        </fo:table>
+       </#list>
+
+    <!-- SECTION 10                             -->
+${sectionHeader10}
+    <#assign section=10>
+    <#assign subsection=1>
+    <#assign questions = {"1":"${question82}", "2":"${question83}","3":"${question84}","4":"${question85}","5":"${question86}","6":"${question87}"}>
+    <#assign answers = {"1":"${answer82}", "2":"${answer83}","3":"${answer84}","4":"${answer85}","5":"${answer86}","6":"${answer87}"}>
+    <#assign keys = questions?keys>
+    <#assign counter=1>
+    <#list keys as key>
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <#if (counter % 2) = 0>
+               <fo:table-body background-color="#E0E0E0">
+                    <fo:table-row>
+                        <fo:table-cell/>
+                        <fo:table-cell>
+                            <fo:block font-family="Helvetica"
+                            font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                        <fo:table-cell>${questions[key]}</fo:table-cell>
+                        <fo:table-cell/>
+                        <fo:table-cell>${answers[key]}</fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            <#else>
+                   <fo:table-body>
+                    <fo:table-row>
+                        <fo:table-cell/>
+                        <fo:table-cell>
+                            <fo:block font-family="Helvetica"
+                            font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                        <fo:table-cell>${questions[key]}</fo:table-cell>
+                        <fo:table-cell/>
+                        <fo:table-cell>${answers[key]}</fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            </#if>
+            <#assign counter= counter + 1>
+        </fo:table>
+       </#list>
+
+    <!-- SECTION 11                             -->
+${sectionHeader11}
+    <#assign section=11>
+    <#assign subsection=1>
+    <#assign questions = {"1":"${question88}", "2":"${question89}","3":"${question90}","4":"${question91}"}>
+    <#assign answers = {"1":"${answer88}", "2":"${answer89}","3":"${answer90}","4":"${answer91}"}>
+    <#assign keys = questions?keys>
+    <#list keys as key>
+        <fo:table table-layout="fixed">
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <fo:table-column column-width="1.cm"/>
+            <fo:table-column column-width="8.cm"/>
+            <fo:table-body>
+                <fo:table-row>
+                    <fo:table-cell/>
+                    <fo:table-cell>
+                        <fo:block font-family="Helvetica"
+                        font-size="10pt">${section}-${key}</fo:block></fo:table-cell>
+                    <fo:table-cell>${questions[key]}</fo:table-cell>
+                    <fo:table-cell/>
+                    <fo:table-cell>${answers[key]}</fo:table-cell>
+                </fo:table-row>
+            </fo:table-body>
+        </fo:table>
+       </#list>
+ </fo:block>
+	 <!-- Signature Page -->
+	  ${signatures}
+	<!-- END Form HEADER Sections -->
+</fo:flow>
+		<!-- closes the flow element-->
+	</fo:page-sequence>
+	<!-- closes the page-sequence -->
+</fo:root>

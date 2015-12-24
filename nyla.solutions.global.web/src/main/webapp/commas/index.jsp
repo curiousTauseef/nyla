@@ -1,4 +1,5 @@
-<%@page import="solutions.global.util.Text"%>
+<%@page import="nyla.solutions.global.util.Config"%>
+<%@page import="nyla.solutions.global.util.Text"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
   
@@ -381,8 +382,8 @@ them out -->
          
          </div>
 <!-- 
-   Config.properties.gemfire.cache-xml-file=<%=solutions.global.util.Config.getProperty("gemfire.cache-xml-file","")%>
-   Config.properties.gemfirePropertyFile=<%=solutions.global.util.Config.getProperty("gemfirePropertyFile","")%>
+   Config.properties.gemfire.cache-xml-file=<%=Config.getProperty("gemfire.cache-xml-file","")%>
+   Config.properties.gemfirePropertyFile=<%=Config.getProperty("gemfirePropertyFile","")%>
  -->
     </body>
 </html>

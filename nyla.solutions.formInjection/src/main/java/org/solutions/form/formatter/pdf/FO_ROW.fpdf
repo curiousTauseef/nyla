@@ -1,0 +1,3 @@
+<fo:table-row>
+    ${text}
+</fo:table-row>

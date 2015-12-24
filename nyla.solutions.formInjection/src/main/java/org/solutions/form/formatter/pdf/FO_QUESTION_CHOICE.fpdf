@@ -1,0 +1,6 @@
+<!-- Start Space before -->
+<fo:block>
+	<fo:leader leader-pattern="space" leader-length="0.1cm"/>
+	<!-- End Space before -->
+	<fo:inline font-family="Helvetica" font-size="10pt"><fo:inline font-family="ZapfDingbats" >${choice}</fo:inline> ${text}</fo:inline>
+</fo:block>
