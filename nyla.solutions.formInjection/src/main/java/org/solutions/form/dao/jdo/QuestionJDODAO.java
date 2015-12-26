@@ -2,11 +2,15 @@ package org.solutions.form.dao.jdo;
 import java.sql.SQLException;
 import java.util.Collection;
 
-import org.solutions.dao.jdo.JDODAO;
-import org.solutions.dao.jdo.JDOQueryBuilder;
-import org.solutions.data.Data;
-import org.solutions.exception.DuplicateRowException;
-import org.solutions.exception.NoDataFoundException;
+import nyla.solutions.dao.jdo.JDODAO;
+import nyla.solutions.dao.jdo.JDOQueryBuilder;
+import nyla.solutions.global.data.Data;
+import nyla.solutions.global.exception.DuplicateRowException;
+import nyla.solutions.global.exception.NoDataFoundException;
+import nyla.solutions.global.operations.logging.Log;
+import nyla.solutions.global.security.data.SecurityCredential;
+import nyla.solutions.global.util.Debugger;
+
 import org.solutions.form.dao.QuestionDAO;
 import org.solutions.form.data.AttributeFacts;
 import org.solutions.form.data.FormType;
@@ -17,7 +21,6 @@ import org.solutions.form.data.Questionaire;
 import org.solutions.form.data.ResponseTable;
 import org.solutions.form.data.ResponseType;
 import org.solutions.form.data.Section;
-import org.solutions.security.data.SecurityCredential;
 
 
 /**
@@ -248,6 +251,8 @@ public class QuestionJDODAO extends JDODAO implements  QuestionDAO
       // TODO Auto-generated method stub
       return null;
    }
+   
+   protected Log logger = Debugger.getLog(getClass());
 
    
 }

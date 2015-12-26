@@ -9,6 +9,7 @@ import nyla.solutions.global.exception.ConnectionException;
 import nyla.solutions.global.exception.DuplicateRowException;
 import nyla.solutions.global.exception.NoDataFoundException;
 
+import org.solutions.dao.hibernate.HibernateQueryBuilder;
 import org.solutions.form.BRE;
 import org.solutions.form.FormSearchCriteria;
 import org.solutions.form.bre.ExpressionBluePrint;
@@ -419,4 +420,5 @@ public class FormHibernateDAO extends QuestionHibernateDAO implements FormDAO
 
    private Class formClass = null;
    private String formClassName = null;
+
 }

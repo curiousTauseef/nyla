@@ -6,6 +6,7 @@ import java.util.Collection;
 import nyla.solutions.global.exception.DuplicateRowException;
 import nyla.solutions.global.exception.NoDataFoundException;
 
+import org.solutions.dao.hibernate.HibernateDAO;
 import org.solutions.form.dao.QuestionDAO;
 import org.solutions.form.data.AttributeFacts;
 import org.solutions.form.data.FormType;

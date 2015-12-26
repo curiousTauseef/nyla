@@ -3,10 +3,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.solutions.dao.jdo.JDODAO;
-import org.solutions.dao.jdo.JDOQueryBuilder;
-import org.solutions.data.Data;
-import org.solutions.exception.NoDataFoundException;
+import nyla.solutions.dao.jdo.JDODAO;
+import nyla.solutions.dao.jdo.JDOQueryBuilder;
+import nyla.solutions.global.data.Data;
+import nyla.solutions.global.exception.NoDataFoundException;
+import nyla.solutions.global.security.data.SecurityCredential;
+
 import org.solutions.form.BRE;
 import org.solutions.form.bre.ExpressionBluePrint;
 import org.solutions.form.bre.OperationBluePrint;
@@ -15,7 +17,6 @@ import org.solutions.form.dao.BreDAO;
 import org.solutions.form.data.Form;
 import org.solutions.form.data.FormType;
 import org.solutions.form.data.Questionaire;
-import org.solutions.security.data.SecurityCredential;
 
 /**
  * @author Gregory Green
@@ -37,7 +38,7 @@ public class BreJDODAO extends QuestionJDODAO implements BreDAO
       super();
    }//--------------------------------------------
    /**
-    * Constructor for BreDAO initalizes internal 
+    * Constructor for BreDAO initializes internal 
     * data settings.
     * @param aDAO the JDODAO
     */

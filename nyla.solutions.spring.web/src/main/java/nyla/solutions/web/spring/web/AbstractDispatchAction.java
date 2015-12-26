@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import nyla.solutions.global.data.Data;
 import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.operations.Log;
+import nyla.solutions.global.operations.logging.Log;
 import nyla.solutions.global.util.Debugger;
 import nyla.solutions.global.util.Text;
 import nyla.solutions.web.spring.propEditors.CalendarPropertyEditor;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+
 
 /**
  * <pre>

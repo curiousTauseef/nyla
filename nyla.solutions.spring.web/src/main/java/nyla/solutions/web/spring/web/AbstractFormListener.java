@@ -3,7 +3,7 @@ package nyla.solutions.web.spring.web;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import nyla.solutions.global.operations.Log;
+import nyla.solutions.global.operations.logging.Log;
 import nyla.solutions.global.util.Debugger;
 
 import org.springframework.web.bind.ServletRequestDataBinder;

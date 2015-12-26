@@ -1,6 +1,7 @@
 package nyla.solutions.web.spring;
 
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 import nyla.solutions.global.data.Status;
 import nyla.solutions.global.patterns.servicefactory.ServiceFactory;
@@ -9,7 +10,6 @@ import nyla.solutions.global.util.Text;
 import nyla.solutions.web.spring.test.MockErrors;
 import nyla.solutions.web.spring.web.REValidator;
 
-import org.junit.Assert;
 
 /**
  * <pre>
@@ -48,7 +48,7 @@ public class REValidatorTest extends TestCase
       
       validator.validate(status, errors);
       
-      Assert.assertTrue(Text.matches("[0-9]*", "123"));
+      Assert.assertTrue( Text.matches("[0-9]*", "123"));
       
       Assert.assertTrue(!Text.matches("[0-9]*", "123a"));
       
@@ -58,6 +58,7 @@ public class REValidatorTest extends TestCase
       Assert.assertTrue(errors.getMap().toString(), !errors.getMap().isEmpty());
       
       Debugger.println("error="+errors.getMap());
+      
    }// --------------------------------------------
 
 

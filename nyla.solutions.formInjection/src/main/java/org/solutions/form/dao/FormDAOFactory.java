@@ -1,6 +1,6 @@
 package org.solutions.form.dao;
 
-import org.solutions.patterns.servicefactory.ServiceFactory;
+import nyla.solutions.global.patterns.servicefactory.ServiceFactory;
 
 
 
