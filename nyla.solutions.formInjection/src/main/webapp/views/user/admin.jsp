@@ -6,11 +6,11 @@
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 <!-- %@ page import="com.bms.informatics.gcsm.common.util.*,com.bms.informatics.gcsm.common.web.util.*, java.util.*,com.bms.informatics.gcsm.protocol.web.*" %-->
 <%
-    String landingPage="";
+    java.lang.String landingPage="";
     landingPage=request.getParameter("landingPage");
-    String adminAction="";
-    String adminEmailSortAction="";
-    String adminNameSortAction="";
+    java.lang.String adminAction="";
+    java.lang.String adminEmailSortAction="";
+    java.lang.String adminNameSortAction="";
     if (landingPage == null) {
          landingPage="home";
         adminAction="/AdminPanelAction?method=doFilter";

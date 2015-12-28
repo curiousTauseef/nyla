@@ -12,7 +12,6 @@
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ taglib uri="/WEB-INF/struts-nested.tld" prefix="nested" %>
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
-<%@ page import="java.math.BigDecimal, java.util.*, java.text.*, com.bms.informatics.gcsm.common.util.*, com.bms.informatics.gcsm.common.web.*"%>
 <%
     //String staffUrl="<html:rewrite page='/SitePanelAction?method=doFilter&landingPage=staff'/>";
     String contextPath=request.getContextPath();
@@ -196,7 +195,7 @@
 				    </logic:empty>
 				    --%>
 				    <logic:notEmpty name="siteID">
-				    	<%=CacheLookUp.getProtocolSiteListFromCache().get(siteId) %>
+				    	<CacheLookUp.getProtocolSiteListFromCache().get(siteId) >
 				    </logic:notEmpty>
 				    <%--
 				    <logic:empty name="siteID">
@@ -211,7 +210,7 @@
 				<td align="right" width="12"><html:img  border="0" page="/skins/default/images/tab_left_off.gif"/></td>
 				<td class="topNavBgOff" width="100" align="center" valign="middle">
 				    <a href='<html:rewrite page="/do/SitePanelAction?method=initSite&landingTab=overview&landingPage=sites"/>&siteId=<%= siteId %>' class="topNavOff">
-				    <%=CacheLookUp.getProtocolSiteListFromCache().get(siteId) %></a>
+				    <CacheLookUp.getProtocolSiteListFromCache().get(siteId) ></a>
 				</td>
 				<td align="left" width="12"><html:img  border="0" page="/skins/default/images/tab_rt_off.gif"/></td>
 			    </logic:notEmpty>

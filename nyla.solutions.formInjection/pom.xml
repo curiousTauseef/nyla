@@ -46,6 +46,11 @@
 		</dependency>		
 		<dependency>
 			<groupId>com.github.nyla-solutions</groupId>
+			<artifactId>nyla.solutions.blueprint.jee</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>			
+		<dependency>
+			<groupId>com.github.nyla-solutions</groupId>
 			<artifactId>nyla.solutions.dao</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>

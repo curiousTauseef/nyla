@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://gcsm.bms.com/tld/form.tld" prefix="form"%>
 -->
+
 <c:if test="${form.submitted}">
 <p class="sectionText">
    Electronic Signature

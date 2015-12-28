@@ -1,0 +1,381 @@
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration//EN"
+  "file:///C:/Projects/BMS/GCSM/web/gcsm/dtd/tiles-config_1_1.dtd">
+<tiles-definitions>
+	<!-- Notes : Identified that bms.gcsm.homepage.layoutOverridding one tiles requires overridding subsequent tiles in a given layout -->
+	<!-- This is Standard layout AKA  Base layout, You can extend overrdide this layout -->
+	<!-- Avoid Modification of this layout and corresponding JSP -->
+	<!--Panel Definitions-->
+	<definition name="userPanel" path="/themes/default/userInfo.jsp"/>
+	<definition name="sitesPanel" path="/views/sites/sites.jsp"/>
+	<definition name="issuesPanel" path="/views/issues/issues.jsp"/>
+	<definition name="visitsPanel" path="/views/visits/visits.jsp"/>
+	<definition name="alertsPanel" path="/views/alerts/alerts.jsp"/>
+	<!--Panel Definitions-->
+	<definition name="bms.gcsm.standard.layout" path="/template/template.jsp">
+		<put name="title" value="Global Clinical Site Management."/>
+		<put name="header" value="/themes/default/header.jsp"/>
+		<put name="userInfo" value="/themes/default/userInfo.jsp"/>
+		<put name="topnav" value="/themes/default/topnav.jsp"/>
+		<put name="leftnav" value="/themes/default/leftnav.jsp"/>
+		<put name="body" value="/themes/default/body.jsp"/>
+		<put name="footer" value="/themes/default/footer.jsp"/>
+		<put name="extra" value="/themes/default/blank.jsp"/>
+	</definition>
+
+	<!-- ERROR Definitions -->
+	<definition name="bms.gcsm.error.layout" path="/template/template1.jsp">
+	  <put name="header" value="/themes/default/header.jsp"/>
+	  <put name="userInfo" value="/themes/default/userInfo.jsp"/>
+	  <put name="topnav" value="/themes/default/topnav.jsp"/>
+	  <put name="body" value="/themes/default/body.jsp"/>
+	</definition>
+
+	<definition name="bms.gcsm.error.404.layout" extends="bms.gcsm.error.layout">
+	  <put name="body" value="/views/error/404.jsp"/>
+	</definition>
+
+	<definition name="bms.gcsm.error.500.layout" extends="bms.gcsm.error.layout">
+	  <put name="body" value="/views/error/500.jsp"/>
+	</definition>
+
+	<!-- ===================================================================================== -->
+	<!-- BEGIN: Potential Site Identification (PSI) Page Layout                                                                                                                                                                                         -->
+	<!-- ===================================================================================== -->
+	<definition name="bms.gcsm.psi.layout" extends="bms.gcsm.standard.layout">
+		<put name="title" value="Global Clinical Site Management."/>
+		<put name="header" value="/themes/default/header.jsp"/>
+		<put name="userInfo" value="/themes/default/userInfo.jsp"/>
+		<put name="topnav" value="/themes/default/topnav.jsp"/>
+		<put name="leftnav" value="/views/psi/psiNav.jsp"/>
+		<put name="body" value="/views/psi/psi_search.jsp"/>
+		<put name="footer" value="/themes/default/footer.jsp"/>
+	</definition>
+
+	<definition name="bms.gcsm.psa.layout" extends="bms.gcsm.psi.layout">
+	  <put name="body" value="/views/psi/psa_search.jsp"/>
+	</definition>
+
+
+	<!-- ===================================================================================== -->
+	<!-- BEGIN: Significant Site Contact (SSC) Page Layout                                                                                                                                                                                         -->
+	<!-- ===================================================================================== -->
+	<definition name="bms.gcsm.ssc.layout" extends="bms.gcsm.standard.form.layout">
+		<put name="title" value="Global Clinical Site Management."/>
+		<put name="header" value="/themes/default/header.jsp"/>
+		<put name="userInfo" value="/themes/default/userInfo.jsp"/>
+		<put name="topnav" value="/themes/default/topnav.jsp"/>
+		<put name="leftNav" value="/views/ssc/sscNav.jsp"/>
+		<put name="body" value="/views/ssc/ssc.jsp"/>
+		<put name="footer" value="/themes/default/footer.jsp"/>
+	</definition>
+	
+	<definition name="bms.gcsm.UserSitesPopUp.popup" extends="bms.gcsm.popup.layout">
+		<put name="title" value="Protocol/Site List"/>
+		<put name="body" value="/views/sites/UserSitesPopUp.jsp"/>
+	</definition>
+
+
+	<definition name="bms.gcsm.smpList.layout" extends="bms.gcsm.standard.layout">
+		<put name="title" value="Global Clinical Site Management - Site Monitoring Plan List"/>
+		<put name="header" value="/themes/default/header.jsp"/>
+		<put name="userInfo" value="/themes/default/userInfo.jsp"/>
+		<put name="topnav" value="/themes/default/topnav.jsp"/>
+	<put name="leftnav" value="/views/form/smpListNav.jsp"/>
+		<put name="body" value="/views/form/smpList.jsp"/>
+		<put name="footer" value="/themes/default/footer.jsp"/>
+	</definition>
+
+	 <definition name="bms.gcsm.drwlist.layout" extends="bms.gcsm.standard.layout">
+	  <put name="leftnav" value="/views/sites/siteLeftNav.jsp"/>
+	  <put name="body" value="/views/forms/drwList.jsp"/>
+	</definition>
+
+	<!-- ===================================================================================== -->
+	<!-- BEGIN: Report Page Layout                                                                                                                                                                                         -->
+	<!-- ===================================================================================== -->
+	<definition name="bms.gcsm.report.layout" extends="bms.gcsm.standard.layout">
+		<put name="title" value="Global Clinical Site Management."/>
+		<put name="header" value="/themes/default/header.jsp"/>
+		<put name="userInfo" value="/themes/default/userInfo.jsp"/>
+		<put name="topnav" value="/themes/default/topnav.jsp"/>
+		<put name="leftnav" value="/views/reports/reportsNav.jsp"/>
+		<put name="body" value="/views/reports/reports.jsp"/>
+		<put name="footer" value="/themes/default/footer.jsp"/>
+		<put name="extra" value="/themes/default/calendar.jsp"/>
+	</definition>
+
+	<definition name="bms.gcsm.report.visitTargetReport" extends="bms.gcsm.report.layout">
+	  <put name="body" value="/views/reports/doVisitTargetReport.jsp"/>
+	</definition>
+
+	 <definition name="bms.gcsm.report.randomTargetReport" extends="bms.gcsm.report.layout">
+	  <put name="body" value="/views/reports/doRandomTargetReport.jsp"/>
+	</definition>
+
+	<definition name="bms.gcsm.report.visitDateToReportCompletionReport" extends="bms.gcsm.report.layout">
+	  <put name="body" value="/views/reports/doVisitDateToReportCompletion.jsp"/>
+	</definition>
+
+	<definition name="bms.gcsm.report.visitDateToReportCompletionDetailReport" extends="bms.gcsm.report.layout">
+	  <put name="body" value="/views/reports/doVisitDateToReportCompletion.jsp"/>
+	</definition>
+
+	<definition name="bms.gcsm.report.visitReporting" extends="bms.gcsm.report.layout">
+	  <put name="body" value="/views/reports/doVisitReporting.jsp"/>
+	</definition>
+
+	<definition name="bms.gcsm.report.subjectActivityReport" extends="bms.gcsm.report.layout">
+	  <put name="body" value="/views/reports/subjectActivityReport.jsp"/>
+	</definition>
+
+	<definition name="bms.gcsm.report.commonReportTemplate" extends="bms.gcsm.report.layout">
+	  <put name="body" value="/views/reports/doCommonReportTemplate.jsp"/>
+	</definition>
+
+	<definition name="bms.gcsm.report.commonReportTitleTemplate" extends="bms.gcsm.report.layout">
+	  <put name="body" value="/views/reports/doCommonReportTitleTemplate.jsp"/>
+	</definition>
+
+	<definition name="bms.gcsm.report.libCommonReportTemplate" extends="bms.gcsm.document.layout">
+	  <put name="document" value="/views/reports/doLibCommonReportTemplate.jsp"/>
+	    </definition>
+
+	<definition name="bms.gcsm.report.dateRangeReport" extends="bms.gcsm.report.layout">
+	  <put name="body" value="/views/reports/doDateRangeReport.jsp"/>
+	</definition>
+
+	<definition name="bms.gcsm.report.protocolDev" extends="bms.gcsm.report.layout">
+	  <put name="body" value="/views/reports/doProtocolDev.jsp"/>
+	</definition>
+
+	<definition name="bms.gcsm.report.lowEnrollReport" extends="bms.gcsm.report.layout">
+	  <put name="body" value="/views/reports/doLowEnrollReport.jsp"/>
+	</definition>
+
+
+	<!-- Login Page is unprotected resource which  no longer use due to security constaints-->
+	<!-- Avoid Modification of this layout and corresponding JSP -->
+	<definition name="bms.gcsm.login.layout" path="/template/login_template.jsp">
+		<put name="header" value="/security/header.jsp"/>
+	</definition>
+
+	<!-- ===================================================================================== -->
+	<!-- BEGIN: HOME Page Layout                                                                                                                                                                                         -->
+	<!-- ===================================================================================== -->
+	<definition name="bms.gcsm.main.layout" path="/template/home_page_template.jsp">
+		<put name="title" value="Global Clinical Site Management."/>
+		<put name="header" value="/themes/default/header.jsp"/>
+		<put name="userInfo" value="/themes/default/userInfo.jsp"/>
+		<put name="topnav" value="/themes/default/topnav.jsp"/>
+		<put name="body" value="/themes/default/body.jsp"/>
+		<put name="footer" value="/themes/default/footer.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.document.layout" path="/template/document_page_template.jsp">
+		<put name="title" value="Global Clinical Site Management."/>
+		<put name="header" value="/themes/default/header.jsp"/>
+		<put name="userInfo" value="/themes/default/userInfo.jsp"/>
+		<put name="topnav" value="/themes/default/topnav.jsp"/>
+		<put name="leftnav" value="/views/sites/siteLeftNav.jsp"/>
+		<put name="document" value="/views/document/document.jsp"/>
+		<put name="footer" value="/themes/default/footer.jsp"/>
+	</definition>
+
+
+	<definition name="bms.gcsm.bodycontent.layout" extends="bms.gcsm.main.layout">
+		<put name="sites" value="/views/sites/sites.jsp"/>
+		<put name="visits" value="/views/visits/visits.jsp"/>
+		<put name="issues" value="/views/issues/issues.jsp"/>
+		<put name="alerts" value="/views/alerts/alerts.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.homepage.layout" extends="bms.gcsm.bodycontent.layout">
+	<put name="staff" value="/views/user/staff.jsp"/>
+    </definition>
+
+
+    <definition name="bms.gcsm.staff.layout"  path="/template/staff_page_template.jsp">
+	<put name="title" value="Global Clinical Site Management."/>
+	<put name="header" value="/themes/default/header.jsp"/>
+	<put name="userInfo" value="/themes/default/userInfo.jsp"/>
+	<put name="topnav" value="/themes/default/topnav.jsp"/>
+	<put name="body" value="/themes/default/body.jsp"/>
+	<put name="admin" value="/views/user/admin.jsp"/>
+	<put name="staff" value="/views/user/staff.jsp"/>
+	<put name="footer" value="/themes/default/footer.jsp"/>
+	<put name="sites" value="/views/sites/sites.jsp"/>
+	<put name="visits" value="/views/visits/visits.jsp"/>
+	<put name="issues" value="/views/issues/issues.jsp"/>
+	<put name="alerts" value="/views/alerts/alerts.jsp"/>
+    </definition>
+    <definition name="bms.gcsm.admin.layout"  path="/template/admin_page_template.jsp">
+	<put name="title" value="Global Clinical Site Management."/>
+	<put name="header" value="/themes/default/header.jsp"/>
+	<put name="userInfo" value="/themes/default/userInfo.jsp"/>
+	<put name="topnav" value="/themes/default/admin_top_nav.jsp"/>
+	<put name="body" value="/views/user/admin.jsp"/>
+	<put name="footer" value="/themes/default/footer.jsp"/>
+    </definition>
+    <definition name="bms.gcsm.adminStaff.layout"  extends="bms.gcsm.staff.layout">
+	<put name="topnav" value="/themes/default/admin_top_nav.jsp"/>
+    </definition>
+    <definition name="bms.gcsm.adminSite.layout"  extends="bms.gcsm.site.layout">
+	<put name="topnav" value="/themes/default/admin_top_nav.jsp"/>
+    </definition>
+
+    <definition name="bms.gcsm.staff.sites.layout"  extends="bms.gcsm.staff.layout"/>
+
+	<definition name="/themes/default/home.tiles" extends="bms.gcsm.bodycontent.layout"/>
+	<!-- ===================================================================================== -->
+	<!-- BEGIN: SITE Page Layout                                                                                                                                                                                           -->
+	<!-- ===================================================================================== -->
+	<definition name="bms.gcsm.site.main.layout" path="/template/site_page_template.jsp">
+		<put name="header" value="/themes/default/header.jsp"/>
+		<put name="userInfo" value="/themes/default/userInfo.jsp"/>
+		<put name="topnav" value="/themes/default/topnav.jsp"/>
+		<put name="body" value="/themes/default/body.jsp"/>
+		<put name="footer" value="/themes/default/footer.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.site.bodycontent.layout" extends="bms.gcsm.site.main.layout">
+		<put name="leftNav" value="/views/sites/siteLeftNav.jsp"/>
+		<put name="overview" value="/views/sites/siteOverview.jsp"/>
+		<put name="site_reports" value="/views/sites/sites/siteReport.jsp"/>
+		<put name="visits" value="/views/visits/visits.jsp"/>
+		<put name="issues" value="/views/issues/issues.jsp"/>
+		<put name="alerts" value="/views/alerts/alerts.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.site.layout" extends="bms.gcsm.site.bodycontent.layout"/>
+
+	<definition name="bms.gcsm.popup.layout" path="/template/popup_template.jsp">
+		<put name="title" value="Popup Title"/>
+		<put name="header" value="/themes/default/popup_header.jsp"/>
+		<put name="body" value="/themes/default/popup_body.jsp"/>
+		<put name="footer" value="/themes/default/popup_footer.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.unscheduledVisitForms.popup" extends="bms.gcsm.popup.layout">
+		<put name="title" value="Unscheduled Visit Forms"/>
+		<put name="body" value="/views/visits/unscheduledVisitFormsPopup.jsp"/>
+	</definition>
+
+	<definition name="bms.gcsm.drug.layout" extends="bms.gcsm.standard.layout">
+	  <put name="leftnav" value="/views/sites/siteLeftNav.jsp"/>
+	  <put name="body" value="/views/drugs/drugsBody.jsp"/>
+	</definition>
+
+
+	<!--   #########################################################################-->
+	<!--   Report Layout -->
+	<!--   #########################################################################-->
+
+	<definition name="/themes/default/reports.tiles" extends="bms.gcsm.standard.layout">
+		<put name="body" value="/views/reports/reports.jsp"/>
+	</definition>
+
+	<definition name="bms.gcsm.letter.home" extends="bms.gcsm.standard.layout">
+	  <put name="leftnav" value="/views/sites/siteLeftNav.jsp"/>
+	  <put name="body" value="/views/letter/letters.jsp"/>
+	</definition>
+
+	<!--   #####################################################################-->
+	<!--   FORM Layout -->
+	<!--   #########################################################################-->
+
+	<definition name="bms.gcsm.standard.form.layout" path="/themes/default/forms/layouts/form_layout.jsp">
+		<put name="title" value="Global Clinical Site Management."/>
+		<put name="header" value="/themes/default/header.jsp"/>
+		<put name="userInfo" value="/themes/default/userInfo.jsp"/>
+		<put name="topnav" value="/themes/default/topnav.jsp"/>
+		<put name="leftNav" value="/views/sites/siteLeftNav.jsp"/>
+		<put name="leftNavSMP" value="/views/form/smpListNav.jsp"/>
+		<put name="leftNavPSA" value="/views/psi/psiNav.jsp"/>
+		<put name="myFormsLeftNav" value="/views/ssc/sscNav.jsp"/>
+		<put name="body" value="/views/form/form.jsp"/>
+		<put name="footer" value="/themes/default/footer.jsp"/>
+		<put name="footerExtra" value="/themes/default/blank.jsp"/>
+	</definition>
+
+	<definition name="bms.gcsm.form.layout" extends="bms.gcsm.standard.form.layout">
+		<put name="body" value="/views/form/form.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.form.pe.layout" extends="bms.gcsm.form.layout">
+		<put name="body" value="/views/form/protocol_exception.jsp"/>
+		<put name="footerExtra" value="/themes/default/confirmLeavePage.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.form.smv.layout" extends="bms.gcsm.form.layout">
+		<put name="body" value="/views/form/smv.jsp"/>
+		<put name="footerExtra" value="/themes/default/confirmLeavePage.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.form.drw.layout" extends="bms.gcsm.form.layout">
+		<put name="body" value="/views/form/drw.jsp"/>
+		<put name="footerExtra" value="/themes/default/confirmLeavePage.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.form.pd.layout" extends="bms.gcsm.form.layout">
+		<put name="body" value="/views/form/protocol_deviation.jsp"/>
+		<put name="footerExtra" value="/themes/default/confirmLeavePage.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.form.smp.layout" extends="bms.gcsm.form.layout">
+		<put name="leftNav" value="/views/form/smpListNav.jsp"/>
+		<put name="body" value="/views/form/eSMP.jsp"/>
+		<put name="footerExtra" value="/themes/default/confirmLeavePage.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.form.pse.layout" extends="bms.gcsm.form.layout">
+		<put name="body" value="/views/form/pse.jsp"/>
+		<put name="footerExtra" value="/themes/default/confirmLeavePage.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.form.siv.layout" extends="bms.gcsm.form.layout">
+		<put name="body" value="/views/form/siv.jsp"/>
+		<put name="footerExtra" value="/themes/default/confirmLeavePage.jsp"/>
+	</definition>
+    <definition name="bms.gcsm.form.pd.layout" extends="bms.gcsm.form.layout">
+		<put name="body" value="/views/form/pd.jsp"/>
+		<put name="footerExtra" value="/themes/default/confirmLeavePage.jsp"/>
+    </definition>
+	<definition name="bms.gcsm.form.psa.layout" extends="bms.gcsm.form.layout">
+		<put name="leftNav" value="/views/psi/psiNav.jsp"/>
+		<put name="body" value="/views/form/psa.jsp"/>
+		<put name="footerExtra" value="/themes/default/confirmLeavePage.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.form.osif.layout" extends="bms.gcsm.form.layout">
+		<put name="body" value="/views/form/osif.jsp"/>
+		<put name="footerExtra" value="/themes/default/confirmLeavePage.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.form.scv.layout" extends="bms.gcsm.form.layout">
+		<put name="body" value="/views/form/scv.jsp"/>
+		<put name="footerExtra" value="/themes/default/confirmLeavePage.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.form.sasc.layout" extends="bms.gcsm.form.layout">
+		<put name="body" value="/views/form/sasc.jsp"/>
+		<put name="footerExtra" value="/themes/default/confirmLeavePage.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.delete.confirmation.layout" extends="bms.gcsm.form.layout">
+		<put name="body" value="/views/form/delete_confirmation.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.submit.confirmation.layout" extends="bms.gcsm.form.layout">
+		<put name="body" value="/views/form/submit_confirmation.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.submit.error.layout" extends="bms.gcsm.form.layout">
+		<put name="body" value="/views/form/submit_error.jsp"/>
+	</definition>
+	<definition name="bms.gcsm.submit.signature.layout" extends="bms.gcsm.form.layout">
+		<put name="body" value="/views/form/submit_signature.jsp"/>
+	</definition>
+
+	<!--  ######################################################################-->
+	<!--<definition name="/themes/default/example.tiles" path="/themes/default/exp.jsp"/>
+	<definition name="/security/login.tiles" extends="bms.gcsm.login.layout">
+		<put name="body" value="/security/login.jsp"/>
+	</definition> -->
+
+	<!-- Definitions for postIssue -->
+	<definition name="bms.gcsm.issue.post.form" path="/views/issues/postIssue.jsp"/>
+	<definition name="bms.gcsm.issue.post.success" path="/views/issues/postedIssue.jsp"/>
+	<!-- Definitions for editIssue -->
+	<definition name="bms.gcsm.issue.edit.close" path="/views/issues/closeIssue.jsp"/>
+	<definition name="bms.gcsm.issue.edit.assign" path="/views/issues/assignIssue.jsp"/>
+	
+	
+	<definition name="bms.gcsm.logout.layout" path="/template/logout_template.jsp">
+		<put name="header" value="/security/header.jsp"/>
+		<put name="body" value="/security/logout.jsp"/>
+	</definition>
+	
+	
+</tiles-definitions>

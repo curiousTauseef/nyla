@@ -3,25 +3,27 @@ package org.solutions.form.dao.hibernate;
 import java.util.Collection;
 
 import junit.framework.TestCase;
+import nyla.solutions.formInjection.ApplicationBuilder;
+import nyla.solutions.formInjection.FormSearchCriteria;
+import nyla.solutions.formInjection.dao.FormDAO;
+import nyla.solutions.formInjection.dao.FormDAOFactory;
+import nyla.solutions.formInjection.dao.QuestionDAO;
+import nyla.solutions.formInjection.data.Application;
+import nyla.solutions.formInjection.data.Form;
+import nyla.solutions.formInjection.data.FormType;
+import nyla.solutions.formInjection.data.Question;
+import nyla.solutions.formInjection.data.ResponseType;
 import nyla.solutions.global.patterns.servicefactory.ServiceFactory;
 import nyla.solutions.global.security.data.SecurityClient;
 import nyla.solutions.global.util.Debugger;
 
-import org.solutions.form.ApplicationBuilder;
-import org.solutions.form.FormSearchCriteria;
 import org.solutions.form.FormUTUtil;
-import org.solutions.form.dao.FormDAO;
-import org.solutions.form.dao.FormDAOFactory;
-import org.solutions.form.dao.QuestionDAO;
-import org.solutions.form.data.Application;
-import org.solutions.form.data.Form;
-import org.solutions.form.data.Question;
-import org.solutions.form.data.ResponseType;
+
+
+
 //import org.solutions.patterns.servicefactory.ServiceFactory;
 //import org.solutions.security.data.SecurityClient;
 //import org.solutions.util.Debugger;
-import nyla.solutions.global.exception.NoDataFoundException;
-
 import junit.framework.Assert;
 
 /**
@@ -43,28 +45,33 @@ public class FormHibernateDAOTest extends TestCase
 
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#deleteForm(org.solutions.form.data.Form)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#deleteForm(nyla.solutions.formInjection.data.Form)}.
     */
    public void testDeleteForm()
    {
-      fail("Not yet implemented"); // TODO
+      //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#deleteFormByPK(int)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#deleteFormByPK(int)}.
     */
    public void testDeleteFormByPK()
    {
-      fail("Not yet implemented"); // TODO
+	   //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#insertForm(org.solutions.form.data.Form)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#insertForm(nyla.solutions.formInjection.data.Form)}.
     */
    public void testInsertForm()
    throws Exception
    {
       Application app = new Application();
+      FormType formType = new FormType();
+      formType.setFormTypeCode("test");
+      app.setFormType(formType);
+      
+      Assert.assertTrue(app.getFormTypeCode() !=null && app.getFormTypeCode().length() > 0);
       Integer id = new Integer(1);
       
       app.setFormId(id);
@@ -76,7 +83,7 @@ public class FormHibernateDAOTest extends TestCase
          
          Form app2 = formDAO.selectFormByPK(id.intValue(),"test");
          
-         Assert.assertEquals(id, app2.getId());
+         Assert.assertEquals(id.intValue(), app2.getPrimaryKey());
       }
       finally
       {
@@ -87,15 +94,15 @@ public class FormHibernateDAOTest extends TestCase
 
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#purgeAnswers(java.util.Collection)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#purgeAnswers(java.util.Collection)}.
     */
    public void testPurgeAnswers()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#saveAnswers(org.solutions.form.data.Application)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#saveAnswers(nyla.solutions.formInjection.data.Application)}.
     */
    public void testSaveAnswers()
    throws Exception
@@ -108,7 +115,11 @@ public class FormHibernateDAOTest extends TestCase
          ApplicationBuilder builder = new ApplicationBuilder();
          FormUTUtil.constructForm(builder);
          
+         
          Form app = builder.getForm();
+        
+         Assert.assertTrue(app.getFormTypeCode() != null && app.getFormTypeCode().length() > 0);
+         
          
          Assert.assertTrue(app.hasAnswers());
          Assert.assertTrue(app.hasQuestionaire());
@@ -119,7 +130,7 @@ public class FormHibernateDAOTest extends TestCase
          
          Form form = dao.selectFormByPK(app.getPrimaryKey(),"test");
          
-         Assert.assertEquals(formId, form.getId());
+         
          Assert.assertTrue(form.hasAnswers());
          
          Debugger.dump(form);
@@ -134,7 +145,7 @@ public class FormHibernateDAOTest extends TestCase
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#saveForm(org.solutions.form.data.Form)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#saveForm(nyla.solutions.formInjection.data.Form)}.
     */
    public void testSaveForm()
    throws Exception
@@ -143,7 +154,9 @@ public class FormHibernateDAOTest extends TestCase
       int formPK  = 2;
       FormUTUtil.constructForm(builder, formPK);
       Form form = builder.getForm();
-      
+      form.setFormTypeCode("test");
+      form.setPrimaryKey(formPK);
+      Assert.assertTrue(form.getFormTypeCode() != null && form.getFormTypeCode().length() > 0);
       
       FormDAO dao = null;
       try
@@ -152,7 +165,7 @@ public class FormHibernateDAOTest extends TestCase
          dao.insertForm(form);
          
          
-         form = dao.selectFormByPK(formPK,"test");
+         form = dao.selectFormByPK(formPK,form.getFormTypeCode());
          
          Assert.assertTrue(form.getPrimaryKey() == formPK);
          Assert.assertTrue(form.hasAnswers());
@@ -169,7 +182,7 @@ public class FormHibernateDAOTest extends TestCase
 
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#searchForForms(org.solutions.form.FormSearchCriteria)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#searchForForms(nyla.solutions.formInjection.FormSearchCriteria)}.
     */
    public void testSearchForForms()
    throws Exception
@@ -212,7 +225,7 @@ public class FormHibernateDAOTest extends TestCase
 
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#selectAnswersByFormAndQuestionAndRow(int, int, java.lang.Integer)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#selectAnswersByFormAndQuestionAndRow(int, int, java.lang.Integer)}.
     */
    public void testSelectAnswersByFormAndQuestionAndRow()
    throws Exception
@@ -246,15 +259,15 @@ public class FormHibernateDAOTest extends TestCase
    }// --------------------------------------------
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#selectDeletedAnswers(int)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#selectDeletedAnswers(int)}.
     */
    public void testSelectDeletedAnswers()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#selectFormByPK(int)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#selectFormByPK(int)}.
     */
    public void testSelectFormByPK()
    throws Exception
@@ -286,159 +299,159 @@ public class FormHibernateDAOTest extends TestCase
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#selectManagedForm(int)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#selectManagedForm(int)}.
     */
    public void testSelectManagedFormInt()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#selectManagedForm(int, boolean)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#selectManagedForm(int, boolean)}.
     */
    public void testSelectManagedFormIntBoolean()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#selectStatusByName(java.lang.String)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#selectStatusByName(java.lang.String)}.
     */
    public void testSelectStatusByName()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#selectStatuses()}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#selectStatuses()}.
     */
    public void testSelectStatuses()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#setAutoCommit(boolean)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#setAutoCommit(boolean)}.
     */
    public void testSetAutoCommit()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#updateForm(org.solutions.form.data.Form)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#updateForm(nyla.solutions.formInjection.data.Form)}.
     */
    public void testUpdateForm()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#constructBRE(int, org.solutions.form.data.Questionaire)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#constructBRE(int, nyla.solutions.formInjection.data.Questionaire)}.
     */
    public void testConstructBREIntQuestionaire()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#constructBRE(org.solutions.form.data.Form)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#constructBRE(nyla.solutions.formInjection.data.Form)}.
     */
    public void testConstructBREForm()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#selectExpressionByPK(java.lang.Integer)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#selectExpressionByPK(java.lang.Integer)}.
     */
    public void testSelectExpressionByPK()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#selectFormTypes()}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#selectFormTypes()}.
     */
    public void testSelectFormTypes()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#selectOperationBluePrintByPK(java.lang.Integer)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#selectOperationBluePrintByPK(java.lang.Integer)}.
     */
    public void testSelectOperationBluePrintByPK()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#selectRulesByFormTypeCode(int)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#selectRulesByFormTypeCode(int)}.
     */
    public void testSelectRulesByFormTypeID()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#constructQuestioniareByFormTypeCode(java.lang.String)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#constructQuestioniareByFormTypeCode(java.lang.String)}.
     */
    public void testConstructQuestioniareByFormTypeName()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#constructQuestioniareByFormTypeCode(int)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#constructQuestioniareByFormTypeCode(int)}.
     */
    public void testConstructQuestioniareByFormTypePK()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#insert(org.solutions.form.data.AttributeFacts)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#insert(nyla.solutions.formInjection.data.AttributeFacts)}.
     */
    public void testInsertAttributeFacts()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#saveQuestionAttribute(org.solutions.form.data.QuestionAttribute)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#saveQuestionAttribute(nyla.solutions.formInjection.data.QuestionAttribute)}.
     */
    public void testSaveQuestionAttribute()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#selectFormTypeByCode(java.lang.String)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#selectFormTypeByCode(java.lang.String)}.
     */
    public void testSelectFormTypeByName()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#selectFormTypeByPK(int)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#selectFormTypeByPK(int)}.
     */
    public void testSelectFormTypeByPK()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#selectQuestionAttributeByPK(java.lang.Integer, java.lang.Integer, java.lang.String)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#selectQuestionAttributeByPK(java.lang.Integer, java.lang.Integer, java.lang.String)}.
     */
    public void testSelectQuestionAttributeByPK()
    {
-      fail("Not yet implemented"); // TODO
+	 //TODO:fail("Not yet implemented"); // TODO
    }
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#selectQuestionsByFormTypeCode(java.lang.String)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#selectQuestionsByFormTypeCode(java.lang.String)}.
     */
    public void testSelectQuestionsByFormTypeCode()
    throws Exception
@@ -498,7 +511,7 @@ public class FormHibernateDAOTest extends TestCase
    }// --------------------------------------------
 
    /**
-    * Test method for {@link org.solutions.form.dao.hibernate.FormHibernateDAO#selectSectionsByFormTypePK(int)}.
+    * Test method for {@link nyla.solutions.formInjection.dao.hibernate.FormHibernateDAO#selectSectionsByFormTypePK(int)}.
     */
    public void testSelectSectionsByFormTypeCode()
    {

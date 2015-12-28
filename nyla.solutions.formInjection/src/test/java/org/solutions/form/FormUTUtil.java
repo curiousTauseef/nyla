@@ -3,7 +3,8 @@ package org.solutions.form;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.solutions.form.data.FormProperty;
+import nyla.solutions.formInjection.FormBuilder;
+import nyla.solutions.formInjection.data.FormProperty;
 
 /**
  * <pre>

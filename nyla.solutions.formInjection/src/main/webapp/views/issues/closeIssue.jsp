@@ -4,7 +4,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Closed Issue</title>
 </head>
-
 <body>
  <h2>Issue Closed Successfully</h2>
  <p>

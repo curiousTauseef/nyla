@@ -1096,6 +1096,6 @@ signForm(aForm);
 
    </form>
    
-   </body
+   </body>
    
 </OTML:OFFLINE-FORM>

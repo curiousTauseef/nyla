@@ -22,7 +22,6 @@ import nyla.solutions.global.util.Config;
  * 
  * ServiceFactory.config=nyla.solutions.global.patterns.servicefactory.ConfigServiceFactory
  * 
- *  -Dservice.factory.xml=file://./lib 
  * </pre> 
  * @author Gregory Green
  * @version 1.0

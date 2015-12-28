@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- edited with XML Spy v4.0 U (http://www.xmlspy.com) by Gregory Green (BusinessEdge Solutions, Inc) -->
+<!--
+  Default configuration file for examples application.
+  Each module also has its own struts-config under: /WEB-INF/$MODULE/
+  @version $Revision: 1.7 $ $Date: 2004/02/19 01:10:33 $
+-->
+<struts-config>
+	<data-sources/>
+	<form-beans>
+	    <form-bean name="signatureForm" type="org.apache.struts.validator.DynaValidatorForm">
+ 	       <form-property name="loginID" type="java.lang.String"/>
+ 	       <form-property name="password" type="java.lang.String"/> 	       
+	    </form-bean>
+	</form-beans>
+	<global-exceptions/>
+	<global-forwards/>
+	<action-mappings>
+		<action name="formAction" path="/formAction" type="com.bms.informatics.gcsm.form.web.FormAction" parameter="op" validate="true">
+		   <forward name="list" path="bms.gcsm.site.layout"/>
+		   <forward name="access" path="bms.gcsm.form.layout"/>
+		   <forward name="delete.confirmation" path="bms.gcsm.delete.confirmation.layout"/>
+		   <forward name="submit.confirmation" path="bms.gcsm.submit.confirmation.layout"/>		   		   
+		   <forward name="submit.signature" path="bms.gcsm.submit.signature.layout"/>				   
+		   <forward name="complete.signature" path="bms.gcsm.submit.signature.layout"/>						
+		   <forward name="complete.confirmation" path="bms.gcsm.submit.confirmation.layout"/>		   		      
+		   <forward name="submit.error" path="bms.gcsm.submit.signature.layout"/>				   
+		   <forward name="complete.error" path="bms.gcsm.submit.signature.layout"/>				   
+		   <forward name="PE.version.1" path="bms.gcsm.form.pe.layout"/>							
+		   <forward name="SMV.version.1" path="bms.gcsm.form.smv.layout"/>				
+		   <forward name="PD.version.1" path="bms.gcsm.form.pd.layout"/>	
+		   <forward name="SMP.version.1" path="bms.gcsm.form.smp.layout"/>			
+		   <forward name="PSE.version.1" path="bms.gcsm.form.pse.layout"/>	
+		   <forward name="PSA.version.1" path="bms.gcsm.form.psa.layout"/>
+		   <forward name="DRW.version.1" path="bms.gcsm.form.drw.layout"/>
+		   <forward name="OSIF.version.1" path="bms.gcsm.form.osif.layout"/>
+		   <forward name="SCV.version.1" path="bms.gcsm.form.scv.layout"/>			
+            	   <forward name="SIV.version.1" path="bms.gcsm.form.siv.layout"/>
+            	   <forward name="SASC.version.1" path="bms.gcsm.form.sasc.layout"/>            	   
+            	   <forward name="MY_FORMS_PE_DISPLAY" path="bms.gcsm.myforms.pe.layout"/>
+            	   <forward name="MY_FORMS_SMV_DISPLAY" path="bms.gcsm.myforms.smv.layout"/>
+            	   <forward name="MY_FORMS_PD_DISPLAY" path="bms.gcsm.myforms.pd.layout"/>
+            	   <forward name="MY_FORMS_SMP_DISPLAY" path="bms.gcsm.myforms.smp.layout"/>
+            	   <forward name="MY_FORMS_PSE_DISPLAY" path="bms.gcsm.myforms.pse.layout"/>
+            	   <forward name="MY_FORMS_PSA_DISPLAY" path="bms.gcsm.myforms.psa.layout"/>
+            	   <forward name="MY_FORMS_DRW_DISPLAY" path="bms.gcsm.myforms.drw.layout"/>
+            	   <forward name="MY_FORMS_OSIF_DISPLAY" path="bms.gcsm.myforms.osif.layout"/>
+            	   <forward name="MY_FORMS_SCV_DISPLAY" path="bms.gcsm.myforms.scv.layout"/>
+            	   <forward name="MY_FORMS_SIV_DISPLAY" path="bms.gcsm.myforms.siv.layout"/>
+            	   <forward name="MY_FORMS_SASC_DISPLAY" path="bms.gcsm.myforms.sasc.layout"/>
+		</action>
+		<action name="signatureForm" path="/formAction/sign" type="com.bms.informatics.gcsm.form.web.FormAction" parameter="op" validate="true">
+		   <forward name="submit.confirmation" path="bms.gcsm.submit.confirmation.layout"/>		   		   
+		   <forward name="submit.signature" path="bms.gcsm.submit.signature.layout"/>				   
+		   <forward name="complete.signature" path="bms.gcsm.submit.signature.layout"/>						
+		   <forward name="complete.confirmation" path="bms.gcsm.submit.confirmation.layout"/>		   		      
+		   <forward name="submit.error" path="bms.gcsm.submit.signature.layout"/>				   
+		   <forward name="complete.error" path="bms.gcsm.submit.signature.layout"/>				   		   
+		</action>		
+		<action name="SMPForm" path="/SMPFormAction" type="com.bms.informatics.gcsm.form.web.SMPFormAction" parameter="op" validate="false">
+			<forward name="viewSMP" path="bms.gcsm.form.smp.layout"/>
+		</action>
+		<action path="/OSIFFormAction" type="com.bms.informatics.gcsm.form.web.OSIFFormAction" parameter="op" validate="false">
+		   <forward name="OSIF.version.1" path="bms.gcsm.form.osif.layout"/>
+		   <forward name="access" path="bms.gcsm.form.layout"/>		   
+		</action>
+		<action name="PSEForm" path="/PSEFormAction" type="com.bms.informatics.gcsm.form.web.PSEFormAction" parameter="op" validate="false">
+			<forward name="PSE.version.1" path="bms.gcsm.form.pse.layout"/>
+            <forward name="SIV.version.1" path="bms.gcsm.form.siv.layout"/>
+		   <forward name="delete.confirmation" path="bms.gcsm.delete.confirmation.layout"/>            
+		    <forward name="submit.signature" path="bms.gcsm.submit.signature.layout"/>
+		   <forward name="submit.confirmation" path="bms.gcsm.submit.confirmation.layout"/>		   		   
+		   <forward name="submit.signature" path="bms.gcsm.submit.signature.layout"/>				   
+		   <forward name="complete.signature" path="bms.gcsm.submit.signature.layout"/>						
+		   <forward name="complete.confirmation" path="bms.gcsm.submit.confirmation.layout"/>		   		      
+		   <forward name="submit.error" path="bms.gcsm.submit.signature.layout"/>				   
+		   <forward name="complete.error" path="bms.gcsm.submit.signature.layout"/>				    
+		</action>
+	</action-mappings>
+</struts-config>
+

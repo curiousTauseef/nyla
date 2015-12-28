@@ -3,12 +3,13 @@
 <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://gcsm.bms.com/tld/form.tld" prefix="form"%>
 -->
+
 <form name="aForm" action="<c:url value="/do/formAction"/>" method="POST">
 <input type="hidden" name="formID" value="<c:out value="${form.primaryKey}"/>"/>
 <p>
    <table class="formHeader" width="100%" cellpadding="0">
         <tr>
-            <td>eSignature</td?
+            <td>eSignature</td>
           </tr>
    </table>
  </p>

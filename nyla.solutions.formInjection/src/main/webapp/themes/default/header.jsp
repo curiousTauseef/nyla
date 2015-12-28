@@ -8,7 +8,6 @@
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ taglib uri="/WEB-INF/struts-nested.tld" prefix="nested" %>
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
-
 <bean:define id="bw" name="backweb" scope="application" />
 <script language="JavaScript" type="text/javascript">
 <!--

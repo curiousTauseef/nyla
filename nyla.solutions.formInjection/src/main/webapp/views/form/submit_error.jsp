@@ -3,7 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://gcsm.bms.com/tld/form.tld" prefix="form"%>
 -->
-
 <p  class="">
    Deleted
 </p>

@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+<struts-config>
+  <form-beans>
+	<form-bean name="MainTaskBarForm" type="org.apache.struts.validator.DynaValidatorForm"/>
+	<form-bean dynamic="false" name="sitePanelForm" type="com.bms.informatics.gcsm.protocol.web.form.SitePanelForm"/>
+	<form-bean name="visitPanelForm" type="com.bms.informatics.gcsm.schedule.web.form.VisitPanelForm"/>
+	<form-bean name="issuePanelForm" type="com.bms.informatics.gcsm.issue.web.form.IssuePanelForm"/>
+	<form-bean name="alertPanelForm" type="com.bms.informatics.gcsm.alert.web.form.AlertPanelForm"/>
+	<form-bean name="userPanelForm" type="com.bms.informatics.gcsm.security.web.form.UserPanelForm"/>
+	<form-bean name="newVisitForm" type="com.bms.informatics.gcsm.schedule.web.form.NewVisitForm"/>
+	<form-bean name="alertForm" type="com.bms.informatics.gcsm.alert.web.form.NewAlertForm"/>
+	<form-bean name="alertDetail" type="com.bms.informatics.gcsm.alert.web.form.AlertForm" />
+	<form-bean name="backweb" type="com.bms.informatics.gcsm.security.backweb.web.BackwebForm"/>
+	<form-bean name="visitTargetReportForm" type="com.bms.informatics.gcsm.reports.web.form.VisitTargetReportForm" />
+	<form-bean name="visitTypeReportForm" type="com.bms.informatics.gcsm.reports.web.form.VisitTypeReportForm" />
+	<form-bean name="reportForm" type="com.bms.informatics.gcsm.reports.web.form.ReportForm" />
+	<form-bean name="siteReportPanelForm" type="com.bms.informatics.gcsm.protocol.web.form.SiteReportPanelForm"/>
+	<form-bean name="documentForm" type="com.bms.informatics.gcsm.document.web.form.DocumentForm"/>
+	<form-bean name="documentPanelForm" type="com.bms.informatics.gcsm.document.web.form.DocumentPanelForm"/>
+	<form-bean name="letterForm" type="com.bms.informatics.gcsm.letter.web.form.LetterForm"/>
+	<form-bean name="investigatorForm" type="com.bms.informatics.gcsm.protocol.web.form.InvestigatorForm"/>
+	<form-bean name="researchSitePanelForm" type="com.bms.informatics.gcsm.protocol.web.form.ResearchSitePanelForm"/>
+	<form-bean name="psaPanelForm" type="com.bms.informatics.gcsm.protocol.web.form.PSAPanelForm"/>
+	<form-bean name="staffPanelForm" type="com.bms.informatics.gcsm.security.web.form.StaffPanelForm"/>
+	<form-bean name="myFormPanelForm" type="com.bms.informatics.gcsm.form.web.form.MyFormPanelForm"/>
+	<form-bean name="drugReconciliationPanelForm" type="com.bms.informatics.gcsm.form.web.form.DrugReconcilationPanelForm"/>
+	<form-bean name="postIssueForm" type="com.bms.informatics.gcsm.issue.web.form.PostIssueForm"/>
+	<form-bean name="editIssueForm" type="com.bms.informatics.gcsm.issue.web.form.EditIssueForm"/>
+	<form-bean name="adminPanelForm" type="com.bms.informatics.gcsm.security.web.form.AdminPanelForm"/>
+	<form-bean name="smpListForm" type="com.bms.informatics.gcsm.form.web.form.SMPListForm"/>
+      <!--
+    <form-bean name="reportForm" type="org.apache.struts.validator.DynaValidatorForm">
+	    <form-property name="startDt" type="java.lang.String" initial="01-JAN-1949" />
+	    <form-property name="endDt" type="java.lang.String" initial="01-JAN-2050" />
+	    <form-property name="userList" type="java.lang.String" />
+	    <form-property name="userNm" type="java.lang.String" />
+	     <form-property name="protocol" type="java.lang.String" />
+	     <form-property name="reportName" type="java.lang.String" />
+	     <form-property name="html" type="java.lang.String"/>
+     </form-bean>
+     -->
+
+
+
+
+
+  </form-beans>
+  <global-forwards>
+	<forward name="404" path="bms.gcsm.error.404.layout"/>
+	<forward name="500" path="bms.gcsm.error.500.layout"/>
+	<forward name="home" path="/do/init"/>
+	<forward name="success" path="/init.do"/>
+	<forward name="login" path="/Logon.do"/>
+	<forward name="loginPage" path="gcsm.login.layout"/>
+	<forward name="failure" path="gcsm.error.layout"/>
+	<forward name="exec" path="gcsm.data.layout"/>
+	<forward name="unscheduledVisitFormsPopup" path="bms.gcsm.unscheduledVisitForms.popup"/>
+	<forward name="logout" path="bms.gcsm.logout.layout"/>
+    <forward name="doExcelReport" path="/excel" />
+  </global-forwards>
+
+  <action-mappings>
+  
+    <action path="/RoleSelectorAction" parameter="method" type="com.bms.informatics.gcsm.security.web.action.RoleSelectorAction">
+    
+    <forward name="success" path="/views/user/roleSelector.jsp"/>
+    
+    </action>
+    
+    <action path="/LogoutAction"
+	    type="com.bms.informatics.gcsm.security.web.action.LogoutAction">	    
+    </action>
+    
+     <action path="/UserListAction"
+	    type="com.bms.informatics.gcsm.security.web.action.UserListAction"
+	    parameter="/views/issues/gcsm_users.jsp">	    
+    </action>
+    
+    <action path="/LetterPanelAction" parameter="method"
+	    type="com.bms.informatics.gcsm.letter.web.action.LetterPanelAction">
+	    <forward name="DISPLAY_LETTER_PANEL" path="bms.gcsm.letter.home">
+	    </forward>
+    </action>
+    <action path="/EditIssueAction"
+	    name="editIssueForm"
+	    parameter="method"
+	    validate="no"
+	    type="com.bms.informatics.gcsm.issue.web.action.EditIssueAction">
+	<forward name="ISSUE_LOAD_FROM_DRAFT" path="/do/PostIssueAction?method=openDraftIssue"/>
+	<forward name="ISSUE_LOAD_FROM_SAVE" path="/views/issues/editIssue.jsp"/>
+	<forward name="ISSUE_CLOSED_SUCCESSFULLY" path="bms.gcsm.issue.edit.close"/>
+	<forward name="ISSUE_REASSIGNED_SUCCESSFULLY" path="bms.gcsm.issue.edit.assign"/>
+    </action>
+    <action path="/PostIssueAction"
+	    name="postIssueForm"
+	    parameter="method"
+	    validate="no"
+	    type="com.bms.informatics.gcsm.issue.web.action.PostIssueAction">
+	<forward name="POST_ISSUE_FORM_DISPLAY" path="bms.gcsm.issue.post.form"/>
+	<forward name="POST_ISSUE_FORM_SUCCESS_DISPLAY" path="bms.gcsm.issue.post.success"/>
+    </action>
+
+    <action path="/DRWAction"
+	    name="drugReconciliationPanelForm"
+	    parameter="method"
+	    validate="no"
+	    type="com.bms.informatics.gcsm.form.web.drw.DRWAction">
+	<forward name="DISPLAY_DRUG_RECONCILE_FORM" path="bms.gcsm.drug.layout"/>
+    </action>
+
+    <action path="/DRWListAction"
+	    name="drwListForm"
+	    parameter="method"
+	    validate="no"
+	    type="com.bms.informatics.gcsm.form.ewb.action.DRWListAction">
+	    <forward name="list" path="bms.gcsm.drwlist.layout"/>
+    </action>
+
+    <action path="/MyFormPanelAction"
+	    name="myFormPanelForm"
+	    parameter="method"
+	    type="com.bms.informatics.gcsm.form.web.action.MyFormPanelAction"
+	    validate="no">
+	<forward name="MY_FORM_DISPLAY" path="bms.gcsm.ssc.layout"/>
+	<forward name="UserSitesPopUp" path="bms.gcsm.UserSitesPopUp.popup"/>
+    </action>
+
+    <action path="/SMPListAction"
+		    name="smpListForm"
+		    parameter="method"
+		    type="com.bms.informatics.gcsm.form.web.action.SMPListAction"
+		    validate="no">
+	    <forward name="list" path="bms.gcsm.smpList.layout"/>
+    </action>
+
+	  <action name="documentForm"
+	  parameter="method"
+	  path="/DocumentDetailAction"
+      type="com.bms.informatics.gcsm.document.web.action.DocumentDetailAction" validate="no">
+	<forward name="initDocumentDetailForm" path="/views/document/documentDetail.jsp"/>
+	<forward name="success" path="/views/document/documentComment.jsp"/>
+    </action>
+
+	<action name="documentPanelForm"
+		parameter="method"
+		path="/DocumentAction"
+		type="com.bms.informatics.gcsm.document.web.action.DocumentAction">
+	<forward name="initDocumentForm" path="bms.gcsm.document.layout"/>
+	<forward name="success" path="bms.gcsm.document.layout"/>
+	<forward name="docList" path="/views/document/all_docs.jsp"/>
+	</action>
+
+    <action name="userPanelForm,sitePanelForm,visitPanelForm" path="/init" type="com.bms.informatics.gcsm.common.web.action.InitPanelAction">
+	<forward name="success" path="bms.gcsm.homepage.layout"/>
+	<forward name="home"  path="bms.gcsm.homepage.layout" />
+	<forward name="admin" path="bms.gcsm.admin.layout"/>
+    </action>
+    <action path="/home" type="com.bms.informatics.gcsm.common.web.DoForwardAction">
+	<forward name="success" path="bms.gcsm.homepage.layout"/>
+	<forward name="admin"  path="bms.gcsm.admin.layout"/>
+	<forward name="adminSite" path="bms.gcsm.adminSite.layout"/>
+	<forward name="adminStaff"  path="bms.gcsm.adminStaff.layout"/>
+    </action>
+
+    <action name="researchSitePanelForm"
+	    path="/ResearchSitePanelAction"
+	    parameter="method"
+	    scope="session"
+	    type="com.bms.informatics.gcsm.protocol.web.action.ResearchSitePanelAction">
+	    <forward name="DISPLAY_RESEARCH_SITE_SEARCH" path="bms.gcsm.psi.layout"/>
+    </action>
+
+    <action path="/PSAPanelAction"
+	    name="psaPanelForm"
+	    parameter="method"
+	    scope="session"
+	    type="com.bms.informatics.gcsm.protocol.web.action.PSAPanelAction">
+	<forward name="DISPLAY_PSA_SEARCH" path="bms.gcsm.psa.layout"/>
+    </action>
+
+    <action path="/psa" type="com.bms.informatics.gcsm.common.web.DoForwardAction">
+	<forward name="success" path="bms.gcsm.psa.layout"/>
+    </action>
+
+    <action path="/psi" type="com.bms.informatics.gcsm.common.web.DoForwardAction">
+	<forward name="success" path="bms.gcsm.psi.layout"/>
+    </action>
+
+    <action path="/ssc" type="com.bms.informatics.gcsm.common.web.DoForwardAction">
+	<forward name="success" path="bms.gcsm.ssc.layout"/>
+    </action>
+
+    <action path="/reports" type="com.bms.informatics.gcsm.common.web.DoForwardAction">
+	<forward name="success" path="bms.gcsm.report.layout"/>
+    </action>
+
+  <action path="/unscheduledVisitFormsPopup"
+      type="com.bms.informatics.gcsm.common.web.DoForwardAction">
+	<forward name="success" path="bms.gcsm.unscheduledVisitForms.popup"/>
+  </action>
+
+    <action path="/Document" scope="session"  type="com.bms.informatics.gcsm.common.web.DoForwardAction"  validate="false">
+	<forward name="success" path="bms.gcsm."/>
+    </action>
+
+    <action path="/Logout" type="com.bms.informatics.gcsm.common.web.action.LogoutAction" validate="false">
+	<forward name="loginPage" path="gcsm.login.layout"/>
+    </action>
+    <action name="userPanelForm" parameter="method" path="/UserPanelAction" type="com.bms.informatics.gcsm.security.web.action.UserPanelAction">
+	<forward name="UserPanelForm" path="/themes/default/userInfo.jsp"/>
+	<forward name="success"  path="bms.gcsm.homepage.layout" />
+	<forward name="home"  path="bms.gcsm.homepage.layout" />
+	<forward name="admin" path="bms.gcsm.admin.layout"/>
+    </action>
+      <action name="staffPanelForm"
+	      path="/StaffPanelAction"
+	      parameter="method"
+	      type="com.bms.informatics.gcsm.security.web.action.StaffPanelAction">
+	 <forward name="home"  path="bms.gcsm.homepage.layout" />
+	<forward name="initUserPanelForm" path="/themes/default/userInfo.jsp"/>
+	<forward name="success"  path="bms.gcsm.homepage.layout" />
+	<forward name="staff"  path="bms.gcsm.staff.layout"/>
+	<forward name="adminSite" path="bms.gcsm.adminSite.layout"/>
+	<forward name="adminStaff"  path="bms.gcsm.adminStaff.layout"/>
+      </action>
+
+    <action name="sitePanelForm"
+	    parameter="method"
+	    path="/SitePanelAction"
+	    type="com.bms.informatics.gcsm.protocol.web.action.SitePanelAction"
+	    validate="false">
+	<forward name="home"  path="bms.gcsm.homepage.layout" />
+	<forward name="success"  path="bms.gcsm.homepage.layout" />
+	<forward name="siteHome"  path="bms.gcsm.site.layout"/>
+	<forward name="staff" path="bms.gcsm.staff.layout"/>
+	<forward name="staffSite" path="bms.gcsm.site.layout"/>
+	<forward name="adminSite" path="bms.gcsm.adminSite.layout"/>
+	<forward name="adminStaff"  path="bms.gcsm.adminStaff.layout"/>
+    </action>
+    <action name="siteReportPanelForm"
+	    parameter="method"
+	    path="/SiteReportPanelAction"
+	    type="com.bms.informatics.gcsm.protocol.web.action.SiteReportPanelAction"
+	    validate="false">
+	<forward name="success"  path="bms.gcsm.site.layout" />
+	<forward name="home"  path="bms.gcsm.homepage.layout" />
+	<forward name="siteHome"  path="bms.gcsm.site.layout" />
+	<forward name="staffSite" path="bms.gcsm.site.layout"/>
+    </action>
+
+    <action name="visitPanelForm"
+	    parameter="method"
+	    path="/VisitPanelAction"
+	    type="com.bms.informatics.gcsm.schedule.web.action.VisitPanelAction">
+	<forward name="initVisitPanelForm" path="/views/visits/visits.jsp"/>
+	<forward name="success"  path="bms.gcsm.homepage.layout" />
+	<forward name="home"  path="bms.gcsm.homepage.layout" />
+	<forward name="siteHome"  path="bms.gcsm.site.layout" />
+	<forward name="staff"  path="bms.gcsm.staff.layout"/>
+	<forward name="siteHome" path="bms.gcsm.site.layout"/>
+	<forward name="adminSite" path="bms.gcsm.adminSite.layout"/>
+	<forward name="adminStaff"  path="bms.gcsm.adminStaff.layout"/>
+
+    </action>
+    <action name="issuePanelForm"
+	    parameter="method"
+	    path="/IssuePanelAction"
+	    type="com.bms.informatics.gcsm.issue.web.action.IssuePanelAction">
+	<forward name="initIssuePanelForm" path="/views/issues/issues.jsp"/>
+	<forward name="success"  path="bms.gcsm.homepage.layout" />
+	<forward name="home"  path="bms.gcsm.homepage.layout" />
+	<forward name="siteHome"  path="bms.gcsm.site.layout" />
+	<forward name="staff"  path="bms.gcsm.staff.layout"/>
+	<forward name="staffSite" path="bms.gcsm.site.layout"/>
+	<forward name="adminSite" path="bms.gcsm.adminSite.layout"/>
+	<forward name="adminStaff"  path="bms.gcsm.adminStaff.layout"/>
+	<forward name="investigatorIssues" path="/views/issues/InvestigatorIssuesPopUp.jsp"/>
+    </action>
+    <action name="alertPanelForm"
+		parameter="method"
+		path="/AlertPanelAction"
+		type="com.bms.informatics.gcsm.alert.web.action.AlertPanelAction">
+	<forward name="initAlertPanelForm" path="/views/alerts/alerts.jsp"/>
+	<forward name="success"  path="bms.gcsm.homepage.layout" />
+	<forward name="home"  path="bms.gcsm.homepage.layout" />
+	<forward name="siteHome"  path="bms.gcsm.site.layout" />
+	<forward name="staff"  path="bms.gcsm.staff.layout"/>
+	<forward name="staffSite" path="bms.gcsm.site.layout"/>
+	<forward name="adminSite" path="bms.gcsm.adminSite.layout"/>
+	<forward name="adminStaff"  path="bms.gcsm.adminStaff.layout"/>
+
+    </action>
+    <action name="newVisitForm" parameter="method" validate="true" input="/views/visits/newVisit.jsp" path="/newVisitAction" scope="session" type="com.bms.informatics.gcsm.schedule.web.action.NewVisitAction">
+	<forward name="initNewVisitForm" path="/views/visits/newVisit.jsp"/>
+	<forward name="doNewVisitForm" path="/views/visits/doNewVisit.jsp"/>
+	<forward name="success"  path="/do/init" redirect="true"/>
+	<forward name="home"  path="/do/init" redirect="true"/>
+	<forward name="siteHome" path="/do/SitePanelAction" redirect="true"/>
+    </action>
+    <action name="alertForm" parameter="method" path="/newAlertAction" scope="session" input="/views/alerts/newAlert.jsp" type="com.bms.informatics.gcsm.alert.web.action.NewAlertAction" validate="no">
+	<forward name="newAlert" path="/views/alerts/newAlert.jsp"/>
+	<forward name="ALERT_CREATE_SUCCESS" path="/views/alerts/doNewAlert.jsp"/>
+	<forward name="ALERT_CREATE_FAILED" path="/views/alerts/doNewAlert.jsp"/>
+    </action>
+    <action name="alertDetail" parameter="method" path="/AlertAction" scope="session" input="/views/alerts/alertDetail.jsp" type="com.bms.informatics.gcsm.alert.web.action.AlertAction" validate="no">
+	<forward name="ALERT_INFO" path="/views/alerts/alertDetail.jsp"/>
+	<forward name="ALERT_REMOVE_SUCCESS" path="/views/alerts/doRemoveAlert.jsp"/>
+	<forward name="ALERT_REMOVE_FAILED" path="/views/alerts/doRemoveAlert.jsp"/>
+	<forward name="ALERT_RETAIN_SUCCESS" path=""/>
+    </action>
+
+
+    <action path="/VisitTargetReportAction"
+	    name="reportForm"
+		  parameter="method"
+				    scope="request"
+		  type="com.bms.informatics.gcsm.reports.web.action.VisitTargetReportAction">
+
+		  <forward name="doVisitTargetReport" path="bms.gcsm.report.visitTargetReport" />
+	     <forward name="doVisitTargetMonitorReport" path="bms.gcsm.report.commonReportTitleTemplate" />
+	     <forward name="doVisitTargetSiteReport" path="bms.gcsm.report.commonReportTitleTemplate" />
+    </action>
+
+    <action path="/RandomReportAction"
+	    name="reportForm"
+		  parameter="method"
+		  scope="request"
+		  type="com.bms.informatics.gcsm.reports.web.action.RandomReportAction">
+
+	     <forward name="doRandomTargetReport" path="bms.gcsm.report.randomTargetReport" />
+	     <forward name="doRandomTargetDetailReport" path="bms.gcsm.report.commonReportTitleTemplate" />
+    </action>
+
+
+    <action path="/VisitTypeReportAction"
+		     name="reportForm"
+				       scope="request"
+			  parameter="method"
+			  type="com.bms.informatics.gcsm.reports.web.action.VisitTypeReportAction">
+		  <forward name="doVisitDateToReportCompletion" path="bms.gcsm.report.visitDateToReportCompletionReport" />
+		  <forward name="doVisitDateToReportCompletionDetail" path="bms.gcsm.report.visitDateToReportCompletionDetailReport" />
+		  <forward name="doReportSubmissionToESF" path="bms.gcsm.report.visitDateToReportCompletionReport" />
+		  <forward name="doReportSubmissionToESFDetail" path="bms.gcsm.report.commonReportTitleTemplate" />
+    </action>
+
+    <action path="/DummyReportAction"
+		     name="reportForm"
+			  parameter="method"
+			  scope="request"
+			  type="com.bms.informatics.gcsm.reports.web.action.DummyReportAction">
+		  <forward name="doVisitReporting" path="bms.gcsm.report.visitReporting" />
+		  <forward name="doSubjectActivityReport" path="bms.gcsm.report.subjectActivityReport" />
+	</action>
+
+    <action path="/SubjectReportAction"
+		     name="reportForm"
+			  parameter="method"
+			  scope="request"
+			  type="com.bms.informatics.gcsm.reports.web.action.SubjectReportAction">
+
+		  <forward name="doSDVSummary" path="bms.gcsm.report.dateRangeReport" />
+		  <forward name="doSDVDetail" path="bms.gcsm.report.commonReportTitleTemplate" />
+		  <forward name="doSiteMonitorWorkload" path="bms.gcsm.report.commonReportTitleTemplate" />
+		  <forward name="doSiteMonitorWorkloadDetail" path="bms.gcsm.report.commonReportTitleTemplate" />
+		  <forward name="doSiteManagerWorkload" path="bms.gcsm.report.commonReportTitleTemplate" />
+		  <forward name="doSiteManagerWorkloadDetail" path="bms.gcsm.report.commonReportTitleTemplate" />
+		  <forward name="doSiteMonitorSiteVisits" path="bms.gcsm.report.dateRangeReport" />
+		  <forward name="doSiteMonitorSiteVisitDetail" path="bms.gcsm.report.commonReportTitleTemplate" />
+    </action>
+
+    <action path="/ProtocolDevAction"
+	    name="reportForm"
+			      scope="request"
+		  parameter="method"
+		  type="com.bms.informatics.gcsm.reports.web.action.ProtocolDevAction">
+
+	     <forward name="doProtocolDev" path="bms.gcsm.report.protocolDev" />
+	     <forward name="doProtocolDevDetl" path="bms.gcsm.report.commonReportTitleTemplate" />
+    </action>
+
+    <action path="/LowEnrollReportAction"
+	    name="reportForm"
+			      scope="request"
+		  parameter="method"
+		  type="com.bms.informatics.gcsm.reports.web.action.LowEnrollReportAction">
+
+		  <forward name="doLowEnrollSites" path="bms.gcsm.report.lowEnrollReport" />
+    </action>
+
+    <action path="/HistoryReportAction"
+		     name="reportForm"
+			  parameter="method"
+			  scope="request"
+			  type="com.bms.informatics.gcsm.reports.web.action.HistoryReportAction">
+		  <forward name="doSAEHistory" path="bms.gcsm.report.libCommonReportTemplate" />
+		  <forward name="doSDVHistory" path="bms.gcsm.report.libCommonReportTemplate" />
+		  <forward name="doInfoConsentHist" path="bms.gcsm.report.libCommonReportTemplate" />
+		  <forward name="doDrugShipHistory" path="bms.gcsm.report.libCommonReportTemplate" />
+    </action>
+
+      <action path="/AdminPanelAction"
+	       name="adminPanelForm"
+		parameter="method"
+		type="com.bms.informatics.gcsm.security.web.action.AdminPanelAction">
+	<forward name="siteHome"  path="bms.gcsm.site.layout" />
+	<forward name="staff"  path="bms.gcsm.staff.layout"/>
+	<forward name="staffSite" path="bms.gcsm.site.layout"/>
+	<forward name="adminSite" path="bms.gcsm.adminSite.layout"/>
+	<forward name="adminStaff"  path="bms.gcsm.adminStaff.layout"/>
+
+      </action>
+
+    <action name="letterForm"
+			  parameter="method"
+			  path="/LetterAction"
+			  type="com.bms.informatics.gcsm.letter.web.action.LetterAction">
+		  <forward name="doPRELetterForSIV" path="/views/letter/doPRELetterForSIV.jsp" />
+		  <forward name="doPRELetterForPSA" path="/views/letter/doPRELetterForPSA.jsp" />
+		  <forward name="doPRELetterForPSE" path="/views/letter/doPRELetterForPSE.jsp" />
+		  <forward name="doPRELetterForSMV" path="/views/letter/doPRELetterForSMV.jsp" />
+		  <forward name="doPRELetterForSCV" path="/views/letter/doPRELetterForSCV.jsp" />
+
+		  <forward name="doPOSTLetterForSIV" path="/views/letter/doPOSTLetterForSIV.jsp" />
+		  <forward name="doPOSTLetterForPSA" path="/views/letter/doPOSTLetterForPSA.jsp" />
+		  <forward name="doPOSTLetterForPSE" path="/views/letter/doPOSTLetterForPSE.jsp" />
+
+		  <forward name="doPOSTLetterForSMV" path="/views/letter/doPOSTLetterForSMV.jsp" />
+		  <forward name="doPOSTLetterForSMV_NON_STD" path="/views/letter/doPOSTLetterForSMVNonStd.jsp" />
+
+		  <forward name="doPOSTLetterForSCV" path="/views/letter/doPOSTLetterForSCV.jsp" />
+		  <forward name="doPOSTLetterForSCV_NO_SUBJECTS" path="/views/letter/doPOSTLetterForSCVNoSubjects.jsp" />
+
+		  <forward name="doPOSTLetterForPHONE" path="/views/letter/doPOSTLetterForPHONE.jsp" />
+		  <forward name="doPOSTLetterForUNBLINDED" path="/views/letter/doPOSTLetterForUNBLINDED.jsp" />
+
+	      </action>
+<!--  TODO: Note application is invalid scope   Changed to Session Dmane-->
+<!--    <action name="backweb" -->
+<!--    			 path="/OfflineAccessAction" -->
+<!--    			 scope="application"-->
+<!--    			 type="com.bms.informatics.gcsm.security.backweb.web.OfflineAccessAction">-->
+<!--    	<forward name="accessMgr" path="/themes/default/download_plugin.jsp"/>-->
+<!--    </action>-->
+      <!-- action name="backweb"
+		   path="/OfflineAccessAction"
+		   scope="application"
+		   type="com.bms.informatics.gcsm.security.backweb.web.OfflineAccessAction">
+	  <forward name="accessMgr" path="/themes/default/download_plugin.jsp"/>
+      </action-->
+
+  </action-mappings>
+
+
+  <message-resources parameter="com.bms.informatics.gcsm.common.web.Presenter_bundle"/>
+  <message-resources key="pre_siv" parameter="com.bms.informatics.gcsm.letter.web.pre_siv_bundle"/>
+  <message-resources key="post_siv" parameter="com.bms.informatics.gcsm.letter.web.post_siv_bundle"/>
+
+  <message-resources key="pre_smv" parameter="com.bms.informatics.gcsm.letter.web.pre_smv_bundle"/>
+  <message-resources key="post_smv" parameter="com.bms.informatics.gcsm.letter.web.post_smv_bundle"/>
+  <message-resources key="post_smv_non_std" parameter="com.bms.informatics.gcsm.letter.web.post_smv_non_std_bundle"/>
+
+  <message-resources key="pre_pse" parameter="com.bms.informatics.gcsm.letter.web.pre_pse_bundle"/>
+  <message-resources key="post_pse" parameter="com.bms.informatics.gcsm.letter.web.post_pse_bundle"/>
+
+  <message-resources key="pre_psa" parameter="com.bms.informatics.gcsm.letter.web.pre_psa_bundle"/>
+  <message-resources key="post_psa" parameter="com.bms.informatics.gcsm.letter.web.post_psa_bundle"/>
+
+  <message-resources key="pre_scv" parameter="com.bms.informatics.gcsm.letter.web.pre_scv_bundle"/>
+  <message-resources key="post_scv" parameter="com.bms.informatics.gcsm.letter.web.post_scv_bundle"/>
+  <message-resources key="post_scv_no_subjects" parameter="com.bms.informatics.gcsm.letter.web.post_scv_no_subjects_bundle"/>
+
+  <message-resources key="post_unblinded" parameter="com.bms.informatics.gcsm.letter.web.post_unblinded_bundle"/>
+  <message-resources key="post_phone" parameter="com.bms.informatics.gcsm.letter.web.post_phone_bundle"/>
+
+
+  <plug-in className="org.apache.struts.tiles.TilesPlugin">
+	<set-property property="definitions-config" value="/WEB-INF/tiles.xml"/>
+	<set-property property="moduleAware" value="true"/>
+	<set-property property="name" value="gcsm"/>
+	<set-property property="definitions-parser-validate" value="true"/>
+  </plug-in>
+  <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+	<set-property property="pathnames" value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml"/>
+  </plug-in>
+  <plug-in className="com.bms.informatics.gcsm.common.web.action.GCSMInitializationAction"/>
+</struts-config>

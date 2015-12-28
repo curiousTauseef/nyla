@@ -146,8 +146,8 @@
                          <%-- Left Navigation --%>
                          <div id="leftnav">
                 			  <% String leftNavAttribute = "leftNav";
-                			  	 if ("SMP".equalsIgnoreCase((String) request.getAttribute("landingTab")) ||
-                			  			"PSA".equalsIgnoreCase((String) request.getAttribute("landingTab")))
+                			  	 if ("SMP".equalsIgnoreCase((java.lang.String) request.getAttribute("landingTab")) ||
+                			  			"PSA".equalsIgnoreCase((java.lang.String) request.getAttribute("landingTab")))
                 			  		leftNavAttribute = "leftNav" + request.getAttribute("landingTab");
                 			  	 else if ("MyForms".equals(session.getAttribute("navigationContext")))
                 			  	 	leftNavAttribute = "myFormsLeftNav";

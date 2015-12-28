@@ -1,0 +1,2364 @@
+<!DOCTYPE form-validation PUBLIC
+          "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.0//EN"
+          "http://jakarta.apache.org/commons/dtds/validator_1_0.dtd">
+<!--
+
+   This file contains the default Struts Validator pluggable validator
+   definitions.  It should be placed somewhere under /WEB-INF and
+   referenced in the struts-config.xml under the plug-in element
+   for the ValidatorPlugIn.
+
+      <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property property="pathnames" value="/WEB-INF/validator-rules.xml,
+                                                  /WEB-INF/validation.xml"/>
+      </plug-in>
+
+   These are the default error messages associated with
+   each validator defined in this file.  They should be
+   added to your projects ApplicationResources.properties
+   file or you can associate new ones by modifying the
+   pluggable validators msg attributes in this file.
+
+   # Struts Validator Error Messages7
+   errors.required={0} is required.
+   errors.minlength={0} can not be less than {1} characters.
+   errors.maxlength={0} can not be greater than {1} characters.
+   errors.invalid={0} is invalid.
+
+   errors.byte={0} must be a byte.
+   errors.short={0} must be a short.
+   errors.integer={0} must be an integer.
+   errors.long={0} must be a long.
+   errors.float={0} must be a float.
+   errors.double={0} must be a double.
+
+   errors.date={0} is not a date.
+   errors.range={0} is not in the range {1} through {2}.
+   errors.creditcard={0} is an invalid credit card number.
+   errors.email={0} is an invalid e-mail address.
+
+-->
+
+<form-validation>
+
+   <global>
+
+      <validator name="required"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateRequired"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+                  msg="errors.required">
+
+         <javascript><![CDATA[
+            function validateRequired(form) {
+                var isValid = true;
+                var focusField = null;
+                var i = 0;
+                var fields = new Array();
+                oRequired = new required();
+                for (x in oRequired) {
+                	var field = form[oRequired[x][0]];
+                	if(!field){
+                	  alert("validateRequired():"+x);
+                	}
+                    if (field.type == 'text' ||
+                        field.type == 'textarea' ||
+                        field.type == 'file' ||
+                        field.type == 'select-one' ||
+                        field.type == 'radio' ||
+                        field.type == 'password') {
+                        
+                        var value = '';
+						// get field's value
+						if (field.type == "select-one") {
+							var si = field.selectedIndex;
+							if (si >= 0) {
+								value = field.options[si].value;
+							}
+						} else {
+							value = field.value;
+						}
+                        
+                        if (trim(value).length == 0) {
+                        
+	                        if (i == 0) {
+	                            focusField = field;
+	                        }
+	                        fields[i++] = oRequired[x][1];
+	                        isValid = false;
+                        }
+                    }
+                }
+                if (fields.length > 0) {
+                   focusField.focus();
+                   alert(fields.join('\n'));
+                }
+                return isValid;
+            }
+            
+            // Trim whitespace from left and right sides of s.
+            function trim(s) {
+                return s.replace( /^\s*/, "" ).replace( /\s*$/, "" );
+            }
+            
+            ]]>
+         </javascript>
+
+      </validator>
+
+      <validator name="requiredif"
+                 classname="org.apache.struts.validator.FieldChecks"
+                 method="validateRequiredIf"
+                 methodParams="java.lang.Object,
+                               org.apache.commons.validator.ValidatorAction,
+                               org.apache.commons.validator.Field,
+                               org.apache.struts.action.ActionErrors,
+                               org.apache.commons.validator.Validator,
+                               javax.servlet.http.HttpServletRequest"
+                 msg="errors.required">
+      </validator>
+
+      <validator name="minlength"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateMinLength"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.minlength">
+
+         <javascript><![CDATA[
+            function validateMinLength(form) {
+                var isValid = true;
+                var focusField = null;
+                var i = 0;
+                var fields = new Array();
+                oMinLength = new minlength();
+                for (x in oMinLength) {
+                    var field = form[oMinLength[x][0]];
+                    
+                    if (field.type == 'text' ||
+                        field.type == 'textarea') {
+                        
+                        var iMin = parseInt(oMinLength[x][2]("minlength"));
+                        if ((trim(field.value).length > 0) && (field.value.length < iMin)) {
+                            if (i == 0) {
+                                focusField = field;
+                            }
+                            fields[i++] = oMinLength[x][1];
+                            isValid = false;
+                        }
+                    }
+                }
+                if (fields.length > 0) {
+                   focusField.focus();
+                   alert(fields.join('\n'));
+                }
+                return isValid;
+            }]]>
+         </javascript>
+
+      </validator>
+
+
+      <validator name="maxlength"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateMaxLength"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.maxlength">
+
+         <javascript><![CDATA[
+            function validateMaxLength(form) {
+                var isValid = true;
+                var focusField = null;
+                var i = 0;
+                var fields = new Array();
+                oMaxLength = new maxlength();
+                for (x in oMaxLength) {
+                    var field = form[oMaxLength[x][0]];
+                    
+                    if (field.type == 'text' ||
+                        field.type == 'textarea') {
+                        
+                        var iMax = parseInt(oMaxLength[x][2]("maxlength"));
+                        if (field.value.length > iMax) {
+                            if (i == 0) {
+                                focusField = field;
+                            }
+                            fields[i++] = oMaxLength[x][1];
+                            isValid = false;
+                        }
+                    }
+                }
+                if (fields.length > 0) {
+                   focusField.focus();
+                   alert(fields.join('\n'));
+                }
+                return isValid;
+            }]]>
+         </javascript>
+
+      </validator>
+
+
+      <validator name="mask"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateMask"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.invalid">
+
+         <javascript><![CDATA[
+            function validateMask(form) {
+                var isValid = true;
+                var focusField = null;
+                var i = 0;
+                var fields = new Array();
+                oMasked = new mask();
+                for (x in oMasked) {
+                    var field = form[oMasked[x][0]];
+                    
+                    if ((field.type == 'text' || 
+                         field.type == 'textarea') && 
+                         (field.value.length > 0)) {
+                        
+                        if (!matchPattern(field.value, oMasked[x][2]("mask"))) {
+                            if (i == 0) {
+                                focusField = field;
+                            }
+                            fields[i++] = oMasked[x][1];
+                            isValid = false;
+                        }
+                    }
+                }
+                
+                if (fields.length > 0) {
+                   focusField.focus();
+                   alert(fields.join('\n'));
+                }
+                return isValid;
+            }
+
+            function matchPattern(value, mask) {
+               return mask.exec(value);
+            }]]>
+         </javascript>
+
+      </validator>
+
+
+      <validator name="byte"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateByte"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.byte"
+       jsFunctionName="ByteValidations">
+
+         <javascript><![CDATA[
+            function validateByte(form) {
+                var bValid = true;
+                var focusField = null;
+                var i = 0;
+                var fields = new Array();
+                oByte = new ByteValidations();
+                for (x in oByte) {
+                	var field = form[oByte[x][0]];
+                	
+                    if (field.type == 'text' ||
+                        field.type == 'textarea' ||
+                        field.type == 'select-one' ||
+						field.type == 'radio') {
+
+						var value = '';
+						// get field's value
+						if (field.type == "select-one") {
+							var si = field.selectedIndex;
+							if (si >= 0) {
+								value = field.options[si].value;
+							}
+						} else {
+							value = field.value;
+						}
+                        
+                        if (value.length > 0) {
+                            if (!isAllDigits(value)) {
+                                bValid = false;
+                                if (i == 0) {
+                                    focusField = field;
+                                }
+                                fields[i++] = oByte[x][1];
+
+                            } else {
+
+	                            var iValue = parseInt(value);
+	                            if (isNaN(iValue) || !(iValue >= -128 && iValue <= 127)) {
+	                                if (i == 0) {
+	                                    focusField = field;
+	                                }
+	                                fields[i++] = oByte[x][1];
+	                                bValid = false;
+	                            }
+                            }
+						}
+						
+                    }
+                }
+                if (fields.length > 0) {
+                   focusField.focus();
+                   alert(fields.join('\n'));
+                }
+                return bValid;
+            }]]>
+         </javascript>
+
+      </validator>
+
+
+      <validator name="short"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateShort"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.short"
+       jsFunctionName="ShortValidations">
+
+         <javascript><![CDATA[
+            function validateShort(form) {
+                var bValid = true;
+                var focusField = null;
+                var i = 0;
+                var fields = new Array();
+                oShort = new ShortValidations();
+                for (x in oShort) {
+                	var field = form[oShort[x][0]];
+                	
+                    if (field.type == 'text' ||
+                        field.type == 'textarea' ||
+                        field.type == 'select-one' ||
+                        field.type == 'radio') {
+                        
+                        var value = '';
+						// get field's value
+						if (field.type == "select-one") {
+							var si = field.selectedIndex;
+							if (si >= 0) {
+								value = field.options[si].value;
+							}
+						} else {
+							value = field.value;
+						}
+                        
+                        if (value.length > 0) {
+                            if (!isAllDigits(value)) {
+                                bValid = false;
+                                if (i == 0) {
+                                    focusField = field;
+                                }
+                                fields[i++] = oShort[x][1];
+
+                            } else {
+                        
+	                            var iValue = parseInt(value);
+	                            if (isNaN(iValue) || !(iValue >= -32768 && iValue <= 32767)) {
+	                                if (i == 0) {
+	                                    focusField = field;
+	                                }
+	                                fields[i++] = oShort[x][1];
+	                                bValid = false;
+	                            }
+	                       }
+                       }
+                    }
+                }
+                if (fields.length > 0) {
+                   focusField.focus();
+                   alert(fields.join('\n'));
+                }
+                return bValid;
+            }]]>
+         </javascript>
+
+      </validator>
+
+
+      <validator name="integer"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateInteger"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.integer"
+       jsFunctionName="IntegerValidations">
+
+         <javascript><![CDATA[
+            function validateInteger(form) {
+                var bValid = true;
+                var focusField = null;
+                var i = 0;
+                var fields = new Array();
+                oInteger = new IntegerValidations();
+                for (x in oInteger) {
+                	var field = form[oInteger[x][0]];
+
+                    if (field.type == 'text' ||
+                        field.type == 'textarea' ||
+                        field.type == 'select-one' ||
+                        field.type == 'radio') {
+                        
+                        var value = '';
+						// get field's value
+						if (field.type == "select-one") {
+							var si = field.selectedIndex;
+						    if (si >= 0) {
+							    value = field.options[si].value;
+						    }
+						} else {
+							value = field.value;
+						}
+                        
+                        if (value.length > 0) {
+                        
+                            if (!isAllDigits(value)) {
+                                bValid = false;
+                                if (i == 0) {
+	                                focusField = field;
+	                            }
+						        fields[i++] = oInteger[x][1];
+						        
+                            } else {
+	                            var iValue = parseInt(value);
+	                            if (isNaN(iValue) || !(iValue >= -2147483648 && iValue <= 2147483647)) {
+	                                if (i == 0) {
+	                                    focusField = field;
+	                                }
+	                                fields[i++] = oInteger[x][1];
+	                                bValid = false;
+	                           }
+                           }
+                       }
+                    }
+                }
+                if (fields.length > 0) {
+                   focusField.focus();
+                   alert(fields.join('\n'));
+                }
+                return bValid;
+            }
+
+            function isAllDigits(argvalue) {
+                argvalue = argvalue.toString();
+                var validChars = "0123456789";
+                var startFrom = 0;
+                if (argvalue.substring(0, 2) == "0x") {
+                   validChars = "0123456789abcdefABCDEF";
+                   startFrom = 2;
+                } else if (argvalue.charAt(0) == "0") {
+                   validChars = "01234567";
+                   startFrom = 1;
+                } else if (argvalue.charAt(0) == "-") {
+                    startFrom = 1;
+                }
+                
+                for (var n = startFrom; n < argvalue.length; n++) {
+                    if (validChars.indexOf(argvalue.substring(n, n+1)) == -1) return false;
+                }
+                return true;
+            }]]>
+         </javascript>
+
+      </validator>
+
+
+      <validator name="long"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateLong"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.long"/>
+
+
+      <validator name="float"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateFloat"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.float"
+       jsFunctionName="FloatValidations">
+
+         <javascript><![CDATA[
+            function validateFloat(form) {
+                var bValid = true;
+                var focusField = null;
+                var i = 0;
+                var fields = new Array();
+                oFloat = new FloatValidations();
+                for (x in oFloat) {
+                	var field = form[oFloat[x][0]];
+                	
+                    if (field.type == 'text' ||
+                        field.type == 'textarea' ||
+                        field.type == 'select-one' ||
+                        field.type == 'radio') {
+                        
+                    	var value = '';
+						// get field's value
+						if (field.type == "select-one") {
+							var si = field.selectedIndex;
+							if (si >= 0) {
+							    value = field.options[si].value;
+							}
+						} else {
+							value = field.value;
+						}
+                        
+                        if (value.length > 0) {
+                            // remove '.' before checking digits
+                            var tempArray = value.split('.');
+                            var joinedString= tempArray.join('');
+
+                            if (!isAllDigits(joinedString)) {
+                                bValid = false;
+                                if (i == 0) {
+                                    focusField = field;
+                                }
+                                fields[i++] = oFloat[x][1];
+
+                            } else {
+	                            var iValue = parseFloat(value);
+	                            if (isNaN(iValue)) {
+	                                if (i == 0) {
+	                                    focusField = field;
+	                                }
+	                                fields[i++] = oFloat[x][1];
+	                                bValid = false;
+	                            }
+                            }
+                        }
+                    }
+                }
+                if (fields.length > 0) {
+                   focusField.focus();
+                   alert(fields.join('\n'));
+                }
+                return bValid;
+            }]]>
+         </javascript>
+
+      </validator>
+
+
+      <validator name="double"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateDouble"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.double"/>
+
+
+      <validator name="date"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateDate"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.date"
+       jsFunctionName="DateValidations">
+
+         <javascript><![CDATA[
+            function validateDate(form) {
+               var bValid = true;
+               var focusField = null;
+               var i = 0;
+               var fields = new Array();
+               oDate = new DateValidations();
+               for (x in oDate) {
+                   var value = form[oDate[x][0]].value;
+                   var datePattern = oDate[x][2]("datePatternStrict");
+                   if ((form[oDate[x][0]].type == 'text' ||
+                        form[oDate[x][0]].type == 'textarea') &&
+                       (value.length > 0) &&
+                       (datePattern.length > 0)) {
+                     var MONTH = "MM";
+                     var DAY = "dd";
+                     var YEAR = "yyyy";
+                     var orderMonth = datePattern.indexOf(MONTH);
+                     var orderDay = datePattern.indexOf(DAY);
+                     var orderYear = datePattern.indexOf(YEAR);
+                     if ((orderDay < orderYear && orderDay > orderMonth)) {
+                         var iDelim1 = orderMonth + MONTH.length;
+                         var iDelim2 = orderDay + DAY.length;
+                         var delim1 = datePattern.substring(iDelim1, iDelim1 + 1);
+                         var delim2 = datePattern.substring(iDelim2, iDelim2 + 1);
+                         if (iDelim1 == orderDay && iDelim2 == orderYear) {
+                            dateRegexp = new RegExp("^(\\d{2})(\\d{2})(\\d{4})$");
+                         } else if (iDelim1 == orderDay) {
+                            dateRegexp = new RegExp("^(\\d{2})(\\d{2})[" + delim2 + "](\\d{4})$");
+                         } else if (iDelim2 == orderYear) {
+                            dateRegexp = new RegExp("^(\\d{2})[" + delim1 + "](\\d{2})(\\d{4})$");
+                         } else {
+                            dateRegexp = new RegExp("^(\\d{2})[" + delim1 + "](\\d{2})[" + delim2 + "](\\d{4})$");
+                         }
+                         var matched = dateRegexp.exec(value);
+                         if(matched != null) {
+                            if (!isValidDate(matched[2], matched[1], matched[3])) {
+                               if (i == 0) {
+                                   focusField = form[oDate[x][0]];
+                               }
+                               fields[i++] = oDate[x][1];
+                               bValid =  false;
+                            }
+                         } else {
+                            if (i == 0) {
+                                focusField = form[oDate[x][0]];
+                            }
+                            fields[i++] = oDate[x][1];
+                            bValid =  false;
+                         }
+                     } else if ((orderMonth < orderYear && orderMonth > orderDay)) {
+                         var iDelim1 = orderDay + DAY.length;
+                         var iDelim2 = orderMonth + MONTH.length;
+                         var delim1 = datePattern.substring(iDelim1, iDelim1 + 1);
+                         var delim2 = datePattern.substring(iDelim2, iDelim2 + 1);
+                         if (iDelim1 == orderMonth && iDelim2 == orderYear) {
+                             dateRegexp = new RegExp("^(\\d{2})(\\d{2})(\\d{4})$");
+                         } else if (iDelim1 == orderMonth) {
+                             dateRegexp = new RegExp("^(\\d{2})(\\d{2})[" + delim2 + "](\\d{4})$");
+                         } else if (iDelim2 == orderYear) {
+                             dateRegexp = new RegExp("^(\\d{2})[" + delim1 + "](\\d{2})(\\d{4})$");
+                         } else {
+                             dateRegexp = new RegExp("^(\\d{2})[" + delim1 + "](\\d{2})[" + delim2 + "](\\d{4})$");
+                         }
+                         var matched = dateRegexp.exec(value);
+                         if(matched != null) {
+                             if (!isValidDate(matched[1], matched[2], matched[3])) {
+                                 if (i == 0) {
+                                     focusField = form[oDate[x][0]];
+                                 }
+                                 fields[i++] = oDate[x][1];
+                                 bValid =  false;
+                              }
+                         } else {
+                             if (i == 0) {
+                                 focusField = form[oDate[x][0]];
+                             }
+                             fields[i++] = oDate[x][1];
+                             bValid =  false;
+                         }
+                     } else if ((orderMonth > orderYear && orderMonth < orderDay)) {
+                         var iDelim1 = orderYear + YEAR.length;
+                         var iDelim2 = orderMonth + MONTH.length;
+                         var delim1 = datePattern.substring(iDelim1, iDelim1 + 1);
+                         var delim2 = datePattern.substring(iDelim2, iDelim2 + 1);
+                         if (iDelim1 == orderMonth && iDelim2 == orderDay) {
+                             dateRegexp = new RegExp("^(\\d{4})(\\d{2})(\\d{2})$");
+                         } else if (iDelim1 == orderMonth) {
+                             dateRegexp = new RegExp("^(\\d{4})(\\d{2})[" + delim2 + "](\\d{2})$");
+                         } else if (iDelim2 == orderDay) {
+                             dateRegexp = new RegExp("^(\\d{4})[" + delim1 + "](\\d{2})(\\d{2})$");
+                         } else {
+                             dateRegexp = new RegExp("^(\\d{4})[" + delim1 + "](\\d{2})[" + delim2 + "](\\d{2})$");
+                         }
+                         var matched = dateRegexp.exec(value);
+                         if(matched != null) {
+                             if (!isValidDate(matched[3], matched[2], matched[1])) {
+                                 if (i == 0) {
+                                     focusField = form[oDate[x][0]];
+                                  }
+                                  fields[i++] = oDate[x][1];
+                                  bValid =  false;
+                              }
+                          } else {
+                              if (i == 0) {
+                                  focusField = form[oDate[x][0]];
+                              }
+                              fields[i++] = oDate[x][1];
+                              bValid =  false;
+                          }
+                     } else {
+                         if (i == 0) {
+                             focusField = form[oDate[x][0]];
+                         }
+                         fields[i++] = oDate[x][1];
+                         bValid =  false;
+                     }
+                  }
+               }
+               if (fields.length > 0) {
+                  focusField.focus();
+                  alert(fields.join('\n'));
+               }
+               return bValid;
+            }
+
+	    function isValidDate(day, month, year) {
+	        if (month < 1 || month > 12) {
+                    return false;
+                }
+                if (day < 1 || day > 31) {
+                    return false;
+                }
+                if ((month == 4 || month == 6 || month == 9 || month == 11) &&
+                    (day == 31)) {
+                    return false;
+                }
+                if (month == 2) {
+                    var leap = (year % 4 == 0 &&
+                               (year % 100 != 0 || year % 400 == 0));
+                    if (day>29 || (day == 29 && !leap)) {
+                        return false;
+                    }
+                }
+                return true;
+            }]]>
+         </javascript>
+
+      </validator>
+
+<!-- range is deprecated use intRange instead -->
+      <validator name="range"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateIntRange"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends="integer"
+                  msg="errors.range">
+
+         <javascript><![CDATA[
+            function validateRange(form) {
+                return validateIntRange(form);
+            }]]>
+         </javascript>
+
+      </validator>
+
+      <validator name="intRange"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateIntRange"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends="integer"
+                  msg="errors.range">
+
+         <javascript><![CDATA[
+            function validateIntRange(form) {
+                var isValid = true;
+                var focusField = null;
+                var i = 0;
+                var fields = new Array();
+                oRange = new intRange();
+                for (x in oRange) {
+                    var field = form[oRange[x][0]];
+                    
+                    if ((field.type == 'text' ||
+                         field.type == 'textarea') &&
+                        (field.value.length > 0)) {
+                        
+                        var iMin = parseInt(oRange[x][2]("min"));
+                        var iMax = parseInt(oRange[x][2]("max"));
+                        var iValue = parseInt(field.value);
+                        if (!(iValue >= iMin && iValue <= iMax)) {
+                            if (i == 0) {
+                                focusField = field;
+                            }
+                            fields[i++] = oRange[x][1];
+                            isValid = false;
+                        }
+                    }
+                }
+                if (fields.length > 0) {
+                    focusField.focus();
+                    alert(fields.join('\n'));
+                }
+                return isValid;
+            }]]>
+         </javascript>
+
+      </validator>
+
+      <validator name="floatRange"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateFloatRange"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends="float"
+                  msg="errors.range">
+
+         <javascript><![CDATA[
+            function validateFloatRange(form) {
+                var isValid = true;
+                var focusField = null;
+                var i = 0;
+                var fields = new Array();
+                oRange = new floatRange();
+                for (x in oRange) {
+                    var field = form[oRange[x][0]];
+                    
+                    if ((field.type == 'text' ||
+                         field.type == 'textarea') &&
+                        (field.value.length > 0)) {
+                        
+                        var fMin = parseFloat(oRange[x][2]("min"));
+                        var fMax = parseFloat(oRange[x][2]("max"));
+                        var fValue = parseFloat(field.value);
+                        if (!(fValue >= fMin && fValue <= fMax)) {
+                            if (i == 0) {
+                                focusField = field;
+                            }
+                            fields[i++] = oRange[x][1];
+                            isValid = false;
+                        }
+                    }
+                }
+                if (fields.length > 0) {
+                    focusField.focus();
+                    alert(fields.join('\n'));
+                }
+                return isValid;
+            }]]>
+         </javascript>
+
+      </validator>
+
+      <validator name="creditCard"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateCreditCard"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.creditcard">
+
+         <javascript><![CDATA[
+            function validateCreditCard(form) {
+                var bValid = true;
+                var focusField = null;
+                var i = 0;
+                var fields = new Array();
+                oCreditCard = new creditCard();
+                for (x in oCreditCard) {
+                    if ((form[oCreditCard[x][0]].type == 'text' ||
+                         form[oCreditCard[x][0]].type == 'textarea') &&
+                        (form[oCreditCard[x][0]].value.length > 0)) {
+                        if (!luhnCheck(form[oCreditCard[x][0]].value)) {
+                            if (i == 0) {
+                                focusField = form[oCreditCard[x][0]];
+                            }
+                            fields[i++] = oCreditCard[x][1];
+                            bValid = false;
+                        }
+                    }
+                }
+                if (fields.length > 0) {
+                    focusField.focus();
+                    alert(fields.join('\n'));
+                }
+                return bValid;
+            }
+
+            /**
+             * Reference: http://www.ling.nwu.edu/~sburke/pub/luhn_lib.pl
+             */
+            function luhnCheck(cardNumber) {
+                if (isLuhnNum(cardNumber)) {
+                    var no_digit = cardNumber.length;
+                    var oddoeven = no_digit & 1;
+                    var sum = 0;
+                    for (var count = 0; count < no_digit; count++) {
+                        var digit = parseInt(cardNumber.charAt(count));
+                        if (!((count & 1) ^ oddoeven)) {
+                            digit *= 2;
+                            if (digit > 9) digit -= 9;
+                        };
+                        sum += digit;
+                    };
+                    if (sum == 0) return false;
+                    if (sum % 10 == 0) return true;
+                };
+                return false;
+            }
+
+            function isLuhnNum(argvalue) {
+                argvalue = argvalue.toString();
+                if (argvalue.length == 0) {
+                    return false;
+                }
+                for (var n = 0; n < argvalue.length; n++) {
+                    if ((argvalue.substring(n, n+1) < "0") ||
+                        (argvalue.substring(n,n+1) > "9")) {
+                        return false;
+                    }
+                }
+                return true;
+            }]]>
+         </javascript>
+
+      </validator>
+
+
+      <validator name="email"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateEmail"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.email">
+
+         <javascript><![CDATA[
+            function validateEmail(form) {
+                var bValid = true;
+                var focusField = null;
+                var i = 0;
+                var fields = new Array();
+                oEmail = new email();
+                for (x in oEmail) {
+                    if ((form[oEmail[x][0]].type == 'text' ||
+                         form[oEmail[x][0]].type == 'textarea') &&
+                        (form[oEmail[x][0]].value.length > 0)) {
+                        if (!checkEmail(form[oEmail[x][0]].value)) {
+                            if (i == 0) {
+                                focusField = form[oEmail[x][0]];
+                            }
+                            fields[i++] = oEmail[x][1];
+                            bValid = false;
+                        }
+                    }
+                }
+                if (fields.length > 0) {
+                    focusField.focus();
+                    alert(fields.join('\n'));
+                }
+                return bValid;
+            }
+
+            /**
+             * Reference: Sandeep V. Tamhankar (stamhankar@hotmail.com),
+             * http://javascript.internet.com
+             */
+            function checkEmail(emailStr) {
+               if (emailStr.length == 0) {
+                   return true;
+               }
+               var emailPat=/^(.+)@(.+)$/;
+               var specialChars="\\(\\)<>@,;:\\\\\\\"\\.\\[\\]";
+               var validChars="\[^\\s" + specialChars + "\]";
+               var quotedUser="(\"[^\"]*\")";
+               var ipDomainPat=/^(\d{1,3})[.](\d{1,3})[.](\d{1,3})[.](\d{1,3})$/;
+               var atom=validChars + '+';
+               var word="(" + atom + "|" + quotedUser + ")";
+               var userPat=new RegExp("^" + word + "(\\." + word + ")*$");
+               var domainPat=new RegExp("^" + atom + "(\\." + atom + ")*$");
+               var matchArray=emailStr.match(emailPat);
+               if (matchArray == null) {
+                   return false;
+               }
+               var user=matchArray[1];
+               var domain=matchArray[2];
+               if (user.match(userPat) == null) {
+                   return false;
+               }
+               var IPArray = domain.match(ipDomainPat);
+               if (IPArray != null) {
+                   for (var i = 1; i <= 4; i++) {
+                      if (IPArray[i] > 255) {
+                         return false;
+                      }
+                   }
+                   return true;
+               }
+               var domainArray=domain.match(domainPat);
+               if (domainArray == null) {
+                   return false;
+               }
+               var atomPat=new RegExp(atom,"g");
+               var domArr=domain.match(atomPat);
+               var len=domArr.length;
+               if ((domArr[domArr.length-1].length < 2) ||
+                   (domArr[domArr.length-1].length > 3)) {
+                   return false;
+               }
+               if (len < 2) {
+                   return false;
+               }
+               return true;
+            }]]>
+         </javascript>
+
+      </validator>
+
+      <validator name="datemmmyy"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateDatemmmyy"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.datemmmyy">
+
+         <javascript><![CDATA[
+            function validateDatemmmyy(form) {
+                var bValid = true;
+                var focusField = null;
+                var i = 0;
+                var fields = new Array();
+                oDatemmmyy = new datemmmyy();
+                for (x in oDatemmmyy) {
+                    if ((form[oDatemmmyy[x][0]].type == 'text' ||
+                         form[oDatemmmyy[x][0]].type == 'textarea') &&
+                        (form[oDatemmmyy[x][0]].value.length > 0)) {
+                        if (!checkDatemmmyy(form[oDatemmmyy[x][0]])) {
+                            if (i == 0) {
+                                focusField = form[oDatemmmyy[x][0]];
+                            }
+                            fields[i++] = oDatemmmyy[x][1];
+                            bValid = false;
+                        }
+                    }
+                }
+                if (fields.length > 0) {
+                    focusField.focus();
+                    alert(fields.join('\n'));
+                }
+                return bValid;
+            }
+            
+			function checkDatemmmyy(obj) {
+ 				// This function accepts an input field
+ 				// and validates it's value to be a date in format mmm-yy
+ 				// If it is a date in correct format - returns true
+				// Otherwise - alerts and returns false
+		    	// NOTE: Month can be in mixed case (e.g JaN, or JAN, or jan, etc. is allowed)
+    			var adate=/(^((JAN)|(FEB)|(MAR)|(APR)|(MAY)|(JUN)|(JUL)|(AUG)|(SEP)|(OCT)|(NOV)|(DEC))\-\d\d$)/
+    
+    			if (adate.test(obj.value.toUpperCase()))
+    			{
+      				return true;
+				}
+    			else 
+    			{
+      				obj.value=obj.defaultValue;
+	  				obj.focus();
+	  				return false;
+    			}
+            }]]>
+         </javascript>
+
+      </validator>
+
+      <validator name="requiredflatprice"
+            classname="com.bunge.web.contract.util.ContractValidator"
+               method="validateRequiredFlatPrice"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+            function validateRequiredFlatPrice(form) {
+                var bValid = true;
+                var focusField = null;
+                var i = 0;
+                var fields = new Array();
+                oRequiredFlatPrice = new requiredflatprice();
+                for (x in oRequiredFlatPrice) {
+                    if ((form[oRequiredFlatPrice[x][0]].type == 'text' ||
+                         form[oRequiredFlatPrice[x][0]].type == 'textarea')) {
+                        if (!checkRequiredFlatPrice(form[oRequiredFlatPrice[x][0]])) {
+                            if (i == 0) {
+                                focusField = form[oRequiredFlatPrice[x][0]];
+                            }
+                            fields[i++] = oRequiredFlatPrice[x][1];
+                            bValid = false;
+                        }
+                    }
+                }
+                if (fields.length > 0) {
+                    focusField.focus();
+                    alert(fields.join('\n'));
+                }
+                return bValid;
+            }
+            
+			function checkRequiredFlatPrice(obj) {
+				if(document.contractForm.priceType.value=="F")
+				{
+					if(obj.value=="")
+					{
+						return false;
+					}
+					else 
+					{
+						return true;
+					}
+				}
+				else {
+					return true;
+				}
+            }]]>
+         </javascript>
+   	  </validator>
+      <validator name="requiredfutureslevel"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateRequiredFuturesLevel"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+            function validateRequiredFuturesLevel(form) {
+                var bValid = true;
+                var focusField = null;
+                var i = 0;
+                var fields = new Array();
+                oRequiredFuturesLevel = new requiredfutureslevel ();
+                for (x in oRequiredFuturesLevel) {
+                    if ((form[oRequiredFuturesLevel[x][0]].type == 'text' ||
+                         form[oRequiredFuturesLevel[x][0]].type == 'textarea')) {
+                        if (!checkRequiredFuturesLevel(form[oRequiredFuturesLevel[x][0]])) {
+                            if (i == 0) {
+                                focusField = form[oRequiredFuturesLevel[x][0]];
+                            }
+                            fields[i++] = oRequiredFuturesLevel[x][1];
+                            bValid = false;
+                        }
+                    }
+                }
+                if (fields.length > 0) {
+                    focusField.focus();
+                    alert(fields.join('\n'));
+                }
+                return bValid;
+            }
+            
+			function checkRequiredFuturesLevel(obj) {
+				if(document.contractForm.priceType.value=="F")
+				{
+					if(obj.value=="")
+					{
+						return false;
+					}
+					else 
+					{
+						return true;
+					}
+				}
+				else {
+					return true;
+				}
+            }]]>
+         </javascript>
+   	  </validator>
+      <validator name="requiredpremiumprices"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateRequiredPremiumPrices"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+            function validateRequiredPremiumPrices(form) {
+            	if(document.contractForm.priceType.value=="P") {
+					var premiumCount = parseInt(document.contractForm.PremiumPricesIndex.value);
+					if (premiumCount == 0)
+		  				return true;
+					for(i=0;i<premiumCount;i++)
+					{
+						var premiumPrice = getElementUsingDom("input", "premiumPrice["+i+"].price").item(0);
+						if(premiumPrice == null)
+							continue;
+						if(LTrim(RTrim(premiumPrice.value))=="")
+						{
+							alert("Please enter the basis/premium price"); 	
+							premiumPrice.focus();
+							return false;
+						}
+						else {
+							var iValue = parseFloat(premiumPrice.value);
+	                        if (isNaN(iValue)) {
+	                        	alert("Basis/Premium Price must be a float.");
+	                        	premiumPrice.focus();
+	                        	return false;
+	                        }
+						}	  
+	    			}
+	    			return true;
+	    		}
+	    		return true;
+            }]]>
+         </javascript>
+	  </validator>
+	  
+      <validator name="requiredpremiumpricesquantity"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateRequiredPremiumPricesQuantity"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+            function validateRequiredPremiumPricesQuantity(form) {
+            	if(document.contractForm.priceType.value=="P") {
+					var premiumCount = parseInt(document.contractForm.PremiumPricesIndex.value);
+					if (premiumCount == 0)
+		  				return true;
+					for(i=0;i<premiumCount;i++)
+					{
+						var premiumQuantity = getElementUsingDom("input", "premiumPrice["+i+"].quantity").item(0);
+						if(premiumQuantity == null)
+							continue;
+						if(LTrim(RTrim(premiumQuantity.value))=="")
+						{
+							alert("Please enter the premium quantity"); 	
+							premiumPrice.focus();
+							return false;
+						}
+						else {
+							var iValue = parseFloat(premiumQuantity.value);
+	                        if (isNaN(iValue)) {
+	                        	alert("Quantity must be a float.");
+	                        	premiumQuantity.focus();
+	                        	return false;
+	                        }
+						}	  
+	    			}
+	    			return true;
+	    		}
+	    		return true;
+            }]]>
+         </javascript>
+	  </validator>
+	  
+      <validator name="requiredexchangecommodity"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateRequiredExchangeCommodity"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+            function validateRequiredExchangeCommodity(form) {
+            	if(document.contractForm.priceType.value=="P") {
+					var premiumCount = parseInt(document.contractForm.PremiumPricesIndex.value);
+					if (premiumCount == 0)
+		  				return true;
+					for(i=0;i<premiumCount;i++)
+					{
+						var premiumPrice = getElementUsingDom("select", "premiumPrice["+i+"].futuresCommodity").item(0);
+						if(premiumPrice != null) {
+							var  selected = premiumPrice.options[premiumPrice.selectedIndex];
+							if(selected == null)
+								continue;
+							if(LTrim(RTrim(selected.value))=="")
+							{
+								alert("Please enter the Futures Commodity"); 	
+								premiumPrice.focus();
+								return false;
+							}
+							else {
+								var iValue = parseFloat(selected.value);
+		                        if (isNaN(iValue)) {
+		                        	alert("Futures Commodity must be a float.");
+		                        	premiumPrice.focus();
+		                        	return false;
+		                        }
+							}
+						}	  
+	    			}
+	    			return true;
+	    		}
+	    		return true;
+            }]]>
+         </javascript>
+	  </validator>
+	
+      <validator name="requiredbrokeragebroker"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateRequiredBrokerageBroker"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+            function validateRequiredBrokerageBroker(form) {
+				if(document.all['div_CommodityContract_Brokerage'].style.visibility=="hidden")
+				{
+						
+					return true;
+				}
+					
+				var noOfBrokerageRows = LTrim(RTrim(document.contractForm.BrokerageIndex.value));
+				var flag = true;
+				if(noOfBrokerageRows!="" && noOfBrokerageRows>0)
+				{
+					for(i=0;i<noOfBrokerageRows;i++)
+					{
+						var objBroker = getElementUsingDom("input","brokerage[" + i + "].broker").item(0);
+						if(objBroker == null) {
+							continue;
+						}
+						var brokerValue = objBroker.value;
+						if(RTrim(LTrim(objBroker.value))=="")
+						{
+							alert("Please lookup a broker or delete the row if not required");
+							objBroker.focus();
+							flag = false;
+							break;
+						}
+							
+						//Also check whether user has selected duplicate Brokers
+						for(j=parseInt(i+1);j<noOfBrokerageRows;j++)
+						{
+							var objBrokerJ = getElementUsingDom("input","brokerage[" + j + "].broker").item(0);
+							if(objBrokerJ != null && objBroker.value==objBrokerJ.value)
+							{
+								alert("Duplicate broker entries found. Please change or delete");
+								var objBrokerRef = getElementUsingDom("input","brokerage[" + j + "].brokerRef").item(0);
+								objBrokerRef.focus();
+								flag = false;
+								break;
+							}
+						}
+				
+					}
+						
+					return flag;
+				}
+				else 
+				{
+					return true;
+				}
+	     	}]]>
+         </javascript>
+	  </validator>
+	
+      <validator name="requiredbrokerageamount"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateRequiredBrokerageAmount"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+            function validateRequiredBrokerageAmount(form) {
+					if(document.all['div_CommodityContract_Brokerage'].style.visibility=="hidden")
+					{
+						
+						return true;
+					}
+					
+					var noOfBrokerageRows = LTrim(RTrim(document.contractForm.BrokerageIndex.value));
+					var flag = true;
+					if(noOfBrokerageRows!="" && noOfBrokerageRows>0)
+					{
+						for(i=0;i<noOfBrokerageRows;i++)
+						{
+							var objAmount = getElementUsingDom("input","brokerage[" + i + "].amount").item(0);
+							
+							if(objAmount == null) {
+								continue;
+							}
+							if(RTrim(LTrim(objAmount.value))=="")
+							{
+								alert("Please enter broker amount");
+								objAmount.focus();
+								flag = false;
+								break;
+							}
+							else {
+								var iValue = parseFloat(objAmount.value);
+	                        	if (isNaN(iValue)) {
+	                        		alert("Broker Amount must be a float.");
+	                        		objAmount.focus();
+	                        		return false;
+	                        	}
+							}
+						}
+						
+						return flag;
+					}
+					else 
+					{
+						return true;
+					}
+	     	}]]>
+         </javascript>
+	</validator>
+	
+      <validator name="requiredbrokerageexchangerate"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateRequiredBrokerageExchangeRate"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+            function validateRequiredBrokerageExchangeRate(form) {
+					if(document.all['div_CommodityContract_Brokerage'].style.visibility=="hidden")
+					{	
+						return true;
+					}
+					
+					var noOfBrokerageRows = LTrim(RTrim(document.contractForm.BrokerageIndex.value));
+					var flag = true;
+					if(noOfBrokerageRows!="" && noOfBrokerageRows>0)
+					{
+						for(i=0;i<noOfBrokerageRows;i++)
+						{
+							var objExchangeRate = getElementUsingDom("input","brokerage[" + i + "].exchangeRate").item(0);
+							if(objExchangeRate == null) {
+								continue;
+							}
+							var objCurrency = getElementUsingDom("select","brokerage["+i+"].currency").item(0);
+							if(RTrim(LTrim(objCurrency.options[objCurrency.selectedIndex].value))!="USD" && 
+									RTrim(LTrim(objExchangeRate.value))=="")
+							{
+								alert("Please enter the exchange rate");
+								objExchangeRate.focus();
+								flag = false;
+								break;
+							}
+							else if(RTrim(LTrim(objExchangeRate.value))!="") {
+								var iValue = parseFloat(objExchangeRate.value);
+	                        	if (isNaN(iValue)) {
+	                        		alert("Broker Exchange Rate must be a float.");
+	                        		objExchangeRate.focus();
+	                        		return false;
+	                        	}
+							}
+						}
+						
+						return flag;
+					}
+					else 
+					{
+						return true;
+					}
+            }]]>
+         </javascript>
+	  </validator>
+	
+      <validator name="requiredcontractform"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateRequiredContractForm"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+            function validateRequiredContractForm(form) {
+            	if(form.contractForm != null) {
+            		if(form.contractForm.value == "") {
+            			alert("Contract Form is required");
+            			form.contractForm.focus();
+            			return false;
+            		}
+            	} 
+            	return true;
+            }]]>
+         </javascript>
+   	  </validator>
+   	  
+      <validator name="requiredamendmentolddate"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateRequiredAmendmentOldDate"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+            function validateRequiredAmendmentOldDate(form) {
+            	if(form.amendmentOldDate != null) {
+            		if(form.amendmentOldDate.value == "") {
+            			alert("Amendment Date is required");
+            			form.amendmentOldDate.focus();
+            			return false;
+            		}
+            	} 
+            	return true;
+            }]]>
+         </javascript>
+   	  </validator>
+   	  
+      <validator name="requiredexpenseamount"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateRequiredExpenseAmount"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+            function validateRequiredExpenseAmount(form) {
+				var noOfExpenseRows = LTrim(RTrim(document.contractForm.ExpensesIndex.value));
+				if (noOfExpenseRows == 0)
+	  				return true;
+	  
+				for(i=0;i<noOfExpenseRows;i++)
+				{
+					var amount = getElementUsingDom("input","expense[" + i + "].amount").item(0);
+					if(amount == null)
+						continue;
+					if(LTrim(RTrim(amount.value))=="")
+					{
+						alert("Please enter expense amount"); 	
+						amount.focus();
+					    return false;						
+					}
+					else {
+						var iValue = parseFloat(amount.value);
+	                    if (isNaN(iValue)) {
+	                    	alert("Expense Amount must be a float.");
+	                    	amount.focus();
+	                    	return false;
+	                   	}
+					}					
+    			}
+    			return true;
+            }
+            ]]>
+         </javascript>
+	  </validator>
+
+      <validator name="requiredexpensefx"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateRequiredExpenseFX"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+            function validateRequiredExpenseFX(form) {
+
+				var noOfExpenseRows = LTrim(RTrim(document.contractForm.ExpensesIndex.value));
+				if (noOfExpenseRows == 0)
+	  				return true;
+	  
+				for(i=0;i<noOfExpenseRows;i++)
+				{
+					var exchangerate = getElementUsingDom("input","expense[" + i + "].exchangeRate").item(0);
+					if(exchangerate == null)
+						continue;
+					var objCurrency = getElementUsingDom("select","expense["+i+"].currency").item(0);
+					if(LTrim(RTrim(exchangerate.value))=="" && RTrim(LTrim(objCurrency.options[objCurrency.selectedIndex].value))!="USD")
+					{
+						alert("Please enter expense exchange rate."); 	
+						exchangerate.focus();
+					    return false;						
+					}
+					else if(RTrim(LTrim(exchangerate.value))!="") {
+						var iValue = parseFloat(exchangerate.value);
+	                    if (isNaN(iValue)) {
+	                    	alert("Expense Exchange Rate must be a float.");
+	                    	exchangerate.focus();
+	                    	return false;
+	                   	}
+					}					
+    			}
+    			return true;
+            }
+            ]]>
+         </javascript>
+	  </validator>
+	  
+      <validator name="datecheck"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateDateCheck"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+			function validateDateCheck(form) {
+			    objFrom = form.fromDate;
+			    objTo   = form.toDate;
+			    				
+				var fieldFrom   = objFrom.value;  
+				var fieldTo     = objTo.value;  
+			    var dd1         = fieldFrom.substring(0,2) // first two digits
+			    var monthField1 = fieldFrom.substring(3,5);
+			    var yearField1  = fieldFrom.substring(6,fieldFrom.length);
+			    var ddVal1  = parseInt(stripZeros(dd1));
+			    //monthField1 = stripZeros(monthField1);
+			    var mmVal1  = parseInt(stripZeros(monthField1));
+			    var yyVal1  = parseInt(yearField1);
+			
+			    var dd2         = fieldTo.substring(0,2) // first two digits
+			    var monthField2 = fieldTo.substring(3,5);
+			    var yearField2  = fieldTo.substring(6,fieldTo.length);
+			    var ddVal2  = parseInt(stripZeros(dd2));
+			    //monthField2 = stripZeros(monthField2);
+			    var mmVal2  = parseInt(stripZeros(monthField2));
+			    var yyVal2  = parseInt(yearField2);
+			    
+				var fromDate = new Date(yyVal1, mmVal1 -1, ddVal1);
+				var toDate   = new Date(yyVal2, mmVal2 -1, ddVal2);
+				
+				var dTime = toDate.getTime() - fromDate.getTime();
+
+				if (dTime >= 0) {
+					// Valid Value
+				}
+				else { 
+					alert("To date must occur after the from date.");
+					return false;
+				}
+
+				dTime = dTime /86400000; 
+			
+				if (dTime >31) {
+				   // Warning - delivery period is greater than 31 days
+				  var warn = confirm("Delivery period is greater than 31 days. Is this correct? (OK = Yes   Cancel = No)");
+				  if (warn == true)
+				    return true;
+				  else {
+			        objTo.value=objTo.defaultValue;
+				    return false;
+				  }  
+				  return false;
+				}
+				else // dTime within 31 days
+				  return true;				
+				
+			}
+            ]]>
+         </javascript>
+	  </validator>
+	  
+      <validator name="cser16"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateCSER16"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+			function validateCSER16(form) {
+				if (form.quantityMax.value != "" || form.quantityExecuted.value == "") {
+					return true;
+				}
+				var toleranceValue = tolerance[form.toleranceId.selectedIndex];
+				if (parseFloat(form.quantityMin.value) * (1 + parseFloat(toleranceValue))
+					< parseFloat(form.quantityExecuted.value)) {
+					alert("Mean Quantity plus Tolerance must not be smaller than Executed Quantity.");
+					form.quantityExecuted.focus();
+					return false;
+				}
+				return true;
+			}				
+            ]]>
+         </javascript>
+	  </validator>
+	  
+      <validator name="cser30"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateCSER30"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+			function validateCSER30(form) {
+				if (form.quantityMax.value == "" || (form.quantityExecuted.value == "" && form.quantityCancelled.value == "")) {
+					return true;
+				}
+				if(form.quantityExecuted.value == "")
+					form.quantityExecuted.value = "0";
+				
+				if(form.quantityCancelled.value == "")
+					form.quantityCancelled.value = "0";
+				var toleranceValue = tolerance[form.toleranceId.selectedIndex];
+				if (parseFloat(form.quantityMax.value) * (1 + parseFloat(toleranceValue))
+					< parseFloat(form.quantityExecuted.value) + parseFloat(form.quantityCancelled.value)) {
+					alert("Max Quantity plus Tolerance must not be smaller than Executed + Cancelled Quantities.");
+					form.quantityExecuted.focus();
+					return false;
+				}
+				return true;
+			}				
+            ]]>
+         </javascript>
+	  </validator>
+	  
+      <validator name="cser31"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateCSER31"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+			function validateCSER31(form) {
+				if (form.quantityMax.value != "" || (form.quantityExecuted.value == "" && form.quantityCancelled.value == "")) {
+					return true;
+				}
+				var quantityExecutedValue = form.quantityExecuted.value;
+				if(quantityExecutedValue == "")
+					quantityExecutedValue = "0";
+				
+				var quantityCancelledValue = form.quantityCancelled.value;
+				if(quantityCancelledValue == "")
+					quantityCancelledValue = "0";
+					
+				var toleranceValue = tolerance[form.toleranceId.selectedIndex];
+				if (parseFloat(form.quantityMin.value) * (1 - parseFloat(toleranceValue))
+					> parseFloat(quantityExecutedValue) + parseFloat(quantityCancelledValue)) {
+					alert("Mean Quantity minus Tolerance must not be greater than Executed + Cancelled Quantities.");
+					form.quantityExecuted.focus();
+					return false;
+				}
+				return true;
+			}	
+            ]]>
+         </javascript>
+	  </validator>
+	  
+      <validator name="cser26"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateCSER26"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+			function validateCSER26(form) {
+				if (form.quantityMax.value == "") {
+					return true;
+				}
+				if(!(parseFloat(form.quantityMax.value) > parseFloat(form.quantityMin.value))) {
+					alert("Max Quantity must be greater than Mean/Min Quantity.");
+					form.quantityMax.focus();
+					return false;
+				}
+				return true;
+			}	
+            ]]>
+         </javascript>
+	  </validator>
+	  
+      <validator name="cser17"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateCSER17"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+			function validateCSER17(form) {
+				var noOfQualityRows = LTrim(RTrim(document.contractForm.QualitySpecIndex.value));
+				if (noOfQualityRows == 0)
+	  				return true;
+	  
+				for(i=0;i<noOfQualityRows;i++){
+					var basicValue = getElementUsingDom("input","qualitySpec[" + i + "].basicValue").item(0);
+					var minimum = getElementUsingDom("input","qualitySpec[" + i + "].minimum").item(0);
+					var maximum = getElementUsingDom("input","qualitySpec[" + i + "].maximum").item(0);
+				    if(basicValue && minimum && maximum){	
+						if (basicValue.value == ""
+							&& minimum.value == ""
+							&& maximum.value == "") {
+							alert("No quality specification values entered.");
+							basicValue.focus();
+							return false;
+						}
+						
+						if (basicValue.value != "") {
+							if ((minimum.value != "" && parseFloat(basicValue.value)
+								< parseFloat(minimum.value))
+								|| (maximum.value != "" && parseFloat(basicValue.value)
+								> parseFloat(maximum.value))) {
+								alert("Quality specification values entered are not in range.");
+								basicValue.focus();
+								return false;
+							}
+						}
+						else {
+							if (minimum.value != ""
+								&& maximum.value != "") {
+								if (parseFloat(minimum.value)
+									> parseFloat(maximum.value)) {
+									alert("Low quality specification values must be smaller than high.");
+									basicValue.focus();
+									return false;
+								}
+							}
+						}	
+				  }
+									
+    			}
+    			return true;	
+    		}
+            ]]>
+         </javascript>
+	  </validator>
+	  
+      <validator name="cropyeardatecheck"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateCropYearDateCheck"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+			function validateCropYearDateCheck(form) {
+		        var shipmentFromYear = "";
+		        var shipmentToYear = "";
+		        
+		        if (form.fromDate.value != "" &&  form.fromDate.value.length>6) {
+		            shipmentFromYear = form.fromDate.value.substring(6);
+		            var iFrom = parseInt(shipmentFromYear);
+		            shipmentFromYear = iFrom-2;
+		        }    
+		        else    
+		            shipmentFromYear = "1970";  // default smallest from year
+		        if (form.toDate.value != "" &&  form.toDate.value.length>6) {
+		            shipmentToYear = form.toDate.value.substring(6);
+		            var iTo = parseInt(shipmentToYear);
+		            shipmentToYear =  iTo+1; //! per Alex S., validation rule changed
+		        }
+		        else    
+		            shipmentToYear = "2100";  // default largest to year
+		            
+			    var anum=/(^\d+$)|(^\d+\.\d+$)|(^\.\d+$)|(^\d+\.$)/
+			    if (anum.test(form.cropYear.value))
+			    {
+			      if (form.cropYear.value >= shipmentFromYear && form.cropYear.value <= shipmentToYear)
+			          return true;
+			      else {
+			          if (form.cropYear.value < shipmentFromYear) {
+			             alert("Number must be greater than or equal to "+shipmentFromYear);
+			             form.cropYear.value=form.cropYear.defaultValue;
+				         form.cropYear.focus();
+				         return false;
+			          }
+			          else if (form.cropYear.value > shipmentToYear) {
+			             alert("Number must be less than or equal to "+shipmentToYear);
+			             form.cropYear.value=form.cropYear.defaultValue;
+				         form.cropYear.focus();
+				         return false;
+			          }
+			      }    
+				}
+				return true;
+			}
+            ]]>
+         </javascript>
+	  </validator>
+	  
+      <validator name="amendmentolddatecheck"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateAmendmentOldDateCheck"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+			function validateAmendmentOldDateCheck(form) {
+ 				if(document.contractForm.isAmendment.value =="true"){
+		  			var strDate =  document.contractForm.amendmentOldDate.value;
+		  			if(strDate == "") {
+		  				alert("Please enter Amendment Date");
+		  				document.contractForm.amendmentOldDate.focus();
+		  				return false;
+		  			}
+		  			if(!validateTheDate(document.contractForm.amendmentOldDate)) {
+		  				alert("Please enter valid date in format dd-mm-yyyy!")
+		  				document.contractForm.amendmentOldDate.focus();
+		  				return false;
+		  			}
+		  			if(strDate.length==10){
+						var strContractDate = document.contractForm.contractDate.value;
+			       		day = strContractDate.substring(0,2);
+				   		month = strContractDate.substring(3,5);
+				   		month =month -1;
+				   		year = strContractDate.substring(6);
+			  			var contractDate = new Date(year,month,day);
+			    		var strAmendmentDate = document.contractForm.amendmentOldDate.value;
+			       		day = strAmendmentDate.substring(0,2);
+				   		month = strAmendmentDate.substring(3,5);
+				   		month =month -1;
+				   		year = strAmendmentDate.substring(6);
+			  			var amendmentDate = new Date(year,month,day);
+		  		  		if(amendmentDate > new Date()){
+					  		alert("Date of Amendment cannot be later than Today's date. Please correct.");
+					  		document.contractForm.amendmentOldDate.focus();
+					  		return false;
+					  } 
+					  else if(amendmentDate < contractDate){
+				    	alert("Date of Amendment cannot be earlier than Contract Date. Please correct.");
+				    	document.contractForm.amendmentOldDate.focus();
+				    	return false;
+				      }
+			    	}
+			    }
+			    return true;
+		    } 
+            ]]>
+         </javascript>
+	  </validator>
+	  	    
+      <validator name="validatecser01"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateCSER01"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+			function validateCSER01(form) {
+				obj = form.contractDate;
+				var field = obj.value;  
+			    var dd = field.substring(0,2) // first two digits
+			    dd = stripZeros(dd);
+			    var ddVal = parseInt(dd);
+			    var monthField = field.substring(3,5);
+			    monthField = stripZeros(monthField);
+			    var mmVal = parseInt(monthField);
+			    var yearField  = field.substring(6,field.length);
+			    var yyVal = parseInt(yearField);
+			    
+				var inputDate = new Date(yyVal, mmVal -1, ddVal);
+				var nowDate = new Date();
+				var dTime = nowDate.getTime() - inputDate.getTime();
+				dTime = dTime /86400000; 
+			//	alert(dTime); 
+				if (dTime <0) {
+				   // Error - contract date must not be greater than system date
+				   alert("Contract Date can not be greater than today's date");
+			      obj.value=obj.defaultValue;
+			      obj.focus();
+				  return false;
+				}
+			
+				if (dTime >= 6) {
+				  var warn = confirm("Your contract date is smaller than 5 days from today. Is this correct? (OK = Yes   Cancel = No)");
+				  if (warn == true)
+				    return true;
+				  else {
+			        obj.value=obj.defaultValue;
+			        obj.focus();
+				    return false;
+				  }  
+			    }
+			    return true;
+			}
+            ]]>
+         </javascript>
+	  </validator>
+         
+      <validator name="quantityCancelled"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateQuantityCancelled"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+			function validateQuantityCancelled(form) {
+				alert("document.contractForm.toleranceValue = " + document.contractForm.toleranceValue);
+				if (document.contractForm.toleranceValue == null){
+					return true;
+				}
+
+				var quantityMeanMin = document.contractForm.quantityMin.value;
+				var quantityMax 	= document.contractForm.quantityMax.value;
+				var quantityExecuted= document.contractForm.quantityExecuted.value;
+				var quantityCancelled= document.contractForm.quantityCancelled.value;	
+				
+				var toleranceValue		= document.contractForm.toleranceValue.value;
+				var toleranceOperation	= document.contractForm.toleranceOperation.value;
+				if(toleranceValue==null || RTrim(LTrim(toleranceValue))=="")
+				{
+					toleranceValue="0.0";
+				}
+			
+				var totalQuantity; // executed + cancelled
+				var isMaxAvailable;
+				var rangeLow;
+				var rangeHigh;
+				
+				if(LTrim(RTrim(quantityMax))!="")
+				{
+					isMaxAvailable = true;
+				}
+				else
+				{
+					isMaxAvailable = false;
+					quantityMax = "0.0";
+				}
+				
+				if(LTrim(RTrim(quantityExecuted))=="")
+				{
+					quantityExecuted = "0.0";
+				}
+				if(LTrim(RTrim(quantityCancelled))=="")
+				{
+					quantityCancelled = "0.0";
+				}
+				
+				totalQuantity = parseFloat(quantityExecuted) + parseFloat(quantityCancelled);
+				
+			//	alert("Mean Min :"+quantityMeanMin+" Max :"+quantityMax+"\n"+
+			//			"Quantity Executed :"+quantityExecuted+" Quantity Cancelled :"+quantityCancelled+"\n"+
+			//			"Total Quantity(executed + cancelled) :"+totalQuantity+"\n"+
+			//			"Tolerance Value :"+toleranceValue+" Operation :"+toleranceOperation+"\n"+
+			//			"isMaxAvailable :"+isMaxAvailable);
+						
+				if(isMaxAvailable)	
+				{
+					if(toleranceOperation=="+")
+					{
+						rangeLow 	= parseFloat(quantityMeanMin);
+						rangeHigh 	= parseFloat(quantityMax)+(parseFloat(quantityMax)*parseFloat(toleranceValue));
+					}
+					else if(toleranceOperation=="-")
+					{
+						rangeLow 	= parseFloat(quantityMeanMin)-(parseFloat(quantityMeanMin)*parseFloat(toleranceValue));
+						rangeHigh 	= parseFloat(quantityMax);
+					}
+					else if(toleranceOperation=="+/-")
+					{
+						rangeLow 	= parseFloat(quantityMeanMin)-(parseFloat(quantityMeanMin)*parseFloat(toleranceValue));
+						rangeHigh 	= parseFloat(quantityMax)+(parseFloat(quantityMax)*parseFloat(toleranceValue));
+					}
+					else if(toleranceOperation==null || LTrim(RTrim(toleranceOperation))=="")
+					{
+						rangeLow 	= parseFloat(quantityMeanMin);
+						rangeHigh 	= parseFloat(quantityMax);		
+					}
+				}
+				else //if Max value is not available
+				{
+					if(toleranceOperation=="+")
+					{
+						rangeLow 	= parseFloat(quantityMeanMin);
+						rangeHigh 	= parseFloat(quantityMeanMin)+(parseFloat(quantityMeanMin)*parseFloat(toleranceValue));
+					}
+					else if(toleranceOperation=="-")
+					{
+						rangeLow 	= parseFloat(quantityMeanMin)-(parseFloat(quantityMeanMin)*parseFloat(toleranceValue));
+						rangeHigh 	= parseFloat(quantityMeanMin);
+					}
+					else if(toleranceOperation=="+/-")
+					{
+						rangeLow 	= parseFloat(quantityMeanMin)-(parseFloat(quantityMeanMin)*parseFloat(toleranceValue));
+						rangeHigh 	= parseFloat(quantityMeanMin)+(parseFloat(quantityMeanMin)*parseFloat(toleranceValue));
+					}
+					else if(toleranceOperation==null || LTrim(RTrim(toleranceOperation))=="")
+					{
+						rangeLow 	= parseFloat(quantityMeanMin);
+						rangeHigh 	= parseFloat(quantityMeanMin);		
+					}		
+				}				
+				
+				if(parseFloat(totalQuantity)>=rangeLow && parseFloat(totalQuantity)<=rangeHigh)
+				{
+					return confirm("Do you want to cancel the contract? \n"+
+										"Yes --> Ok \n"+
+										"No  --> Cancel");
+				} else {
+					alert("Cancel quantity entered is not in tolerance.");
+					return false;
+				}				
+		    } 
+            ]]>
+         </javascript>
+	  </validator>
+
+
+      <validator name="quantityExecuteded"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateQuantityExecuted"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.required">
+         <javascript><![CDATA[
+			function validateQuantityExecuted(form) {
+			
+				if (document.contractForm.toleranceValue == null){
+					return true;
+				}
+			
+				var quantityMeanMin = document.contractForm.quantityMin.value;
+				var quantityMax 	= document.contractForm.quantityMax.value;
+				var quantityExecuted= document.contractForm.quantityExecuted.value;
+				var quantityCancelled= document.contractForm.quantityCancelled.value;	
+				
+				var toleranceValue		= document.contractForm.toleranceValue.value;
+				var toleranceOperation	= document.contractForm.toleranceOperation.value;
+				if(toleranceValue==null || RTrim(LTrim(toleranceValue))=="")
+				{
+					toleranceValue="0.0";
+				}
+			
+				var totalQuantity; // executed + cancelled
+				var isMaxAvailable;
+				var rangeLow;
+				var rangeHigh;
+				
+				if(LTrim(RTrim(quantityMax))!="")
+				{
+					isMaxAvailable = true;
+				}
+				else
+				{
+					isMaxAvailable = false;
+					quantityMax = "0.0";
+				}
+				
+				if(LTrim(RTrim(quantityExecuted))=="")
+				{
+					quantityExecuted = "0.0";
+				}
+				if(LTrim(RTrim(quantityCancelled))=="")
+				{
+					quantityCancelled = "0.0";
+				}
+				
+				totalQuantity = parseFloat(quantityExecuted) + parseFloat(quantityCancelled);
+				
+			//	alert("Mean Min :"+quantityMeanMin+" Max :"+quantityMax+"\n"+
+			//			"Quantity Executed :"+quantityExecuted+" Quantity Cancelled :"+quantityCancelled+"\n"+
+			//			"Total Quantity(executed + cancelled) :"+totalQuantity+"\n"+
+			//			"Tolerance Value :"+toleranceValue+" Operation :"+toleranceOperation+"\n"+
+			//			"isMaxAvailable :"+isMaxAvailable);
+						
+				if(isMaxAvailable)	
+				{
+					if(toleranceOperation=="+")
+					{
+						rangeLow 	= parseFloat(quantityMeanMin);
+						rangeHigh 	= parseFloat(quantityMax)+(parseFloat(quantityMax)*parseFloat(toleranceValue));
+					}
+					else if(toleranceOperation=="-")
+					{
+						rangeLow 	= parseFloat(quantityMeanMin)-(parseFloat(quantityMeanMin)*parseFloat(toleranceValue));
+						rangeHigh 	= parseFloat(quantityMax);
+					}
+					else if(toleranceOperation=="+/-")
+					{
+						rangeLow 	= parseFloat(quantityMeanMin)-(parseFloat(quantityMeanMin)*parseFloat(toleranceValue));
+						rangeHigh 	= parseFloat(quantityMax)+(parseFloat(quantityMax)*parseFloat(toleranceValue));
+					}
+					else if(toleranceOperation==null || LTrim(RTrim(toleranceOperation))=="")
+					{
+						rangeLow 	= parseFloat(quantityMeanMin);
+						rangeHigh 	= parseFloat(quantityMax);		
+					}
+				}
+				else //if Max value is not available
+				{
+					if(toleranceOperation=="+")
+					{
+						rangeLow 	= parseFloat(quantityMeanMin);
+						rangeHigh 	= parseFloat(quantityMeanMin)+(parseFloat(quantityMeanMin)*parseFloat(toleranceValue));
+					}
+					else if(toleranceOperation=="-")
+					{
+						rangeLow 	= parseFloat(quantityMeanMin)-(parseFloat(quantityMeanMin)*parseFloat(toleranceValue));
+						rangeHigh 	= parseFloat(quantityMeanMin);
+					}
+					else if(toleranceOperation=="+/-")
+					{
+						rangeLow 	= parseFloat(quantityMeanMin)-(parseFloat(quantityMeanMin)*parseFloat(toleranceValue));
+						rangeHigh 	= parseFloat(quantityMeanMin)+(parseFloat(quantityMeanMin)*parseFloat(toleranceValue));
+					}
+					else if(toleranceOperation==null || LTrim(RTrim(toleranceOperation))=="")
+					{
+						rangeLow 	= parseFloat(quantityMeanMin);
+						rangeHigh 	= parseFloat(quantityMeanMin);		
+					}		
+				}				
+				
+				if(parseFloat(totalQuantity)>=rangeLow && parseFloat(totalQuantity)<=rangeHigh)
+				{
+					return confirm("Entered Quantity is within a Tolerance. Do you want to fully execute a contract? \n"+
+											"Yes --> Ok \n"+
+											"No  --> Cancel");
+				} else {
+					alert("Execute quantity entered is not in tolerance.");
+					return false;
+				}				
+		    } 
+            ]]>
+         </javascript>
+	  </validator>
+
+         <!--javascript><![CDATA[
+            function validateRequiredPremiumPrices(form) {
+            	alert("entered validateRequiredPremiumPrices");
+            	
+            	
+                var bValid = true;
+                var focusField = null;
+                var i = 0;
+                var fields = new Array();
+                oRequiredPremiumPrices = new requiredpremiumprices ();
+                alert("x = " + x);
+                for (x in oRequiredPremiumPrices) {
+                	alert("form[oRequiredPremiumPrices[x][0]].name = " + form[oRequiredPremiumPrices[x][0]].name);
+                    if ((form[oRequiredPremiumPrices[x][0]].type == 'text' ||
+                         form[oRequiredPremiumPrices[x][0]].type == 'textarea')) {
+                        if (!checkRequiredPremiumPrices(form[oRequiredPremiumPrices[x][0]])) {
+                            if (i == 0) {
+                                focusField = form[oRequiredPremiumPrices[x][0]];
+                            }
+                            fields[i++] = oRequiredPremiumPrices[x][1];
+                            bValid = false;
+                        }
+                    }
+                }
+                if (fields.length > 0) {
+                    focusField.focus();
+                    alert(fields.join('\n'));
+                }
+                return bValid;
+            }
+            
+			function checkRequiredPremiumPrices(obj) {
+				alert("obj.name = " + obj.name);
+				alert("obj.value = " + obj.value);
+				if(document.contractForm.priceType.value=="P")
+				{
+					if(obj.value=="")
+					{
+						return false;
+					}
+					else 
+					{
+						return true;
+					}	
+				}
+				else {
+					return true;
+				}
+            }]]>
+         </javascript!-->       
+
+   </global>
+
+</form-validation>

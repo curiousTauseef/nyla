@@ -1,8 +1,9 @@
 <%@ page session="false" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="f" uri="http://java.sun.com/jsf/core" %>
+<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
+
 <%@ taglib prefix="h" uri="http://java.sun.com/jsf/html" %>
-<%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles" %>
+<%@ taglib uri="/WEB-INF/tiles.tld" prefix="tiles" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <head>
     <title> GCSM HOME </title>

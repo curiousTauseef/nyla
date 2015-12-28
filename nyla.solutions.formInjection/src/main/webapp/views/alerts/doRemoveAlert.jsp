@@ -17,6 +17,8 @@
     <h2>
       <%=request.getParameter("opStatus").equalsIgnoreCase("ALERT_REMOVE_SUCCESS")?"Alert Removed":(request.getParameter("opStatus").equalsIgnoreCase("ALERT_RETAIN_SUCCESS"))?"Alert Retained":"Alert Remove Failed"%>
     </h2>
+    
+    
     <input type="button" onclick="window.close()" value="Close"/>
   </body>
 </html:html>

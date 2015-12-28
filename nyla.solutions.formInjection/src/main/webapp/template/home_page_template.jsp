@@ -81,6 +81,7 @@
 			    <security:guard permission="DispalySitesVisitsPanel">
 				<td width="55%" valign="top" align="left"><div align="center" id="sites">
 				     <tiles:insert flush="false" attribute="sites"/>
+				     
 				</div>
 				</td>
 				<td colspan="2" width="45%" valign="top" align="left">

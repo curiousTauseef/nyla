@@ -4,7 +4,7 @@
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@ taglib uri="/WEB-INF/struts-nested.tld" prefix="nested" %>
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
-<%@ page import="com.bms.informatics.gcsm.common.util.CacheLookUp, java.util.*" %>
+
 <head>
 <style type="text/css">
   .label, .data {
@@ -261,7 +261,8 @@
 		</bean:define>
 		<option value='<bean:write name="selectSitePK"/>' selected="selected">
 		  <%
-		     String label = CacheLookUp.getProtocolSiteListFromCache().get(selectSitePK).toString();
+		     String label = "TODO";
+		     //TODO CacheLookUp.getProtocolSiteListFromCache().get(selectSitePK).toString();
 		     out.print(label);
 		     %>
 		</option>

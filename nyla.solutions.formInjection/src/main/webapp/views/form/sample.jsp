@@ -3,8 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://gcsm.bms.com/tld/form.tld" prefix="form"%>
--->
-
+-->'
 <head>
     <title>Sample HOME </title>
     <SCRIPT LANGUAGE="JavaScript" SRC="<c:url value="/views/common/calendar/calendar.js"/>"></SCRIPT>

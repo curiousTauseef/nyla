@@ -7,8 +7,8 @@
 				
 
 <bean:define id="bw" name="backweb" scope="application"/>
-<% 	String PASClientID = (String)request.getAttribute("PASClientID");
-		String userID = request.getRemoteUser(); 
+<% 	java.lang.String PASClientID = (String)request.getAttribute("PASClientID");
+java.lang.String userID = request.getRemoteUser(); 
 
 %>
 

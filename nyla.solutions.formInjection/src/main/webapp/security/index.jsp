@@ -43,7 +43,7 @@ in session <b><%= session.getId() %></b><br><br>
 %>
 
 <%
-  String role = request.getParameter("role");
+  java.lang.String role = request.getParameter("role");
   if (role == null)
     role = "";
   if (role.length() > 0) {

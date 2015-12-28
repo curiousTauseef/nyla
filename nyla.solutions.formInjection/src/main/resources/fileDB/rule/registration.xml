@@ -1,0 +1,23 @@
+<tree-set>
+  <no-comparator/>
+  <nyla.solutions.formInjection.bre.Rule>
+    <alwaysAppiedCode>N</alwaysAppiedCode>
+    <operationBluePrint>
+       <name>operation.email</name>
+    </operationBluePrint>
+    <expressionBluePrint>
+      <formTypePK>1</formTypePK>
+      <columnNumber>1</columnNumber>
+      <code>true</code>
+      <inputArgument1>1</inputArgument1>
+      <inputArgument2></inputArgument2>
+      <inputArgument3></inputArgument3>
+      <inputArgument4></inputArgument4>
+    </expressionBluePrint>
+    <expectedBooleanCode>true</expectedBooleanCode>
+    <formTypeID>1</formTypeID>
+    <executeOrderNumber>1</executeOrderNumber>
+    <deletedCode>N</deletedCode>
+    <primaryKey>1</primaryKey>
+  </nyla.solutions.formInjection.bre.Rule>
+</tree-set>

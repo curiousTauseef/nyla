@@ -1,8 +1,3 @@
-
-
-
-
-
 <p align="center" style="vertical-align: middle; padding-top: 50px;">
 <table width="35%" style="border: 3px; border-color: #B6C4DA; border-style: solid;" cellpadding="5">
 <!-- bgcolor="#074A87" -->

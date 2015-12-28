@@ -27,6 +27,17 @@
 	</developers>
 	<dependencies>
 		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-impl</artifactId>
+			<version>1.2_15</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>1.2_15</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.3.1</version>
@@ -96,21 +107,16 @@
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 		</dependency>
-	  <dependency>
-	    <groupId>org.apache.logging.log4j</groupId>
-	    <artifactId>log4j-api</artifactId>
-	    <version>2.3</version>
-	  </dependency>
-	  <dependency>
-	    <groupId>org.apache.logging.log4j</groupId>
-	    <artifactId>log4j-core</artifactId>
-	    <version>2.3</version>
-	  </dependency>	
 		<dependency>
-			<groupId>com.github.nyla-solutions</groupId>
-			<artifactId>nyla.solutions.global</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
-		</dependency>	
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.3</version>
+		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -120,7 +126,7 @@
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
 			<version>2.2</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-webapp</artifactId>
@@ -130,27 +136,17 @@
 			<groupId>javax.el</groupId>
 			<artifactId>javax.el-api</artifactId>
 			<version>2.2.5</version>
-		</dependency>	
+		</dependency>
 		<dependency>
 			<groupId>com.github.nyla-solutions</groupId>
 			<artifactId>nyla.solutions.global</artifactId>
 			<version>0.0.4-SNAPSHOT</version>
-		</dependency>
-		  <dependency>
-			<groupId>com.github.nyla-solutions</groupId>
-			<artifactId>nyla.solutions.spring.web</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.nyla-solutions</groupId>
 			<artifactId>nyla.solutions.dao</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>com.github.nyla-solutions</groupId>
-			<artifactId>nyla.solutions.global.web</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>			  
 	</dependencies>
 	<build>
 		<plugins>

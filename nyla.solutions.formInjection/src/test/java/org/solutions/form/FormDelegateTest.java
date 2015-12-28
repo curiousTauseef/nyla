@@ -5,24 +5,26 @@ import java.util.TreeSet;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import nyla.solutions.formInjection.ApplicationBuilder;
+import nyla.solutions.formInjection.BRE;
+import nyla.solutions.formInjection.FormDelegate;
+import nyla.solutions.formInjection.bre.ExpressionBluePrint;
+import nyla.solutions.formInjection.bre.Rule;
+import nyla.solutions.formInjection.dao.BreDAO;
+import nyla.solutions.formInjection.dao.FormDAOFactory;
+import nyla.solutions.formInjection.data.Answer;
+import nyla.solutions.formInjection.data.Form;
+import nyla.solutions.formInjection.data.FormAnswer;
+import nyla.solutions.formInjection.data.FormColumn;
+import nyla.solutions.formInjection.data.FormQuestion;
+import nyla.solutions.formInjection.data.FormType;
+import nyla.solutions.formInjection.data.Question;
+import nyla.solutions.formInjection.data.QuestionChoice;
+import nyla.solutions.formInjection.data.Questionaire;
 import nyla.solutions.global.exception.SystemException;
 import nyla.solutions.global.security.data.LoginCredential;
 import nyla.solutions.global.util.Debugger;
 import nyla.solutions.global.xml.XML;
-
-import org.solutions.form.bre.ExpressionBluePrint;
-import org.solutions.form.bre.Rule;
-import org.solutions.form.dao.BreDAO;
-import org.solutions.form.dao.FormDAOFactory;
-import org.solutions.form.data.Answer;
-import org.solutions.form.data.Form;
-import org.solutions.form.data.FormAnswer;
-import org.solutions.form.data.FormColumn;
-import org.solutions.form.data.FormQuestion;
-import org.solutions.form.data.FormType;
-import org.solutions.form.data.Question;
-import org.solutions.form.data.QuestionChoice;
-import org.solutions.form.data.Questionaire;
 
 public class FormDelegateTest extends TestCase
 {
@@ -104,9 +106,13 @@ public class FormDelegateTest extends TestCase
          Assert.assertTrue(answer.getResponseType().isAnswerableNonSelectable());
          
       }
+      catch(RuntimeException e)
+      {
+        throw e;
+      }      
       catch(Exception e)
       {
-         throw new SystemException(Debugger.stackTrace(e));
+         throw new SystemException(e.getMessage(),e);
       }
       finally
       {
@@ -170,7 +176,7 @@ public class FormDelegateTest extends TestCase
       Assert.assertNotNull(newForm.getQuestionaire());
       Assert.assertNotNull(newForm.getFormType());
        
-      org.solutions.form.data.FormQuestion formQuestion =newForm.getFormQuestion(id); 
+      nyla.solutions.formInjection.data.FormQuestion formQuestion =newForm.getFormQuestion(id); 
       Assert.assertNotNull(formQuestion);
       formQuestion.getAnswer().setValue("1");
       
@@ -198,20 +204,20 @@ public class FormDelegateTest extends TestCase
       
       Assert.assertTrue(form.findQuestionByID(2).getAnswerValue().equals("Answer 2"));
    }//--------------------------------------------
-   public void testHTTPOperation()
-   throws Exception
-   {
-      Form form = this.formDelegate.retrieveNewForm(formTypeCode);
-      
-      FormQuestion formQuestion = form.findQuestionByID(appointmentQID);
-      FormColumn formColumn = formQuestion.getFormColumn(1);
-      
-      Assert.assertTrue(formColumn.hasChoices());
-      
-      Answer answer = formQuestion.getAnswer(0,1);
-      
-      Assert.assertNotNull(answer);
-   }// --------------------------------------------
+//   public void testHTTPOperation()
+//   throws Exception
+//   {
+//      Form form = this.formDelegate.retrieveNewForm(formTypeCode);
+//      
+//      FormQuestion formQuestion = form.findQuestionByID(appointmentQID);
+//      FormColumn formColumn = formQuestion.getFormColumn(1);
+//      
+//      Assert.assertTrue(formColumn.hasChoices());
+//      
+//      Answer answer = formQuestion.getAnswer(0,1);
+//      
+//      Assert.assertNotNull(answer);
+//   }// --------------------------------------------
 
    private Integer appointmentQID  = new Integer(9);
    private int stateQuestionID = 7;

@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
 <%@ taglib uri="http://myfaces.sourceforge.net/tld/myfaces_ext_0_9.tld" prefix="m"%>
 <%@ taglib uri="http://gcsm.bms.com/tld/smart_forms.tld" prefix="sf"%>-->
+
 <f:view>
   <span class="sectionTitle">
   Potent Site Assessment

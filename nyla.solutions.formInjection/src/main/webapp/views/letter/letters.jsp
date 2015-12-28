@@ -2,13 +2,11 @@
 <%@taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
 <%@taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
 <%@ taglib uri="http://gcsm.bms.com/tld/security.tld" prefix="security"%>
-<%@ page import="com.bms.informatics.gcsm.common.util.*,com.bms.informatics.gcsm.common.web.util.*, java.util.*,com.bms.informatics.gcsm.protocol.web.*" %>
 <%@page contentType="text/html; charset=windows-1252"%>
 <style type="text/css">
   .links {padding-left: 20px}
   .links:hover { color: red; }
 </style>
-
 <bean:define id="siteID" value="<%=request.getParameter("siteID")%>" scope="page"/>
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
   <tr>

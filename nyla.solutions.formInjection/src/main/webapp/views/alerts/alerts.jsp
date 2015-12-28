@@ -12,7 +12,6 @@
 <%@ taglib uri="/WEB-INF/struts-nested.tld" prefix="nested" %>
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 <%@ taglib uri="http://gcsm.bms.com/tld/security.tld" prefix="security"%>
-<%@ page import="com.bms.informatics.gcsm.common.util.*,com.bms.informatics.gcsm.common.web.util.*, java.util.*,com.bms.informatics.gcsm.protocol.web.*" %>
 <script language="JavaScript" type="text/javascript">
 function openWin(url) {
   window.open(url, "ALERT_POPUP", "width=460, height=530, resizable=no, scrollbars=no, location=no, status=no, directories=no, menubar=no");

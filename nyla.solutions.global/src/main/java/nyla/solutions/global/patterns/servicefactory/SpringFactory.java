@@ -1,6 +1,7 @@
 package nyla.solutions.global.patterns.servicefactory;
 
 import nyla.solutions.global.exception.RequiredException;
+import nyla.solutions.global.patterns.servicefactory.exceptions.SpringXmlFileNotFoundException;
 import nyla.solutions.global.util.Config;
 import nyla.solutions.global.util.Debugger;
 
@@ -150,8 +151,18 @@ public class SpringFactory extends ServiceFactory
 	   
 	   if(url == null || url.length() == 0 )
 	   {
-			   
-		   	factory = new ClassPathXmlApplicationContext(ServiceFactory.getConfigProperty());
+			  
+		   try
+		   {
+		   		factory = new ClassPathXmlApplicationContext(ServiceFactory.getConfigProperty());
+		   }
+		   catch(RuntimeException e)
+		   {
+			   if(e.getMessage() != null && e.getMessage().contains("because it does not exist"))
+			   {
+				   throw new SpringXmlFileNotFoundException();
+			   }
+		   }
 
 		   
 	   }

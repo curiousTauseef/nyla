@@ -1,0 +1,8 @@
+<nyla.solutions.formInjection.data.FormType>
+  <deletedCode>N</deletedCode>
+  <primaryKey>1</primaryKey>
+  <formTypeId>1</formTypeId>
+  <name>Registration</name>
+  <formTypeCode>registration</formTypeCode>
+  <version>1</version>
+</nyla.solutions.formInjection.data.FormType>
