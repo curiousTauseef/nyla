@@ -1,5 +1,5 @@
-# NYLA Solutions Java API 
-This API provides support for basic application utilities (application configuration, 
+# NYLA Solutions Global
+This Java API provides support for basic application utilities (application configuration, 
 data encryption, debugger, text processing and more). 
 
 # Solutions Global	Overview
