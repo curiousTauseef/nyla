@@ -1,10 +1,10 @@
-# NYLA Solutions
 NYLA solutions contains a collection of projects/libraries to assist with Java based development.
 
 ## NYLA Solutions Global
 
 [NYLA Solutions Global](https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.global) is an API provides support for basic application utilities (application configuration, 
-data encryption, debugger, text processing and more).
+data encryption, debugger, text processing and more). This library also has implementation for standard Gang Of Four design patterns and some custom patterns (ex: Command Pattern - COMMAS, searching - QueryService and more).
+
  
 ## NYLA DAO
 
@@ -20,6 +20,6 @@ data access. This project implements NYLA's Query Service pattern for database b
 
 ## NYLA Web
 
-[NYLA Web](https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.global.web) is s project expands on NYLA's Command pattern (a.k.a. COMMAS) for building REST/web services. It implements its own Model View Controller pattern for pure JEE or web containers (ex: Jetty) MicroServices. This project provides NYLA's Query Service pattern for searches abstracted through web services.
+[NYLA Web](https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.global.web)  project expands on NYLA's Command pattern (a.k.a. COMMAS) for building REST/web services. It implements its own Model View Controller pattern for pure JEE or web containers (ex: Jetty) MicroServices. This project provides NYLA's Query Service pattern for searches abstracted through web services.
 
 
