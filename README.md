@@ -3,7 +3,7 @@ NYLA solutions contains a collection of projects/libraries to assist with Java b
 
 ## NYLA Solutions Global
 
-[NYLA Solutions Global](http://https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.global) is an API provides support for basic application utilities (application configuration, 
+[NYLA Solutions Global](https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.global) is an API provides support for basic application utilities (application configuration, 
 data encryption, debugger, text processing and more).
  
 ## NYLA DAO
