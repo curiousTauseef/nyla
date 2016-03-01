@@ -38,7 +38,7 @@ public class IO
 	/**
 	 * CHARSET_NM = "UTF-8"
 	 */
-	public static final String CHARSET_NM = "UTF8";
+	public static final String CHARSET_NM = "UTF-8";
 	
 	
 	/**

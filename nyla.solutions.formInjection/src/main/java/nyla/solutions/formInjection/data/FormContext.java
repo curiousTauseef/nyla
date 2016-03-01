@@ -36,9 +36,15 @@ public class FormContext implements Serializable
     
     public Attribute getAttribute(Comparable aKey )
     {
+    	if(this.attributeMap == null)
+    		return null;
+    	
         return (Attribute)this.attributeMap.get(aKey);
     }
     public Attribute removeAttribute(Comparable key) {
+    	if(this.attributeMap == null)
+    		return null;
+    	
         return (Attribute) this.attributeMap.remove(key);
     }
     public void addAttribute(Comparable key, Serializable value) {

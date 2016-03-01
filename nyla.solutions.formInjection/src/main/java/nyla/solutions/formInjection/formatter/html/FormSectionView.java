@@ -30,7 +30,7 @@ public class FormSectionView extends FormComponentView
     public FormSectionView(FormSection section) {
         setSection(section);
     }
-    public Collection getQuestions() {
+    public Collection<FormQuestionView> getQuestions() {
         return questions;
     }
     public FormSection getSection() {
@@ -38,10 +38,10 @@ public class FormSectionView extends FormComponentView
     }
     public void setSection(FormSection section) {
         this.section = section;
-        Collection c = section.getFormQuestions();
-        questions = new LinkedList();
-        for (Iterator i = c.iterator(); i.hasNext(); )
-            questions.add(new FormQuestionView((FormQuestion) i.next()));
+        Collection<FormQuestion> c = section.getFormQuestions();
+        questions = new LinkedList<FormQuestionView>();
+        for (Iterator<FormQuestion> i = c.iterator(); i.hasNext(); )
+            questions.add(new FormQuestionView(i.next()));
     }
     public FormComponent getFormComponent() {
         return getSection();
@@ -59,5 +59,5 @@ public class FormSectionView extends FormComponentView
         return "section";
     }
     private FormSection section;
-    private Collection questions;
+    private Collection<FormQuestionView> questions;
 }

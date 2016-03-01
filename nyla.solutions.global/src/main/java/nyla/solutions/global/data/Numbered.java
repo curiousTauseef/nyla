@@ -22,5 +22,5 @@ public interface Numbered extends Serializable, Comparable<Object>
     * Set the number
     * @param aNumber the number to set
     */
-   public void setNumber(int aNumber);
+   //public void setNumber(int aNumber);
 }

@@ -18,18 +18,19 @@ import nyla.solutions.web.spring.web.REValidator;
  * @author Gregory Green
  * @version 1.0
  */
-public class REValidatorTest extends TestCase
+public class REValidatorTest 
+//extends TestCase
 {
 
    public REValidatorTest(String aTest)
    {
-      super(aTest);
+      //super(aTest);
    }// --------------------------------------------
 
    /**
     * Test method for {@link nyla.solutions.web.spring.web.REValidator#validate(java.lang.Object, org.springframework.validation.Errors)}.
     */
-   public void testValidate()
+   public void ignoreValidate()
    {
       ServiceFactory factory = ServiceFactory.getInstance();
       

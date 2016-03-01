@@ -79,7 +79,7 @@ implements Serializable
    protected FormQuestion findFormQuestionByQuestionID(FormComponent aBusinessComponent, Integer aQuestionID)  
    {
 
-         FormQuestion formQuestion = this.retrieveForm(aBusinessComponent).getFormQuestion(aQuestionID);
+         FormQuestion formQuestion = this.retrieveForm(aBusinessComponent).findFormQuestion(aQuestionID);
          if (formQuestion == null)
              throw new SetupException("no form question with id " + aQuestionID);
          formQuestion.setWithinExpression(true);
@@ -96,7 +96,7 @@ implements Serializable
    protected FormQuestion findFormQuestionByQuestionID(FormComponent aBusinessComponent, int aQuestionID)
    throws NoDataFoundException
    {
-      return this.retrieveForm(aBusinessComponent).getFormQuestion(new Integer(aQuestionID));
+      return this.retrieveForm(aBusinessComponent).findFormQuestion(new Integer(aQuestionID));
    }//--------------------------------------------  
    /**
     * @return Returns the question1PK.

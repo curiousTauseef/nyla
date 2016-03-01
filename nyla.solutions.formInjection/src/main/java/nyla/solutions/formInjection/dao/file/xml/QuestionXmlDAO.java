@@ -179,7 +179,7 @@ public class QuestionXmlDAO implements QuestionDAO
       }
       catch (IOException e)
       {
-         throw new SystemException(Debugger.stackTrace(e));
+         throw new SystemException("Unable to write to location:"+file+" ERROR:"+e.getMessage(),e);
       }      
    }//--------------------------------------------
    

@@ -88,7 +88,7 @@
   </taglib>
 
   <taglib>
-    <taglib-uri>http://gcsm.bms.com/tld/form.tld</taglib-uri>
+    <taglib-uri>http://gcsm.nyla-solutions.org/tld/form.tld</taglib-uri>
     <taglib-location>/WEB-INF/form.tld</taglib-location>
   </taglib>
 <taglib>
@@ -144,12 +144,12 @@
     <taglib-location>/WEB-INF/gcsm-customtags.tld</taglib-location>
   </taglib>
   <taglib>
-    <taglib-uri>http://gcsm.bms.com/tld/security.tld</taglib-uri>
+    <taglib-uri>http://gcsm.nyla-solutions.com/tld/security.tld</taglib-uri>
     <taglib-location>/WEB-INF/security.tld</taglib-location>
   </taglib>
 
   <taglib>
-    <taglib-uri>http://gcsm.bms.com/tld/form.tld</taglib-uri>
+    <taglib-uri>http://gcsm.nyla-solutions.com/tld/form.tld</taglib-uri>
     <taglib-location>/WEB-INF/form.tld</taglib-location>
   </taglib>
 

@@ -29,7 +29,7 @@ public class FormProperty extends FormComponentAttribute {
     public Integer getFormId() {
         return formId;
     }
-    protected void setFormId(Integer formId) {
+    public void setFormId(Integer formId) {
         this.formId = formId;
     }
     static final long serialVersionUID = FormProperty.class.getName().hashCode();

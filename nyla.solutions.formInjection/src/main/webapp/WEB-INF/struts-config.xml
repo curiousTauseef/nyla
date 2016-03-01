@@ -3,32 +3,32 @@
 <struts-config>
   <form-beans>
 	<form-bean name="MainTaskBarForm" type="org.apache.struts.validator.DynaValidatorForm"/>
-	<form-bean dynamic="false" name="sitePanelForm" type="com.bms.informatics.gcsm.protocol.web.form.SitePanelForm"/>
-	<form-bean name="visitPanelForm" type="com.bms.informatics.gcsm.schedule.web.form.VisitPanelForm"/>
-	<form-bean name="issuePanelForm" type="com.bms.informatics.gcsm.issue.web.form.IssuePanelForm"/>
-	<form-bean name="alertPanelForm" type="com.bms.informatics.gcsm.alert.web.form.AlertPanelForm"/>
-	<form-bean name="userPanelForm" type="com.bms.informatics.gcsm.security.web.form.UserPanelForm"/>
-	<form-bean name="newVisitForm" type="com.bms.informatics.gcsm.schedule.web.form.NewVisitForm"/>
-	<form-bean name="alertForm" type="com.bms.informatics.gcsm.alert.web.form.NewAlertForm"/>
-	<form-bean name="alertDetail" type="com.bms.informatics.gcsm.alert.web.form.AlertForm" />
-	<form-bean name="backweb" type="com.bms.informatics.gcsm.security.backweb.web.BackwebForm"/>
-	<form-bean name="visitTargetReportForm" type="com.bms.informatics.gcsm.reports.web.form.VisitTargetReportForm" />
-	<form-bean name="visitTypeReportForm" type="com.bms.informatics.gcsm.reports.web.form.VisitTypeReportForm" />
-	<form-bean name="reportForm" type="com.bms.informatics.gcsm.reports.web.form.ReportForm" />
-	<form-bean name="siteReportPanelForm" type="com.bms.informatics.gcsm.protocol.web.form.SiteReportPanelForm"/>
-	<form-bean name="documentForm" type="com.bms.informatics.gcsm.document.web.form.DocumentForm"/>
-	<form-bean name="documentPanelForm" type="com.bms.informatics.gcsm.document.web.form.DocumentPanelForm"/>
-	<form-bean name="letterForm" type="com.bms.informatics.gcsm.letter.web.form.LetterForm"/>
-	<form-bean name="investigatorForm" type="com.bms.informatics.gcsm.protocol.web.form.InvestigatorForm"/>
-	<form-bean name="researchSitePanelForm" type="com.bms.informatics.gcsm.protocol.web.form.ResearchSitePanelForm"/>
-	<form-bean name="psaPanelForm" type="com.bms.informatics.gcsm.protocol.web.form.PSAPanelForm"/>
-	<form-bean name="staffPanelForm" type="com.bms.informatics.gcsm.security.web.form.StaffPanelForm"/>
-	<form-bean name="myFormPanelForm" type="com.bms.informatics.gcsm.form.web.form.MyFormPanelForm"/>
-	<form-bean name="drugReconciliationPanelForm" type="com.bms.informatics.gcsm.form.web.form.DrugReconcilationPanelForm"/>
-	<form-bean name="postIssueForm" type="com.bms.informatics.gcsm.issue.web.form.PostIssueForm"/>
-	<form-bean name="editIssueForm" type="com.bms.informatics.gcsm.issue.web.form.EditIssueForm"/>
-	<form-bean name="adminPanelForm" type="com.bms.informatics.gcsm.security.web.form.AdminPanelForm"/>
-	<form-bean name="smpListForm" type="com.bms.informatics.gcsm.form.web.form.SMPListForm"/>
+	<form-bean dynamic="false" name="sitePanelForm" type="nyla.solutions.formInjection.protocol.web.form.SitePanelForm"/>
+	<form-bean name="visitPanelForm" type="nyla.solutions.formInjection.schedule.web.form.VisitPanelForm"/>
+	<form-bean name="issuePanelForm" type="nyla.solutions.formInjection.issue.web.form.IssuePanelForm"/>
+	<form-bean name="alertPanelForm" type="nyla.solutions.formInjection.alert.web.form.AlertPanelForm"/>
+	<form-bean name="userPanelForm" type="nyla.solutions.formInjection.security.web.form.UserPanelForm"/>
+	<form-bean name="newVisitForm" type="nyla.solutions.formInjection.schedule.web.form.NewVisitForm"/>
+	<form-bean name="alertForm" type="nyla.solutions.formInjection.alert.web.form.NewAlertForm"/>
+	<form-bean name="alertDetail" type="nyla.solutions.formInjection.alert.web.form.AlertForm" />
+	<form-bean name="backweb" type="nyla.solutions.formInjection.security.backweb.web.BackwebForm"/>
+	<form-bean name="visitTargetReportForm" type="nyla.solutions.formInjection.reports.web.form.VisitTargetReportForm" />
+	<form-bean name="visitTypeReportForm" type="nyla.solutions.formInjection.reports.web.form.VisitTypeReportForm" />
+	<form-bean name="reportForm" type="nyla.solutions.formInjection.reports.web.form.ReportForm" />
+	<form-bean name="siteReportPanelForm" type="nyla.solutions.formInjection.protocol.web.form.SiteReportPanelForm"/>
+	<form-bean name="documentForm" type="nyla.solutions.formInjection.document.web.form.DocumentForm"/>
+	<form-bean name="documentPanelForm" type="nyla.solutions.formInjection.document.web.form.DocumentPanelForm"/>
+	<form-bean name="letterForm" type="nyla.solutions.formInjection.letter.web.form.LetterForm"/>
+	<form-bean name="investigatorForm" type="nyla.solutions.formInjection.protocol.web.form.InvestigatorForm"/>
+	<form-bean name="researchSitePanelForm" type="nyla.solutions.formInjection.protocol.web.form.ResearchSitePanelForm"/>
+	<form-bean name="psaPanelForm" type="nyla.solutions.formInjection.protocol.web.form.PSAPanelForm"/>
+	<form-bean name="staffPanelForm" type="nyla.solutions.formInjection.security.web.form.StaffPanelForm"/>
+	<form-bean name="myFormPanelForm" type="nyla.solutions.formInjection.form.web.form.MyFormPanelForm"/>
+	<form-bean name="drugReconciliationPanelForm" type="nyla.solutions.formInjection.form.web.form.DrugReconcilationPanelForm"/>
+	<form-bean name="postIssueForm" type="nyla.solutions.formInjection.issue.web.form.PostIssueForm"/>
+	<form-bean name="editIssueForm" type="nyla.solutions.formInjection.issue.web.form.EditIssueForm"/>
+	<form-bean name="adminPanelForm" type="nyla.solutions.formInjection.security.web.form.AdminPanelForm"/>
+	<form-bean name="smpListForm" type="nyla.solutions.formInjection.form.web.form.SMPListForm"/>
       <!--
     <form-bean name="reportForm" type="org.apache.struts.validator.DynaValidatorForm">
 	    <form-property name="startDt" type="java.lang.String" initial="01-JAN-1949" />
@@ -62,23 +62,23 @@
 
   <action-mappings>
   
-    <action path="/RoleSelectorAction" parameter="method" type="com.bms.informatics.gcsm.security.web.action.RoleSelectorAction">
+    <action path="/RoleSelectorAction" parameter="method" type="nyla.solutions.formInjection.security.web.action.RoleSelectorAction">
     
     <forward name="success" path="/views/user/roleSelector.jsp"/>
     
     </action>
     
     <action path="/LogoutAction"
-	    type="com.bms.informatics.gcsm.security.web.action.LogoutAction">	    
+	    type="nyla.solutions.formInjection.security.web.action.LogoutAction">	    
     </action>
     
      <action path="/UserListAction"
-	    type="com.bms.informatics.gcsm.security.web.action.UserListAction"
+	    type="nyla.solutions.formInjection.security.web.action.UserListAction"
 	    parameter="/views/issues/gcsm_users.jsp">	    
     </action>
     
     <action path="/LetterPanelAction" parameter="method"
-	    type="com.bms.informatics.gcsm.letter.web.action.LetterPanelAction">
+	    type="nyla.solutions.formInjection.letter.web.action.LetterPanelAction">
 	    <forward name="DISPLAY_LETTER_PANEL" path="bms.gcsm.letter.home">
 	    </forward>
     </action>
@@ -86,7 +86,7 @@
 	    name="editIssueForm"
 	    parameter="method"
 	    validate="no"
-	    type="com.bms.informatics.gcsm.issue.web.action.EditIssueAction">
+	    type="nyla.solutions.formInjection.issue.web.action.EditIssueAction">
 	<forward name="ISSUE_LOAD_FROM_DRAFT" path="/do/PostIssueAction?method=openDraftIssue"/>
 	<forward name="ISSUE_LOAD_FROM_SAVE" path="/views/issues/editIssue.jsp"/>
 	<forward name="ISSUE_CLOSED_SUCCESSFULLY" path="bms.gcsm.issue.edit.close"/>
@@ -96,7 +96,7 @@
 	    name="postIssueForm"
 	    parameter="method"
 	    validate="no"
-	    type="com.bms.informatics.gcsm.issue.web.action.PostIssueAction">
+	    type="nyla.solutions.formInjection.issue.web.action.PostIssueAction">
 	<forward name="POST_ISSUE_FORM_DISPLAY" path="bms.gcsm.issue.post.form"/>
 	<forward name="POST_ISSUE_FORM_SUCCESS_DISPLAY" path="bms.gcsm.issue.post.success"/>
     </action>
@@ -105,7 +105,7 @@
 	    name="drugReconciliationPanelForm"
 	    parameter="method"
 	    validate="no"
-	    type="com.bms.informatics.gcsm.form.web.drw.DRWAction">
+	    type="nyla.solutions.formInjection.form.web.drw.DRWAction">
 	<forward name="DISPLAY_DRUG_RECONCILE_FORM" path="bms.gcsm.drug.layout"/>
     </action>
 
@@ -113,14 +113,14 @@
 	    name="drwListForm"
 	    parameter="method"
 	    validate="no"
-	    type="com.bms.informatics.gcsm.form.ewb.action.DRWListAction">
+	    type="nyla.solutions.formInjection.form.ewb.action.DRWListAction">
 	    <forward name="list" path="bms.gcsm.drwlist.layout"/>
     </action>
 
     <action path="/MyFormPanelAction"
 	    name="myFormPanelForm"
 	    parameter="method"
-	    type="com.bms.informatics.gcsm.form.web.action.MyFormPanelAction"
+	    type="nyla.solutions.formInjection.form.web.action.MyFormPanelAction"
 	    validate="no">
 	<forward name="MY_FORM_DISPLAY" path="bms.gcsm.ssc.layout"/>
 	<forward name="UserSitesPopUp" path="bms.gcsm.UserSitesPopUp.popup"/>
@@ -129,7 +129,7 @@
     <action path="/SMPListAction"
 		    name="smpListForm"
 		    parameter="method"
-		    type="com.bms.informatics.gcsm.form.web.action.SMPListAction"
+		    type="nyla.solutions.formInjection.form.web.action.SMPListAction"
 		    validate="no">
 	    <forward name="list" path="bms.gcsm.smpList.layout"/>
     </action>
@@ -137,7 +137,7 @@
 	  <action name="documentForm"
 	  parameter="method"
 	  path="/DocumentDetailAction"
-      type="com.bms.informatics.gcsm.document.web.action.DocumentDetailAction" validate="no">
+      type="nyla.solutions.formInjection.document.web.action.DocumentDetailAction" validate="no">
 	<forward name="initDocumentDetailForm" path="/views/document/documentDetail.jsp"/>
 	<forward name="success" path="/views/document/documentComment.jsp"/>
     </action>
@@ -145,18 +145,18 @@
 	<action name="documentPanelForm"
 		parameter="method"
 		path="/DocumentAction"
-		type="com.bms.informatics.gcsm.document.web.action.DocumentAction">
+		type="nyla.solutions.formInjection.document.web.action.DocumentAction">
 	<forward name="initDocumentForm" path="bms.gcsm.document.layout"/>
 	<forward name="success" path="bms.gcsm.document.layout"/>
 	<forward name="docList" path="/views/document/all_docs.jsp"/>
 	</action>
 
-    <action name="userPanelForm,sitePanelForm,visitPanelForm" path="/init" type="com.bms.informatics.gcsm.common.web.action.InitPanelAction">
+    <action name="userPanelForm,sitePanelForm,visitPanelForm" path="/init" type="nyla.solutions.formInjection.common.web.action.InitPanelAction">
 	<forward name="success" path="bms.gcsm.homepage.layout"/>
 	<forward name="home"  path="bms.gcsm.homepage.layout" />
 	<forward name="admin" path="bms.gcsm.admin.layout"/>
     </action>
-    <action path="/home" type="com.bms.informatics.gcsm.common.web.DoForwardAction">
+    <action path="/home" type="nyla.solutions.formInjection.common.web.DoForwardAction">
 	<forward name="success" path="bms.gcsm.homepage.layout"/>
 	<forward name="admin"  path="bms.gcsm.admin.layout"/>
 	<forward name="adminSite" path="bms.gcsm.adminSite.layout"/>
@@ -167,7 +167,7 @@
 	    path="/ResearchSitePanelAction"
 	    parameter="method"
 	    scope="session"
-	    type="com.bms.informatics.gcsm.protocol.web.action.ResearchSitePanelAction">
+	    type="nyla.solutions.formInjection.protocol.web.action.ResearchSitePanelAction">
 	    <forward name="DISPLAY_RESEARCH_SITE_SEARCH" path="bms.gcsm.psi.layout"/>
     </action>
 
@@ -175,39 +175,39 @@
 	    name="psaPanelForm"
 	    parameter="method"
 	    scope="session"
-	    type="com.bms.informatics.gcsm.protocol.web.action.PSAPanelAction">
+	    type="nyla.solutions.formInjection.protocol.web.action.PSAPanelAction">
 	<forward name="DISPLAY_PSA_SEARCH" path="bms.gcsm.psa.layout"/>
     </action>
 
-    <action path="/psa" type="com.bms.informatics.gcsm.common.web.DoForwardAction">
+    <action path="/psa" type="nyla.solutions.formInjection.common.web.DoForwardAction">
 	<forward name="success" path="bms.gcsm.psa.layout"/>
     </action>
 
-    <action path="/psi" type="com.bms.informatics.gcsm.common.web.DoForwardAction">
+    <action path="/psi" type="nyla.solutions.formInjection.common.web.DoForwardAction">
 	<forward name="success" path="bms.gcsm.psi.layout"/>
     </action>
 
-    <action path="/ssc" type="com.bms.informatics.gcsm.common.web.DoForwardAction">
+    <action path="/ssc" type="nyla.solutions.formInjection.common.web.DoForwardAction">
 	<forward name="success" path="bms.gcsm.ssc.layout"/>
     </action>
 
-    <action path="/reports" type="com.bms.informatics.gcsm.common.web.DoForwardAction">
+    <action path="/reports" type="nyla.solutions.formInjection.common.web.DoForwardAction">
 	<forward name="success" path="bms.gcsm.report.layout"/>
     </action>
 
   <action path="/unscheduledVisitFormsPopup"
-      type="com.bms.informatics.gcsm.common.web.DoForwardAction">
+      type="nyla.solutions.formInjection.common.web.DoForwardAction">
 	<forward name="success" path="bms.gcsm.unscheduledVisitForms.popup"/>
   </action>
 
-    <action path="/Document" scope="session"  type="com.bms.informatics.gcsm.common.web.DoForwardAction"  validate="false">
+    <action path="/Document" scope="session"  type="nyla.solutions.formInjection.common.web.DoForwardAction"  validate="false">
 	<forward name="success" path="bms.gcsm."/>
     </action>
 
-    <action path="/Logout" type="com.bms.informatics.gcsm.common.web.action.LogoutAction" validate="false">
+    <action path="/Logout" type="nyla.solutions.formInjection.common.web.action.LogoutAction" validate="false">
 	<forward name="loginPage" path="gcsm.login.layout"/>
     </action>
-    <action name="userPanelForm" parameter="method" path="/UserPanelAction" type="com.bms.informatics.gcsm.security.web.action.UserPanelAction">
+    <action name="userPanelForm" parameter="method" path="/UserPanelAction" type="nyla.solutions.formInjection.security.web.action.UserPanelAction">
 	<forward name="UserPanelForm" path="/themes/default/userInfo.jsp"/>
 	<forward name="success"  path="bms.gcsm.homepage.layout" />
 	<forward name="home"  path="bms.gcsm.homepage.layout" />
@@ -216,7 +216,7 @@
       <action name="staffPanelForm"
 	      path="/StaffPanelAction"
 	      parameter="method"
-	      type="com.bms.informatics.gcsm.security.web.action.StaffPanelAction">
+	      type="nyla.solutions.formInjection.security.web.action.StaffPanelAction">
 	 <forward name="home"  path="bms.gcsm.homepage.layout" />
 	<forward name="initUserPanelForm" path="/themes/default/userInfo.jsp"/>
 	<forward name="success"  path="bms.gcsm.homepage.layout" />
@@ -228,7 +228,7 @@
     <action name="sitePanelForm"
 	    parameter="method"
 	    path="/SitePanelAction"
-	    type="com.bms.informatics.gcsm.protocol.web.action.SitePanelAction"
+	    type="nyla.solutions.formInjection.protocol.web.action.SitePanelAction"
 	    validate="false">
 	<forward name="home"  path="bms.gcsm.homepage.layout" />
 	<forward name="success"  path="bms.gcsm.homepage.layout" />
@@ -241,7 +241,7 @@
     <action name="siteReportPanelForm"
 	    parameter="method"
 	    path="/SiteReportPanelAction"
-	    type="com.bms.informatics.gcsm.protocol.web.action.SiteReportPanelAction"
+	    type="nyla.solutions.formInjection.protocol.web.action.SiteReportPanelAction"
 	    validate="false">
 	<forward name="success"  path="bms.gcsm.site.layout" />
 	<forward name="home"  path="bms.gcsm.homepage.layout" />
@@ -252,7 +252,7 @@
     <action name="visitPanelForm"
 	    parameter="method"
 	    path="/VisitPanelAction"
-	    type="com.bms.informatics.gcsm.schedule.web.action.VisitPanelAction">
+	    type="nyla.solutions.formInjection.schedule.web.action.VisitPanelAction">
 	<forward name="initVisitPanelForm" path="/views/visits/visits.jsp"/>
 	<forward name="success"  path="bms.gcsm.homepage.layout" />
 	<forward name="home"  path="bms.gcsm.homepage.layout" />
@@ -266,7 +266,7 @@
     <action name="issuePanelForm"
 	    parameter="method"
 	    path="/IssuePanelAction"
-	    type="com.bms.informatics.gcsm.issue.web.action.IssuePanelAction">
+	    type="nyla.solutions.formInjection.issue.web.action.IssuePanelAction">
 	<forward name="initIssuePanelForm" path="/views/issues/issues.jsp"/>
 	<forward name="success"  path="bms.gcsm.homepage.layout" />
 	<forward name="home"  path="bms.gcsm.homepage.layout" />
@@ -280,7 +280,7 @@
     <action name="alertPanelForm"
 		parameter="method"
 		path="/AlertPanelAction"
-		type="com.bms.informatics.gcsm.alert.web.action.AlertPanelAction">
+		type="nyla.solutions.formInjection.alert.web.action.AlertPanelAction">
 	<forward name="initAlertPanelForm" path="/views/alerts/alerts.jsp"/>
 	<forward name="success"  path="bms.gcsm.homepage.layout" />
 	<forward name="home"  path="bms.gcsm.homepage.layout" />
@@ -291,19 +291,19 @@
 	<forward name="adminStaff"  path="bms.gcsm.adminStaff.layout"/>
 
     </action>
-    <action name="newVisitForm" parameter="method" validate="true" input="/views/visits/newVisit.jsp" path="/newVisitAction" scope="session" type="com.bms.informatics.gcsm.schedule.web.action.NewVisitAction">
+    <action name="newVisitForm" parameter="method" validate="true" input="/views/visits/newVisit.jsp" path="/newVisitAction" scope="session" type="nyla.solutions.formInjection.schedule.web.action.NewVisitAction">
 	<forward name="initNewVisitForm" path="/views/visits/newVisit.jsp"/>
 	<forward name="doNewVisitForm" path="/views/visits/doNewVisit.jsp"/>
 	<forward name="success"  path="/do/init" redirect="true"/>
 	<forward name="home"  path="/do/init" redirect="true"/>
 	<forward name="siteHome" path="/do/SitePanelAction" redirect="true"/>
     </action>
-    <action name="alertForm" parameter="method" path="/newAlertAction" scope="session" input="/views/alerts/newAlert.jsp" type="com.bms.informatics.gcsm.alert.web.action.NewAlertAction" validate="no">
+    <action name="alertForm" parameter="method" path="/newAlertAction" scope="session" input="/views/alerts/newAlert.jsp" type="nyla.solutions.formInjection.alert.web.action.NewAlertAction" validate="no">
 	<forward name="newAlert" path="/views/alerts/newAlert.jsp"/>
 	<forward name="ALERT_CREATE_SUCCESS" path="/views/alerts/doNewAlert.jsp"/>
 	<forward name="ALERT_CREATE_FAILED" path="/views/alerts/doNewAlert.jsp"/>
     </action>
-    <action name="alertDetail" parameter="method" path="/AlertAction" scope="session" input="/views/alerts/alertDetail.jsp" type="com.bms.informatics.gcsm.alert.web.action.AlertAction" validate="no">
+    <action name="alertDetail" parameter="method" path="/AlertAction" scope="session" input="/views/alerts/alertDetail.jsp" type="nyla.solutions.formInjection.alert.web.action.AlertAction" validate="no">
 	<forward name="ALERT_INFO" path="/views/alerts/alertDetail.jsp"/>
 	<forward name="ALERT_REMOVE_SUCCESS" path="/views/alerts/doRemoveAlert.jsp"/>
 	<forward name="ALERT_REMOVE_FAILED" path="/views/alerts/doRemoveAlert.jsp"/>
@@ -315,7 +315,7 @@
 	    name="reportForm"
 		  parameter="method"
 				    scope="request"
-		  type="com.bms.informatics.gcsm.reports.web.action.VisitTargetReportAction">
+		  type="nyla.solutions.formInjection.reports.web.action.VisitTargetReportAction">
 
 		  <forward name="doVisitTargetReport" path="bms.gcsm.report.visitTargetReport" />
 	     <forward name="doVisitTargetMonitorReport" path="bms.gcsm.report.commonReportTitleTemplate" />
@@ -326,7 +326,7 @@
 	    name="reportForm"
 		  parameter="method"
 		  scope="request"
-		  type="com.bms.informatics.gcsm.reports.web.action.RandomReportAction">
+		  type="nyla.solutions.formInjection.reports.web.action.RandomReportAction">
 
 	     <forward name="doRandomTargetReport" path="bms.gcsm.report.randomTargetReport" />
 	     <forward name="doRandomTargetDetailReport" path="bms.gcsm.report.commonReportTitleTemplate" />
@@ -337,7 +337,7 @@
 		     name="reportForm"
 				       scope="request"
 			  parameter="method"
-			  type="com.bms.informatics.gcsm.reports.web.action.VisitTypeReportAction">
+			  type="nyla.solutions.formInjection.reports.web.action.VisitTypeReportAction">
 		  <forward name="doVisitDateToReportCompletion" path="bms.gcsm.report.visitDateToReportCompletionReport" />
 		  <forward name="doVisitDateToReportCompletionDetail" path="bms.gcsm.report.visitDateToReportCompletionDetailReport" />
 		  <forward name="doReportSubmissionToESF" path="bms.gcsm.report.visitDateToReportCompletionReport" />
@@ -348,7 +348,7 @@
 		     name="reportForm"
 			  parameter="method"
 			  scope="request"
-			  type="com.bms.informatics.gcsm.reports.web.action.DummyReportAction">
+			  type="nyla.solutions.formInjection.reports.web.action.DummyReportAction">
 		  <forward name="doVisitReporting" path="bms.gcsm.report.visitReporting" />
 		  <forward name="doSubjectActivityReport" path="bms.gcsm.report.subjectActivityReport" />
 	</action>
@@ -357,7 +357,7 @@
 		     name="reportForm"
 			  parameter="method"
 			  scope="request"
-			  type="com.bms.informatics.gcsm.reports.web.action.SubjectReportAction">
+			  type="nyla.solutions.formInjection.reports.web.action.SubjectReportAction">
 
 		  <forward name="doSDVSummary" path="bms.gcsm.report.dateRangeReport" />
 		  <forward name="doSDVDetail" path="bms.gcsm.report.commonReportTitleTemplate" />
@@ -373,7 +373,7 @@
 	    name="reportForm"
 			      scope="request"
 		  parameter="method"
-		  type="com.bms.informatics.gcsm.reports.web.action.ProtocolDevAction">
+		  type="nyla.solutions.formInjection.reports.web.action.ProtocolDevAction">
 
 	     <forward name="doProtocolDev" path="bms.gcsm.report.protocolDev" />
 	     <forward name="doProtocolDevDetl" path="bms.gcsm.report.commonReportTitleTemplate" />
@@ -383,7 +383,7 @@
 	    name="reportForm"
 			      scope="request"
 		  parameter="method"
-		  type="com.bms.informatics.gcsm.reports.web.action.LowEnrollReportAction">
+		  type="nyla.solutions.formInjection.reports.web.action.LowEnrollReportAction">
 
 		  <forward name="doLowEnrollSites" path="bms.gcsm.report.lowEnrollReport" />
     </action>
@@ -392,7 +392,7 @@
 		     name="reportForm"
 			  parameter="method"
 			  scope="request"
-			  type="com.bms.informatics.gcsm.reports.web.action.HistoryReportAction">
+			  type="nyla.solutions.formInjection.reports.web.action.HistoryReportAction">
 		  <forward name="doSAEHistory" path="bms.gcsm.report.libCommonReportTemplate" />
 		  <forward name="doSDVHistory" path="bms.gcsm.report.libCommonReportTemplate" />
 		  <forward name="doInfoConsentHist" path="bms.gcsm.report.libCommonReportTemplate" />
@@ -402,7 +402,7 @@
       <action path="/AdminPanelAction"
 	       name="adminPanelForm"
 		parameter="method"
-		type="com.bms.informatics.gcsm.security.web.action.AdminPanelAction">
+		type="nyla.solutions.formInjection.security.web.action.AdminPanelAction">
 	<forward name="siteHome"  path="bms.gcsm.site.layout" />
 	<forward name="staff"  path="bms.gcsm.staff.layout"/>
 	<forward name="staffSite" path="bms.gcsm.site.layout"/>
@@ -414,7 +414,7 @@
     <action name="letterForm"
 			  parameter="method"
 			  path="/LetterAction"
-			  type="com.bms.informatics.gcsm.letter.web.action.LetterAction">
+			  type="nyla.solutions.formInjection.letter.web.action.LetterAction">
 		  <forward name="doPRELetterForSIV" path="/views/letter/doPRELetterForSIV.jsp" />
 		  <forward name="doPRELetterForPSA" path="/views/letter/doPRELetterForPSA.jsp" />
 		  <forward name="doPRELetterForPSE" path="/views/letter/doPRELetterForPSE.jsp" />
@@ -439,39 +439,39 @@
 <!--    <action name="backweb" -->
 <!--    			 path="/OfflineAccessAction" -->
 <!--    			 scope="application"-->
-<!--    			 type="com.bms.informatics.gcsm.security.backweb.web.OfflineAccessAction">-->
+<!--    			 type="nyla.solutions.formInjection.security.backweb.web.OfflineAccessAction">-->
 <!--    	<forward name="accessMgr" path="/themes/default/download_plugin.jsp"/>-->
 <!--    </action>-->
       <!-- action name="backweb"
 		   path="/OfflineAccessAction"
 		   scope="application"
-		   type="com.bms.informatics.gcsm.security.backweb.web.OfflineAccessAction">
+		   type="nyla.solutions.formInjection.security.backweb.web.OfflineAccessAction">
 	  <forward name="accessMgr" path="/themes/default/download_plugin.jsp"/>
       </action-->
 
   </action-mappings>
 
 
-  <message-resources parameter="com.bms.informatics.gcsm.common.web.Presenter_bundle"/>
-  <message-resources key="pre_siv" parameter="com.bms.informatics.gcsm.letter.web.pre_siv_bundle"/>
-  <message-resources key="post_siv" parameter="com.bms.informatics.gcsm.letter.web.post_siv_bundle"/>
+  <message-resources parameter="nyla.solutions.formInjection.common.web.Presenter_bundle"/>
+  <message-resources key="pre_siv" parameter="nyla.solutions.formInjection.letter.web.pre_siv_bundle"/>
+  <message-resources key="post_siv" parameter="nyla.solutions.formInjection.letter.web.post_siv_bundle"/>
 
-  <message-resources key="pre_smv" parameter="com.bms.informatics.gcsm.letter.web.pre_smv_bundle"/>
-  <message-resources key="post_smv" parameter="com.bms.informatics.gcsm.letter.web.post_smv_bundle"/>
-  <message-resources key="post_smv_non_std" parameter="com.bms.informatics.gcsm.letter.web.post_smv_non_std_bundle"/>
+  <message-resources key="pre_smv" parameter="nyla.solutions.formInjection.letter.web.pre_smv_bundle"/>
+  <message-resources key="post_smv" parameter="nyla.solutions.formInjection.letter.web.post_smv_bundle"/>
+  <message-resources key="post_smv_non_std" parameter="nyla.solutions.formInjection.letter.web.post_smv_non_std_bundle"/>
 
-  <message-resources key="pre_pse" parameter="com.bms.informatics.gcsm.letter.web.pre_pse_bundle"/>
-  <message-resources key="post_pse" parameter="com.bms.informatics.gcsm.letter.web.post_pse_bundle"/>
+  <message-resources key="pre_pse" parameter="nyla.solutions.formInjection.letter.web.pre_pse_bundle"/>
+  <message-resources key="post_pse" parameter="nyla.solutions.formInjection.letter.web.post_pse_bundle"/>
 
-  <message-resources key="pre_psa" parameter="com.bms.informatics.gcsm.letter.web.pre_psa_bundle"/>
-  <message-resources key="post_psa" parameter="com.bms.informatics.gcsm.letter.web.post_psa_bundle"/>
+  <message-resources key="pre_psa" parameter="nyla.solutions.formInjection.letter.web.pre_psa_bundle"/>
+  <message-resources key="post_psa" parameter="nyla.solutions.formInjection.letter.web.post_psa_bundle"/>
 
-  <message-resources key="pre_scv" parameter="com.bms.informatics.gcsm.letter.web.pre_scv_bundle"/>
-  <message-resources key="post_scv" parameter="com.bms.informatics.gcsm.letter.web.post_scv_bundle"/>
-  <message-resources key="post_scv_no_subjects" parameter="com.bms.informatics.gcsm.letter.web.post_scv_no_subjects_bundle"/>
+  <message-resources key="pre_scv" parameter="nyla.solutions.formInjection.letter.web.pre_scv_bundle"/>
+  <message-resources key="post_scv" parameter="nyla.solutions.formInjection.letter.web.post_scv_bundle"/>
+  <message-resources key="post_scv_no_subjects" parameter="nyla.solutions.formInjection.letter.web.post_scv_no_subjects_bundle"/>
 
-  <message-resources key="post_unblinded" parameter="com.bms.informatics.gcsm.letter.web.post_unblinded_bundle"/>
-  <message-resources key="post_phone" parameter="com.bms.informatics.gcsm.letter.web.post_phone_bundle"/>
+  <message-resources key="post_unblinded" parameter="nyla.solutions.formInjection.letter.web.post_unblinded_bundle"/>
+  <message-resources key="post_phone" parameter="nyla.solutions.formInjection.letter.web.post_phone_bundle"/>
 
 
   <plug-in className="org.apache.struts.tiles.TilesPlugin">
@@ -483,5 +483,5 @@
   <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
 	<set-property property="pathnames" value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml"/>
   </plug-in>
-  <plug-in className="com.bms.informatics.gcsm.common.web.action.GCSMInitializationAction"/>
+  <plug-in className="nyla.solutions.nyla.formInjection.GCSMInitializationAction"/>
 </struts-config>

@@ -1,8 +1,12 @@
 package nyla.solutions.formInjection.data;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import nyla.solutions.global.data.Data;
 
 /**
  * 
@@ -14,169 +18,415 @@ import java.util.Map;
  * @author Gregory Green
  * @version 1.0
  */
-public class Question extends FormComponent
+public class Question implements FormComponent, Comparable<Object>
 {
 
-   /**
-    * 
-    * @return this.responseType !=  null && this.responseType.hasOperation()
-    */
-   public boolean hasOperation()
-   {
-      return this.responseType !=  null && this.responseType.hasOperation();
-   }//--------------------------------------------
-   /**
-    * 
-    * @return the primary key
-    */
-   public Integer getQuestionId()
-   {
-      return new Integer(super.getPrimaryKey());
-   }
+	/**
+	 * 
+	 * @return this.responseType != null && this.responseType.hasOperation()
+	 */
+	public boolean hasOperation()
+	{
+		return this.responseType != null && this.responseType.hasOperation();
+	}// --------------------------------------------
 
-   public void setQuestionId(Integer id)
-   {
-      this.setPrimaryKeyInteger(id);
-   }// --------------------------------------------
+	@Override
+	public int compareTo(Object o)
+	{
+		if(o == null)
+			return 1;
+		
+		return getText().compareTo(((Question)o).getText());
+	}// --------------------------------------------------------
+	
+	/**
+	 * 
+	 * @return the primary key
+	 */
+	public Integer getQuestionId()
+	{
+		return new Integer(getPrimaryKey());
+	}
 
-   public Object getKey()
-   {
-      return getQuestionId();
-   }
+	public void setQuestionId(Integer id)
+	{
+		this.setPrimaryKey(id);
+	}// --------------------------------------------
 
-   public Map getAttributeMap()
-   {
-      return attributeMap;
-   }//--------------------------------------------
+	public Object getKey()
+	{
+		return getQuestionId();
+	}
 
-   public void setAttributeMap(Map attributeMap)
-   {
-      this.attributeMap = attributeMap != null ? attributeMap : new HashMap();
-   }//--------------------------------------------
-   /**
-    * 
-    * @param key the question attribute key
-    * @return
-    */
-   public QuestionAttribute getAttribute(String key)
-   {
-      if(attributeMap == null)
-         return null;
-      
-      return (QuestionAttribute) attributeMap.get(key);
-   }
+	public Map getAttributeMap()
+	{
+		return attributeMap;
+	}// --------------------------------------------
 
-   public ResponseType getResponseType()
-   {
-      return responseType;
-   }
+	public void setAttributeMap(Map attributeMap)
+	{
+		this.attributeMap = attributeMap != null ? attributeMap : new HashMap();
+	}// --------------------------------------------
 
-   public void setResponseType(ResponseType responseType)
-   {
-      this.responseType = responseType;
-   }
+	/**
+	 * 
+	 * @param key the question attribute key
+	 * @return
+	 */
+	public QuestionAttribute getAttribute(String key)
+	{
+		if (attributeMap == null)
+			return null;
 
-   public String getFormTypeCode()
-   {
-      return formTypeCode;
-   }
-   
+		return (QuestionAttribute) attributeMap.get(key);
+	}
 
-   public void setFormTypeCode(String formTypeCode)
-   {
-      this.formTypeCode = formTypeCode;
-   }
+	public ResponseType getResponseType()
+	{
+		return responseType;
+	}
 
-   public Integer getQuestionNumber()
-   {
-      return questionNumber;
-   }
+	public void setResponseType(ResponseType responseType)
+	{
+		this.responseType = responseType;
+	}
 
-   public void setQuestionNumber(Integer questionNumber)
-   {
-      this.questionNumber = questionNumber;
-   }
-   
-   public boolean hasHelpText()
-   {
-      return false;
-   }//--------------------------------------------
+	public String getFormTypeCode()
+	{
+		return formTypeCode;
+	}
 
-   public String getQuestionText()
-   {
-      return questionText;
-   }
+	public void setFormTypeCode(String formTypeCode)
+	{
+		this.formTypeCode = formTypeCode;
+	}
 
-   public void setQuestionText(String questionText)
-   {
-      this.questionText = questionText;
-   }
+	public Integer getQuestionNumber()
+	{
+		return questionNumber;
+	}
 
-   public String getResponseTypeCode()
-   {
-      return responseTypeCode;
-   }
+	public void setQuestionNumber(Integer questionNumber)
+	{
+		this.questionNumber = questionNumber;
+	}
 
-   protected void setResponseTypeCode(String responseTypeCode)
-   {
-      this.responseTypeCode = responseTypeCode;
-   }
+	public boolean hasHelpText()
+	{
+		return false;
+	}// --------------------------------------------
 
-   public Integer getSectionNumber()
-   {
-      return sectionNumber;
-   }
+	public String getQuestionText()
+	{
+		return questionText;
+	}
 
-   public void setSectionNumber(Integer sectionNumber)
-   {
-      this.sectionNumber = sectionNumber;
-   }
+	public void setQuestionText(String questionText)
+	{
+		this.questionText = questionText;
+	}
 
-   public Map getChoiceMap()
-   {
-      return choiceMap;
-   }
+	public String getResponseTypeCode()
+	{
+		return responseTypeCode;
+	}
 
-   public void setChoiceMap(Map choiceMap)
-   {
-      this.choiceMap = choiceMap != null ? choiceMap : new LinkedHashMap();
-   }
+	protected void setResponseTypeCode(String responseTypeCode)
+	{
+		this.responseTypeCode = responseTypeCode;
+	}
 
-   public boolean hasChoices()
-   {
-      return choiceMap != null && !choiceMap.isEmpty();
-   }
+	public Integer getSectionNumber()
+	{
+		return sectionNumber;
+	}
 
-   public boolean hasResponseTable()
-   {
-      return responseType.getResponseTable() != null;
-   }
+	public void setSectionNumber(Integer sectionNumber)
+	{
+		this.sectionNumber = sectionNumber;
+	}
 
-   public ResponseTable getResponseTable()
-   {
-      return responseType.getResponseTable();
-   }//--------------------------------------------
+	public Map getChoiceMap()
+	{
+		return choiceMap;
+	}
 
-   public String getText()
-   {
-      return this.getQuestionText();
-   }
+	public void setChoiceMap(Map choiceMap)
+	{
+		this.choiceMap = choiceMap != null ? choiceMap : new LinkedHashMap();
+	}
 
-   static final long serialVersionUID = Question.class.getName().hashCode();
+	public boolean hasChoices()
+	{
+		return choiceMap != null && !choiceMap.isEmpty();
+	}
 
-   private String formTypeCode;
+	public boolean hasResponseTable()
+	{
+		
+		return responseType != null && responseType.getResponseTable() != null;
+	}
 
-   private String responseTypeCode;
+	public ResponseTable getResponseTable()
+	{
+		if(responseType == null)
+			return null;
+		
+		return responseType.getResponseTable();
+	}// --------------------------------------------
 
-   private Integer questionNumber;
+	public String getText()
+	{
+		return this.getQuestionText();
+	}
 
-   private String questionText;
+	/**
+	 * @return the id
+	 */
+	public String getId()
+	{
+		return id;
+	}
 
-   private Integer sectionNumber;
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id)
+	{
+		this.id = id;
+	}
 
-   private ResponseType responseType;
+	/**
+	 * @return the formType
+	 */
+	public FormType getFormType()
+	{
+		return formType;
+	}
 
-   private Map choiceMap = new LinkedHashMap();
+	/**
+	 * @param formType the formType to set
+	 */
+	public void setFormType(FormType formType)
+	{
+		this.formType = formType;
+	}
 
-   private Map attributeMap = new HashMap();
+	/**
+	 * @return the formId
+	 */
+	public Integer getFormId()
+	{
+		return formId;
+	}
+
+	/**
+	 * @param formId the formId to set
+	 */
+	public void setFormId(Integer formId)
+	{
+		this.formId = formId;
+	}
+
+	/**
+	 * @return the formStatusId
+	 */
+	public Integer getFormStatusId()
+	{
+		return formStatusId;
+	}
+
+	/**
+	 * @param formStatusId the formStatusId to set
+	 */
+	public void setFormStatusId(Integer formStatusId)
+	{
+		this.formStatusId = formStatusId;
+	}
+
+	/**
+	 * @return the formProps
+	 */
+	public Map getFormProps()
+	{
+		return formProps;
+	}
+
+	/**
+	 * @param formProps the formProps to set
+	 */
+	public void setFormProps(Map formProps)
+	{
+		this.formProps = formProps;
+	}
+
+	/**
+	 * @return the createUserLogin
+	 */
+	public Object getCreateUserLogin()
+	{
+		return createUserLogin;
+	}
+
+	/**
+	 * @param createUserLogin the createUserLogin to set
+	 */
+	public void setCreateUserLogin(Object createUserLogin)
+	{
+		this.createUserLogin = createUserLogin;
+	}
+
+	/**
+	 * @return the createUserID
+	 */
+	public Object getCreateUserID()
+	{
+		return createUserID;
+	}
+
+	/**
+	 * @param createUserID the createUserID to set
+	 */
+	public void setCreateUserID(Object createUserID)
+	{
+		this.createUserID = createUserID;
+	}
+
+	/**
+	 * @return the createDate
+	 */
+	public Date getCreateDate()
+	{
+		return createDate;
+	}
+
+	/**
+	 * @param createDate the createDate to set
+	 */
+	public void setCreateDate(Date createDate)
+	{
+		this.createDate = createDate;
+	}
+
+	/**
+	 * @return the updateUserID
+	 */
+	public Object getUpdateUserID()
+	{
+		return updateUserID;
+	}
+
+	/**
+	 * @param updateUserID the updateUserID to set
+	 */
+	public void setUpdateUserID(Object updateUserID)
+	{
+		this.updateUserID = updateUserID;
+	}
+
+	/**
+	 * @return the updateDate
+	 */
+	public Timestamp getUpdateDate()
+	{
+		return updateDate;
+	}
+
+	/**
+	 * @param updateDate the updateDate to set
+	 */
+	public void setUpdateDate(Timestamp updateDate)
+	{
+		this.updateDate = updateDate;
+	}
+
+	/**
+	 * @return the primaryKey
+	 */
+	public int getPrimaryKey()
+	{
+		return primaryKey;
+	}
+
+	/**
+	 * @param primaryKey the primaryKey to set
+	 */
+	public void setPrimaryKey(int primaryKey)
+	{
+		this.primaryKey = primaryKey;
+	}
+
+	
+	/**
+	 * @return the deletedCode
+	 */
+	public String getDeletedCode()
+	{
+		return deletedCode;
+	}
+
+	/**
+	 * @param deletedCode the deletedCode to set
+	 */
+	public void setDeletedCode(String deletedCode)
+	{
+		this.deletedCode = deletedCode;
+	}
+
+
+	@Override
+	public void setUpdateDate(Date date)
+	{
+		this.updateDate = new Timestamp(date.getTime());
+
+	}
+
+	@Override
+	public boolean isDeleted()
+	{
+		return Data.YES.equals(this.deletedCode);
+	}
+
+	@Override
+	public void delete()
+	{
+		this.deletedCode = Data.YES;
+	}
+	static final long serialVersionUID = Question.class.getName().hashCode();
+
+	private String formTypeCode;
+
+	private String responseTypeCode;
+
+	private Integer questionNumber;
+
+	private String questionText;
+
+	private Integer sectionNumber;
+
+	private ResponseType responseType;
+
+	private Map choiceMap = new LinkedHashMap();
+
+	private Map attributeMap = new HashMap();
+
+	private String id;
+	private FormType formType = null;
+	private Integer formId;
+	private Integer formStatusId;
+	private Map formProps = new HashMap();
+
+	private Object createUserLogin = null;
+
+	private Object createUserID = null;
+
+	private Date createDate = null;
+
+	private Object updateUserID = null;
+
+	private Timestamp updateDate = null;
+	private int primaryKey = Data.NULL;
+
+	private String deletedCode = Data.NO;
+
 }

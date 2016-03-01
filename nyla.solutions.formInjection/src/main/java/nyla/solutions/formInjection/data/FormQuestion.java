@@ -99,7 +99,7 @@ public class FormQuestion extends Question implements FormComponentWrapper
 
    public FormAnswer getAnswer()
    {
-      FormAnswer a = (FormAnswer) form.getAnswer(getQuestionId());
+      FormAnswer a = (FormAnswer) form.findAnswer(getQuestionId());
       if (a == null)
          return setAnswer(null);
       return a;
@@ -113,7 +113,7 @@ public class FormQuestion extends Question implements FormComponentWrapper
     */
    public FormAnswer getAnswer(int row, int col)
    {
-      FormAnswer a = (FormAnswer) form.getAnswer(getQuestionId(), row, col);
+      FormAnswer a = (FormAnswer) form.findAnswer(getQuestionId(), row, col);
       if (a == null)
          return setAnswer(null, row, col);
       return a;
@@ -123,14 +123,14 @@ public class FormQuestion extends Question implements FormComponentWrapper
    {
       if (create)
          return getAnswer();
-      return form.getAnswer(getQuestionId());
+      return form.findAnswer(getQuestionId());
    }
 
    private FormAnswer getAnswer(int row, int col, boolean create)
    {
       if (create)
          return getAnswer(row, col);
-      return form.getAnswer(getQuestionId(), row, col);
+      return form.findAnswer(getQuestionId(), row, col);
    }
 
    public boolean hasAnswer()
@@ -195,7 +195,7 @@ public class FormQuestion extends Question implements FormComponentWrapper
       if (table == null)
          throw new IllegalArgumentException(
          "question does not have a response table");
-      FormAnswer a = form.getAnswer(getQuestionId(), row, col);
+      FormAnswer a = form.findAnswer(getQuestionId(), row, col);
       if (a == null)
       {
          Column c = table.getColumn(col);

@@ -21,6 +21,6 @@ public interface Key<T> extends Serializable
    /**
     * @param key The key to set.
     */
-   public void setKey(T key);
+   //public void setKey(T key);
    
 }

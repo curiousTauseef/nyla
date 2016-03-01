@@ -2,8 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:gfe="http://www.springframework.org/schema/gemfire"
 	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+		 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
    <bean id="nyla.solutions.formInjection.dao.FormDAO" class="nyla.solutions.formInjection.dao.file.xml.FormXmlDAO"/>
    <bean id="nyla.solutions.formInjection.dao.BreDAO" class="nyla.solutions.formInjection.dao.file.xml.BreXmlDAO"/>
    <bean id="nyla.solutions.formInjection.dao.QuestionDAO" class="nyla.solutions.formInjection.dao.file.xml.QuestionXmlDAO"/>
@@ -55,4 +59,28 @@
     <bean id="nyla.solutions.formInjection.dao.QuestionDAO" class="nyla.solutions.formInjection.dao.hibernate.QuestionHibernateDAO" singleton="false">
     </bean>
 -->
+	<!-- ======================== -->
+	<!--  Spring Data GemFire     -->
+	
+	<!--  Regions -->
+
+	<util:properties id="gemfireProperties">
+		<prop key="start-locator"><![CDATA[localhost[10334]]]></prop>
+		<prop key="jmx-manager">true</prop> 
+	</util:properties>
+	
+	<gfe:partitioned-region id="form"></gfe:partitioned-region>
+	
+	<gfe:cache properties-ref="gemfireProperties">
+		
+	</gfe:cache>
+	 <gfe:cache-server id="advanced-config" auto-startup="true"
+       bind-address="localhost" port="2324" host-name-for-clients="localhost"
+       load-poll-interval="2000" max-connections="22" max-threads="16"
+       max-message-count="1000" max-time-between-pings="30000"
+       groups="test-server">
+
+
+
+   </gfe:cache-server>
 </beans>

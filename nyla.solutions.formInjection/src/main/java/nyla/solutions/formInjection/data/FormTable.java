@@ -97,7 +97,7 @@ public class FormTable extends ResponseTable implements FormComponentWrapper
       for (Iterator i = cols.keySet().iterator(); i.hasNext();)
       {
          Integer colNumber = (Integer) i.next();
-         if (form.getAnswer(question.getQuestionId(), rowNum, colNumber
+         if (form.findAnswer(question.getQuestionId(), rowNum, colNumber
          .intValue()) != null)
             return true;
       }
@@ -231,7 +231,7 @@ public class FormTable extends ResponseTable implements FormComponentWrapper
 
    public Collection getAnswers()
    {
-      return question.getForm().getAnswerList(question.getQuestionId());
+      return question.getForm().findAnswerList(question.getQuestionId());
    }
 
    public int compareTo(Object o)

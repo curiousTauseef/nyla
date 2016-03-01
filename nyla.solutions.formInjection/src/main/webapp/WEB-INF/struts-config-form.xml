@@ -16,65 +16,65 @@
 	<global-exceptions/>
 	<global-forwards/>
 	<action-mappings>
-		<action name="formAction" path="/formAction" type="com.bms.informatics.gcsm.form.web.FormAction" parameter="op" validate="true">
-		   <forward name="list" path="bms.gcsm.site.layout"/>
-		   <forward name="access" path="bms.gcsm.form.layout"/>
-		   <forward name="delete.confirmation" path="bms.gcsm.delete.confirmation.layout"/>
-		   <forward name="submit.confirmation" path="bms.gcsm.submit.confirmation.layout"/>		   		   
-		   <forward name="submit.signature" path="bms.gcsm.submit.signature.layout"/>				   
-		   <forward name="complete.signature" path="bms.gcsm.submit.signature.layout"/>						
-		   <forward name="complete.confirmation" path="bms.gcsm.submit.confirmation.layout"/>		   		      
-		   <forward name="submit.error" path="bms.gcsm.submit.signature.layout"/>				   
-		   <forward name="complete.error" path="bms.gcsm.submit.signature.layout"/>				   
-		   <forward name="PE.version.1" path="bms.gcsm.form.pe.layout"/>							
-		   <forward name="SMV.version.1" path="bms.gcsm.form.smv.layout"/>				
-		   <forward name="PD.version.1" path="bms.gcsm.form.pd.layout"/>	
-		   <forward name="SMP.version.1" path="bms.gcsm.form.smp.layout"/>			
-		   <forward name="PSE.version.1" path="bms.gcsm.form.pse.layout"/>	
-		   <forward name="PSA.version.1" path="bms.gcsm.form.psa.layout"/>
-		   <forward name="DRW.version.1" path="bms.gcsm.form.drw.layout"/>
-		   <forward name="OSIF.version.1" path="bms.gcsm.form.osif.layout"/>
-		   <forward name="SCV.version.1" path="bms.gcsm.form.scv.layout"/>			
-            	   <forward name="SIV.version.1" path="bms.gcsm.form.siv.layout"/>
-            	   <forward name="SASC.version.1" path="bms.gcsm.form.sasc.layout"/>            	   
-            	   <forward name="MY_FORMS_PE_DISPLAY" path="bms.gcsm.myforms.pe.layout"/>
-            	   <forward name="MY_FORMS_SMV_DISPLAY" path="bms.gcsm.myforms.smv.layout"/>
-            	   <forward name="MY_FORMS_PD_DISPLAY" path="bms.gcsm.myforms.pd.layout"/>
-            	   <forward name="MY_FORMS_SMP_DISPLAY" path="bms.gcsm.myforms.smp.layout"/>
-            	   <forward name="MY_FORMS_PSE_DISPLAY" path="bms.gcsm.myforms.pse.layout"/>
-            	   <forward name="MY_FORMS_PSA_DISPLAY" path="bms.gcsm.myforms.psa.layout"/>
-            	   <forward name="MY_FORMS_DRW_DISPLAY" path="bms.gcsm.myforms.drw.layout"/>
-            	   <forward name="MY_FORMS_OSIF_DISPLAY" path="bms.gcsm.myforms.osif.layout"/>
-            	   <forward name="MY_FORMS_SCV_DISPLAY" path="bms.gcsm.myforms.scv.layout"/>
-            	   <forward name="MY_FORMS_SIV_DISPLAY" path="bms.gcsm.myforms.siv.layout"/>
-            	   <forward name="MY_FORMS_SASC_DISPLAY" path="bms.gcsm.myforms.sasc.layout"/>
+		<action name="formAction" path="/formAction" type="nyla.solutions.formInjection.form.web.FormAction" parameter="op" validate="true">
+		   <forward name="list" path="nyla.gcsm.site.layout"/>
+		   <forward name="access" path="nyla.gcsm.form.layout"/>
+		   <forward name="delete.confirmation" path="nyla.gcsm.delete.confirmation.layout"/>
+		   <forward name="submit.confirmation" path="nyla.gcsm.submit.confirmation.layout"/>		   		   
+		   <forward name="submit.signature" path="nyla.gcsm.submit.signature.layout"/>				   
+		   <forward name="complete.signature" path="nyla.gcsm.submit.signature.layout"/>						
+		   <forward name="complete.confirmation" path="nyla.gcsm.submit.confirmation.layout"/>		   		      
+		   <forward name="submit.error" path="nyla.gcsm.submit.signature.layout"/>				   
+		   <forward name="complete.error" path="nyla.gcsm.submit.signature.layout"/>				   
+		   <forward name="PE.version.1" path="nyla.gcsm.form.pe.layout"/>							
+		   <forward name="SMV.version.1" path="nyla.gcsm.form.smv.layout"/>				
+		   <forward name="PD.version.1" path="nyla.gcsm.form.pd.layout"/>	
+		   <forward name="SMP.version.1" path="nyla.gcsm.form.smp.layout"/>			
+		   <forward name="PSE.version.1" path="nyla.gcsm.form.pse.layout"/>	
+		   <forward name="PSA.version.1" path="nyla.gcsm.form.psa.layout"/>
+		   <forward name="DRW.version.1" path="nyla.gcsm.form.drw.layout"/>
+		   <forward name="OSIF.version.1" path="nyla.gcsm.form.osif.layout"/>
+		   <forward name="SCV.version.1" path="nyla.gcsm.form.scv.layout"/>			
+            	   <forward name="SIV.version.1" path="nyla.gcsm.form.siv.layout"/>
+            	   <forward name="SASC.version.1" path="nyla.gcsm.form.sasc.layout"/>            	   
+            	   <forward name="MY_FORMS_PE_DISPLAY" path="nyla.gcsm.myforms.pe.layout"/>
+            	   <forward name="MY_FORMS_SMV_DISPLAY" path="nyla.gcsm.myforms.smv.layout"/>
+            	   <forward name="MY_FORMS_PD_DISPLAY" path="nyla.gcsm.myforms.pd.layout"/>
+            	   <forward name="MY_FORMS_SMP_DISPLAY" path="nyla.gcsm.myforms.smp.layout"/>
+            	   <forward name="MY_FORMS_PSE_DISPLAY" path="nyla.gcsm.myforms.pse.layout"/>
+            	   <forward name="MY_FORMS_PSA_DISPLAY" path="nyla.gcsm.myforms.psa.layout"/>
+            	   <forward name="MY_FORMS_DRW_DISPLAY" path="nyla.gcsm.myforms.drw.layout"/>
+            	   <forward name="MY_FORMS_OSIF_DISPLAY" path="nyla.gcsm.myforms.osif.layout"/>
+            	   <forward name="MY_FORMS_SCV_DISPLAY" path="nyla.gcsm.myforms.scv.layout"/>
+            	   <forward name="MY_FORMS_SIV_DISPLAY" path="nyla.gcsm.myforms.siv.layout"/>
+            	   <forward name="MY_FORMS_SASC_DISPLAY" path="nyla.gcsm.myforms.sasc.layout"/>
 		</action>
-		<action name="signatureForm" path="/formAction/sign" type="com.bms.informatics.gcsm.form.web.FormAction" parameter="op" validate="true">
-		   <forward name="submit.confirmation" path="bms.gcsm.submit.confirmation.layout"/>		   		   
-		   <forward name="submit.signature" path="bms.gcsm.submit.signature.layout"/>				   
-		   <forward name="complete.signature" path="bms.gcsm.submit.signature.layout"/>						
-		   <forward name="complete.confirmation" path="bms.gcsm.submit.confirmation.layout"/>		   		      
-		   <forward name="submit.error" path="bms.gcsm.submit.signature.layout"/>				   
-		   <forward name="complete.error" path="bms.gcsm.submit.signature.layout"/>				   		   
+		<action name="signatureForm" path="/formAction/sign" type="nyla.solutions.formInjection.form.web.FormAction" parameter="op" validate="true">
+		   <forward name="submit.confirmation" path="nyla.gcsm.submit.confirmation.layout"/>		   		   
+		   <forward name="submit.signature" path="nyla.gcsm.submit.signature.layout"/>				   
+		   <forward name="complete.signature" path="nyla.gcsm.submit.signature.layout"/>						
+		   <forward name="complete.confirmation" path="nyla.gcsm.submit.confirmation.layout"/>		   		      
+		   <forward name="submit.error" path="nyla.gcsm.submit.signature.layout"/>				   
+		   <forward name="complete.error" path="nyla.gcsm.submit.signature.layout"/>				   		   
 		</action>		
-		<action name="SMPForm" path="/SMPFormAction" type="com.bms.informatics.gcsm.form.web.SMPFormAction" parameter="op" validate="false">
-			<forward name="viewSMP" path="bms.gcsm.form.smp.layout"/>
+		<action name="SMPForm" path="/SMPFormAction" type="nyla.solutions.formInjection.form.web.SMPFormAction" parameter="op" validate="false">
+			<forward name="viewSMP" path="nyla.gcsm.form.smp.layout"/>
 		</action>
-		<action path="/OSIFFormAction" type="com.bms.informatics.gcsm.form.web.OSIFFormAction" parameter="op" validate="false">
-		   <forward name="OSIF.version.1" path="bms.gcsm.form.osif.layout"/>
-		   <forward name="access" path="bms.gcsm.form.layout"/>		   
+		<action path="/OSIFFormAction" type="nyla.solutions.formInjection.form.web.OSIFFormAction" parameter="op" validate="false">
+		   <forward name="OSIF.version.1" path="nyla.gcsm.form.osif.layout"/>
+		   <forward name="access" path="nyla.gcsm.form.layout"/>		   
 		</action>
-		<action name="PSEForm" path="/PSEFormAction" type="com.bms.informatics.gcsm.form.web.PSEFormAction" parameter="op" validate="false">
-			<forward name="PSE.version.1" path="bms.gcsm.form.pse.layout"/>
-            <forward name="SIV.version.1" path="bms.gcsm.form.siv.layout"/>
-		   <forward name="delete.confirmation" path="bms.gcsm.delete.confirmation.layout"/>            
-		    <forward name="submit.signature" path="bms.gcsm.submit.signature.layout"/>
-		   <forward name="submit.confirmation" path="bms.gcsm.submit.confirmation.layout"/>		   		   
-		   <forward name="submit.signature" path="bms.gcsm.submit.signature.layout"/>				   
-		   <forward name="complete.signature" path="bms.gcsm.submit.signature.layout"/>						
-		   <forward name="complete.confirmation" path="bms.gcsm.submit.confirmation.layout"/>		   		      
-		   <forward name="submit.error" path="bms.gcsm.submit.signature.layout"/>				   
-		   <forward name="complete.error" path="bms.gcsm.submit.signature.layout"/>				    
+		<action name="PSEForm" path="/PSEFormAction" type="nyla.solutions.formInjection.form.web.PSEFormAction" parameter="op" validate="false">
+			<forward name="PSE.version.1" path="nyla.gcsm.form.pse.layout"/>
+            <forward name="SIV.version.1" path="nyla.gcsm.form.siv.layout"/>
+		   <forward name="delete.confirmation" path="nyla.gcsm.delete.confirmation.layout"/>            
+		    <forward name="submit.signature" path="nyla.gcsm.submit.signature.layout"/>
+		   <forward name="submit.confirmation" path="nyla.gcsm.submit.confirmation.layout"/>		   		   
+		   <forward name="submit.signature" path="nyla.gcsm.submit.signature.layout"/>				   
+		   <forward name="complete.signature" path="nyla.gcsm.submit.signature.layout"/>						
+		   <forward name="complete.confirmation" path="nyla.gcsm.submit.confirmation.layout"/>		   		      
+		   <forward name="submit.error" path="nyla.gcsm.submit.signature.layout"/>				   
+		   <forward name="complete.error" path="nyla.gcsm.submit.signature.layout"/>				    
 		</action>
 	</action-mappings>
 </struts-config>

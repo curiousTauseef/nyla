@@ -1,15 +1,4 @@
 package nyla.solutions.global.patterns.jmx;
-import javax.management.*;
-import javax.management.remote.JMXConnector;
-import javax.management.remote.JMXConnectorFactory;
-import javax.management.remote.JMXServiceURL;
-
-
-
-import nyla.solutions.global.exception.RequiredException;
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.patterns.Disposable;
-import nyla.solutions.global.util.Debugger;
 
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -23,6 +12,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.management.AttributeChangeNotification;
+import javax.management.InstanceNotFoundException;
+import javax.management.MBeanServerConnection;
+import javax.management.MalformedObjectNameException;
+import javax.management.Notification;
+import javax.management.NotificationEmitter;
+import javax.management.NotificationFilter;
+import javax.management.NotificationListener;
+import javax.management.ObjectInstance;
+import javax.management.ObjectName;
+import javax.management.QueryExp;
+import javax.management.openmbean.CompositeData;
+import javax.management.openmbean.TabularData;
+import javax.management.remote.JMXConnector;
+import javax.management.remote.JMXConnectorFactory;
+import javax.management.remote.JMXServiceURL;
+
+import nyla.solutions.global.patterns.Disposable;
+
 
 /**
  * Wrapper class that interfaces with JMX
@@ -31,44 +39,131 @@ import java.util.Set;
  *  "service:jmx:rmi:///jndi/rmi://:9999/jmxrmi";
  *  String urlText = "service:jmx:rmi:///jndi/rmi://host:port/jmxrmi";
  *  
+ *  
+ *    This object is based JMX object in the NYLA Java framework
+ *    
+ *    @link https://github.com/ggreen/nyla/blob/master/dev/Solutions.Global/src/main/java/nyla/solutions/global/patterns/jmx/JMX.java
+ *    
  * @author Gregory Green
  *
  */
-public class JMX implements Disposable
+public class JMX implements AutoCloseable, Disposable
 {
    /**
     * MemoryMX_NAME = "java.lang:type=Memory"
     */
-   public static final String MemoryMX_NAME = "java.lang:type=Memory";
+   private static final String MemoryMX_NAME = "java.lang:type=Memory";
    
    /**
-    * TheadMX_NAME = "java.lang:type=Threading"
+    * ThreadMX_NAME = "java.lang:type=Threading"
     */
-   public static final String TheadMX_NAME = "java.lang:type=Threading";
-   
-  
+   private static final String ThreadMX_NAME = "java.lang:type=Threading";
    
    /**
-    * Constructor
-    * @param connectionURL the JMX connection URL
-    * @param userName the connection user name
-    * @param password the connection password
+	 *
+	 * @return RuntimeMXBean.getSystemProperties
+	 */
+	public String getSystemProperty(String key)
+	throws MalformedObjectNameException, InstanceNotFoundException
+	{
+		TabularData td =getAttribute(new ObjectName("java.lang:type=Runtime"), "SystemProperties");
+		
+		String [] keyArray = {key};
+		
+		 CompositeData cd = td.get(keyArray);
+		 
+		 return toText(cd);
+		 
+	}// --------------------------------------------------------
+	public String toText(CompositeData cd)
+	{ 
+		if(cd == null)
+			return null;
+		
+		 Object property = cd.get("value");
+		 
+		 return String.valueOf(property);
+	}// --------------------------------------------------------
+   /**
+    * >p>Invokes an operation on an MBean.</p>
+    * @param objectName
+    * @param operationName
+    * @param params
+    * @param signature
+    * @return 
     */
-   private JMX(String connectionURL, String userName, char[] password)
+   public Object invoke(ObjectName objectName,String operationName,Object[]  params, String[] signature)
    {
-	init(connectionURL,userName, password);
-	
-   }// ----------------------------------------------
+	   return invoke(null, objectName, operationName,params, signature);
+   }// --------------------------------------------------------
+   /**
+    * >p>Invokes an operation on an MBean.</p>
+    * @param objectName
+    * @param operationName
+    * @param params
+    * @param signature
+    * @return 
+    */
+   public Object invoke(Class<?> interfaceClass, ObjectName objectName,String operationName,Object[]  params, String[] signature)
+   {
+	   try
+	   {
+		   if(interfaceClass != null)
+			   javax.management.JMX.newMBeanProxy(connection, objectName, interfaceClass);
+		   
+		   return this.connection.invoke(objectName, operationName, params, signature);
+	   }
+	   catch(Exception e)
+	   {
+		   throw new RuntimeException("Unable to invoke objectName:"+objectName+ " operationName:"+operationName,e);
+	   }
+   }// --------------------------------------------------------
+   @SuppressWarnings("unchecked")
+   public <T> T newBean(Class<?> interfaceClass, ObjectName objectName)
+   {
+	   if(interfaceClass == null)
+		   return null;
+	   
+	return (T)javax.management.JMX.newMBeanProxy(connection, objectName, interfaceClass);
+   }// --------------------------------------------------------
+   /**
+    * 
+    * @param objectName
+    * @param attributes 
+    * @return the attributes for the given object name
+    */
+   @SuppressWarnings("unchecked")
+   public <T> T getAttribute(ObjectName objectName, String attribute)
+   throws InstanceNotFoundException
+   {
+	   try
+	   {
+		   return (T)this.connection.getAttribute(objectName, attribute);
+	   }
+	   catch(InstanceNotFoundException e)
+	   {
+		   throw e;
+	   }
+	   catch(Exception e)
+	   {
+		   throw new RuntimeException("Unable to get attributes objectName:"+objectName+ " attribute:"+attribute,e);
+	   }
+   }// --------------------------------------------------------
    /**
     * Connect to a remote JMX server
     * @param connectionURL (example: service:jmx:rmi:///jndi/rmi://host:9999/jmxrmi)
     * @param userName the user name
     * @param password the user's password
     */
-   private void init(String connectionURL, String userName, char[] password)
-   {
+   private JMX(String host,int port, String userName, char[] password)
+   {   
+	   this.host = host;
+	   this.port = port;
+	   
+	  String connectionURL = String.format("service:jmx:rmi:///jndi/rmi://%s:%d/jmxrmi", host,port);
+	   
 	if (connectionURL == null || connectionURL.length() == 0)
-	   throw new RequiredException("connectionURL");
+	   throw new IllegalArgumentException("connectionURL");
 	
       try
 	{
@@ -78,10 +173,13 @@ public class JMX implements Disposable
 	   Map<String,String[]> map = null;
 	   
 	   //Populate credentials
-	   if(userName !=  null  || password != null)
+	   if(userName !=  null && userName.length() > 0)
 	   {
 		   map = new HashMap<String,String[]>();
 	   	   
+		   if(password == null || password.length == 0)
+			   throw new SecurityException("password required");
+			   
 		   String[] credentials = new String[]{ userName, new String(password) };
 		   
 		   map.put(JMXConnector.CREDENTIALS, credentials);		
@@ -91,9 +189,19 @@ public class JMX implements Disposable
 	   
 	   connection = jmxc.getMBeanServerConnection();
 	} 
+    catch (SecurityException e)
+  	{
+    	if(userName == null || userName.length() ==0 || password == null || password.length ==0)
+    	{
+    		throw new JMXSecurityException("Security exception: Add "+JmxSecurity.JMX_PROPERTY_FILE_NM+"  to classpath the provide valid"+
+    	      " values for properties \""+JmxSecurity.JMX_USERNAME_PROP+"\" and \""+JmxSecurity.JMX_PASSWORD_PROP+"\"");
+    	}
+    	
+  	   throw new  JMXSecurityException("Cannot authenticate username:"+userName+" to connectionURL="+connectionURL+" error:"+e.getMessage(), e);
+  	}
       catch (Exception e)
 	{
-	   throw new nyla.solutions.global.exception.ConnectionException("connectionURL="+connectionURL+" "+Debugger.stackTrace(e));
+	   throw new JMXConnectionException("Cannot connect to URL="+connectionURL+" ERROR:"+e.getMessage());
 	}
    }// ----------------------------------------------
    
@@ -102,16 +210,22 @@ public class JMX implements Disposable
 	   return ManagementFactory.getRuntimeMXBean().getInputArguments();
    }// -----------------------------------------------
    /**
-    * Create a connection to JMX
-    * @param url the JMX remote URL
-    * @param user the user name 
-    * @param password the password
-    * @return a new JMX instance
+    * 
+    * @param host the JMX host
+    * @param port the jmx port
+    * @return
     */
-   public static JMX connect(String url, String user, char[] password)
+   public static JMX connect(String host, int port)
    {
-	return new JMX(url,user,password);
-   }// ----------------------------------------------
+		   return connect(host,port,JmxSecurity.getJmxUserName(),JmxSecurity.getJmxPassword());
+		   
+   }// --------------------------------------------------------
+   public static JMX connect(String host, int port, String user, char[] password)
+   {
+ 
+	   return new JMX(host,port,user,password);
+	   
+   }// --------------------------------------------------------
    /**
     * @return domains from connection
     * @throws IOException
@@ -121,64 +235,73 @@ public class JMX implements Disposable
    {
 	return connection.getDomains();
    }// ----------------------------------------------
+   
+   public Set<ObjectInstance> queryMBeans(ObjectName  objectName,QueryExp queryExp)
+   throws IOException
+   {
+	   return this.jmxc.getMBeanServerConnection().queryMBeans(objectName, queryExp);
+   }// --------------------------------------------------------
    /**
     * 
     * @param args (URL) (user) (password)
     * @throws Exception
     */
-public static void main(String[] args) throws Exception 
+   public static void main(String[] args) throws Exception 
    {	
-	String url = null;
+	String host = null;
+	int port;
 	String userName = null;
 	char[] password = null;
-	if(args.length < 1)
+	if(args.length < 2)
 	{
-		System.out.println("Usage java "+JMX.class.getCanonicalName()+" url (userName password)?");
+		System.out.println("Usage java "+JMX.class.getCanonicalName()+" host port (userName password)?");
 		System.exit(-1);
 	}
 	
-	url = args[0];
+	host = args[0];
+	port = Integer.parseInt(args[1]);
 	
-	if(args.length > 1)
+	if(args.length > 2)
 	{
-	   if(args.length < 3)
+	   if(args.length < 4)
 	   {
-		System.out.println("Usage java "+JMX.class.getCanonicalName()+" url(ex:service:jmx:rmi:///jndi/rmi://host:port/jmxrmi) userName password");
+		System.out.println("Usage java "+JMX.class.getCanonicalName()+" host port userName password");
 		System.exit(-1);
 	   }
 	   
-	   userName = args[1];	   
+	  	   
 	   
-	   password = args[2].toCharArray();
+	   userName = args[2];
+	   password = args[3].toCharArray();
 	}
 	
 	
-	JMX jmx = JMX.connect(url, userName, password);
+	JMX jmx = JMX.connect(host,port, userName, password);
 	
        // Get domains from MBeanServer
        //
-       Debugger.println("\nDomains:");
-       String domains[] = jmx.getDomains();
+       System.out.println("\nDomains:");
+       String[] domains = jmx.getDomains();
        Arrays.sort(domains);
        for (int i = 0; i < domains.length; i++) 
        {
-          Debugger.println("\tDomain = " + domains[i]);
+          System.out.println("\tDomain = " + domains[i]);
        }
        
        //waitForEnterPressed();
 
        // Get MBeanServer's default domain
        //
-       Debugger.println("\nMBeanServer default domain = " + jmx.getDefaultDomain());
+       System.out.println("\nMBeanServer default domain = " + jmx.getDefaultDomain());
 
        // Get MBean count
        //
-       Debugger.println("\nMBean count = " + jmx.getMBeanCount());
+       System.out.println("\nMBean count = " + jmx.getMBeanCount());
 
        // Query MBean names
        //
-       Debugger.println("\nQuery MBeanServer MBeans:");
-       Set<ObjectName> names =jmx.queryNames(null, null);
+       System.out.println("\nQuery MBeanServer MBeans:");
+       Set<ObjectName> names =jmx.searchObjectNames(null);
           
        
        ObjectName objectName = null;
@@ -186,27 +309,27 @@ public static void main(String[] args) throws Exception
        {
           objectName = itera.next();
 
-          Debugger.println("getCanonicalName="+objectName.getCanonicalName());
+          System.out.println("getCanonicalName="+objectName.getCanonicalName());
           
        }
        
-       Debugger.println("=========Memory Usage=========");
+       System.out.println("=========Memory Usage=========");
        
        MemoryMXBean memory = jmx.getMemory();
-       Debugger.println("memory.getObjectPendingFinalizationCount="+memory.getObjectPendingFinalizationCount());
+       System.out.println("memory.getObjectPendingFinalizationCount="+memory.getObjectPendingFinalizationCount());
        MemoryUsage memoryUsage = memory.getHeapMemoryUsage();
-       Debugger.println("memory.getCommitted="+memoryUsage.getCommitted());
-       Debugger.println("memory.getUsed="+memoryUsage.getUsed());
+       System.out.println("memory.getCommitted="+memoryUsage.getCommitted());
+       System.out.println("memory.getUsed="+memoryUsage.getUsed());
        
        
-       Debugger.println("=========Thread Usage=========");
+       System.out.println("=========Thread Usage=========");
        
        ThreadMXBean thread = jmx.getThread();
-       Debugger.println("thread.getPeakThreadCount="+thread.getPeakThreadCount());
+       System.out.println("thread.getPeakThreadCount="+thread.getPeakThreadCount());
 
-       Debugger.println("thread.getDaemonThreadCount="+thread.getDaemonThreadCount());
-       Debugger.println("thread.getThreadCount="+thread.getThreadCount());
-       Debugger.println("thread.getTotalStartedThreadCount="+thread.getTotalStartedThreadCount());
+       System.out.println("thread.getDaemonThreadCount="+thread.getDaemonThreadCount());
+       System.out.println("thread.getThreadCount="+thread.getThreadCount());
+       System.out.println("thread.getTotalStartedThreadCount="+thread.getTotalStartedThreadCount());
        
        
        jmx.registerMemoryNotifications(new ClientListener(), null);
@@ -220,18 +343,18 @@ public static void main(String[] args) throws Exception
    {
       public void handleNotification(Notification notification,
                                      Object handback) {
-          Debugger.println("\nReceived notification:");
-          Debugger.println("\tClassName: " + notification.getClass().getName());
-          Debugger.println("\tSource: " + notification.getSource());
-          Debugger.println("\tType: " + notification.getType());
-          Debugger.println("\tMessage: " + notification.getMessage());
+          System.out.println("\nReceived notification:");
+          System.out.println("\tClassName: " + notification.getClass().getName());
+          System.out.println("\tSource: " + notification.getSource());
+          System.out.println("\tType: " + notification.getType());
+          System.out.println("\tMessage: " + notification.getMessage());
           if (notification instanceof AttributeChangeNotification) {
               AttributeChangeNotification acn =
                   (AttributeChangeNotification) notification;
-              Debugger.println("\tAttributeName: " + acn.getAttributeName());
-              Debugger.println("\tAttributeType: " + acn.getAttributeType());
-              Debugger.println("\tNewValue: " + acn.getNewValue());
-              Debugger.println("\tOldValue: " + acn.getOldValue());
+              System.out.println("\tAttributeName: " + acn.getAttributeName());
+              System.out.println("\tAttributeType: " + acn.getAttributeType());
+              System.out.println("\tNewValue: " + acn.getNewValue());
+              System.out.println("\tOldValue: " + acn.getOldValue());
           }
       }
   }
@@ -254,16 +377,49 @@ public static void main(String[] args) throws Exception
 	return connection.getMBeanCount();
    }
    /**
-    * @param arg0
-    * @param arg1
+    * @param objectName ex: GemFire:*,name=*
+    * @param queryExp
     * @return
     * @throws IOException
     * @see javax.management.MBeanServerConnection#queryNames(javax.management.ObjectName, javax.management.QueryExp)
     */
-   public Set<ObjectName> queryNames(ObjectName arg0, QueryExp arg1) throws IOException
+   public Set<ObjectName> searchObjectNames(String objectNamePattern)  
    {
-	return connection.queryNames(arg0, arg1);
-   }
+	   return searchObjectNames(objectNamePattern,null);
+   }// --------------------------------------------------------
+   /**
+    * 
+    * Example Query
+    * 
+    *  QueryExp query =
+       Query.and(Query.eq(Query.attr("Enabled"), Query.value(true)),
+               Query.eq(Query.attr("Owner"), Query.value("Duke")));
+    
+    * 
+    * @param objectNamePattern the object names to look for
+    * @param queryExp the query express
+    * @return
+    */
+   public Set<ObjectName> searchObjectNames(String objectNamePattern, QueryExp queryExp) 
+   {
+	   try
+		{
+			ObjectName objectName =  null;
+			
+			if(objectNamePattern != null)
+				objectName = new ObjectName(objectNamePattern);
+			
+			return connection.queryNames(objectName, queryExp);
+		}
+		catch (MalformedObjectNameException e)
+		{
+			throw new RuntimeException("Invalid objectNamePattern"+objectNamePattern,e);
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException("Unable to query names with objectNamePattern:"+objectNamePattern,e);
+		}
+   }// --------------------------------------------------------
    /**
     * 
     * @return MemoryMXBean referred by java.lang:type=Memory
@@ -275,22 +431,35 @@ public static void main(String[] args) throws Exception
 	   return (MemoryMXBean)ManagementFactory.newPlatformMXBeanProxy(connection, MemoryMX_NAME, MemoryMXBean.class);
 	   
 	} 
+	catch (RuntimeException e)
+	{
+	   throw e;
+	}
 	catch (Exception e)
 	{
-	   throw new SystemException(Debugger.stackTrace(e));
+	   throw new RuntimeException(e);
 	}
 	
    }// ----------------------------------------------   
+   /**
+    * 
+    * @return MBean with TheadMX_NAME = "java.lang:type=Threading"
+
+    */
    public ThreadMXBean getThread()   
    {
 	try
 	{
-	   return (ThreadMXBean)ManagementFactory.newPlatformMXBeanProxy(connection, TheadMX_NAME, ThreadMXBean.class);
+	   return (ThreadMXBean)ManagementFactory.newPlatformMXBeanProxy(connection, ThreadMX_NAME, ThreadMXBean.class);
 	   
-	} 
+	}
+	catch (RuntimeException e)
+	{
+	   throw e;
+	}
 	catch (Exception e)
 	{
-	   throw new SystemException(Debugger.stackTrace(e));
+	   throw new RuntimeException(e);
 	}
 	
    }// ----------------------------------------------
@@ -300,26 +469,28 @@ public static void main(String[] args) throws Exception
     */
    public void dispose()
    {
-	try 
-	{ 
-	   connection = null;
-	   
-	   jmxc.close(); 
-	   jmxc = null;
-	} 
-	catch(Exception e)
-	{}	
+	   if(!disposed)
+	   {
+			try 
+			{ 
+			   jmxc.close(); 
+			} 
+			catch(Exception e)
+			{}			   
+	   }
+
+	   disposed = true;
    }// ----------------------------------------------
    /**
     * Print warning is JMC connection were not closed
     */
-   protected void finalize() throws Throwable
-   {
-      super.finalize();
-      
-      if(this.connection != null || this.jmxc != null)
-         Debugger.printWarn(this,"MEMORY LEAK, JMX connection has not been closed!");
-   }// ----------------------------------------------
+//   protected void finalize() throws Throwable
+//   {
+//      super.finalize();
+//      
+//      //if(this.connection != null || this.jmxc != null)
+//      //  System.err.println(this+" MEMORY LEAK, JMX connection has not been closed!");
+//   }// ----------------------------------------------
   
    
    /**
@@ -360,12 +531,34 @@ public static void main(String[] args) throws Exception
 	emitter.addNotificationListener(notificationListener, null, handback);
 	
    }// ----------------------------------------------
-   private JMXConnector jmxc = null;
-   private MBeanServerConnection  connection = null;
+	   
+	 /**
+	 * @return the host
+	 */
+	public String getHost()
+	{
+		return host;
+	}
+	/**
+	 * @return the port
+	 */
+	public int getPort()
+	{
+		return port;
+	}// --------------------------------------------------------
+	@Override
+	public void close() 
+	{
+		
+		this.dispose();
+	}
 
-   /**
-    * Inner class that will handle the notifications.
-    */
-   
-   // ----------------------------------------------
+	private final JMXConnector jmxc;
+   private boolean disposed = false;
+   private final MBeanServerConnection  connection;
+   private final String host;
+   private final int port;
+
+
+
 }

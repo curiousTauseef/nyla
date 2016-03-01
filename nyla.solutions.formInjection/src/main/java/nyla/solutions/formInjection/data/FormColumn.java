@@ -49,7 +49,7 @@ public class FormColumn extends Column implements FormComponentWrapper
 
    public FormAnswer getAnswer(int row)
    {
-      FormAnswer answer = getForm().getAnswer(
+      FormAnswer answer = getForm().findAnswer(
       table.getFormQuestion().getQuestionId(), row,
       column.getColNumber().intValue());
       if (answer == null)

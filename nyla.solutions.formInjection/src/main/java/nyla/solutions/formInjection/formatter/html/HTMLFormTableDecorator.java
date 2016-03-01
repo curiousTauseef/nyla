@@ -382,7 +382,7 @@ public class HTMLFormTableDecorator extends HTMLDecorator
       }
       
       //found form question
-      FormQuestion formQuestion = aForm.getFormQuestion(new Integer(questionPK));
+      FormQuestion formQuestion = aForm.findFormQuestion(new Integer(questionPK));
       if(!formQuestion.hasTable())
          throw new NoDataFoundException("No form table in formQuestion "+formQuestion);
       

@@ -1,0 +1,14 @@
+
+[info 2016/01/19 16:38:00.295 EST <main> tid=0xb] Log opened with new distributed system connection.  View(creator=atsahaberam1(9602)<v0>:21292, viewId=0, [atsahaberam1(9602)<v0>:21292])
+
+[info 2016/01/19 16:39:42.665 EST <main> tid=0xb] Log opened with new distributed system connection.  View(creator=atsahaberam1(9606)<v0>:2606, viewId=0, [atsahaberam1(9606)<v0>:2606])
+
+[info 2016/01/19 16:39:43.792 EST <main> tid=0xb] server summary: 1 cache servers with 0 client connections/current cache servers : atsahaberam1(9606)<v0>:2606 
+
+[info 2016/01/19 16:45:31.460 EST <main> tid=0xb] Log opened with new distributed system connection.  View(creator=192.168.1.144(9907)<v0>:41640, viewId=0, [192.168.1.144(9907)<v0>:41640])
+
+[info 2016/01/19 16:45:32.605 EST <main> tid=0xb] server summary: 1 cache servers with 0 client connections/current cache servers : 192.168.1.144(9907)<v0>:41640 
+
+[info 2016/01/23 12:14:48.466 EST <main> tid=0x1] Log opened with new distributed system connection.  View(creator=192.168.1.144(56869)<v0>:9332, viewId=0, [192.168.1.144(56869)<v0>:9332])
+
+[info 2016/01/23 12:14:49.964 EST <main> tid=0x1] server summary: 1 cache servers with 0 client connections/current cache servers : 192.168.1.144(56869)<v0>:9332 

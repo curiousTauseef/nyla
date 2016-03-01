@@ -20,7 +20,7 @@ public class FormSection extends Section implements FormComponentWrapper {
     private Section section;
     private Form form;
     
-    protected FormSection(Form form, Section section) {
+    public FormSection(Form form, Section section) {
         this.section = section;
         this.form = form;
     }
@@ -28,7 +28,7 @@ public class FormSection extends Section implements FormComponentWrapper {
     public Form getForm() {
         return form.getForm();
     }
-    public Collection getFormQuestions() 
+    public Collection<FormQuestion> getFormQuestions() 
     {
           return form.findQuestionsBySection(section.getNumber());  
         
