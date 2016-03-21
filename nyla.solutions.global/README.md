@@ -722,4 +722,17 @@ The name of the Advice is specified through the Aspect annotation
 - Update to Settings object to allow runtime updates
 - Added support for Log4J2
 
+#Building
+
+1. Change directory to the root directory
+2. $mvn package
+
+#FAQ
+
+- I get the following /bin/sh: gpg: command not found
+	
+	1. Install the gpg https://www.gnupg.org/download
+	2. /usr/local/gnupg-2.1/bin/gpg --gen-key
+	
+	Also see http://blog.sonatype.com/2010/01/how-to-generate-pgp-signatures-with-maven/#.Vu84SRIrKjQ
 	

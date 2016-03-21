@@ -152,12 +152,18 @@ public class Environment
 
 	public String[] getArgs()
 	{
-		return args;
+		if(args == null)
+			return null;
+		
+		return args.clone();
 	}
 
 	public void setArgs(String[] args)
 	{
-		this.args = args;
+		if(args == null)
+			this.args = null;
+		else
+			this.args = args.clone();
 	}
 
 

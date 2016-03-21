@@ -546,6 +546,8 @@ public class Config
 		return getPropertyInteger(new StringBuilder(aClass.getName()).append(".")
 				.append(key).toString(), defaultValue);
 	}// ------------------------------------------------------------
+	
+
 
 	/**
 	 * Get a configuration property as an c object.
@@ -597,6 +599,75 @@ public class Config
 		return getPropertyInteger(key, Integer.valueOf(aDefault));
 
 	}// -------------------------------------------------------------
+	/**
+	 * Get a double property
+	 * @param cls the class associated with the property
+	 * @param key the property key name
+	 * @return the double property value
+	 */
+	public static Double getPropertyDouble(Class<?> cls, String key)
+	{
+		return getPropertyDouble(new StringBuilder(cls.getName()).append(".").append(key).toString());
+
+	}// ---------------------------------------------
+	/**
+	 * Get a double property
+	 * @param aClass the class associated with the property
+	 * @param key the property key name
+	 * @param defaultValue the default double property
+	 * @return the double property value
+	 */	
+	public static Double getPropertyDouble(Class<?> aClass, String key,
+			double defaultValue)
+	{
+		return getPropertyDouble(new StringBuilder(aClass.getName()).append(".")
+				.append(key).toString(), defaultValue);
+	}// ------------------------------------------------------------
+	/**
+	 * 
+	 * @param key the double key
+	 * @return the Double property
+	 */
+	public static Double getPropertyDouble(String key)
+	{
+		Double iVal = null;
+		String sVal = getProperty(key);
+
+		if ((sVal != null) && (sVal.length() > 0))
+		{
+
+			iVal = Double.valueOf(sVal);
+
+		}
+		return iVal;
+
+	}// ------------------------------------------------------------
+	public static Double getPropertyDouble(String key, double aDefault)
+	{
+
+		return getPropertyDouble(key, Double.valueOf(aDefault));
+
+	}// -------------------------------------------------------------
+	
+	public static Double getPropertyDouble(String key, Double aDefault)
+	{
+		Double iVal = null;
+		if (properties == null || alwaysReload)
+		{
+			loadProperties();
+		}
+		
+		String sVal = properties.getProperty(key);
+		if ((sVal != null) && (sVal.length() > 0))
+		{
+			iVal = Double.valueOf(sVal);
+		}
+		else
+		{
+			iVal = aDefault;
+		}
+		return iVal;
+	}// ------------------------------------------------------------
 
 	public static Integer getPropertyInteger(Class<?> cls, String key)
 	{

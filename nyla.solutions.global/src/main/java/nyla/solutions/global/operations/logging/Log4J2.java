@@ -49,6 +49,7 @@ public class Log4J2 implements Log
 	      }
 	      catch(Exception e)
 	      {
+	    	  e.printStackTrace();
 	      }       
 
 	   } //------------------------------------------------------

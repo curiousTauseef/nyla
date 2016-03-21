@@ -14,6 +14,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
+import javax.mail.NoSuchProviderException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -670,92 +671,91 @@ public class Email implements EmailTags, Disposable, SendMail
 	private synchronized void init()
 	{
 
-		try
-
-		{
-
-			Properties sysProperties = System.getProperties();
-			sysProperties.put("mail.imap.host",
-					Config.getProperty("mail.imap.host", ""));
-			sysProperties.put("mail.imap.port",
-					Config.getProperty("mail.imap.port", "143"));
-
-			sysProperties.put("mail.smtp.ssl.enable",
-					Config.getProperty("mail.smtp.ssl.enable", ""));
-			sysProperties.put("mail.smtp.host",
-					Config.getProperty(MAIL_SERVER_PROP));
-			//sysProperties.put("mail.smtp.host",
-			//		Config.getProperty(MAIL_SERVER_PROP, ""));
-			sysProperties.put(MAIL_AUTHENICATION_REQUIRED_PROP, Boolean.valueOf(
-					needsAuthenication()));
-			sysProperties.put("mail.smtp.port",
-					Config.getProperty("mail.smtp.port", "25"));
-
-			sysProperties.put("mail.webdav.host",
-					Config.getProperty("mail.webdav.host", ""));
-			sysProperties.put("mail.weddav.port",
-					Config.getProperty("mail.webdav.port", "143"));
-
-			// mail.debug
-
-			// SysProperties.put("mail.port",
-			// Config.getProperty("mail.port","25"));
-
-			sysProperties.put("mail.debug", "true");
-			sysProperties.put("mail.from", Config.getProperty("mail.from"));
-			sysProperties.put("mail.smtp.from",
-					Config.getProperty("mail.smtp.from",""));
-
-			// mail.imap.sasl.authorizationid
-
-			sysProperties.put("mail.imap.sasl.authorizationid",
-					Config.getProperty(EmailTags.MAIL_FROM_ADDRESS_PROP));
-
-			sysProperties.put("mail.smtp.auth",
-					Config.getProperty("mail.smtp.auth", "false"));
-
-			mailSession = Session.getDefaultInstance(sysProperties,
-
-			new javax.mail.Authenticator()
+			try
 			{
+				Properties sysProperties = System.getProperties();
+				sysProperties.put("mail.imap.host",
+						Config.getProperty("mail.imap.host", ""));
+				sysProperties.put("mail.imap.port",
+						Config.getProperty("mail.imap.port", "143"));
 
-				protected PasswordAuthentication getPasswordAuthentication()
+				sysProperties.put("mail.smtp.ssl.enable",
+						Config.getProperty("mail.smtp.ssl.enable", ""));
+				sysProperties.put("mail.smtp.host",
+						Config.getProperty(MAIL_SERVER_PROP));
+				//sysProperties.put("mail.smtp.host",
+				//		Config.getProperty(MAIL_SERVER_PROP, ""));
+				sysProperties.put(MAIL_AUTHENICATION_REQUIRED_PROP, Boolean.valueOf(
+						needsAuthenication()));
+				sysProperties.put("mail.smtp.port",
+						Config.getProperty("mail.smtp.port", "25"));
+
+				sysProperties.put("mail.webdav.host",
+						Config.getProperty("mail.webdav.host", ""));
+				sysProperties.put("mail.weddav.port",
+						Config.getProperty("mail.webdav.port", "143"));
+
+				// mail.debug
+
+				// SysProperties.put("mail.port",
+				// Config.getProperty("mail.port","25"));
+
+				sysProperties.put("mail.debug", "true");
+				sysProperties.put("mail.from", Config.getProperty("mail.from"));
+				sysProperties.put("mail.smtp.from",
+						Config.getProperty("mail.smtp.from",""));
+
+				// mail.imap.sasl.authorizationid
+
+				sysProperties.put("mail.imap.sasl.authorizationid",
+						Config.getProperty(EmailTags.MAIL_FROM_ADDRESS_PROP));
+
+				sysProperties.put("mail.smtp.auth",
+						Config.getProperty("mail.smtp.auth", "false"));
+
+				mailSession = Session.getDefaultInstance(sysProperties,
+
+				new javax.mail.Authenticator()
 				{
 
-					return new PasswordAuthentication(
-							Config.getProperty(EmailTags.MAIL_FROM_ADDRESS_PROP),
-							Config.getProperty(EmailTags.MAIL_FROM_PASSWORD_PROP));
+					protected PasswordAuthentication getPasswordAuthentication()
+					{
+
+						return new PasswordAuthentication(
+								Config.getProperty(EmailTags.MAIL_FROM_ADDRESS_PROP),
+								Config.getProperty(EmailTags.MAIL_FROM_PASSWORD_PROP));
+					}
+
+				});
+
+				mailTransport = mailSession.getTransport(Config.getProperty(
+						"mail.protocol", "smtp"));
+
+				Debugger.println(this, "properties=" + mailSession.getProperties());
+
+				if (needsAuthenication())
+				{
+
+					String server = Config.getProperty(EmailTags.MAIL_SERVER_PROP);
+					int port = Config.getPropertyInteger("mail.port", 25)
+							.intValue();
+					String from = Config
+							.getProperty(EmailTags.MAIL_FROM_ADDRESS_PROP);
+					char[] password = Config
+							.getPropertyPassword(EmailTags.MAIL_FROM_PASSWORD_PROP);
+
+					mailTransport.connect(server, port, from, new String(password));
+
 				}
-
-			});
-
-			mailTransport = mailSession.getTransport(Config.getProperty(
-					"mail.protocol", "smtp"));
-
-			Debugger.println(this, "properties=" + mailSession.getProperties());
-
-			if (needsAuthenication())
-			{
-
-				String server = Config.getProperty(EmailTags.MAIL_SERVER_PROP);
-				int port = Config.getPropertyInteger("mail.port", 25)
-						.intValue();
-				String from = Config
-						.getProperty(EmailTags.MAIL_FROM_ADDRESS_PROP);
-				char[] password = Config
-						.getPropertyPassword(EmailTags.MAIL_FROM_PASSWORD_PROP);
-
-				mailTransport.connect(server, port, from, new String(password));
-
 			}
-
-		}
-		catch (Exception e)
-		{
-
-			throw new SetupException(e);
-
-		}
+			catch (NoSuchProviderException e)
+			{
+				throw new SetupException(e);
+			}
+			catch (MessagingException e)
+			{
+				throw new CommunicationException(e);
+			}
 
 	} // -----------------------------------------------------------
 

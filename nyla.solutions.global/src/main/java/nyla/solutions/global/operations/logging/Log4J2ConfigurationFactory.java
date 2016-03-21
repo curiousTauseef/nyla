@@ -32,10 +32,10 @@ public class Log4J2ConfigurationFactory extends ConfigurationFactory
 
 	 public String[] getSupportedTypes()
 	    {
-	        return SUFFIXES;
+	        return SUFFIXES.clone();
 	    }
 
-	    public static final String SUFFIXES[] = {
+	    static final String SUFFIXES[] = {
 	        ".properties", "*"
 	    };
 

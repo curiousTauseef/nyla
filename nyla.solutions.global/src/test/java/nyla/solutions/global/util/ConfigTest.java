@@ -1,6 +1,8 @@
 package nyla.solutions.global.util;
 
+
 import org.junit.Assert;
+import org.junit.Test;
 
 import nyla.solutions.global.exception.ConfigException;
 import nyla.solutions.global.util.Config;
@@ -108,5 +110,14 @@ public class ConfigTest extends TestCase
 		
 		assertTrue("All values formatted:"+property, property.indexOf("${") < 0);
 	}// --------------------------------------------------------
+	
+	@Test
+	public void testGetDouble() throws Exception
+	{
+		
+		Assert.assertTrue(30.5 == Config.getPropertyDouble("nyla.solutions.global.util.ConfigTest.test.config.double").doubleValue());
+		Assert.assertTrue(30.5 == Config.getPropertyDouble(this.getClass(),"test.config.double").doubleValue());
+		Assert.assertTrue(5.55 == Config.getPropertyDouble("doesnotexits",5.55).doubleValue());
+	}
 
 }

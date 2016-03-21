@@ -348,8 +348,8 @@ them out -->
          
          </div>
 <!-- 
-   Config.properties.gemfire.cache-xml-file=<%=Config.getProperty("gemfire.cache-xml-file","")%>
-   Config.properties.gemfirePropertyFile=<%=Config.getProperty("gemfirePropertyFile","")%>
+   Config.properties.gemfire.cache-xml-file=<%=nyla.solutions.global.util.Config.getProperty("gemfire.cache-xml-file","")%>
+   Config.properties.gemfirePropertyFile=<%=nyla.solutions.global.util.Config.getProperty("gemfirePropertyFile","")%>
  -->
     </body>
 </html>

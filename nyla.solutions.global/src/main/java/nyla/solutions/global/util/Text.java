@@ -14,6 +14,7 @@ import nyla.solutions.global.exception.RequiredException;
 import nyla.solutions.global.exception.SetupException;
 import nyla.solutions.global.exception.SystemException;
 import nyla.solutions.global.io.IO;
+import nyla.solutions.global.operations.ClassPath;
 import nyla.solutions.global.patterns.decorator.style.TextStyles;
 import nyla.solutions.global.util.Config;
 import nyla.solutions.global.util.Debugger;
@@ -803,10 +804,9 @@ public static String[] toStrings(Object object)
     * @param aStart the content start tag
     * @param aEnd the content end tag
     * @param aIgnoreCase
-    * @return 
+    * @return collection of parse strings 
     */
-   @SuppressWarnings("resource")
-public static Collection<Object> parse(Reader aReader, String aStart, String aEnd, boolean aIgnoreCase)
+   public static Collection<Object> parse(Reader aReader, String aStart, String aEnd, boolean aIgnoreCase)
    throws IOException
    {
       BufferedReader reader = null;
@@ -1864,6 +1864,7 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
       return format(Text.loadTemplate(aTemplateName, aLocale), aBindMap);
 
    }//--------------------------------------------
+   
 
    /**
     * 

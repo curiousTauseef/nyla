@@ -8,6 +8,7 @@
 	<description>Nyla Solutions for back office operations.</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.javadoc.skip>true</maven.javadoc.skip>	
 	</properties>
 	<url>https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.office</url>
 	<licenses>

@@ -14,7 +14,6 @@ import nyla.solutions.global.util.Text;
 
 public class NumberNamed extends Named 
 implements Comparable<Object>, Mappable<Object,Object>, Serializable, Nameable, Numbered
-
 {
 
    /**
@@ -28,7 +27,6 @@ implements Comparable<Object>, Mappable<Object,Object>, Serializable, Nameable, 
     */
 
    public NumberNamed()
-
    {
 
    }//--------------------------------------------
@@ -36,36 +34,30 @@ implements Comparable<Object>, Mappable<Object,Object>, Serializable, Nameable, 
    public static class NumberComparator
 
    implements Comparator<Object>, Serializable
-
    {
 
       public int compare(Object first, Object second)
-
       {
 
          if (first == null)
-
          {
 
             return 1;
 
          }
          else
-
          {
 
             NumberNamed vo1 = (NumberNamed) first;
 
             NumberNamed vo2 = (NumberNamed) second;
 
-            return (Integer.valueOf(vo1.number)).compareTo(Integer.valueOf(vo2.number));
-
+            return Integer.compare(vo1.number, vo2.number);
          }
 
       }
 
       public NumberComparator()
-
       {
 
       }
@@ -160,9 +152,8 @@ implements Comparable<Object>, Mappable<Object,Object>, Serializable, Nameable, 
 
          NumberNamed vo = (NumberNamed) object;
 
-         return (Integer.valueOf(getNumber()))
-         .compareTo(Integer.valueOf(vo.getNumber()));
-
+         return Integer.compare(getNumber(), vo.getNumber());
+         
       }
 
    }//--------------------------------------------

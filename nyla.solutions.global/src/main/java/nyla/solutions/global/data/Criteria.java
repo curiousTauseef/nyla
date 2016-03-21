@@ -223,15 +223,10 @@ implements Comparable<Object>, PrimaryKey, Cloneable, Copier, Serializable, Iden
    }//--------------------------------------------
 
    /**
-
-    * 
-
+    * @param object the object to compare
     * @see java.lang.Comparable#compareTo(java.lang.Object)
-
     * @return new Integer(getPrimaryKey())).compareTo(new Integer(vo
-
     * .getPrimaryKey())
-
     */
 
    public int compareTo(Object object)
@@ -246,10 +241,7 @@ implements Comparable<Object>, PrimaryKey, Cloneable, Copier, Serializable, Iden
 
          Criteria vo = (Criteria) object;
 
-         return (Integer.valueOf(getPrimaryKey())).compareTo(Integer.valueOf(vo
-
-               .getPrimaryKey()));
-
+         return Integer.compare(getPrimaryKey(), vo.getPrimaryKey());
       }
 
    }//--------------------------------------------

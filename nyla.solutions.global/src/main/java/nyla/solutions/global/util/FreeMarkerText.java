@@ -714,10 +714,9 @@ public static String[] toStrings(Object object)
     * @param aStart the content start tag
     * @param aEnd the content end tag
     * @param aIgnoreCase
-    * @return 
+    * @return collection of parsed string
     */
-   @SuppressWarnings("resource")
-public static Collection<String> parse(Reader aReader, String aStart, String aEnd, boolean aIgnoreCase)
+   public static Collection<String> parse(Reader aReader, String aStart, String aEnd, boolean aIgnoreCase)
    throws IOException
    {
       BufferedReader reader = null;

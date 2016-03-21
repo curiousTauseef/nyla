@@ -120,11 +120,12 @@ public class ReLookup<T> implements Map<String,T>
 	{
 		if (text == null)
 			return null;
-
-		for (String regularExpKey : lookupMap.keySet())
+		
+		for (Entry<String,T> entry :lookupMap.entrySet())
 		{
-			if (Text.matches(text, regularExpKey))
-				return lookupMap.get(regularExpKey);
+			if (Text.matches(text, entry.getKey()))
+				return lookupMap.get(entry.getKey());
+			
 		}
 
 		return null;
@@ -142,11 +143,12 @@ public class ReLookup<T> implements Map<String,T>
 
 		ArrayList<T> collection = new ArrayList<T>(lookupMap.size());
 		
-		for (String regularExpKey : lookupMap.keySet())
+		for (Entry<String,T> entry :lookupMap.entrySet())
 		{
-			if (Text.matches(reExpression, regularExpKey))
-				collection.add(lookupMap.get(regularExpKey));
+			if (Text.matches(reExpression, entry.getKey()))
+				collection.add(lookupMap.get(entry.getKey()));
 		}
+
 		
 		collection.trimToSize();
 

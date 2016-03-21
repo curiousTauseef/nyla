@@ -37,7 +37,24 @@ public class ArrayableUniqueValidator extends AbstractValidation
 		
 	}// --------------------------------------------------------
 	
+	
+	/**
+	 * @return the keyPosition
+	 */
+	public int getKeyPosition()
+	{
+		return keyPosition;
+	}
+	/**
+	 * @param keyPosition the keyPosition to set
+	 */
+	public void setKeyPosition(int keyPosition)
+	{
+		this.keyPosition = keyPosition;
+	}
+
+
 	private Set<Object> set = null;
-	private int keyPosition = -1;
+	private int keyPosition = 0;
 
 }

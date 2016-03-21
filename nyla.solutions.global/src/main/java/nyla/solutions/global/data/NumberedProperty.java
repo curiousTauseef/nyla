@@ -33,7 +33,8 @@ implements Comparable<Object>, Copier, Numbered
       
       //compare numbers
       Integer othernumber = Integer.valueOf(other.number);
-      return othernumber.compareTo(Integer.valueOf(this.number));
+      
+      return Integer.compare(this.number, othernumber.intValue());
       //----------------------------------------
    }
 	

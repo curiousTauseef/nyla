@@ -320,7 +320,7 @@ public class ClassPath extends ClassLoader
 		finally
 		{
 			if(jar !=null)
-				{ try{ jar.close(); } catch(Exception e){} }
+				{ try{ jar.close(); } catch(Exception e){e.printStackTrace();} }
 		}
 		
 	}// -----------------------------------------------

@@ -24,11 +24,7 @@ import nyla.solutions.global.util.Debugger;
  */
 
 public abstract class Data 
-
-//extends AbstractDirtyMarker 
-
 implements Serializable
-
 {
 
    /**
@@ -191,7 +187,6 @@ public static Collection<Object> sortByUpdateDate(Collection aVOs)
        */
 
       public int compare(Object first, Object second)
-
       {
 
          if (first == null)
@@ -202,10 +197,8 @@ public static Collection<Object> sortByUpdateDate(Collection aVOs)
 
          Criteria vo2 = (Criteria) second;
 
-         return Integer.valueOf(vo1.getPrimaryKey()).compareTo(
-
-            Integer.valueOf(vo2.getPrimaryKey()));
-
+         return Integer.compare(vo1.getPrimaryKey(), vo2.getPrimaryKey());
+   
       }
       
       static final long serialVersionUID = CriteriaComparator.class.getName()

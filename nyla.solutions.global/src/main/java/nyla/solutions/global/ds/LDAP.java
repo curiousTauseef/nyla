@@ -836,18 +836,15 @@ protected void setupKerberosContext(Hashtable<String,Object> env)
    }
 
    public NamingEnumeration<?> searchOneLevel(Name searchbase, String filter,
-
    int limit, int timeout, String returnAttributes[])
-
    throws NamingException
-
    {
 
       return rawSearchOneLevel(searchbase, filter, limit, timeout,
 
       returnAttributes);
 
-   }
+   }//--------------------------------------------------------
 
    protected NamingEnumeration<?> rawSearchOneLevel(Name searchbase,
 
@@ -857,7 +854,7 @@ protected void setupKerberosContext(Hashtable<String,Object> env)
 
    {
 
-      SearchControls constraints = new SearchControls();
+     SearchControls constraints = new SearchControls();
 
       constraints.setSearchScope(1);
 
@@ -866,8 +863,8 @@ protected void setupKerberosContext(Hashtable<String,Object> env)
       constraints.setTimeLimit(timeout);
 
       constraints.setReturningAttributes(returnAttributes);
-
-      NamingEnumeration<?> results = ctx.search(searchbase, filter, null);
+      
+      NamingEnumeration<?> results = ctx.search(searchbase, filter, constraints);
 
       return results;
 

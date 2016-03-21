@@ -166,6 +166,10 @@ public class FileMonitor extends Observable
       private void init()
       {
          File[] files = this.directory.listFiles(this.filter);
+         
+         if(files == null)
+        	 return;
+         
          File file = null;
          for(int i = 0; i<files.length;i++)
          {
@@ -186,8 +190,15 @@ public class FileMonitor extends Observable
             // Loop over the registered files and see which have changed.
             // Use a copy of the list in case listener wants to alter the
             // list within its fileChanged method.
+        	
+        	if(this.directory == null)
+        		return;
 
             File[] filesInDir = this.directory.listFiles(this.filter);
+            
+            if(filesInDir == null)
+            	return;
+            
             System.out.println("Looking for "+ directory+File.separator+this.filter);
             //System.out.println("length="+files.length);
 

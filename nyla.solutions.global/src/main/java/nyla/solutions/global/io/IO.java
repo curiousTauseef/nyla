@@ -1,6 +1,22 @@
 package nyla.solutions.global.io;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -9,12 +25,11 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
 
+import org.springframework.core.io.ClassPathResource;
+
 import nyla.solutions.global.data.Data;
 import nyla.solutions.global.exception.RequiredException;
 import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.io.FolderFilter;
-import nyla.solutions.global.io.IO;
-import nyla.solutions.global.io.WildCardFilter;
 import nyla.solutions.global.util.Config;
 import nyla.solutions.global.util.Constants;
 import nyla.solutions.global.util.Debugger;
@@ -254,7 +269,7 @@ public class IO
 			finally
 			{
 				if(writer != null)
-					try{ writer.close(); } catch(Exception e){}
+					try{ writer.close(); } catch(Exception e){e.printStackTrace();}
 			}
 		   
 	   }// --------------------------------------------------------
@@ -382,6 +397,9 @@ public class IO
 		
 		File[] sourceNestedFiles = sourceFolder.listFiles();
 		
+		if(sourceNestedFiles == null)
+			return;
+		
 		for(int i = 0 ;  i < sourceNestedFiles.length;i++)
 		{
 			//copy file
@@ -483,12 +501,15 @@ public class IO
 	public static String readClassPath(String aPath) throws IOException
 	{
 
-		InputStream inputStream = Thread.currentThread()
-				.getContextClassLoader().getResourceAsStream(aPath);
+		
+		ClassPathResource resource = new ClassPathResource(aPath);
+		
+	
+		InputStream inputStream = resource.getInputStream();
 
 		if (inputStream == null)
 			throw new IOException("path not found " + aPath);
-
+		
 		return readFully(new InputStreamReader(inputStream,CHARSET));
 	}// -------------------------------------------
 

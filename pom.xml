@@ -17,7 +17,10 @@
         <module>nyla.solutions.dao.hibernate</module>
         <module>nyla.solutions.office</module>
         <module>nyla.solutions.spring.web</module>
-        <module>nyla.solutions.blueprint.jee</module>        
+        <module>nyla.solutions.blueprint.jee</module>   
+      	<module>nyla.solutions.dao.spring.batch</module>   
+        
+             
     </modules>
 
     <build>

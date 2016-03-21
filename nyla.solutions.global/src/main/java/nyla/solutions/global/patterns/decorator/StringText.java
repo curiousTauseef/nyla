@@ -6,6 +6,21 @@ import nyla.solutions.global.patterns.decorator.StringText;
 public class StringText implements Textable
 {
 	
+	
+	/**
+	 * 
+	 */
+	public StringText()
+	{
+	}// --------------------------------------------------------
+	/**
+	 * @param text
+	 */
+	public StringText(String text)
+	{
+		super();
+		this.text = text;
+	}
 	/**
 	 * @return the text
 	 */

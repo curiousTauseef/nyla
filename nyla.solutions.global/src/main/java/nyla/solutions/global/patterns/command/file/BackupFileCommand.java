@@ -44,7 +44,9 @@ public class BackupFileCommand implements FileCommand<Void>
 		
 		try 
 		{
-			if(backupFolder.list().length == 0)
+			String[] list = backupFolder.list();
+			
+			if(list != null && list.length > 0)
 			{
 				//delete previous backup
 				IO.delete(this.backupFolder);

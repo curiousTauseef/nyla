@@ -8,6 +8,7 @@
 	<description>Nyla Solutions Data Access Object framework.</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.javadoc.skip>true</maven.javadoc.skip>
 	</properties>
 	<url>https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.dao</url>
 	<licenses>

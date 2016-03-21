@@ -120,12 +120,17 @@ public final class Organizer
 		if (input == null || input.isEmpty() || flattenOutput == null)
 			return;
 
-		for (Object obj : input)
+		for (Object inputObj : input)
 		{
-			if(obj instanceof Collection)
-				flatten((Collection<Object>)obj,flattenOutput);
+			
+			
+			if(inputObj instanceof Collection)
+				flatten((Collection<Object>)inputObj,flattenOutput);
+			else
+				flattenOutput.add((T)inputObj);
 
 		}
+
 
 	}// --------------------------------------------------------
 	/**

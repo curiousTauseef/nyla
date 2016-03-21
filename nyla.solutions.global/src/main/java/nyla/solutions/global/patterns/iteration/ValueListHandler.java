@@ -52,7 +52,7 @@ implements ValueListIterator<T>
    */  
   public void first() 
   {
-     rangeCriteria.first();
+     rangeCriteria.setFirst(0);
   }//------------------------------------------------
   /**
    * 

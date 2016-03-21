@@ -148,7 +148,7 @@ public class ApacheFtp extends Ftp
 		 finally
 		 {
 			 if(input != null)
-				 try{ input.close(); } catch(Exception e){}
+				 try{ input.close(); } catch(Exception e){e.printStackTrace();}
 		 }
 	}// --------------------------------------------------------
 	/**
@@ -173,7 +173,7 @@ public class ApacheFtp extends Ftp
 		 finally
 		 {
 			 if(output != null)
-				 try{ output.close(); } catch(Exception e){}
+				 try{ output.close(); } catch(Exception e){e.printStackTrace();}
 		 }
 	}// --------------------------------------------------------
 	/**

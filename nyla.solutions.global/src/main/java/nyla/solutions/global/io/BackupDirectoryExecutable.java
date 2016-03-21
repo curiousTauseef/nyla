@@ -59,8 +59,9 @@ public class BackupDirectoryExecutable implements Executable
 		try 
 		{
 			
+			String[] list = backupFolder.list();
 			
-			if(backupFolder.list().length > 0)
+			if(list != null && list.length > 0)
 			{
 				//delete previous backup
 				IO.delete(backupFolder);
