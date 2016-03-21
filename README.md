@@ -22,4 +22,8 @@ data access. This project implements NYLA's Query Service pattern for database b
 
 [NYLA Web](https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.global.web)  project expands on NYLA's Command pattern (a.k.a. COMMAS) for building REST/web services. It implements its own Model View Controller pattern for pure JEE or web containers (ex: Jetty) MicroServices. This project provides NYLA's Query Service pattern for searches abstracted through web services.
 
+## NYLA Solutions DAO Spring Batch
+
+[NYLA Solutions DAO Spring Batch](https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.dao.spring.batch)  project provides password encryption, error Listener for email notifications and other utilities for the spring batch framework.
+
 
