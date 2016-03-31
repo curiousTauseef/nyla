@@ -4,10 +4,10 @@ package nyla.solutions.office.msoffice.excel;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Date;
 
-
-
+import org.junit.Assert;
 
 import nyla.solutions.dao.Inserter;
 import nyla.solutions.global.exception.RequiredException;
@@ -31,7 +31,22 @@ import jxl.write.WritableWorkbook;
 /**
  * 
  * <pre>
- * Excel provides a set of functions to handle Excel files
+ * Excel provides a set of functions to handle Excel files.
+ * 
+ * <h2>Use Cases</h2>
+ * 
+ * Excel excel = Excel.getExcel(filePath);
+ * ExcelSheet sheet = excel.retrieveSheet(sheetName);
+ * Assert.assertTrue(sheet.getColumnCount() >  1);
+ * Assert.assertTrue(sheet.getRowCount() >  1);
+ * 
+ *
+ * 	for (String[] row : sheet.getRows())
+ *		{
+ *			Debugger.println("row:"+Arrays.asList(currentRow));
+ *		}
+ *		
+ * 
  * </pre> 
  * @author Gregory Green
  * @version 1.0

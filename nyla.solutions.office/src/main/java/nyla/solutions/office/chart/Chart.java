@@ -9,7 +9,7 @@ import nyla.solutions.global.data.Type;
 
 
 /**
- * Generic representation of a chart.
+ * Generic representation of a chart generation framework
  * 
  * @author Gregory Green
  * 

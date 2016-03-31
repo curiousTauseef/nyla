@@ -30,14 +30,48 @@ import org.apache.fop.apps.MimeConstants;
 
 
 /**
- * Wrapper for Apache FOP API
+ * <pre>
+ * FOP is a wrapper for Apache FOP API
  * 
- * Sample images
+ * <strong>Use Case</strong>
  * 
- *   <fo:block>
-    <fo:external-graphic src="../graphics/xml_feather_transparent.gif"/>
-  </fo:block>
- * @author Gregory Gren
+ * String fo = IO.readClassPath("pdf/example.fop");
+		
+File file = new File("src/test/resources/pdf/test.pdf");
+file.delete();
+		
+FOP.writePDF(fo, file);
+Assert.assertTrue(file.exists());
+	
+ * 
+  <strong>Another example FO</strong>
+  
+  &lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
+&lt;fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format"&gt;
+
+&lt;fo:layout-master-set&gt;
+  &lt;fo:simple-page-master master-name="A4"&gt;
+    &lt;fo:region-body /&gt;
+  &lt;/fo:simple-page-master&gt;
+&lt;/fo:layout-master-set&gt;
+
+&lt;fo:page-sequence master-reference="A4"&gt;
+  &lt;fo:flow flow-name="xsl-region-body"&gt;
+    &lt;fo:block&gt;Hello World&lt;/fo:block&gt;
+  &lt;/fo:flow&gt;
+&lt;/fo:page-sequence&gt;
+&lt;/fo:root&gt;
+
+
+<strong>Add images</strong>
+ *   &lt;fo:block&gt;
+    &lt;fo:external-graphic src="../graphics/xml_feather_transparent.gif"/&gt;
+  &lt;/fo:block&gt;
+  
+  
+Also see <a href="http://w3schools.sinsixx.com/xslfo/default.asp.htm">http://w3schools.sinsixx.com/xslfo/default.asp.htm</a>
+  </pre>
+ * @author Gregory Green
  *
  */
 

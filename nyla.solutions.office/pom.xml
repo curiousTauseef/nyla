@@ -3,12 +3,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.nyla-solutions</groupId>
 	<artifactId>nyla.solutions.office</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>Nyla.Solutions.Office</name>
-	<description>Nyla Solutions for back office operations.</description>
+	<version>0.0.1</version>
+	<name>nyla.solutions.office</name>
+	<description>Nyla Solutions for back office operations. This
+	project provides utilities for creating Excel, PDF and open office documents.</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.javadoc.skip>true</maven.javadoc.skip>	
+		<maven.javadoc.skip>false</maven.javadoc.skip>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 	<url>https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.office</url>
 	<licenses>
@@ -52,7 +55,7 @@
 			<artifactId>avalon-framework-impl</artifactId>
 			<version>4.3.1</version>
 		</dependency>
-				
+
 		<dependency>
 			<groupId>org.jfree</groupId>
 			<artifactId>jfreechart</artifactId>
@@ -73,7 +76,7 @@
 			<artifactId>jxl</artifactId>
 			<version>2.6.12</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.github.nyla-solutions</groupId>
 			<artifactId>nyla.solutions.global</artifactId>
@@ -115,6 +118,9 @@
 						<goals>
 							<goal>jar</goal>
 						</goals>
+						<configuration> <!-- add this to disable checking -->
+							<additionalparam>-Xdoclint:none</additionalparam>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

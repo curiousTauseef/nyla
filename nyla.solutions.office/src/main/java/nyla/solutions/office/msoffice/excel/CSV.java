@@ -3,32 +3,40 @@ package nyla.solutions.office.msoffice.excel;
 import java.io.File;
 import java.io.IOException;
 
-
-import nyla.solutions.global.data.Textable;
-import nyla.solutions.global.exception.RequiredException;
+ import nyla.solutions.global.exception.RequiredException;
 import nyla.solutions.global.io.IO;
 import nyla.solutions.global.util.Config;
 import nyla.solutions.global.util.Text;
 
 /**
+ * <pre>
+ * <b>CSV</b> is a object to create a CSV file.
  * 
- * <b>CSV</b> is a object to create a CSV file 
+ * <strong>Use Case</strong>
+ * 
+ * 		File file = new File("src/test/resources/csv/output.csv");
+		if(file.delete())
+			System.out.println("previous file deleted");
+		CSV.writeHeader(file, "header1","header2","header3");
+		CSV.appendFile(file, 11,12,13);
+		
+		Object[] row2 = {21,22,23};
+		CSV.appendFile(file, row2);
+		
+ *  </pre>
  * @author Gregory Green
  *
  */
-public class CSV implements Textable
+public class CSV
 {
 
-   public String getText()
-   {
-      return null;
-   }// --------------------------------------------
+ 
    /**
     * 
     * @param file
     * @param objects
     */
-   public static void appendFile(java.io.File file, Object[] objects)
+   public static void appendFile(java.io.File file, Object... objects)
    throws IOException
    {
       if(file == null)
@@ -73,6 +81,13 @@ public class CSV implements Textable
       //return text.replaceAll(this.separator, this.replacement);
    }// --------------------------------------------
 
+   public static void writeHeader(File file, String... header)
+   throws IOException
+   {
+	   
+	   writeHeader(file, canonlized.toRow(header));
+	   
+   }//--------------------------------------------------------
    public static void writeHeader(File file, String header)
    throws IOException
    {

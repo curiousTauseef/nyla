@@ -5,7 +5,8 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Calendar;
 
-
+import org.junit.Before;
+import org.junit.Test;
 
 import nyla.solutions.global.io.IO;
 import nyla.solutions.global.util.Config;
@@ -22,14 +23,17 @@ public class JFreeChartFacadeTest extends TestCase
 	super(name);
    }
 
+   @Before
    protected void setUp() throws Exception
    {
 	super.setUp();
    }// ----------------------------------------------
 
+   @Test
    public void testGetBytes()
    throws Exception
    {
+	   Chart chart =  new JFreeChartFacade();
 	chart.setLegend(legend);
 	
 	chart.setCategoryLabel(categoryLabel);
@@ -331,6 +335,6 @@ public class JFreeChartFacadeTest extends TestCase
    private int height = 700;
    private int width =  600;
    private String categoryLabel = "Dates";
-   private Chart chart =  new JFreeChartFacade();
+
 
 }

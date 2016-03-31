@@ -3,10 +3,15 @@ package nyla.solutions.office.msoffice.excel;
 import junit.framework.TestCase;
 import nyla.solutions.global.util.Debugger;
 
-import org.junit.Assert;
-import org.junit.Ignore;
+import java.util.Arrays;
 
-@Ignore
+import org.junit.Assert;
+
+/**
+ * Test for the Excel object
+ * @author Gregory Green
+ *
+ */
 public class ExcelTest extends TestCase
 {
 
@@ -38,8 +43,13 @@ public class ExcelTest extends TestCase
 		
 		Debugger.println(this,"sheet.getRowCount()="+sheet.getRowCount());
 		
+		for (String[] currentRow : sheet.getRows())
+		{
+			Debugger.println("row:"+Arrays.asList(currentRow));
+		}
+		
 	}
 
-	private String sheetName = "RYN-CC";
-	private String filePath = "runtime/input/input.xls";
+	private String sheetName = "Sheet1";
+	private String filePath = "src/test/resources/excel/input.xls";
 }

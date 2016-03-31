@@ -2,6 +2,11 @@ package nyla.solutions.office.msoffice.excel.jxl;
 
 import nyla.solutions.global.exception.NotImplementedException;
 import nyla.solutions.office.msoffice.excel.ExcelSheet;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 import jxl.Cell;
 import jxl.Sheet;
 
@@ -37,6 +42,10 @@ public class JxlSheet implements ExcelSheet
 		throw new NotImplementedException();
 		
 	}// --------------------------------------------------------
+   /**
+    * @param row row count starts from zero
+    * @see nyla.solutions.office.msoffice.excel.ExcelSheet#getRow(int)
+    */
    public String[] getRow(int row)
 	{
 	   	Cell[] cells = this.sheet.getRow(row);
@@ -55,8 +64,8 @@ public class JxlSheet implements ExcelSheet
 		return rowValues;
 	}// --------------------------------------------------------
    /**
-    * @param i
-    * @param j
+    * @param i the column
+    * @param j the row
     * @return
     * @see jxl.Sheet#getCell(int, int)
     */
@@ -72,7 +81,28 @@ public class JxlSheet implements ExcelSheet
       }
       
    }// --------------------------------------------------------
-
+   /**
+    * 
+    * @see nyla.solutions.office.msoffice.excel.ExcelSheet#getRows()
+    */
+   @SuppressWarnings("unchecked")
+   @Override
+	public Collection<String[]> getRows()
+	{
+		int rowCount = this.getRowCount();
+		if(rowCount <= 0)
+			return Collections.EMPTY_LIST;
+		
+		ArrayList<String[]> list = new ArrayList<>(rowCount);
+		
+		for(int i =0; i < rowCount; i++)
+		{
+			list.add(this.getRow(i));
+		}
+		
+		return list;
+	}
+   
    /**
     * @param cellName
     * @return

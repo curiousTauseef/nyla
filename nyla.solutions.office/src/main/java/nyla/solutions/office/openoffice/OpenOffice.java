@@ -110,6 +110,7 @@ In addition to setting these environment variables, the script calls the "vcvar3
  * @author Gregory Green
  *
  */
+@Deprecated
 public class OpenOffice 
 //implements Closeable
 {

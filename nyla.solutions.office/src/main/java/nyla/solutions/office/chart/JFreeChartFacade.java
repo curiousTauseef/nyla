@@ -1,11 +1,15 @@
 package nyla.solutions.office.chart;
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import nyla.solutions.global.exception.RequiredException;
 import nyla.solutions.global.exception.SystemException;
+import nyla.solutions.global.io.IO;
 import nyla.solutions.global.util.Config;
 import nyla.solutions.global.util.Debugger;
 
@@ -21,95 +25,12 @@ import org.jfree.data.general.DefaultPieDataset;
 
 
 /**
- * [Taken from JFreeChart Documentation]
- * To create a chart using JFreeChart, you must create a Dataset, which you then use to create a JFreeChart. A Dataset contains the data that displays in the chart. JFreeChart features many different Dataset objects, which you can use to create assorted types of charts. Once you create a Dataset, you next create the actual chart. JFreeChart uses an object appropriately named JFreeChart to represent charts. You create JFreeChart objects from Dataset objects with the ChartFactory class. In the following examples, we will create pie, XY, and bar charts along with their corresponding Dataset objects.
-
-		Pie chart 
-		A pie chart is created from a PieDataset. The following example creates a PieDataset using the DefaultPieDataset class, adds two values via the setValue() method, and then creates a pie chart with the ChartFactory's createPieChart() method. This example will create a pie chart with the title "Sample Pie Chart," a legend, and two slices: JavaWorld with 75 percent of the pie, and Other with the other 25 percent:
-		
-		
-		DefaultPieDataset pieDataset = new DefaultPieDataset();
-		pieDataset.setValue("JavaWorld", new Integer(75));
-		pieDataset.setValue("Other", new Integer(25));
-		
-		JFreeChart chart = ChartFactory.createPieChart
-		                     ("Sample Pie Chart",   // Title
-		                      pieDataset,           // Dataset
-		                      true                  // Show legend  
-		                     );
-		
-		XY chart 
-		An XYDataset can create area, line, and step XY charts. The following example creates an XYDataset from a series of data containing three XY points. Next, ChartFactory's createAreaXYChart() method creates an area XY chart. In addition to parameters for title, dataset, and legend, createAreaXYChart() takes in the labels for the X and Y axes:
-		
-		
-		XYSeries series = new XYSeries("Average Size");
-		series.add(20.0, 10.0);
-		series.add(40.0, 20.0);
-		series.add(70.0, 50.0);
-		XYDataset xyDataset = new XYSeriesCollection(series);
-		
-		JFreeChart chart = ChartFactory.createAreaXYChart
-		                     ("Sample XY Chart",  // Title
-		                      "Height",           // X-Axis label
-		                      "Weight",           // Y-Axis label
-		                      xyDataset,          // Dataset
-		                      true                // Show legend
-		                     );
-		
-		Bar chart 
-		A CategoryDataset can create numerous different charts, including horizontal and vertical bar charts. The following example creates a CatagoryDataset with two series of data and two categories, and then creates a 3D vertical bar chart from this dataset. This example creates a chart that compares the sales growth in two quarters over two years:
-		
-		
-		String[] seriesNames = new String[] {"2001", "2002"};
-		String[] categoryNames = new String[] {"First Quater",
-		                                       "Second Quater"};
-		Number[][] categoryData = new Integer[][] {{new Integer(20),
-		                                            new Integer(35)},
-		                                           {new Integer(40),
-		                                            new Integer(60)}
-		                                           };
-		CategoryDataset categoryDataset = new DefaultCategoryDataset
-		                                        (seriesNames,
-		                                         categoryNames,
-		                                         categoryData);
-		
-		JFreeChart chart = ChartFactory.createVerticalBarChart3D
-		                     ("Sample Category Chart", // Title
-		                      "Quarters",              // X-Axis label
-		                      "Sales",                 // Y-Axis label
-		                      categoryDataset,         // Dataset
-		                      true                     // Show legend
-		                     );
-		
-		Integrate JFreeChart 
-		Integrating JFreeChart into a Swing application is relatively easy. Just create a BufferedImage from the chart and use the image as an icon for a JLabel:
-		
-		
-		BufferedImage image = chart.createBufferedImage(500,300);
-		
-		JLabel lblChart = new JLabel();
-		lblChart.setIcon(new ImageIcon(image));
-		
-		JFreeChart also includes a class named ChartUtilities that provides several methods for saving charts to files or writing them out to streams in JPEG or PNG format. For example, the following piece of code can export a chart to a JPEG:
-		
-		
-		ChartUtilities.saveChartAsJPEG(new File("chart.jpg"), chart, 500, 300);
-		
-		The methods in the ChartUtilities class can be used to create JPEGs for use in a static Webpage, or used in a jsp (JavaServer Pages)/servlet-based application to dynamically stream charts to Webpages.
-		
- Usage Bar Char
-	Chart chart = new JFreeChartFacade();
-	
-      chart.setCategoryLabel(categoryLabel);
-	chart.setHeight(height);
-	chart.setName(name);
-	chart.plotValue(100.0, "Usage", "CIB");
-	chart.plotValue(50.0, "Usage", "AIB");
-	chart.setTypeName(Chart.PNG_TYPE_NAME);
-	//default bar
-	IO.writeFile(new File(filePath), chart.getBytes());
-	
-Usage Pie Char
+ * <pre>
+ * 
+ * JFreeChartFacade is a wrapper to the popular JFreeChart API(s).
+ * 
+<strong>Simple Pie Char</strong>
+	Chart chart =  new JFreeChartFacade();
 	chart.setCategoryLabel(categoryLabel);
 	chart.setHeight(height);
 	chart.setName(name);
@@ -122,7 +43,56 @@ Usage Pie Char
 	
 	IO.writeFile(new File(filePath), chart.getBytes());
 	
+<strong>JVM memory area graph</strong>
 	
+	//The Y axis is the memory size in GB
+	// X is days of week (Mon-Fri)
+	Chart chart =  new JFreeChartFacade();
+	chart.setLegend(legend);
+	
+	chart.setCategoryLabel(categoryLabel);
+	chart.setHeight(height);
+	chart.setName(name);
+	chart.setWidth(width);
+	chart.setTitle(title);
+	String label = "JVM";
+	
+	Calendar cal = Calendar.getInstance();
+	cal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+	
+	cal.add(Calendar.DATE, -5);
+	
+	chart.plotValue(2,label, cal.getTime());
+	cal.add(Calendar.DATE, +1);
+	
+	
+	chart.plotValue(5, label, cal.getTime());
+	cal.add(Calendar.DATE, +1);
+	
+	chart.plotValue(6,label, cal.getTime());
+	
+	cal.add(Calendar.DATE, +1);
+	chart.plotValue(7,label, cal.getTime());
+
+	cal.add(Calendar.DATE, +1);
+	chart.plotValue(1,label, cal.getTime());
+	chart.setTypeName(Chart.PNG_TYPE_NAME);
+	
+	
+	Color[] colors = { Color.RED};
+	
+	chart.setSeriesColors(Arrays.asList(colors));
+	chart.setBackgroundColor(Color.WHITE);
+	chart.setValueLabel("GB(s)");
+
+	chart.setGraphType(Chart.AREA_GRAPH_TYPE);
+
+	
+	IO.writeFile(new File(filePath), chart.getBytes());
+		
+	Debugger.println("Write to "+filePath);
+	
+	</pre>
 	
 	Debugger.println("Write to "+filePath);
  * @author Gregory Green
