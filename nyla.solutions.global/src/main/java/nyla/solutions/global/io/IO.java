@@ -1326,7 +1326,7 @@ public class IO
 
 		try
 		{
-			writer = new OutputStreamWriter(new FileOutputStream(file), CHARSET.newEncoder());
+			writer = new OutputStreamWriter(new FileOutputStream(file,append), CHARSET.newEncoder());
 
 			writer.write(text);
 		}
