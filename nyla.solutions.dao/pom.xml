@@ -3,12 +3,20 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.nyla-solutions</groupId>
 	<artifactId>nyla.solutions.dao</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>Nyla.Solutions.DAO</name>
-	<description>Nyla Solutions Data Access Object framework.</description>
+	<description>Nyla Solutions Data Access Object framework.
+	This project is a simple Data Access Object (DAO) abstraction.
+	There are default implementations for the JDBC based access. 
+	This project expands on NYLA solution global's Command pattern (a.k.a. COMMAS) for 
+	data access. This project implements NYLA-solutions's Query Service pattern for 
+	database based searches. 
+	The object nyla.solutions.dao.SQL is one of the most useful objects as it 
+	provides a simple interface to connect and perform JDBC data access (similar to the Spring Data JDBC Template API).
+		</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.javadoc.skip>true</maven.javadoc.skip>
+		<maven.javadoc.skip>false</maven.javadoc.skip>
 	</properties>
 	<url>https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.dao</url>
 	<licenses>
@@ -50,7 +58,7 @@
 		<dependency>
 			<groupId>com.github.nyla-solutions</groupId>
 			<artifactId>nyla.solutions.global</artifactId>
-			<version>0.0.4-SNAPSHOT</version>
+			<version>0.0.4</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -83,6 +91,9 @@
 						<goals>
 							<goal>jar</goal>
 						</goals>
+						<configuration> <!-- add this to disable checking -->
+			                <additionalparam>-Xdoclint:none</additionalparam>
+			            </configuration>
 					</execution>
 				</executions>
 			</plugin>
