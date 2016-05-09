@@ -2,7 +2,14 @@ package nyla.solutions.global.patterns.creational;
 
 import nyla.solutions.global.exception.DuplicateRowException;
 
-public interface KeyValueCRUD<Key,Value>
+/**
+ * Implement create, read, update and delete operations for records
+ * @author Gregory Green
+ *
+ * @param <Key>
+ * @param <Value>
+ */
+public interface KeyValueCRUD<Key,Value> extends KeyValueSaver<Key,Value>
 {
 	
 	Value create(Key key, Value value)
@@ -11,8 +18,6 @@ public interface KeyValueCRUD<Key,Value>
 	Value read(Key key);
 	
 	Value update(Key key,Value value);
-	
-	Value save(Key key, Value value);
 	
 	Value delete(Key key);
 	

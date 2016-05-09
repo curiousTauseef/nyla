@@ -47,7 +47,7 @@ public class WriteTextFileExecutable implements Fileable, Executable
 		
 	try
 	{
-	   IO.writeFile(file.getAbsolutePath(), text.getText(),this.append);
+	   IO.writeFile(file.getAbsolutePath(), text.getText(),this.append,IO.CHARSET);
 	   
 	   return 0;
 	} 

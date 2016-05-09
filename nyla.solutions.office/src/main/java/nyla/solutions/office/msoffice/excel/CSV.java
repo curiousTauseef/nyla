@@ -2,8 +2,9 @@ package nyla.solutions.office.msoffice.excel;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
- import nyla.solutions.global.exception.RequiredException;
+import nyla.solutions.global.exception.RequiredException;
 import nyla.solutions.global.io.IO;
 import nyla.solutions.global.util.Config;
 import nyla.solutions.global.util.Text;
@@ -85,15 +86,15 @@ public class CSV
    throws IOException
    {
 	   
-	   writeHeader(file, canonlized.toRow(header));
+	   writeHeader(file, canonlized.toRow(header),IO.CHARSET);
 	   
    }//--------------------------------------------------------
-   public static void writeHeader(File file, String header)
+   public static void writeHeader(File file, String header, Charset charset)
    throws IOException
    {
 	   if(!file.exists() && header != null)
 		{
-			IO.writeFile(file, Text.appendNewLine(header));
+			IO.writeFile(file, Text.appendNewLine(header),charset);
 		}
    }// --------------------------------------------------------
    /**

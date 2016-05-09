@@ -73,7 +73,7 @@ public final class SynchronizedIO
       Object lock = retrieveLock(fileName);      
       synchronized (lock) 
       {
-         IO.writeAppend(fileName, data);
+         IO.writeAppend(fileName, data,IO.CHARSET);
       }
    }//--------------------------------------------
    /**
@@ -119,7 +119,7 @@ public final class SynchronizedIO
       Object lock = retrieveLock(aFileName);      
       synchronized (lock) 
       {
-         IO.writeFile(aFileName, aData);
+         IO.writeFile(aFileName, aData,IO.CHARSET);
       }
 
    }//--------------------------------------------

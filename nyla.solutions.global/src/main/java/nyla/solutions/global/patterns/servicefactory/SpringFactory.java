@@ -18,8 +18,9 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
  * CLASSPATH. A configuration property or system property can be set to indicate a different location for 
  * spring XML configuration.
  * 
- * Sample system property;
+ * Sample system propertioes;
  * -Dspring.xml.url=file:///projects/solutions/config/servicefactory.xml
+ * -Dspring.xml.url=classpath:META-INF/spring-int-context.xml
  * 
  * Sample Configuration Property
  * spring.xml.url=file:///C:/Projects/Medco/EDF/dev/Bridge/runtime/config/service.factory.xml
@@ -162,6 +163,7 @@ public class SpringFactory extends ServiceFactory
 			   {
 				   throw new SpringXmlFileNotFoundException();
 			   }
+			   throw e;
 		   }
 
 		   

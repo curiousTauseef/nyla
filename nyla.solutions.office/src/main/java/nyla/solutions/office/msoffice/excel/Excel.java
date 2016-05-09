@@ -15,6 +15,7 @@ import nyla.solutions.global.exception.SystemException;
 import nyla.solutions.global.operations.ClassPath;
 import nyla.solutions.global.patterns.Disposable;
 import nyla.solutions.global.patterns.creational.KeyValueCRUD;
+import nyla.solutions.global.patterns.creational.KeyValueSaver;
 import nyla.solutions.global.util.Debugger;
 import nyla.solutions.global.util.JavaBean;
 import nyla.solutions.office.msoffice.excel.jxl.JxlSheet;
@@ -236,11 +237,11 @@ public class Excel implements Disposable
 
    /**
     * User insert to load data from a file based on information in a given sheet
-    * @param file
-    * @param inserter
-    * @param sheetName
+    * @param file the file to process
+    * @param saver save record implementation 
+    * @param sheetName the sheet name
     */
-   public static  <T> void loadObjects(File file, KeyValueCRUD<String, T> creator, String sheetName, int keyColumnPosition, String className)
+   public static  <T> void loadObjects(File file, KeyValueSaver<String, T> saver, String sheetName, int keyColumnPosition, String className)
    throws IOException
    {
 	   Excel excel = Excel.getExcel(file);
@@ -280,18 +281,19 @@ public class Excel implements Disposable
 	   for(int row=1; row < rowCount;row++)
 	   {
 		   rowCells = sheet.getRow(row);
-		
-		   value = ClassPath.newInstance(className);
-		   
-		   key = rowCells[keyColumnPosition];
-		   
-		   for(int cols = 0; cols < columnHeaders.length;cols++)
-		   {
-			   //loop through columns			   
-			   JavaBean.setProperty(value, columnHeaders[cols], rowCells[cols]);
-		   }
-		   
-		   creator.save(key, value);
+	
+			   //process java bean
+			   value = ClassPath.newInstance(className);
+			   
+			   key = rowCells[keyColumnPosition];
+			   
+			   for(int cols = 0; cols < columnHeaders.length;cols++)
+			   {
+				   //loop through columns			   
+				   JavaBean.setProperty(value, columnHeaders[cols], rowCells[cols]);
+			   }
+			   
+			   saver.save(key, value);		  
 		
 	   }
 

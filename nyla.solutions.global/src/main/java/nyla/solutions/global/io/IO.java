@@ -53,7 +53,7 @@ public class IO
 	/**
 	 * CHARSET_NM = "UTF-8"
 	 */
-	public static final String CHARSET_NM = "UTF-8";
+	public static final String CHARSET_NM = Config.getProperty(IO.class,"CHARSET","UTF-8");
 	
 	
 	/**
@@ -826,13 +826,13 @@ public class IO
 	 * @throws IOException
 	 */
 	public static String readFile(String aFilePath, int aRetryCount,
-			long aRetryDelayMS) throws IOException
+			long aRetryDelayMS,Charset charset) throws IOException
 	{
 		for (int i = 0; i <= aRetryCount; i++)
 		{
 			try
 			{
-				return IO.readFile(aFilePath);
+				return IO.readFile(aFilePath,charset);
 			} catch (Exception e)
 			{
 				try
@@ -845,7 +845,6 @@ public class IO
 		}
 		throw new IOException(aFilePath);
 	}// ----------------------------------------------------
-
 	/**
 	 * 
 	 * @param fileName  the full file path of which to read
@@ -853,6 +852,16 @@ public class IO
 	 * @throws IOException
 	 */
 	public static String readFile(String fileName) throws IOException
+	{
+		return readFile(fileName,IO.CHARSET);
+	}//--------------------------------------------------------
+	/**
+	 * 
+	 * @param fileName  the full file path of which to read
+	 * @return string data
+	 * @throws IOException
+	 */
+	public static String readFile(String fileName, Charset charSet) throws IOException
 	{
 		if (fileName == null || fileName.length() == 0)
 			return null;
@@ -863,7 +872,7 @@ public class IO
 		{
 
 			buffreader = new BufferedReader(new InputStreamReader(
-					new FileInputStream(file), CHARSET_NM));
+					new FileInputStream(file), charSet));
 
 			String tmp = buffreader.readLine();
 			if (tmp == null)
@@ -909,7 +918,7 @@ public class IO
 	 * @return string data
 	 * @throws IOException
 	 */
-	public static String[] readLines(String aFileNM) throws IOException
+	public static String[] readLines(String aFileNM, Charset charset) throws IOException
 	{
 		if (Data.isNull(aFileNM))
 			throw new IllegalArgumentException("file name not provided");
@@ -919,7 +928,7 @@ public class IO
 		BufferedReader buffreader = null;
 		try
 		{
-			buffreader = new BufferedReader(new InputStreamReader(new FileInputStream(aFileNM),CHARSET));
+			buffreader = new BufferedReader(new InputStreamReader(new FileInputStream(aFileNM),charset));
 
 			String tmp = buffreader.readLine();
 						
@@ -1271,6 +1280,11 @@ public class IO
 		}
 
 	}// -----------------------------------------------
+	public static void writeFile(String fileName, String text)
+	throws IOException
+	{
+		writeFile( fileName,  text,IO.CHARSET);
+	}//--------------------------------------------------------
 	/**
 	 * Write string file data
 	 * 
@@ -1278,10 +1292,10 @@ public class IO
 	 * @param text the text to write
 	 * @throws IOException
 	 */
-	public static void writeFile(String fileName, String text)
+	public static void writeFile(String fileName, String text,Charset charset)
 	throws IOException
 	{
-		writeFile(fileName, text,false);
+		writeFile(fileName, text,false,charset);
 	}//---------------------------------------------
 	/**
 	 * Write string file data
@@ -1293,7 +1307,19 @@ public class IO
 	public static void writeFile(String fileName, String text, boolean append)
 			throws IOException
 	{
-		writeFile(new File(fileName),text,append);
+		 writeFile( fileName,  text,  append,IO.CHARSET);
+	}//--------------------------------------------------------
+	/**
+	 * Write string file data
+	 * 
+	 * @param fileName the file
+	 * @param text the text to write
+	 * @throws Exception
+	 */
+	public static void writeFile(String fileName, String text, boolean append,Charset charset)
+			throws IOException
+	{
+		writeFile(new File(fileName),text,append,charset);
 	}// --------------------------------------------------------
 	/**
 	 * Write string file data
@@ -1305,7 +1331,19 @@ public class IO
 	public static void writeFile(File file, String text)
 			throws IOException
 	{
-		writeFile(file,text,false);
+		writeFile(file,text,IO.CHARSET);
+	}//--------------------------------------------------------
+	/**
+	 * Write string file data
+	 * 
+	 * @param fileName the file
+	 * @param text the text to write
+	 * @throws Exception
+	 */
+	public static void writeFile(File file, String text,Charset charset)
+			throws IOException
+	{
+		writeFile(file,text,false,charset);
 	}// --------------------------------------------------------
 	/**
 	 * Write string file data
@@ -1317,6 +1355,18 @@ public class IO
 	public static void writeFile(File file, String text, boolean append)
 			throws IOException
 	{
+		writeFile( file,  text,  append, IO.CHARSET);
+	}//--------------------------------------------------------
+	/**
+	 * Write string file data
+	 * 
+	 * @param fileName the file
+	 * @param text the text to write
+	 * @throws Exception
+	 */
+	public static void writeFile(File file, String text, boolean append, Charset charset)
+			throws IOException
+	{
 		if (text == null)
 			return; // nothing to write
 
@@ -1326,7 +1376,7 @@ public class IO
 
 		try
 		{
-			writer = new OutputStreamWriter(new FileOutputStream(file,append), CHARSET.newEncoder());
+			writer = new OutputStreamWriter(new FileOutputStream(file,append),charset.newEncoder()) ;
 
 			writer.write(text);
 		}
@@ -1344,7 +1394,6 @@ public class IO
 		}
 
 	}// ------------------------------------------------------
-
 	/**
 	 * 
 	 * @param fileName
@@ -1356,7 +1405,21 @@ public class IO
 	public static void writeAppend(String fileName, String data)
 			throws IOException
 	{
-		writeFile(fileName,data,true);
+		IO.writeAppend(fileName,data,IO.CHARSET);
+		
+	}//--------------------------------------------------------
+	/**
+	 * 
+	 * @param fileName
+	 *            the file to write
+	 * @param data
+	 *            the data
+	 * @throws IOException
+	 */
+	public static void writeAppend(String fileName, String data,Charset charset)
+			throws IOException
+	{
+		writeFile(new File(fileName),data,true,charset);
 	}// --------------------------------------------
 	/**
 	 * Delete a given the directory

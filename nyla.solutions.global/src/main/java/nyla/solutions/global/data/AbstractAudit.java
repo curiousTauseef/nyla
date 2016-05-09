@@ -259,17 +259,12 @@ implements Auditable, Copier, Serializable
       super.setPrimaryKeyString(primaryKey);
 
    }//----------------------------------------
-
    /**
     * 
-    * 
-    * 
-    * @see nyla.solutions.global.data.Criteria#setPrimaryKey(int)
-    *  
+    * @param primaryKey the primary key
+    * @throws IllegalArgumentException
     */
-
    public void setPrimaryKey(Criteria primaryKey)
-
    throws IllegalArgumentException
 
    {
@@ -323,12 +318,8 @@ implements Auditable, Copier, Serializable
    /**
     * 
     * Copy attributes from a given object
-    * 
-    * @param aAbstractAudit
-    *           the object ot copy from
-    *  
+    * @param aCopier the record to copy
     */
-
    public void copy(Copier aCopier)
    {
       if(!(aCopier instanceof AbstractAudit))

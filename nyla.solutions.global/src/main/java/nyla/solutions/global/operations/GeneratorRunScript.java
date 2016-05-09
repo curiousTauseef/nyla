@@ -4,6 +4,7 @@
 package nyla.solutions.global.operations;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
@@ -31,17 +32,30 @@ public class GeneratorRunScript
    
    public static final void main(String [] args)
    {
-
-	   PrintWriter writer = new PrintWriter(new OutputStreamWriter(System.out,IO.CHARSET));
-	try
-	{
-	   writeScript(writer);
-	} 
-	catch (Exception e)
-	{
-	   e.printStackTrace();
-	  // throw new SystemException(Debugger.stackTrace(e));
-	}
+	   
+	   if(args.length ==0)
+	   {
+		   throw new IllegalArgumentException("outputFile required");
+	   }
+	   
+	   File file= new File(args[0]);
+	   
+		try
+		{
+		   FileOutputStream os = new FileOutputStream(file);
+		   
+		   PrintWriter writer = new PrintWriter(new OutputStreamWriter(os,IO.CHARSET));
+	
+		   writeScript(writer);
+		   
+		   
+		   System.out.println("See file:"+file.getAbsolutePath());
+		} 
+		catch (Exception e)
+		{
+		   e.printStackTrace();
+		  // throw new SystemException(Debugger.stackTrace(e));
+		}
 	
 	
    }// ----------------------------------------------
@@ -129,7 +143,9 @@ public class GeneratorRunScript
 	   
 	   //loop thru paths
 	   int printedCnt = 0;
-	   for(Iterator<Object> pathI = folderPathClassPaths.iterator();pathI.hasNext();printedCnt++)
+	   
+	   String line = null;
+	   for(Iterator<Object> pathI = folderPathClassPaths.iterator();pathI.hasNext();)
 	   {
 		//limit number of entries per path
 		if(printedCnt > limitPerPath)
@@ -144,8 +160,15 @@ public class GeneratorRunScript
 		   printedCnt = 0;
 		   
 		}
-		   
-		writer.write(pathI.next().toString());
+		
+		
+		
+		
+		
+		line = pathI.next().toString();
+		writer.write(line);
+		
+		printedCnt += line.length();
 		
 		writer.write(File.pathSeparator);
 		
@@ -188,7 +211,7 @@ public class GeneratorRunScript
 	
 	
    }
-   private static int limitPerPath = 1024/50;
+   private static int limitPerPath = 100;
 
 
 }

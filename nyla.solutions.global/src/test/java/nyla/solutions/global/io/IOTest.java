@@ -25,6 +25,7 @@ public class IOTest extends TestCase
 	   
 	   //Write text or binary files
 	   String fileName = inputDirectory.getAbsolutePath()+"/test.txt";
+	   IO.writeFile(fileName, "Hello"+IO.newline()+"world",IO.CHARSET);
 	   IO.writeFile(fileName, "Hello"+IO.newline()+"world");
 	   
 	   //Read text or binary files 

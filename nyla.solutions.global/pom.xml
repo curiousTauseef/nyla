@@ -3,14 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.nyla-solutions</groupId>
 	<artifactId>nyla.solutions.global</artifactId>
-	<version>0.0.4</version>
+	<version>0.0.5-SNAPSHOT</version>
 	<name>Nyla.Solutions.Global</name>
 	<description>Nyla Solutions Global Java API provides support for basic application
 	 utilities (application configuration, data encryption, debugger and text 
 	 processing).</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.javadoc.skip>true</maven.javadoc.skip>
+		<maven.javadoc.skip>false</maven.javadoc.skip>
 	</properties>
 	<url>https://github.com/nyla-solutions/nyla</url>
 	<licenses>
@@ -157,6 +157,9 @@
 						<goals>
 							<goal>jar</goal>
 						</goals>
+						<configuration> <!-- add this to disable checking -->
+			                <additionalparam>-Xdoclint:none</additionalparam>
+			            </configuration>
 					</execution>
 				</executions>
 			</plugin>

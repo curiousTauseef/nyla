@@ -368,6 +368,11 @@ public class JavaBean
       aObject instanceof StringBuffer ||
       aObject.getClass().getName().indexOf("java.lang") > -1;
    }//----------------------------------------------------------
+   /**
+    * 
+    * @param beanClass the bean classe to get descriptors
+    * @return the property descriptor
+    */
    private static PropertyDescriptor[] getPropertyDescriptors(Class<?> beanClass)
    {
        if(beanClass == null)
@@ -435,15 +440,24 @@ public static Object getNestedProperty(Object bean, String name)
        throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, Exception
    {
        if(bean == null)
-           throw new IllegalArgumentException("No bean specified");
-       if(name == null)
-           throw new IllegalArgumentException("No name specified");
+           return null;
+       
+  
+       if(name == null || name.length() == 0)
+					throw new IllegalArgumentException("name required");
+       
+       if(Collection.class.isAssignableFrom(bean.getClass()))
+       {
+        	   return getCollectionProperties((Collection<?>)bean,name);
+       }
+       
        int indexOfINDEXED_DELIM = -1;
        int indexOfMAPPED_DELIM = -1;
        int indexOfMAPPED_DELIM2 = -1;
        int indexOfNESTED_DELIM = -1;
        do
        {
+           
            indexOfNESTED_DELIM = name.indexOf('.');
            indexOfMAPPED_DELIM = name.indexOf('(');
            indexOfMAPPED_DELIM2 = name.indexOf(')');
@@ -466,9 +480,17 @@ public static Object getNestedProperty(Object bean, String name)
                bean = getIndexedProperty(bean, next);
            else
                bean = getSimpleProperty(bean, next);
+           
            if(bean == null)
-               throw new IllegalArgumentException("Null property value for '" + name.substring(0, indexOfNESTED_DELIM) + "'");
+        	   return null;
+           
            name = name.substring(indexOfNESTED_DELIM + 1);
+           
+           if(Collection.class.isAssignableFrom(bean.getClass()))
+           {
+            	   return getCollectionProperties((Collection<?>)bean,name);
+           }
+
        } while(true);
        indexOfINDEXED_DELIM = name.indexOf('[');
        indexOfMAPPED_DELIM = name.indexOf('(');
@@ -482,9 +504,31 @@ public static Object getNestedProperty(Object bean, String name)
            bean = getIndexedProperty(bean, name);
        else
            bean = getSimpleProperty(bean, name);
+       
        return bean;
-   }
-   
+   }//--------------------------------------------------------
+   /**
+    * 
+    * @param collection the collection of object
+    * @param name the name of property
+    * @return collection of objects
+    * @throws Exception when an unknown error occurs
+    */
+   public static Collection<Object> getCollectionProperties(Collection<?> collection,String name)
+   throws Exception
+   {
+	   if(collection == null)
+				throw new IllegalArgumentException("collection, name");
+	   
+	   ArrayList<Object> list = new ArrayList<Object>(collection.size());
+	   
+	   for (Object bean : collection)
+		{
+		   list.add(getNestedProperty(bean, name));
+		}
+	   
+	   return list;
+   }//--------------------------------------------------------
    public static Object getMappedProperty(Object bean, String name)
         throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, Exception
     {
@@ -677,9 +721,12 @@ public static Object getMappedProperty(Object bean, String name, String key)
         if(descriptors != null)
         {
             for(int i = 0; i < descriptors.length; i++)
-                if(name.equals(descriptors[i].getName()))
-                    return descriptors[i];
-
+             {
+            	if(name.equals(descriptors[i].getName()))
+            	    return descriptors[i];
+              
+            	
+             }
         }
         PropertyDescriptor result = null;
         
