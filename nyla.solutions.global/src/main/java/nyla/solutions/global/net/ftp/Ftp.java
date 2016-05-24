@@ -1,7 +1,9 @@
 package nyla.solutions.global.net.ftp;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
+import nyla.solutions.global.io.IO;
 import nyla.solutions.global.util.Config;
 
 /**
@@ -230,9 +232,50 @@ public abstract class Ftp
 	{
 		this.secured = secured;
 	}
+	
+
+	/**
+	 * @return the charSet
+	 */
+	public String getEncoding()
+	{
+		return charset.name();
+	}
+
+	/**
+	 * Set this.setCharset(Charset.forName(encoding));
+	 * 
+	 * @param charSet the charSet to set
+	 */
+	public void setEncoding(String encoding)
+	{
+		if(encoding == null || encoding.length() == 0)
+			return;
+		
+		this.setCharset(Charset.forName(encoding));
+	}//-------------------------------------------------------------------
+
+
+	/**
+	 * @return the charset
+	 */
+	public Charset getCharset()
+	{
+		return charset;
+	}
+
+	/**
+	 * @param charset the charset to set
+	 */
+	public void setCharset(Charset charset)
+	{
+		this.charset = charset;
+	}
 
 
 
+
+	private Charset charset = IO.CHARSET;
 	private int controlKeepAliveReplyTimeout;
 	private int keepAliveTimeout;
 	private boolean secured;

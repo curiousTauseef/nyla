@@ -113,9 +113,14 @@ public class ApacheFtp extends Ftp
            throw new SecurityException("login failed");
         
         if (isBinaryTransfer())
-        	ftpClient.setFileType(FTP.BINARY_FILE_TYPE);  
+        {
+        	ftpClient.setFileType(FTP.BINARY_FILE_TYPE); 
+        }
         else
-        	ftpClient.setFileType(FTP.ASCII_FILE_TYPE);
+        {
+        	ftpClient.setFileType(FTP.NON_PRINT_TEXT_FORMAT);
+        	ftpClient.setAutodetectUTF8(true);
+        }
         
         if (isLocalActive()) 
             ftpClient.enterLocalActiveMode();
@@ -123,6 +128,8 @@ public class ApacheFtp extends Ftp
            	ftpClient.enterLocalPassiveMode();
 
         ftpClient.setUseEPSVwithIPv4(isUseEpsvWithIPv4());
+        
+        ftpClient.setCharset(this.getCharset());
         
         this.connected = true;
         
@@ -165,8 +172,9 @@ public class ApacheFtp extends Ftp
 		 {
 			 if(!connected)
 				 this.connect();
+
 			 
-			 output = new FileOutputStream(localPath);
+			 output =  new FileOutputStream(localPath);
 			 if(!ftpClient.retrieveFile(remotePath, output))
 				 throw new IOException("localPath:"+localPath+" remotePath:"+remotePath);
 		 }
