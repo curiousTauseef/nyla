@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="nyla.solutions.global.patterns.scripting.Scripting" class="nyla.solutions.global.patterns.scripting.SpringFramework">
+	</bean>
+   <!-- =================================================== -->
+   	<bean id="nyla.solutions.global.patterns.decorator.ScriptingText" class="nyla.solutions.global.patterns.decorator.ScriptingText">
+	     <property name="expression" value="${new java.text.SimpleDateFormat('MM/dd/yyyy').format(T(nyla.solutions.global.util.Scheduler).toDateDayOfWeek( T(java.util.Calendar).SUNDAY))}"/>
+	     <property name="scripting">
+	        <ref bean="nyla.solutions.global.patterns.scripting.Scripting"/>
+	     </property>
+	</bean>
+	<bean id="todayText" class="nyla.solutions.global.patterns.decorator.ScriptingText">
+	     <property name="expression" value="${new java.text.SimpleDateFormat('MM/dd/yyyy').format(T(java.util.Calendar).getInstance().getTime())}"/>
+	     <property name="scripting">
+	        <ref bean="nyla.solutions.global.patterns.scripting.Scripting"/>
+	     </property>
+	</bean>
+	<bean id="mapText" class="nyla.solutions.global.data.BridgeMap">
+		<property name="map">			      	
+			      	<map>
+		   				<entry>
+			      			<key><value>title</value></key>
+			      			<ref bean="titleHtmlText"/>
+		   				</entry>
+		   				<entry>
+			      			<key><value>headers</value></key>
+			      			<ref bean="h1sHtmlText"/>
+		   				</entry>
+		   				<entry>
+			      			<key><value>description</value></key>
+			      			<ref bean="descriptionHtmlText"/>
+		   				</entry>
+		   				<entry>
+			      			<key><value>keywords</value></key>
+			      			<ref bean="keywordsHtmlText"/>
+		   				</entry>		   				
+					</map>
+		</property>
+	</bean>
+   <bean id="titleHtmlText" class="nyla.solutions.global.patterns.decorator.w3cdom.FirstNodeValueByNameCacheText">
+   		<property name="name" value="title"/>   		
+   </bean>
+   <bean id="descriptionHtmlText" class="nyla.solutions.global.patterns.decorator.w3cdom.XmlCacheXPathText">
+   		<property name="xpath" value="//meta[@name='description']/../[@content]"/>   		
+   </bean>
+   <bean id="keywordsHtmlText" class="nyla.solutions.global.patterns.decorator.w3cdom.XmlCacheXPathText">
+   		<property name="xpath" value="//meta[@name='keywords']/../[@content]"/>   		
+   </bean>
+   <bean id="h1sHtmlText" class="nyla.solutions.global.patterns.decorator.w3cdom.AllNodeValueByNameCacheText">
+   		<property name="name" value="h1"/>   		
+   </bean>
+   	<bean id="nyla.solutions.patterns.creational.builder.mapped.MapFactoryById" class="nyla.solutions.global.patterns.creational.builder.mapped.ReLookupTextMapFactory" scope="singleton">
+   		<property name="lookupTable">
+		   <map>
+		   		<entry>
+			      <key><value>.*</value></key>
+			      <ref bean="mapText"/>
+		   		</entry>
+			</map>
+		</property>
+	</bean>
+ </beans>

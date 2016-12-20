@@ -1,0 +1,99 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'findbugs'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+sourceCompatibility = 1.8
+version = '0.1'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Nyla Core',
+                   'Implementation-Version': version
+    }
+}
+
+javadoc {
+	source = sourceSets.main.allJava
+	classpath = configurations.compile
+	}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+group = "com.github.nyla-solutions"
+archivesBaseName = "nyla.solutions.core"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+      testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+	  repositories {
+	    mavenDeployer {
+	      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+	      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+	        authentication(userName: ossrhUsername, password: ossrhPassword)
+	      }
+
+	      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+	        authentication(userName: ossrhUsername, password: ossrhPassword)
+	      }
+
+	      pom.project {
+	        name 'Example Application'
+	        packaging 'jar'
+	        // optionally artifactId can be defined here 
+	        description 'A application used as an example on how to set up 
+	          pushing  its components to the Central Repository.'
+	        url 'http://www.example.com/example-application'
+
+	        scm {
+	          connection 'scm:svn:http://foo.googlecode.com/svn/trunk/'
+	          developerConnection 'scm:svn:https://foo.googlecode.com/svn/trunk/'
+	          url 'http://foo.googlecode.com/svn/trunk/'
+	        }
+
+	        licenses {
+	          license {
+	            name 'The Apache License, Version 2.0'
+	            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+	          }
+	        }
+
+	        developers {
+	          developer {
+	            id 'ggreen'
+	            name 'Gregory Green'
+	            email 'ggreen@g-solution.net'
+	          }
+	        }
+	      }
+	    }
+	  }
+	}
