@@ -13,6 +13,15 @@ jar {
     }
 }
 
+//Solution by the first link
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+}
+
 javadoc {
 	source = sourceSets.main.allJava
 	classpath = configurations.compile
@@ -45,7 +54,7 @@ repositories {
 }
 
 dependencies {
-      testCompile group: 'junit', name: 'junit', version: '4.+'
+      testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
 test {
@@ -54,31 +63,30 @@ test {
 
 uploadArchives {
 	  repositories {
-	    mavenDeployer {
-	      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+		  mavenDeployer {
+		      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-	      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-	        authentication(userName: ossrhUsername, password: ossrhPassword)
-	      }
+		      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+		        authentication(userName: ossrhUsername, password: ossrhPassword)
+		      }
+
 
 	      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
 	        authentication(userName: ossrhUsername, password: ossrhPassword)
 	      }
 
 	      pom.project {
-	        name 'Example Application'
+	        name 'Nyla Core'
 	        packaging 'jar'
 	        // optionally artifactId can be defined here 
-	        description 'A application used as an example on how to set up 
-	          pushing  its components to the Central Repository.'
-	        url 'http://www.example.com/example-application'
-
+	        description 'Core utility features.'
+	        url 'https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.core'
+	        
 	        scm {
-	          connection 'scm:svn:http://foo.googlecode.com/svn/trunk/'
-	          developerConnection 'scm:svn:https://foo.googlecode.com/svn/trunk/'
-	          url 'http://foo.googlecode.com/svn/trunk/'
-	        }
-
+	            url 'https://github.com/nyla-solutions/nyla.git'
+	          }
+	        
+	        
 	        licenses {
 	          license {
 	            name 'The Apache License, Version 2.0'
