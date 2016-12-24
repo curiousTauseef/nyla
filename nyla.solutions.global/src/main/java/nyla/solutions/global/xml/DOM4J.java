@@ -1,36 +1,41 @@
 package nyla.solutions.global.xml;
 
-/**
- * <b>XML </b> is XML utility class. This class can be used to convert any
- * complex or JavaBean object to an XML string, see XML.toXML(object) and
- * XML.populate(...) method.
- * 
- * @author Gregory Green
- * @version 2.0
- */
-
-import nyla.solutions.global.exception.RequiredException;
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.io.IO;
-import nyla.solutions.global.util.*;
-import nyla.solutions.global.xml.xstream.XStreamInterpreter;
-
-import org.xml.sax.*;
-import org.dom4j.*;
-import org.dom4j.io.*;
-
-import nyla.solutions.global.util.Text;
-
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.io.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.TimeZone;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.dom4j.Element;
+import org.dom4j.Node;
+import org.dom4j.io.SAXReader;
+import org.xml.sax.InputSource;
+
+import nyla.solutions.core.exception.RequiredException;
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.io.IO;
+import nyla.solutions.core.util.Debugger;
+import nyla.solutions.core.util.Text;
+import nyla.solutions.global.xml.xstream.XStreamInterpreter;
 
 
 

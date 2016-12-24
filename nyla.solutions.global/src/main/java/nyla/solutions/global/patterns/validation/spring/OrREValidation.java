@@ -3,9 +3,9 @@ package nyla.solutions.global.patterns.validation.spring;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-import nyla.solutions.global.util.Text;
-
 import org.springframework.validation.Errors;
+
+import nyla.solutions.core.util.Text;
 
 public class OrREValidation extends AbstractValidation implements org.springframework.validation.Validator
 {

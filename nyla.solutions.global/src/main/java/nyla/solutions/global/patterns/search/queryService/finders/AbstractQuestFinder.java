@@ -2,8 +2,8 @@ package nyla.solutions.global.patterns.search.queryService.finders;
 
 import java.util.Collection;
 
-import nyla.solutions.global.data.DataRow;
-import nyla.solutions.global.patterns.search.queryService.QuestFinder;
+import nyla.solutions.core.data.DataRow;
+import nyla.solutions.core.patterns.search.queryService.QuestFinder;
 
 
 /**

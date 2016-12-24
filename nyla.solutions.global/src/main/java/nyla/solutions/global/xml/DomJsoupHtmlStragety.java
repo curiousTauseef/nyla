@@ -10,12 +10,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.io.IO;
-
 import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.io.IO;
 
 public class DomJsoupHtmlStragety implements DomStrategy {
 

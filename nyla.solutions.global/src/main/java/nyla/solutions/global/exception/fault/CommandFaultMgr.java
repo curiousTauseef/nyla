@@ -1,10 +1,15 @@
 package nyla.solutions.global.exception.fault;
 
-import nyla.solutions.global.exception.EmailFaultCommand;
-import nyla.solutions.global.operations.ClassPath;
+
+import nyla.solutions.core.exception.fault.FaultException;
+import nyla.solutions.core.exception.fault.FaultMgr;
+import nyla.solutions.core.exception.fault.FaultService;
+import nyla.solutions.core.operations.ClassPath;
+import nyla.solutions.core.util.Config;
+import nyla.solutions.core.util.Debugger;
 import nyla.solutions.global.patterns.command.Command;
-import nyla.solutions.global.util.Config;
-import nyla.solutions.global.util.Debugger;
+import nyla.solutions.global.patterns.command.commas.fault.EmailFaultCommand;
+
 
 /**
  * By default the EmailFaultCommand is used.

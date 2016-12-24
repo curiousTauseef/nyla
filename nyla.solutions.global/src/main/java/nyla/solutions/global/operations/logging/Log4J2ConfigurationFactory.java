@@ -1,7 +1,5 @@
 package nyla.solutions.global.operations.logging;
 
-import nyla.solutions.global.util.Config;
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.Filter;
@@ -14,6 +12,8 @@ import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.apache.logging.log4j.util.PropertiesUtil;
+
+import nyla.solutions.core.util.Config;
 
 /**
  * Default Log4J2 configuration factory

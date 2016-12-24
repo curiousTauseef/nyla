@@ -17,7 +17,7 @@ implements FormVisitor
 {
 
    /**
-    * Constructor for SetupAnswerVisitor initalizes internal 
+    * Constructor for SetupAnswerVisitor initializes internal 
     * data settings.
     * 
     */

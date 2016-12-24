@@ -1,13 +1,14 @@
 package nyla.solutions.global.patterns.servicefactory;
 
-import nyla.solutions.global.exception.RequiredException;
-import nyla.solutions.global.patterns.servicefactory.exceptions.SpringXmlFileNotFoundException;
-import nyla.solutions.global.util.Config;
-import nyla.solutions.global.util.Debugger;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+
+import nyla.solutions.core.exception.RequiredException;
+import nyla.solutions.core.patterns.servicefactory.ServiceFactory;
+import nyla.solutions.core.util.Config;
+import nyla.solutions.core.util.Debugger;
+import nyla.solutions.global.patterns.servicefactory.exceptions.SpringXmlFileNotFoundException;
 
 
 /**
@@ -253,7 +254,7 @@ public <T> T create(String aName)
    /**
     * 
     *
-    * @see nyla.solutions.global.patterns.servicefactory.ServiceFactory#create(java.lang.Class, java.lang.String)
+    * @see nyla.solutions.core.patterns.servicefactory.ServiceFactory#create(java.lang.Class, java.lang.String)
     */
    @SuppressWarnings("unchecked")
   public <T> T create(Class<?> serviceClass, String name)

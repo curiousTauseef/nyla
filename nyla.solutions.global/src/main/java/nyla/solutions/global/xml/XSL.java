@@ -1,25 +1,23 @@
 package nyla.solutions.global.xml;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerConfigurationException;
-
-import nyla.solutions.global.exception.RequiredException;
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.util.Debugger;
-
-
-
 // Imported java classes
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import nyla.solutions.core.exception.RequiredException;
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.util.Debugger;
 
 /**
  *  Use the TraX interface to perform a transformation in the simplest manner possible
@@ -102,7 +100,7 @@ public class XSL
        try
       {
          if(xls == null)
-            throw new nyla.solutions.global.exception.RequiredException("xls in XSL.transform");
+            throw new RequiredException("xls in XSL.transform");
           
           return transform(new StreamSource(xls.openStream()), xml);
       }

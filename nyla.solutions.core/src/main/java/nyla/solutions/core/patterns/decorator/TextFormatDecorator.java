@@ -8,7 +8,6 @@ import nyla.solutions.core.exception.SystemException;
 import nyla.solutions.core.util.Text;
 
 
-
 /**
  * Text format decorator using the target Textable
  * @author Gregory Green
@@ -51,7 +50,7 @@ public class TextFormatDecorator implements TextDecorator<Textable>
 	}// --------------------------------------------------------
 	/**
 	 * 
-	 * @see nyla.solutions.global.patterns.decorator.TextDecorator#getTarget()
+	 * @see nyla.solutions.core.patterns.decorator.TextDecorator#getTarget()
 	 */
 	public Textable getTarget()
 	{

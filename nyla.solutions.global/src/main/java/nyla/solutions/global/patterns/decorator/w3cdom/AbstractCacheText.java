@@ -1,12 +1,13 @@
 package nyla.solutions.global.patterns.decorator.w3cdom;
 
-import nyla.solutions.global.data.Textable;
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.patterns.cache.CacheFarm;
-import nyla.solutions.global.util.Config;
-import nyla.solutions.global.xml.DOM4J;
 
 import org.w3c.dom.Document;
+
+import nyla.solutions.core.data.Textable;
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.patterns.cache.CacheFarm;
+import nyla.solutions.core.util.Config;
+import nyla.solutions.global.xml.DOM4J;
 
 
 /**

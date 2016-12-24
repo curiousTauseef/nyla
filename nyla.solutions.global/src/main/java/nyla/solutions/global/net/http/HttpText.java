@@ -3,12 +3,12 @@ package nyla.solutions.global.net.http;
 import java.util.HashMap;
 import java.util.Map;
 
+import nyla.solutions.core.data.Textable;
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.util.Config;
+import nyla.solutions.core.util.Debugger;
 
 
-import nyla.solutions.global.data.Textable;
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.util.Config;
-import nyla.solutions.global.util.Debugger;
 
 
 /**

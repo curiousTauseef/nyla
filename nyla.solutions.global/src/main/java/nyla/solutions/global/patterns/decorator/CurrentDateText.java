@@ -2,10 +2,9 @@ package nyla.solutions.global.patterns.decorator;
 
 import java.util.Calendar;
 
+import nyla.solutions.core.data.Textable;
+import nyla.solutions.core.util.Text;
 
-
-import nyla.solutions.global.data.Textable;
-import nyla.solutions.global.util.Text;
 
 
 /**

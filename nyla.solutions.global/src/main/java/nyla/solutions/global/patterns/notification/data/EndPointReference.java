@@ -1,6 +1,6 @@
 package nyla.solutions.global.patterns.notification.data;
 
-import nyla.solutions.global.data.Property;
+import nyla.solutions.core.data.Property;
 
 /**
  * <pre>

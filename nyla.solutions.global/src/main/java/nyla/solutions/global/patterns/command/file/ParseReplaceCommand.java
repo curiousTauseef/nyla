@@ -2,13 +2,13 @@ package nyla.solutions.global.patterns.command.file;
 
 import java.io.File;
 
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.io.IO;
+import nyla.solutions.core.io.SynchronizedIO;
+import nyla.solutions.core.util.Debugger;
+import nyla.solutions.core.util.Text;
 
 
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.io.IO;
-import nyla.solutions.global.io.SynchronizedIO;
-import nyla.solutions.global.util.Debugger;
-import nyla.solutions.global.util.Text;
 
 
 public class ParseReplaceCommand implements FileCommand<Void>

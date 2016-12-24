@@ -2,11 +2,12 @@ package nyla.solutions.global.patterns.scripting;
 
 import java.util.HashMap;
 
-import nyla.solutions.global.patterns.decorator.ScriptingText;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import nyla.solutions.core.patterns.decorator.ScriptingText;
+import nyla.solutions.core.util.Text;
 
 public class GroovyScriptingTest
 {
@@ -55,7 +56,7 @@ public class GroovyScriptingTest
 		
 		String text = "java.util.Map<String,String> map = new java.util.HashMap<String,String>();"
 		+"map.put('hello', 'world');"
-		+"nyla.solutions.global.util.Text.format('${hello}', map);";
+		+Text.class.getName()+".format('${hello}', map);";
 		
 		scriptingText.setExpression(text);
 		

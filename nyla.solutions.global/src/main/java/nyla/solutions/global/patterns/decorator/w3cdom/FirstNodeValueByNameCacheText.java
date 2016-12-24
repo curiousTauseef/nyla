@@ -1,12 +1,13 @@
 package nyla.solutions.global.patterns.decorator.w3cdom;
 
-import nyla.solutions.global.exception.RequiredException;
-import nyla.solutions.global.util.Debugger;
-import nyla.solutions.global.xml.XML;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import nyla.solutions.core.exception.RequiredException;
+import nyla.solutions.core.util.Debugger;
+import nyla.solutions.global.xml.XML;
 
 /**
  * Return the value of the first node in a document by the node name.

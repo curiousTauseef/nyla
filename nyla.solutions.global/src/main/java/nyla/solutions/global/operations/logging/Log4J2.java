@@ -1,9 +1,11 @@
 package nyla.solutions.global.operations.logging;
 
-import nyla.solutions.global.util.Config;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import nyla.solutions.core.operations.logging.Log;
+import nyla.solutions.core.util.Config;
 
 /**
  * <pre>

@@ -5,13 +5,14 @@ package nyla.solutions.global.media;
 
 import java.io.File;
 
-
-
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.io.IO;
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.io.IO;
+import nyla.solutions.core.media.Graphics;
+import nyla.solutions.core.util.Config;
+import nyla.solutions.core.util.Debugger;
 import nyla.solutions.global.patterns.command.file.FileCommand;
-import nyla.solutions.global.util.Config;
-import nyla.solutions.global.util.Debugger;
+
+
 
 
 /**

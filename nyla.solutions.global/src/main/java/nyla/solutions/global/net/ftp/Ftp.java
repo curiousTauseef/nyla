@@ -3,8 +3,8 @@ package nyla.solutions.global.net.ftp;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import nyla.solutions.global.io.IO;
-import nyla.solutions.global.util.Config;
+import nyla.solutions.core.io.IO;
+import nyla.solutions.core.util.Config;
 
 /**
  * An abstract FTP object

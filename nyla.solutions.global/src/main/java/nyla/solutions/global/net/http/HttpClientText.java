@@ -2,26 +2,10 @@ package nyla.solutions.global.net.http;
 import java.net.URL;
 import java.util.Map;
 
+import nyla.solutions.core.data.Textable;
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.util.Config;
 
-/*
- * import java.util.Iterator;
- * import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import solutions.global.util.Debugger;
-*/
-//import org.apache.http.params.BasicHttpParams;
-
-
-import nyla.solutions.global.data.Textable;
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.util.Config;
 
 
 

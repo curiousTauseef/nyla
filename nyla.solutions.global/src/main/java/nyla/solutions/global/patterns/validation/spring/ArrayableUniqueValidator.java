@@ -3,10 +3,10 @@ package nyla.solutions.global.patterns.validation.spring;
 import java.util.HashSet;
 import java.util.Set;
 
-import nyla.solutions.global.data.Arrayable;
-import nyla.solutions.global.exception.DuplicateRowException;
-
 import org.springframework.validation.Errors;
+
+import nyla.solutions.core.data.Arrayable;
+import nyla.solutions.core.exception.DuplicateRowException;
 
 /**
  * @author Gregory Green

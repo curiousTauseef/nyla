@@ -1,13 +1,15 @@
 
 package nyla.solutions.global.net.http;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
-import java.util.*;
-
-import nyla.solutions.global.util.Debugger;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.meterware.httpunit.WebResponse;
+
+import nyla.solutions.core.util.Debugger;
 
 public class HTTPResult implements Serializable
 {

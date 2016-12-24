@@ -1,12 +1,20 @@
 package nyla.solutions.global.patterns.decorator.style;
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Locale;
+import java.util.Map;
 
 import freemarker.template.Configuration;
-import nyla.solutions.global.exception.FormatException;
-import nyla.solutions.global.util.Config;
-import nyla.solutions.global.util.Debugger;
-import nyla.solutions.global.util.Text;
+import freemarker.template.TemplateException;
+import nyla.solutions.core.exception.FormatException;
+import nyla.solutions.core.patterns.decorator.TextStyles;
+import nyla.solutions.core.patterns.decorator.TextStylist;
+import nyla.solutions.core.util.Config;
+import nyla.solutions.core.util.Debugger;
+import nyla.solutions.core.util.Text;
 
 
 

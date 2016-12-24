@@ -1,13 +1,11 @@
 package nyla.solutions.global.patterns.decorator;
-
-import nyla.solutions.global.data.Textable;
-import nyla.solutions.global.exception.RequiredException;
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.patterns.decorator.TextDecorator;
-import nyla.solutions.global.patterns.decorator.XmlXslDecorator;
-import nyla.solutions.global.util.Config;
-import nyla.solutions.global.util.Debugger;
-import nyla.solutions.global.util.Text;
+import nyla.solutions.core.data.Textable;
+import nyla.solutions.core.exception.RequiredException;
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.patterns.decorator.TextDecorator;
+import nyla.solutions.core.util.Config;
+import nyla.solutions.core.util.Debugger;
+import nyla.solutions.core.util.Text;
 import nyla.solutions.global.xml.DOM4J;
 import nyla.solutions.global.xml.XML;
 import nyla.solutions.global.xml.XSL;
@@ -17,7 +15,7 @@ public class XmlXslDecorator implements TextDecorator<Textable>
    /**
     * 
     *
-    * @see nyla.solutions.global.patterns.decorator.TextDecorator#getTarget(java.lang.Object)
+    * @see nyla.solutions.core.patterns.decorator.TextDecorator#getTarget(java.lang.Object)
     */
    public Textable getTarget()
    {

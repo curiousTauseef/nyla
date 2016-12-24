@@ -10,8 +10,6 @@ import nyla.solutions.core.exception.RequiredException;
 import nyla.solutions.core.patterns.scripting.Scripting;
 import nyla.solutions.core.util.Text;
 
-
-
 /**
  * <pre>
  * Sample

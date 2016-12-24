@@ -1,15 +1,30 @@
 
 package nyla.solutions.global.net.http;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.exception.TimeOutException;
-import nyla.solutions.global.io.IO;
-import nyla.solutions.global.patterns.Disposable;
-import nyla.solutions.global.util.*;
+import javax.xml.transform.TransformerException;
+
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.exception.TimeOutException;
+import nyla.solutions.core.io.IO;
+import nyla.solutions.core.patterns.Disposable;
+import nyla.solutions.core.util.Config;
+import nyla.solutions.core.util.Debugger;
+import nyla.solutions.core.util.Text;
+
+
 
 
 

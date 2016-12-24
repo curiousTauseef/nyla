@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import nyla.solutions.core.data.Textable;
 
+
 /**
  * Macro implement for text objects
  * @author Gregory Green

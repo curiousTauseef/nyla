@@ -1,8 +1,10 @@
 package nyla.solutions.global.patterns.validation.spring;
-import nyla.solutions.global.util.Debugger;
-import nyla.solutions.global.util.Text;
+
 
 import org.springframework.validation.Errors;
+
+import nyla.solutions.core.util.Debugger;
+import nyla.solutions.core.util.Text;
 
 
 /**

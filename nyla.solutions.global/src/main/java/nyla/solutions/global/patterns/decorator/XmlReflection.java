@@ -2,7 +2,7 @@ package nyla.solutions.global.patterns.decorator;
 
 
 
-import nyla.solutions.global.data.Textable;
+import nyla.solutions.core.data.Textable;
 import nyla.solutions.global.xml.XML;
 
 
@@ -11,7 +11,7 @@ public class XmlReflection implements Textable
 
    /**
     *
-    * @see nyla.solutions.global.patterns.decorator.TextDecorator#getTarget(java.lang.Object)
+    * @see nyla.solutions.core.patterns.decorator.TextDecorator#getTarget(java.lang.Object)
     */
    public Object getTarget(Object target)
    {
@@ -20,7 +20,7 @@ public class XmlReflection implements Textable
 
    /**
     *
-    * @see nyla.solutions.global.patterns.decorator.TextDecorator#setTarget(java.lang.Object)
+    * @see nyla.solutions.core.patterns.decorator.TextDecorator#setTarget(java.lang.Object)
     */
    public void setTarget(Object target)
    {

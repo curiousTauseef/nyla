@@ -15,8 +15,6 @@ import nyla.solutions.core.util.Debugger;
 import nyla.solutions.core.util.Text;
 
 
-
-
 /**
  * This object using a FreeMarker. The place holder values are obtained from 
  * text decorators. The Decorator can be set by ServiceFactory object.

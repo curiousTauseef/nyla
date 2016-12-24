@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import nyla.solutions.global.util.Text;
 import junit.framework.TestCase;
+import nyla.solutions.core.util.Text;
 
 public class TextTest extends TestCase
 {

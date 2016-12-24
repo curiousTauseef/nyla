@@ -2,9 +2,9 @@ package nyla.solutions.global.patterns.decorator.w3cdom;
 
 
 
-import nyla.solutions.global.exception.RequiredException;
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.util.Debugger;
+import nyla.solutions.core.exception.RequiredException;
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.util.Debugger;
 import nyla.solutions.global.xml.DOM4J;
 
 public class XmlCacheXPathText extends AbstractCacheText

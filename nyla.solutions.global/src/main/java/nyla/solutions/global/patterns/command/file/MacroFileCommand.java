@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Iterator;
 
+import nyla.solutions.core.exception.RequiredException;
 
-import nyla.solutions.global.exception.RequiredException;
 
 /**
  * The Macro file command

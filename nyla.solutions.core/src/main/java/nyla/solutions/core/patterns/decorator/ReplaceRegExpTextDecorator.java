@@ -1,8 +1,10 @@
 package nyla.solutions.core.patterns.decorator;
 
+
 import nyla.solutions.core.data.Textable;
 import nyla.solutions.core.exception.RequiredException;
 import nyla.solutions.core.util.Text;
+
 
 /**
  * 

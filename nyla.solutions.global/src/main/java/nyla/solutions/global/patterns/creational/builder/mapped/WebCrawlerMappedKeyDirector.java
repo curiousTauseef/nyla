@@ -7,17 +7,19 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.net.http.HTTP;
-import nyla.solutions.global.patterns.cache.CacheFarm;
-import nyla.solutions.global.util.Debugger;
-import nyla.solutions.global.util.Text;
-import nyla.solutions.global.xml.DOM4J;
-import nyla.solutions.global.xml.DomJsoupHtmlStragety;
-
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.patterns.cache.CacheFarm;
+import nyla.solutions.core.patterns.creational.builder.mapped.MappedKeyDirector;
+import nyla.solutions.core.patterns.creational.builder.mapped.MappedKeyEngineer;
+import nyla.solutions.core.util.Debugger;
+import nyla.solutions.core.util.Text;
+import nyla.solutions.global.net.http.HTTP;
+import nyla.solutions.global.xml.DOM4J;
+import nyla.solutions.global.xml.DomJsoupHtmlStragety;
 
 /**
  * Use MappedKeyEngineer to construct output from HTML pages.

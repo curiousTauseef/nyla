@@ -1,29 +1,14 @@
 package nyla.solutions.global.xml;
 
-/**
- * <b>XML </b> is XML utility class. This class can be used to convert any
- * complex or JavaBean object to an XML string, see XML.toXML(object) and
- * XML.populate(...) method.
- * 
- * @author Gregory Green
- * @version 2.0
- */
-import nyla.solutions.global.exception.RequiredException;
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.util.*;
-import nyla.solutions.global.xml.xstream.XStreamInterpreter;
-
-import org.w3c.dom.Document;
-import org.xml.sax.*;
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.io.*;
-
-
-
+import java.util.Date;
 
 // Imported TraX classes
 import javax.xml.parsers.DocumentBuilder;
@@ -31,16 +16,25 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import nyla.solutions.core.exception.RequiredException;
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.util.Debugger;
+import nyla.solutions.global.xml.xstream.XStreamInterpreter;
 
 /**
  * Wrapper for XML operations

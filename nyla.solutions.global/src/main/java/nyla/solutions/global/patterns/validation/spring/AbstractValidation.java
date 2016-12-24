@@ -2,7 +2,9 @@ package nyla.solutions.global.patterns.validation.spring;
 
 import java.lang.reflect.InvocationTargetException;
 
-import nyla.solutions.global.util.JavaBean;
+import nyla.solutions.core.util.JavaBean;
+
+
 
 public abstract class AbstractValidation implements org.springframework.validation.Validator
 {

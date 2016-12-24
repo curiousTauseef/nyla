@@ -2,19 +2,14 @@ package nyla.solutions.global.io;
 import java.io.File;
 import java.io.IOException;
 
-
-
-import nyla.solutions.global.exception.FatalException;
-import nyla.solutions.global.exception.RequiredException;
-import nyla.solutions.global.exception.SetupException;
-import nyla.solutions.global.io.BackupDirectoryExecutable;
-import nyla.solutions.global.io.CopyDirectoryExecutable;
-import nyla.solutions.global.io.IO;
+import nyla.solutions.core.exception.FatalException;
+import nyla.solutions.core.exception.RequiredException;
+import nyla.solutions.core.exception.SetupException;
+import nyla.solutions.core.io.IO;
+import nyla.solutions.core.util.Config;
+import nyla.solutions.core.util.Debugger;
 import nyla.solutions.global.patterns.command.Environment;
 import nyla.solutions.global.patterns.command.Executable;
-import nyla.solutions.global.util.Config;
-import nyla.solutions.global.util.Debugger;
-
 
 /**
  * Backup the content of given file/folder

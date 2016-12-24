@@ -1,14 +1,14 @@
 package nyla.solutions.global.patterns.command.net;
 
 
-import nyla.solutions.global.data.Textable;
-import nyla.solutions.global.exception.ConfigException;
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.io.Fileable;
+import nyla.solutions.core.data.Textable;
+import nyla.solutions.core.exception.ConfigException;
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.io.Fileable;
+import nyla.solutions.core.util.Config;
 import nyla.solutions.global.net.email.Email;
 import nyla.solutions.global.patterns.command.Environment;
 import nyla.solutions.global.patterns.command.Executable;
-import nyla.solutions.global.util.Config;
 
 
 /**

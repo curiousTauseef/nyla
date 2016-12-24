@@ -2,11 +2,12 @@ package nyla.solutions.global.operations.logging;
 
 import java.util.Properties;
 
-import nyla.solutions.global.util.Config;
-
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+
+import nyla.solutions.core.operations.logging.Log;
+import nyla.solutions.core.util.Config;
 
 /**
  * @author Gregory Green

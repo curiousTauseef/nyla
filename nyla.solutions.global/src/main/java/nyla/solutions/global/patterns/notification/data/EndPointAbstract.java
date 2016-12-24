@@ -2,7 +2,7 @@ package nyla.solutions.global.patterns.notification.data;
 
 import java.io.Serializable;
 
-import nyla.solutions.global.data.Property;
+import nyla.solutions.core.data.Property;
 
 
 

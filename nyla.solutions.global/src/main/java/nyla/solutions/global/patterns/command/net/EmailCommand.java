@@ -1,9 +1,9 @@
 package nyla.solutions.global.patterns.command.net;
 
+import nyla.solutions.core.patterns.decorator.TextDecorator;
+import nyla.solutions.core.util.Config;
 import nyla.solutions.global.net.email.Email;
 import nyla.solutions.global.patterns.command.Command;
-import nyla.solutions.global.patterns.decorator.TextDecorator;
-import nyla.solutions.global.util.Config;
 
 /**
  * @author Gregory Green

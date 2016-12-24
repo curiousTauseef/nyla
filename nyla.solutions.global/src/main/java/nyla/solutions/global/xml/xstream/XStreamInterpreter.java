@@ -10,20 +10,12 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 
+import com.thoughtworks.xstream.XStream;
 
-
-
-
-
-
-
-
-import nyla.solutions.global.io.IO;
-import nyla.solutions.global.util.Config;
+import nyla.solutions.core.io.IO;
+import nyla.solutions.core.util.Config;
 import nyla.solutions.global.xml.XML;
 import nyla.solutions.global.xml.XMLInterpreter;
-
-import com.thoughtworks.xstream.XStream;
 
 /**
  * 
