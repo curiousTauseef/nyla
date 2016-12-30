@@ -6,7 +6,8 @@ apply plugin: 'signing'
 
 sourceCompatibility = 1.8
 group = "com.github.nyla-solutions"
-version = '1.0'
+archivesBaseName = "nyla.solutions.json"
+version = '0.1'
 jar {
     manifest {
         attributes 'Implementation-Title': 'Nyla Json',
