@@ -18,7 +18,10 @@ public interface EmailTags
     */
    public static final String MAIL_FROM_PASSWORD_PROP = "mail.from.password";
 
-   
+   /**
+    * MAIL_SUBJECT_PROP = "mail.subject"
+    */
+   public static final String MAIL_SUBJECT_PROP = "mail.subject";
 
    /**
 

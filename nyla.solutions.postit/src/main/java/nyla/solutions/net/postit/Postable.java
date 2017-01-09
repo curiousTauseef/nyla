@@ -4,6 +4,8 @@ import java.io.File;
 
 public interface Postable
 {
+	
+	
    /**
     * 
     * @return the file attachment

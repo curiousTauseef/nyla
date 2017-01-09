@@ -28,6 +28,7 @@ import nyla.solutions.core.data.Data;
 import nyla.solutions.core.exception.CommunicationException;
 import nyla.solutions.core.exception.SetupException;
 import nyla.solutions.core.operations.logging.Log;
+import nyla.solutions.core.patterns.Connectable;
 import nyla.solutions.core.patterns.Disposable;
 import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Debugger;
@@ -138,17 +139,22 @@ mail.auth.required=true
  *          mail.from=XXXX mail.smtp.host=host mail.smtp.auth=false
  *          mail.smtp.user=XXX mail.password=
  */
-public class Email implements EmailTags, Disposable, SendMail
-{
-
-	public static final String FROM_SYSTEM = Config
-			.getProperty(Email.MAIL_FROM_ADDRESS_PROP);
+public class Email implements EmailTags, Disposable, SendMail, Connectable
+{	
 
 	/**
 	 * Default constructor
 	 */
 	public Email()
 	{
+	} // ----------------------------------------------------------
+	/**
+	 * Connect to the email server
+	 */
+	public synchronized void connect()
+	{
+		if(this.isConnected())
+			return;
 		try
 		{
 			if (Config.getPropertyBoolean(MAIL_SESSION_JNDI_USED, false)
@@ -163,42 +169,43 @@ public class Email implements EmailTags, Disposable, SendMail
 
 				init();
 			}
+			
 		}
 		catch (Exception e)
 		{
 
 			throw new SetupException(e);
-
 		}
-
-	} // ----------------------------------------------------------
-
+		
+	}//------------------------------------------------
+	/**
+	 * @return if the mail session is connected
+	 */
+	@Override
+	public synchronized boolean isConnected()
+	{
+		return this.mailSession != null;
+	}//------------------------------------------------
 	/**
 	 * Close the transport connection
 	 * @see nyla.solutions.core.patterns.Disposable#dispose()
 	 */
 	public void dispose()
-
 	{
-
 		try
-
 		{
 
 			if (this.mailTransport != null)
-
 				this.mailTransport.close();
+			
+			
+			this.mailSession = null;
 
 		}
-
 		catch (Exception e)
-
 		{
-
 			this.logger.warn(e);
-
 		}
-
 	}// --------------------------------------------
 	/**
 	 * 
@@ -208,11 +215,7 @@ public class Email implements EmailTags, Disposable, SendMail
 	 * @throws Exception unknown error
 	 */
 	public void sendMail(Map<Object, Object> aMap)
-
-	throws javax.mail.MessagingException,
-
-	IOException, Exception
-
+	throws javax.mail.MessagingException, IOException, Exception
 	{
 
 		String toMail = (String) aMap.get(TO);
@@ -278,7 +281,7 @@ public class Email implements EmailTags, Disposable, SendMail
 	/**
 	 * Sending out E-mails through SMTP E-mail server.
 	 * 
-	 * @param aTo E-mail TO: field in internesendMailt E-mail address format. If
+	 * @param to E-mail TO: field in internesendMailt E-mail address format. If
 	 *            there are more than one E-mail addresses, separate them by
 	 *            SysConst.EMAIL_DELIMITER_IND.
 	 * @param aFrom from address
@@ -287,10 +290,15 @@ public class Email implements EmailTags, Disposable, SendMail
 	 * @param aMessageBody E-mail body.
 	 */
 
-	public synchronized void sendMail(String aTo,String aFrom,
+	public synchronized void sendMail(String to,String aFrom,
 	String aSubject, String aMessageBody, File aFile)
 	{
-
+		
+		if(to == null || to.length() == 0)
+					throw new IllegalArgumentException("to is required");
+		
+		this.connect();
+		
 		try
 		{
 			MimeMessage mailMessage = new MimeMessage(this.mailSession);
@@ -304,9 +312,10 @@ public class Email implements EmailTags, Disposable, SendMail
 			}
 
 			mailMessage.setRecipients(Message.RecipientType.TO,
-					this.getAllEmailAddress(aTo));
+					this.getAllEmailAddress(to));
 
-			mailMessage.setSubject(aSubject);
+			String subject = aSubject == null ? this.defaultSubject : aSubject;
+			mailMessage.setSubject(subject);
 
 			// attach file
 			if (aFile != null)
@@ -334,7 +343,7 @@ public class Email implements EmailTags, Disposable, SendMail
 	private void sendMessage(MimeMessage aMailMessage)
 			throws MessagingException
 	{
-		boolean authNeeed = needsAuthenication();
+		boolean authNeeed = this.isAuthenicationRequired();
 		Debugger.println(this, "authNeeed=" + authNeeed);
 
 		if (authNeeed)
@@ -342,15 +351,15 @@ public class Email implements EmailTags, Disposable, SendMail
 			// -------------------------------------------
 			// set properties
 			Properties props = System.getProperties();
-			props.put("mail.smtp.auth", authNeeed + "");
+			props.put("mail.smtp.auth", String.valueOf(authNeeed));
 
 			// try to connect and send it
 			aMailMessage.saveChanges();
 			Transport tp = this.mailSession.getTransport("smtp");
 
-			tp.connect(Config.getProperty(Email.MAIL_SERVER_PROP),
-					Config.getProperty(Email.MAIL_FROM_ADDRESS_PROP),
-					Config.getProperty(Email.MAIL_FROM_PASSWORD_PROP));
+			tp.connect(this.smtpHost,
+					this.mailFromUser,
+					String.valueOf(this.mailFromPassword));
 			// send the thing off
 			Transport.send(aMailMessage, aMailMessage.getAllRecipients());
 			tp.close();
@@ -491,10 +500,11 @@ public class Email implements EmailTags, Disposable, SendMail
 			Map<Object, Object> aMap, Locale aLocale)
 
 	throws javax.mail.MessagingException, IOException, Exception
-
 	{
 
 		logger.debug("sendMail");
+		
+		this.connect();
 
 		Object o = aMap.get(SUBJECT);
 
@@ -571,52 +581,9 @@ public class Email implements EmailTags, Disposable, SendMail
 			logger.debug("TO:" + addrList[i]);
 		}
 
-		// if (aMap.containsKey(INCLUDE_FILES)
-
-		// && ((String) aMap.get(INCLUDE_FILES)).equalsIgnoreCase("Y"))
-
-		// {
-
-		// this.addFilestoMultipart(mp, aMap);
-
-		/*
-		 * 
-		 * if (((String)aMap.get(INCLUDE_FILES)).equals("Y") == true){ String
-		 * 
-		 * doc_type = (String)aMap.get(EmailTags.FILE_TYPE);
-		 * 
-		 * 
-		 * 
-		 * File temp_file; MimeBodyPart mbp; DocumentDelegate d = new
-		 * 
-		 * DocumentDelegate();
-		 * 
-		 * 
-		 * 
-		 * if (aMap.containsKey(FILE_LIST)) { String needed_file_list[] =
-		 * 
-		 * (String [])aMap.get(FILE_LIST); for (int k=0;k
-		 * 
-		 * <needed_file_list.length; k++) {
-		 * 
-		 * 
-		 * 
-		 * mbp = new MimeBodyPart();
-		 * 
-		 * 
-		 * 
-		 * mbp.setDataHandler(new DataHandler(new
-		 * 
-		 * FileDataSource(d.getFileAsFile(doc_type,needed_file_list[k]))));
-		 * 
-		 * mbp.setFileName(needed_file_list[k]); mp.addBodyPart(mbp); } } }
-		 */
-
-		// }
-
 		mailMessage.setContent(mp);
 
-		if (needsAuthenication())
+		if (isAuthenicationRequired())
 		{
 			logger.debug("CONNECTED=" + this.mailTransport.isConnected());
 			this.mailTransport.sendMessage(mailMessage,
@@ -630,18 +597,6 @@ public class Email implements EmailTags, Disposable, SendMail
 		}
 
 	} // ----------------------------------------------------------
-
-	/**
-	 * @return
-	 */
-
-	private boolean needsAuthenication()
-	{
-		return Config.getPropertyBoolean(MAIL_AUTHENICATION_REQUIRED_PROP,
-				Boolean.FALSE).booleanValue();
-
-	}// --------------------------------------------
-
 	private synchronized void initFromJNDI() throws Exception
 	{
 
@@ -673,12 +628,12 @@ public class Email implements EmailTags, Disposable, SendMail
 
 				sysProperties.put("mail.smtp.ssl.enable",
 						Config.getProperty("mail.smtp.ssl.enable", ""));
-				sysProperties.put("mail.smtp.host",
-						Config.getProperty(MAIL_SERVER_PROP));
+				sysProperties.put("mail.smtp.host",smtpHost);
+				sysProperties.put("mail.host",smtpHost);
 				//sysProperties.put("mail.smtp.host",
 				//		Config.getProperty(MAIL_SERVER_PROP, ""));
 				sysProperties.put(MAIL_AUTHENICATION_REQUIRED_PROP, Boolean.valueOf(
-						needsAuthenication()));
+						isAuthenicationRequired()));
 				sysProperties.put("mail.smtp.port",
 						Config.getProperty("mail.smtp.port", "25"));
 
@@ -693,14 +648,14 @@ public class Email implements EmailTags, Disposable, SendMail
 				// Config.getProperty("mail.port","25"));
 
 				sysProperties.put("mail.debug", "true");
-				sysProperties.put("mail.from", Config.getProperty("mail.from"));
+				sysProperties.put("mail.from", this.defaultFrom);
 				sysProperties.put("mail.smtp.from",
-						Config.getProperty("mail.smtp.from",""));
+						Config.getProperty("mail.smtp.from",this.defaultFrom));
 
 				// mail.imap.sasl.authorizationid
 
 				sysProperties.put("mail.imap.sasl.authorizationid",
-						Config.getProperty(EmailTags.MAIL_FROM_ADDRESS_PROP));
+						Config.getProperty(EmailTags.MAIL_FROM_ADDRESS_PROP,this.defaultFrom));
 
 				sysProperties.put("mail.smtp.auth",
 						Config.getProperty("mail.smtp.auth", "false"));
@@ -714,8 +669,8 @@ public class Email implements EmailTags, Disposable, SendMail
 					{
 
 						return new PasswordAuthentication(
-								Config.getProperty(EmailTags.MAIL_FROM_ADDRESS_PROP),
-								Config.getProperty(EmailTags.MAIL_FROM_PASSWORD_PROP));
+								getMailFromUser(),
+								String.valueOf(getMailFromPassword()));
 					}
 
 				});
@@ -725,16 +680,14 @@ public class Email implements EmailTags, Disposable, SendMail
 
 				Debugger.println(this, "properties=" + mailSession.getProperties());
 
-				if (needsAuthenication())
+				if (isAuthenicationRequired())
 				{
 
-					String server = Config.getProperty(EmailTags.MAIL_SERVER_PROP);
+					String server = this.smtpHost;
 					int port = Config.getPropertyInteger("mail.port", 25)
 							.intValue();
-					String from = Config
-							.getProperty(EmailTags.MAIL_FROM_ADDRESS_PROP);
-					char[] password = Config
-							.getPropertyPassword(EmailTags.MAIL_FROM_PASSWORD_PROP);
+					String from = this.defaultFrom;
+					char[] password = this.getMailFromPassword();
 
 					mailTransport.connect(server, port, from, new String(password));
 
@@ -844,10 +797,126 @@ public class Email implements EmailTags, Disposable, SendMail
 		this.contentType = contentType;
 	}
 
+	
+	/**
+	 * @return the defaultFrom
+	 */
+	public String getDefaultFrom()
+	{
+		return defaultFrom;
+	}//------------------------------------------------
+
+	/**
+	 * @param defaultFrom the defaultFrom to set
+	 */
+	public void setDefaultFrom(String defaultFrom)
+	{
+		this.defaultFrom = defaultFrom;
+	}//------------------------------------------------
+	
+	/**
+	 * @return the smtpHost
+	 */
+	public String getSmtpHost()
+	{
+		return smtpHost;
+	}
+	/**
+	 * @param smtpHost the smtpHost to set
+	 */
+	public void setSmtpHost(String smtpHost)
+	{
+		this.smtpHost = smtpHost;
+	}
+
+
+	/**
+	 * @return the authenicationRequired
+	 */
+	public boolean isAuthenicationRequired()
+	{
+		return authenicationRequired;
+	}
+	/**
+	 * @param authenicationRequired the authenicationRequired to set
+	 */
+	public void setAuthenicationRequired(boolean authenicationRequired)
+	{
+		this.authenicationRequired = authenicationRequired;
+	}
+
+
+	/**
+	 * @return the mailFromUser
+	 */
+	public String getMailFromUser()
+	{
+		return mailFromUser;
+	}
+	/**
+	 * @param mailFromUser the mailFromUser to set
+	 */
+	public void setMailFromUser(String mailFromUser)
+	{
+		this.mailFromUser = mailFromUser;
+	}
+	/**
+	 * @return the mailFromPassword
+	 */
+	public char[] getMailFromPassword()
+	{
+		return mailFromPassword;
+	}
+	/**
+	 * @param mailFromPassword the mailFromPassword to set
+	 */
+	public void setMailFromPassword(char[] mailFromPassword)
+	{
+		this.mailFromPassword = mailFromPassword;
+	}
+	/**
+	 * @return the mailTransport
+	 */
+	public Transport getMailTransport()
+	{
+		return mailTransport;
+	}
+	/**
+	 * @param mailTransport the mailTransport to set
+	 */
+	public void setMailTransport(Transport mailTransport)
+	{
+		this.mailTransport = mailTransport;
+	}
+
+	/**
+	 * @return the defaultSubject
+	 */
+	public String getDefaultSubject()
+	{
+		return defaultSubject;
+	}
+	/**
+	 * @param defaultSubject the defaultSubject to set
+	 */
+	public void setDefaultSubject(String defaultSubject)
+	{
+		this.defaultSubject = defaultSubject;
+	}
+
+
+	private String defaultSubject = Config.getProperty(Email.MAIL_SUBJECT_PROP,"");
+	private String mailFromUser = Config.getProperty(Email.MAIL_FROM_ADDRESS_PROP,"");
+	private char[] mailFromPassword = Config
+			.getPropertyPassword(EmailTags.MAIL_FROM_PASSWORD_PROP,"");
+	private boolean authenicationRequired = Config.getPropertyBoolean(MAIL_AUTHENICATION_REQUIRED_PROP,
+			Boolean.FALSE).booleanValue();
+	private String smtpHost = Config.getProperty(MAIL_SERVER_PROP,"");
 	private Session mailSession = null;
 	private String contentType = Config.getProperty(Email.class.getName()
 			+ ".contentType", "text/html");
 	private Transport mailTransport = null;
 	private Log logger = Debugger.getLog(getClass());
+	private String defaultFrom = Config.getProperty(Email.MAIL_FROM_ADDRESS_PROP,"");	
 
 }

@@ -5,9 +5,8 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import com.sun.media.jfxmediaimpl.MediaDisposer.Disposable;
-
 import nyla.solutions.core.exception.CommunicationException;
+import nyla.solutions.core.patterns.Disposable;
 
 
 /**
