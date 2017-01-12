@@ -1,21 +1,12 @@
 package nyla.solutions.core.util;
 
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.net.URL;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.MissingResourceException;
+import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.Set;
-
 import nyla.solutions.core.exception.ConfigException;
-import nyla.solutions.core.exception.FormatException;
-import nyla.solutions.core.exception.MissingConfigPropertiesException;
-import nyla.solutions.core.exception.SystemException;
-import nyla.solutions.core.patterns.decorator.Styles;
+import nyla.solutions.core.util.settings.ConfigSettings;
+import nyla.solutions.core.util.settings.Settings;
 
 
 
@@ -87,264 +78,22 @@ public class Config
 	 */
 	public static String interpret(String property)
 	{
-		try
-		{
-			property = Cryption.interpret(property);
-			
-			if(property != null && property.indexOf(Styles.DEFAULT_PREFIX) > -1)
-			{
-				property = Text.format(property, Config.getProperties());
-			}
-		}
-		catch (FormatException e)
-		{
-			throw new ConfigException("Format exception for \""+property+"\"",e);
-		}
-		
-		return Cryption.interpret(property);
+		return getSettings().interpret(property);
 	}// --------------------------------------------------------
 	
-	/**
-	 * @return the system property file
-	 */
-
-	private static String getSystemPropertyFile()
-	{
-
-		String file = System.getProperty(SYS_PROPERTY);
-		if (file == null || file.length() == 0)
-		{
-
-			try
-			{
-				// file = (String) new InitialContext().lookup(SYS_PROPERTY);
-			}
-			catch (Throwable e)
-			{
-				throw new SystemException(e);
-			}
-		}
-
-		return file;
-
-	}// -----------------------------------------------------------
-
-	/**
-	 * @return resource bundle name
-	 */
-
-	static String getBundleName()
-	{
-		return RESOURCE_BUNDLE_NAME;
-
-	}// -------------------------------------------------------------
-
-	/**
-	 * Load the configuration properties from the properties file.
-	 * <p/>
-	 * <p/>
-	 * <p/>
-	 * Caller must test to ensure that properties is Non-null.
-	 * 
-	 * @throws IllegalArgumentException Translates an IOException from reading
-	 *             <p/>
-	 *             the properties file into a run time exception.
-	 */
-
-	private static synchronized void loadProperties()
-	{
-		// If multiple threads are waiting to invoke this method only allow
-		// the first one to do so. The rest should just return since the first
-		// thread through took care of loading the properties.
-		try
-		{
-			String file = getSystemPropertyFile();
-			if (file != null && file.length() > 0)
-			{
-				// System.out.println("CONFIG: LOADING CONFIG properties  from "+
-				// file);
-				FileInputStream fis = new FileInputStream(file);
-
-				try
-				{
-					properties = new Properties();
-					// Load the properties object from the properties file
-					properties.load(fis);
-					// System.out.println("CONFIG: FINISHED LOADING CONFIG properties  from "+
-					// file);
-					
-					
-					configSourceLocation = file;
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-					throw new ConfigException(e.toString());
-				}
-				finally
-				{
-					if (fis != null)
-						fis.close(); // Always close the file, even on exception
-
-				}
-
-			}
-			else
-			{
-				properties = new Properties();
-
-				String bundleName = getBundleName();
-
-				// try to get properties from resource bundle
-				ResourceBundle rb = ResourceBundle.getBundle(bundleName);
-
-				
-				URL url = Config.class.getResource(
-					bundleName + ".properties");
-				
-				if(url != null)
-					configSourceLocation = url.toString();
-				else
-					configSourceLocation = bundleName + ".properties";
-				
-				Enumeration<?> keys = rb.getKeys();
-
-				Object k = null;			
-
-				while (keys.hasMoreElements())
-				{
-
-					k = keys.nextElement();
-
-					properties.put(k, rb.getString(k + ""));
-
-				}
-			}// end els load from resource bundle
-
-			String reloadBool = properties.getProperty(Config.class.getName()
-					+ ".alwaysReload");
-
-			if (reloadBool == null || reloadBool.length() == 0)
-			{
-
-				// throw new ConfigException("System property
-				// "+Constants.ALWAY_RELOAD_PROP+" is not set.");
-
-				alwaysReload = false;
-
-			}
-			else
-			{
-				alwaysReload = Boolean.valueOf(reloadBool).booleanValue();
-			}
-
-
-			//Merge SystemProperteis
-			mergeSystemProperties = Boolean.valueOf(properties.getProperty(Config.class.getName()
-					+ ".mergeSystemProperties", "false")).booleanValue();
-			
-			if(mergeSystemProperties)
-			{
-				//add system properties
-				properties.putAll(System.getProperties());
-			}
-			
-			// process formatting
-			String propName = Config.class.getName() + ".useFormatting";
-			String useFormattingText = properties.getProperty(propName);
-	
-			// System.out.println("CONFIG:  "+propName+"="+useFormattingText);
-
-			if (useFormattingText == null || useFormattingText.length() == 0)
-			{
-
-				// throw new ConfigException("System property
-				// "+Constants.ALWAY_RELOAD_PROP+" is not set.");
-
-				useFormatting = false;
-
-			}
-			else
-			{
-				useFormatting = Boolean.valueOf(useFormattingText)
-						.booleanValue();
-			}
-
-			if (useFormatting)
-			{
-				// System.out.println("CONFIG: FORMATTING MAP CONFIG properties ");
-				// format map (note this can be an expensive operation)
-				
-				Text.formatMap(properties);
-				// System.out.println("CONFIG: FORMATTED MAP CONFIG properties ");
-			}
-			
-			propName = Config.class.getName() + ".setSystemProperties";
-			setSystemProperties =  Boolean.valueOf(properties.getProperty(propName,"false")).booleanValue();
-			
-			//Set system properties with values from configuration
-			if(setSystemProperties)
-			{
-				Set<Object> keySet = properties.keySet();
-				String key;
-				String sysProp;
-				for (Iterator<Object> i = keySet.iterator(); i.hasNext();)
-				{
-					key = (String)i.next();
-					sysProp= System.getProperty(key);
-					
-					if(sysProp != null && sysProp.length() > 0)
-						continue; //do not override values
-					
-					//set system property
-					System.setProperty(key, properties.getProperty(key));
-				}
-			}
-		}
-		catch (MissingResourceException e)
-		{
-
-			/*
-			 * System.out.println("problem loading config properties from "
-			 * 
-			 * + propertiesFile
-			 * 
-			 * + "\n"
-			 * 
-			 * + e.toString());
-			 * 
-			 * System.out.println(Config.class.getName() +
-			 * "... continuing ...");
-			 */
-			// throw new MissingConfigPropertiesException();
-
-		}
-		catch(ConfigException e)
-		{
-			throw e;
-		}
-		catch(FileNotFoundException e)
-		{
-			throw new ConfigException(e.getMessage(),e);
-		}
-		catch (Exception e)
-		{
-			throw new ConfigException(e.getMessage(),e);
-		}
-	}// ------------------------------------------------------------
 	/**
 	 * 
 	 * @param alwaysReload boolean to determine you should always relaod
 	 */
 	public static void setAlwaysReload(boolean alwaysReload)
 	{
-		Config.alwaysReload = alwaysReload;
+		getSettings().setAlwaysReload(alwaysReload);
 	}// --------------------------------------------------------
 	
 	public static void reLoad()
 	{
-		loadProperties();
-	}
+		getSettings().reLoad();
+	}//------------------------------------------------
 	
 	/**
 	 * 
@@ -352,9 +101,8 @@ public class Config
 	 */
 	public static String getLocation()
 	{
-		return configSourceLocation;
-	}// --------------------------------------------------------
-
+		return System.getProperty("java.io.tmpdir");
+	}// ----------------------------------------------
 	/**
 	 * 
 	 * @return System.getProperty("java.io.tmpdir")
@@ -376,28 +124,7 @@ public class Config
 
 	public static String getProperty(String key)
 	{
-
-		String retval = null;
-
-		if (properties == null || alwaysReload)
-		{
-			loadProperties();
-		}
-		
-		retval = properties.getProperty(key);
-
-		if (retval == null || retval.length() == 0)
-		{
-			if (configSourceLocation == null)
-				throw new MissingConfigPropertiesException();
-
-			throw new ConfigException("Configuration property \"" + key
-					+ "\" not found in keys " + getProperties().keySet()
-					+ " file:" + configSourceLocation);
-		}
-
-		return Cryption.interpret(retval);
-
+		return getSettings().getProperty(key);
 	}// ------------------------------------------------------------
 
 	/**
@@ -407,7 +134,7 @@ public class Config
 	 */
 	public static String[] getPropertyStrings(String key)
 	{
-		return Text.split(getProperty(key));
+		return getSettings().getPropertyStrings(key);
 	}// ------------------------------------------------------------
 
 	/**
@@ -432,9 +159,7 @@ public class Config
 	public static String[] getPropertyStrings(Class<?> aClass, String key,
 			String aDefault)
 	{
-		String[] defaultArray = {aDefault};
-		
-		return getPropertyStrings(aClass, key, defaultArray);
+		return getSettings().getPropertyStrings(aClass, key,aDefault);
 	}
 	/**
 	 * Get the property 
@@ -445,12 +170,7 @@ public class Config
 	 */
 	public static String getProperty(Class<?> aClass,String key,ResourceBundle resourceBundle)
 	{
-		String results = getProperty(aClass,key, "");
-		
-		if(results == null || results.length() == 0)
-			results = resourceBundle.getString(key);
-		
-		return results;
+		return getSettings().getProperty(aClass, key, resourceBundle);
 	}// --------------------------------------------------------
 	
 	/**
@@ -464,12 +184,7 @@ public class Config
 	public static String[] getPropertyStrings(Class<?> aClass, String key,
 			String[] aDefault)
 	{
-		String property = getProperty(aClass, key,"");
-		
-		if("".equals(property))
-			return aDefault;
-		
-		return Text.split(property);
+		return getSettings().getPropertyStrings(aClass, key,aDefault);
 	}// -----------------------------------------------
 
 	/**
@@ -485,7 +200,7 @@ public class Config
 
 	public static String getProperty(Class<?> aClass, String key)
 	{
-		return getProperty(new StringBuilder(aClass.getName()).append(".").append(key).toString());
+		return getSettings().getProperty(aClass, key);
 	}// ---------------------------------------------
 
 	/**
@@ -500,7 +215,7 @@ public class Config
 
 	public static String getProperty(Class<?> aClass, String key, String aDefault)
 	{
-		return getProperty(new StringBuilder(aClass.getName()).append(".").append(key).toString(), aDefault);
+		return getSettings().getProperty(aClass, key, aDefault);
 
 	}// ---------------------------------------------
 
@@ -516,19 +231,7 @@ public class Config
 
 	public static String getProperty(String key, String aDefault)
 	{
-		String retval = null;
-		if (properties == null || alwaysReload)
-		{
-			loadProperties();
-		}
-		
-		retval = properties.getProperty(key);
-		if (retval == null || retval.length() == 0)
-		{
-			retval = aDefault;
-		}
-
-		return Cryption.interpret(retval);
+		return getSettings().getProperty(key, aDefault);
 
 	}// ------------------------------------------------------------
 
@@ -544,8 +247,7 @@ public class Config
 	public static Integer getPropertyInteger(Class<?> aClass, String key,
 			int defaultValue)
 	{
-		return getPropertyInteger(new StringBuilder(aClass.getName()).append(".")
-				.append(key).toString(), defaultValue);
+		return getSettings().getPropertyInteger(key, defaultValue);
 	}// ------------------------------------------------------------
 	
 
@@ -562,42 +264,28 @@ public class Config
 	public static Character getPropertyCharacter(Class<?> aClass, String key,
 			char defaultValue)
 	{
-		String results = getProperty(aClass, key, "");
-
-		if (results.length() == 0)
-			return Character.valueOf(defaultValue);
-		else
-			return Character.valueOf(results.charAt(0));// return first character
+		return getSettings().getPropertyCharacter(aClass, key, defaultValue);
 
 	}// ---------------------------------------------
 
 	/**
 	 * Get a configuration property as an Integer object.
 	 * 
-	 * @param Key Name of the numeric property to be returned.
+	 * @param key Name of the numeric property to be returned.
 	 * 
 	 * @return Value of the property as an Integer or null if no property found.
 	 */
 
 	public static Integer getPropertyInteger(String key)
 	{
-		Integer iVal = null;
-		String sVal = getProperty(key);
-
-		if ((sVal != null) && (sVal.length() > 0))
-		{
-
-			iVal = Integer.valueOf(sVal);
-
-		}
-		return iVal;
+		return getSettings().getPropertyInteger(key);
 
 	}// ------------------------------------------------------------
 
 	public static Integer getPropertyInteger(String key, int aDefault)
 	{
 
-		return getPropertyInteger(key, Integer.valueOf(aDefault));
+		return getSettings().getPropertyInteger(key, aDefault);
 
 	}// -------------------------------------------------------------
 	/**
@@ -608,7 +296,7 @@ public class Config
 	 */
 	public static Double getPropertyDouble(Class<?> cls, String key)
 	{
-		return getPropertyDouble(new StringBuilder(cls.getName()).append(".").append(key).toString());
+		return getSettings().getPropertyDouble(cls, key);
 
 	}// ---------------------------------------------
 	/**
@@ -621,8 +309,7 @@ public class Config
 	public static Double getPropertyDouble(Class<?> aClass, String key,
 			double defaultValue)
 	{
-		return getPropertyDouble(new StringBuilder(aClass.getName()).append(".")
-				.append(key).toString(), defaultValue);
+		return getSettings().getPropertyDouble(key, defaultValue);
 	}// ------------------------------------------------------------
 	/**
 	 * 
@@ -631,76 +318,35 @@ public class Config
 	 */
 	public static Double getPropertyDouble(String key)
 	{
-		Double iVal = null;
-		String sVal = getProperty(key);
-
-		if ((sVal != null) && (sVal.length() > 0))
-		{
-
-			iVal = Double.valueOf(sVal);
-
-		}
-		return iVal;
+		return getSettings().getPropertyDouble(key);
 
 	}// ------------------------------------------------------------
 	public static Double getPropertyDouble(String key, double aDefault)
 	{
-
 		return getPropertyDouble(key, Double.valueOf(aDefault));
-
 	}// -------------------------------------------------------------
 	
 	public static Double getPropertyDouble(String key, Double aDefault)
 	{
-		Double iVal = null;
-		if (properties == null || alwaysReload)
-		{
-			loadProperties();
-		}
-		
-		String sVal = properties.getProperty(key);
-		if ((sVal != null) && (sVal.length() > 0))
-		{
-			iVal = Double.valueOf(sVal);
-		}
-		else
-		{
-			iVal = aDefault;
-		}
-		return iVal;
+		return getSettings().getPropertyDouble(key, aDefault);
 	}// ------------------------------------------------------------
 
 	public static Integer getPropertyInteger(Class<?> cls, String key)
 	{
-		return getPropertyInteger(new StringBuilder(cls.getName()).append(".").append(key).toString());
+		return getSettings().getPropertyInteger(cls, key);
 
 	}// ---------------------------------------------
 
 	public static Integer getPropertyInteger(Class<?> cls, String key,
 			Integer aDefault)
 	{
-		return getPropertyInteger(new StringBuilder(cls.getName()).append(".").append(key).toString(), aDefault);
+		return getSettings().getPropertyInteger(cls, key,aDefault);
 
 	}// ---------------------------------------------
 
 	public static Integer getPropertyInteger(String key, Integer aDefault)
 	{
-		Integer iVal = null;
-		if (properties == null || alwaysReload)
-		{
-			loadProperties();
-		}
-		
-		String sVal = properties.getProperty(key);
-		if ((sVal != null) && (sVal.length() > 0))
-		{
-			iVal = Integer.valueOf(sVal);
-		}
-		else
-		{
-			iVal = aDefault;
-		}
-		return iVal;
+		return getSettings().getPropertyInteger(key, aDefault);
 	}// ------------------------------------------------------------
 
 	/**
@@ -709,44 +355,25 @@ public class Config
 	 * @param Key Name of the numeric property to be returned.
 	 * 
 	 * @return Value of the property as an Boolean or null if no property found.
-	 *         <p/>
-	 *         <p/>
-	 *         <p/>
+
 	 *         Note that the value of the returned Boolean will be false if the
-	 *         <p/>
 	 *         property sought after exists but is not equal to "true" (ignoring
 	 *         case).
 	 */
 
 	public static Boolean getPropertyBoolean(String key)
 	{
-		Boolean bVal = null;
-		String sVal = getProperty(key);
-		if ((sVal != null) && (sVal.length() > 0))
-		{
-			bVal = Boolean.valueOf(sVal);
-		}
-		return bVal;
+		return getSettings().getPropertyBoolean(key);
 	}// ------------------------------------------------------------
-
+	/**
+	 * 
+	 * @param key the property key
+	 * @param aBool the default boolean
+	 * @return property boolean
+	 */
 	public static Boolean getPropertyBoolean(String key, Boolean aBool)
 	{
-		Boolean bVal = null;
-		if (properties == null || alwaysReload)
-		{
-			loadProperties();
-		}
-		
-		String sVal = properties.getProperty(key);
-		if ((sVal != null) && (sVal.length() > 0))
-		{
-			bVal = Boolean.valueOf(sVal);
-		}
-		else
-		{
-			bVal = aBool;
-		}
-		return bVal;
+		return getSettings().getPropertyBoolean(key, aBool);
 
 	}// ------------------------------------------------------------
 
@@ -760,7 +387,7 @@ public class Config
 	public static Boolean getPropertyBoolean(Class<?> aClass, String key,
 			boolean aBool)
 	{
-		return getPropertyBoolean(new StringBuilder(aClass.getName()).append(".").append(key).toString(), aBool);
+		return getSettings().getPropertyBoolean(aClass, key, aBool);
 	}// ---------------------------------------------
 
 	/**
@@ -772,100 +399,52 @@ public class Config
 
 	public static Boolean getPropertyBoolean(String key, boolean aBool)
 	{
-		Boolean bVal = null;
-		
-		if (properties == null || alwaysReload)
-		{
-			loadProperties();
-		}
-		
-		String sVal = properties.getProperty(key);
-		if ((sVal != null) && (sVal.length() > 0))
-		{
-			bVal =  Boolean.valueOf(sVal);
-		}
-		else
-		{
-			bVal = Boolean.valueOf(aBool);
-		}
-		return bVal;
-
+		return getSettings().getPropertyBoolean(key, aBool);
 	}// ------------------------------------------------------------
-
+	/**
+	 * 
+	 * @param key the property key
+	 * @return the long property
+	 */
 	public static Long getPropertyLong(String key)
 	{
-		Long longValue = null;
-		String sVal = getProperty(key);
-		if ((sVal != null) && (sVal.length() > 0))
-		{
-			longValue = Long.valueOf(sVal);
-		}
-		return longValue;
+		return getSettings().getPropertyLong(key);
 	}// ------------------------------------------------------------
 	public static Long getPropertyLong(Class<?> aClass, String key,  long aDefault)
 	{
-		return getPropertyLong(new StringBuilder(aClass.getName()).append(".").append(key).toString(), Long.valueOf(aDefault));
+		return getSettings().getPropertyLong(aClass, key, aDefault);
 	}// ------------------------------------------------------------
 	public static Long getPropertyLong(Class<?> aClass, String key)
 	{
-		return getPropertyLong(new StringBuilder(aClass.getName()).append(".").append(key).toString());
+		return getSettings().getPropertyLong(aClass, key);
 	}// ------------------------------------------------------------
 	public static Long getPropertyLong(String key, long aDefault)
 	{
-		return getPropertyLong(key, Long.valueOf(aDefault));
+		return getSettings().getPropertyLong(key,aDefault);
 	}// -------------------------------------------------------------
 
 	public static Long getPropertyLong(String key, Long aDefault)
 	{
-		Long longValue = null;
-		
-		if (properties == null || alwaysReload)
-		{
-			loadProperties();
-		}
-		
-		String sVal = properties.getProperty(key);
-		if ((sVal != null) && (sVal.length() > 0))
-		{
-			longValue = Long.valueOf(sVal);
-		}
-		else
-		{
-			longValue = aDefault;
-		}
-		return longValue;
-
+		return getSettings().getPropertyLong(key,aDefault);
 	}// ------------------------------------------------------------
 
 	/**
 	 * Get a configuration property as a Password object.
 	 * 
-	 * @param Key Name of the numeric property to be returned.
+	 * @param key Name of the numeric property to be returned.
 	 * 
 	 * @return Value of the property as an Password or null if no property
 	 *         found.
-	 *         <p/>
-	 *         <p/>
-	 *         <p/>
+	 *         
 	 *         Note that the value of the returned Password will be false if the
-	 *         <p/>
+	 *         
 	 *         property sought after exists but is not equal to "true" (ignoring
 	 *         case).
 	 */
 
 	public static char[] getPropertyPassword(String key)
 	{
-		char[] bVal = null;
-		String sVal = getSecureProperty(key);
-
-		if (sVal == null || sVal.length() == 0)
-			throw new ConfigException("Configuration property \"" + key
-					+ "\"+ not found in keys [" + properties.keySet()
-					+ "]");
-
-		bVal = sVal.toCharArray();
-
-		return bVal;
+		return getSettings().getPropertyPassword(key);
 	}// ------------------------------------------------------------
 
 
@@ -876,19 +455,9 @@ public class Config
 	 * @param defaultPassword
 	 * @return the default password if no password exists in the configuration
 	 */
-	public static char[] getPropertyPassword(String key, char[] defaultPassword)
+	public static char[] getPropertyPassword(String key, char... defaultPassword)
 	{
-		char[] bVal = null;
-		String sVal = getSecureProperty(key);
-		if ((sVal != null) && (sVal.length() > 0))
-		{
-			bVal = sVal.toCharArray();
-		}
-		else
-		{
-			bVal = defaultPassword;
-		}
-		return bVal;
+		return getSettings().getPropertyPassword(key, defaultPassword);
 
 	}// ------------------------------------------------------------
 
@@ -899,23 +468,9 @@ public class Config
 	 * @param defaultPassword
 	 * @return the default password if no password exists in the configuration
 	 */
-	public static char[] getPropertyPassword(String key, String defaultPassword)
+    public static char[] getPropertyPassword(String key, String defaultPassword)
 	{
-		char[] bVal = null;
-		String sVal = getSecureProperty(key);
-		if ((sVal != null) && (sVal.length() > 0))
-		{
-			bVal = sVal.toCharArray();
-		}
-		else
-		{
-			if (defaultPassword == null)
-				return null;
-
-			bVal = defaultPassword.toCharArray();
-		}
-		return bVal;
-
+		return getSettings().getPropertyPassword(key, defaultPassword);
 	}// ------------------------------------------------------------
 
 	/**
@@ -928,66 +483,22 @@ public class Config
 	public static char[] getPropertyPassword(Class<?> aClass, String key,
 			char[] defaultPassword)
 	{
-		return getPropertyPassword(new StringBuilder(aClass.getName()).append(".").append(key).toString(),
-				defaultPassword);
+		return getSettings().getPropertyPassword(aClass, key, defaultPassword);
 	}// ---------------------------------------------
 
-	/**
-	 * Retrieves a configuration property as a encrypted value.
-	 * <p/>
-	 * Loads the file if not already initialized.
-	 * 
-	 * @param Key Name of the property to be returned.
-	 * 
-	 * @return Value of the property as a string or null if no property found.
-	 */
-
-	private static String getSecureProperty(String key)
-	{
-
-		String retval = null;
-
-		retval = getProperties().getProperty(key);
-
-		if (retval == null || retval.length() == 0)
-		{
-			return null;
-		}
-
-		if (!retval.startsWith(Cryption.CRYPTION_PREFIX))
-		{
-			throw new ConfigException("Configuration key \"" + key
-					+ "\" must be encypted");
-		}
-
-		return Cryption.interpret(retval);
-	}// ------------------------------------------------------------
 
 	/**
 	 * @return a copy of the configured properties
 	 */
 
-	public static Properties getProperties()
+	public static Map<Object,Object> getProperties()
 	{
-
-		if (properties == null || alwaysReload)
-		{
-			loadProperties();
-		}
-
-		// return copy
-		Properties prop = new Properties();
-		if (properties != null && !properties.isEmpty())
-			prop.putAll(properties);
-		
-		
-
-		return prop;
+		return getSettings().getProperties();
 	}// ------------------------------------------------------------
 
-	public static void setProperties(Properties properties)
+	public synchronized static void setProperties(Properties properties)
 	{
-		Config.properties = new Properties(properties);
+		getSettings().setProperties(properties);
 	}// --------------------------------------------
 
 	/**
@@ -1006,21 +517,20 @@ public class Config
 	{
 		return System.getProperty("file.separator");
 	}// --------------------------------------------
-	public static boolean isUseFormatting()
+	public static synchronized Settings getSettings()
 	{
-		return useFormatting;
-	}// --------------------------------------------------------
-
-	private static Properties properties = null; // configuration properties
-
-	
-	// private static long lastCheckTime = 0;
-	private static String configSourceLocation = null;
-	private static boolean alwaysReload = false;
-	private static boolean mergeSystemProperties = false;
-	private static boolean setSystemProperties = false;
-	private static boolean useFormatting = false;
-
-	public static final int CONFIG_FILE_CHECK_INTERVAL_IN_MS = 30000;
+		if(settings == null)
+			settings = new ConfigSettings();
+		
+		return settings;
+	}//------------------------------------------------
+	public static synchronized void setSettings(Settings theSettings)
+	{
+		if (theSettings == null)
+			throw new IllegalArgumentException("theSettings is required");
+		
+		settings = theSettings;
+	}//------------------------------------------------
+	private static Settings settings = null;
 
 }

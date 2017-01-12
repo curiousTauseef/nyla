@@ -1,7 +1,7 @@
 package nyla.solutions.global.patterns.command.file;
 
 import java.io.File;
-import java.util.Properties;
+import java.util.Map;
 
 import nyla.solutions.core.exception.RequiredException;
 import nyla.solutions.core.exception.SystemException;
@@ -43,7 +43,11 @@ public class ReplaceWithFormattedRelatedFileCommand  implements FileCommand<Void
 			String includeFileContent = io.readFile(file.getAbsolutePath()+includeFileSufix);
 			
 			//applied formatting
-			Properties map = Config.getProperties();
+			Map<Object,Object> map = Config.getProperties();
+			
+			if(map == null)
+				return null;
+			
 			map.putAll(JavaBean.toMap(file));
 				
 			map.put(contentKey, includeFileContent);

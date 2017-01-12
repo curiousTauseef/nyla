@@ -1,4 +1,4 @@
-package nyla.solutions.global.patterns.validation.spring;
+package nyla.solutions.spring.validation;
 
 
 import org.springframework.validation.Errors;

@@ -684,7 +684,8 @@ public class IO
 
 		Reader reader = null;
 		try
-		{
+		{		
+			
 			URL url = new URL(urlAddress);
 
 			URLConnection connection = url.openConnection();
@@ -695,15 +696,11 @@ public class IO
 		} catch (MalformedURLException e)
 		{
 			throw new SystemException("URL=" + urlAddress + " " + e);
-		} finally
+		} 
+		finally
 		{
-			if (reader != null)
-				try
-				{
-					reader.close();
-				} catch (Exception e)
-				{
-				}
+			if(reader != null)
+				reader.close();
 		}
 
 	}// --------------------------------------------
@@ -1067,12 +1064,7 @@ public class IO
 		} finally
 		{
 			if (reader != null)
-				try
-				{
 					reader.close();
-				} catch (Exception e)
-				{
-				}
 		}
 	}// --------------------------------------------
 
@@ -1354,9 +1346,9 @@ public class IO
 	/**
 	 * Write string file data
 	 * 
-	 * @param fileName the file
+	 * @param file the file
 	 * @param text the text to write
-	 * @throws Exception
+	 * @throws IOException unknown error occurs
 	 */
 	public static void writeFile(File file, String text)
 			throws IOException
@@ -1378,9 +1370,10 @@ public class IO
 	/**
 	 * Write string file data
 	 * 
-	 * @param fileName the file
+	 * @param file the file to write to
 	 * @param text the text to write
-	 * @throws Exception
+	 * @param append boolean to determine if file must be appended
+	 * @throws IOException unknown error occurs
 	 */
 	public static void writeFile(File file, String text, boolean append)
 			throws IOException

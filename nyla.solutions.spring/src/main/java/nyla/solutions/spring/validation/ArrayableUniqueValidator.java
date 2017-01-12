@@ -1,4 +1,4 @@
-package nyla.solutions.global.patterns.validation.spring;
+package nyla.solutions.spring.validation;
 
 import java.util.HashSet;
 import java.util.Set;

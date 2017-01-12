@@ -1,5 +1,6 @@
 package nyla.solutions.global.patterns.command;
 
+import nyla.solutions.core.data.Environment;
 import nyla.solutions.core.exception.RequiredException;
 import nyla.solutions.core.exception.SystemException;
 import nyla.solutions.core.util.Debugger;

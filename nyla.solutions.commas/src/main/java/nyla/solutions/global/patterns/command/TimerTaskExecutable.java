@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import nyla.solutions.core.data.Environment;
 import nyla.solutions.core.exception.RequiredException;
 import nyla.solutions.core.util.Debugger;
 
@@ -41,7 +42,7 @@ public class TimerTaskExecutable extends TimerTask implements Executable, Clonea
 {
    /**
     * 
-    * @see nyla.solutions.global.patterns.command.Executable#execute(nyla.solutions.global.patterns.command.Environment, java.lang.String[])
+    * @see nyla.solutions.global.patterns.command.Executable#execute(nyla.solutions.core.data.Environment, java.lang.String[])
     */
    public Integer execute(Environment env)
    {

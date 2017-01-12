@@ -1,6 +1,6 @@
 package nyla.solutions.global.patterns.command;
 
-import nyla.solutions.global.patterns.command.Environment;
+import nyla.solutions.core.data.Environment;
 
 /**
  * Represents a class that can be executed typical for a standalone 

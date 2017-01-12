@@ -1,5 +1,6 @@
 package nyla.solutions.global.operations.logging;
 
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.BasicConfigurator;
@@ -21,7 +22,9 @@ public class Log4J implements Log
 	      try
 	      {
 	    	  
-	    	  Properties properties = Config.getProperties();
+	    	  Map<Object,Object> map = Config.getProperties();
+	    	  Properties properties = new Properties();
+	    	  properties.putAll(map);
 	    	  
 	    	  if(properties != null && 
 	    			  String.valueOf(properties.keySet()).contains("log4j"))

@@ -1,4 +1,4 @@
-package nyla.solutions.global.patterns.command;
+package nyla.solutions.core.data;
 
 import java.util.Collection;
 import java.util.Hashtable;

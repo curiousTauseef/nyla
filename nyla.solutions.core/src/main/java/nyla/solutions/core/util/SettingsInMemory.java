@@ -5,6 +5,7 @@ import java.util.Map;
 
 import nyla.solutions.core.exception.SystemException;
 import nyla.solutions.core.operations.logging.Log;
+import nyla.solutions.core.util.settings.Settings;
 
 /**
  * Setting <p/><p/><p/>This class provides read/write access to key/value pairs
@@ -37,7 +38,7 @@ import nyla.solutions.core.operations.logging.Log;
  * @author Gregory Green
  */
 
-public class Setting
+public class SettingsInMemory
 {
    public static final String CRYPTION_PREFIX = "{cryption}";
 
@@ -47,7 +48,7 @@ public class Setting
     * 
     * @param map the settings map
     */
-   public Setting(Map<Object, Object> map)
+   public SettingsInMemory(Map<Object, Object> map)
    {
 	   this.settingMap =  map;
 	   
@@ -363,11 +364,11 @@ public class Setting
 
    }//------------------------------------------------------------
 
-   public final synchronized static Setting getSingletonInstance()
+   public final synchronized static Settings getSingletonInstance()
    {
-	   if(_instance == null) {
-		   _instance = new Setting(Config.getProperties());
-	   }
+	   //if(_instance == null) {
+		//   _instance = new SettingsInMemory(Config.getProperties());
+	   //}
 	   
 	   return _instance;
 	   
@@ -396,7 +397,7 @@ public class Setting
 
    //private static long lastCheckTime = 0;
 
-   private static Setting _instance = null;
-   protected transient Log logger = Debugger.getLog(Setting.class);;
+   private static Settings _instance = null;
+   protected transient Log logger = Debugger.getLog(SettingsInMemory.class);;
 }
 

@@ -2,7 +2,6 @@ package nyla.solutions.global.patterns.expression;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
@@ -41,7 +40,7 @@ public class SpringBooleanExpression implements ObjectBooleanExpression
 		{
 			StandardEvaluationContext context = new StandardEvaluationContext(this.evaluationObject);
 			
-			Properties runtimeVariables = Config.getProperties();
+			Map<Object,Object> runtimeVariables = Config.getProperties();
 			
 			if(this.variables != null)
 				runtimeVariables.putAll(this.variables);

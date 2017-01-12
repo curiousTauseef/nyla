@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.StandardEnvironment;
 
 import nyla.solutions.net.postit.data.Recipient;
 
@@ -69,14 +71,17 @@ public class PostItMgrIntTest
 	@Ignore
 	public void testSendMail()
 	{
+		Environment env  = new StandardEnvironment();
 		
 		try(AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(PostItApp.class))
 		{
+			
 			PostItMgr mgr = ctx.getBean(PostItMgr.class);
 			Recipient recipient = new Recipient();
 			
 			Package pack = new Package();
-			pack.setText("<b>Hello World</b>");
+			pack.setSubject("Junit Testing");
+			pack.setText(env.getProperty("mail.content","<b>Hello World</b>"));
 			try
 			{
 				mgr.sendIt(pack);
@@ -85,7 +90,7 @@ public class PostItMgrIntTest
 			catch(RuntimeException e)
 			{}
 			
-			pack.setTo("ggreen@pivotal.io");
+			pack.setTo(env.getProperty("mail.to"));
 			
 			mgr.sendIt(pack);
 

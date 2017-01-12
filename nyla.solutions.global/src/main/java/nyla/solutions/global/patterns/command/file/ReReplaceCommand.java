@@ -2,7 +2,6 @@ package nyla.solutions.global.patterns.command.file;
 
 import java.io.File;
 import java.util.Map;
-import java.util.Properties;
 
 import nyla.solutions.core.exception.SystemException;
 import nyla.solutions.core.io.IO;
@@ -107,7 +106,10 @@ public class ReReplaceCommand implements FileCommand<Void>
 		private String formatReplacement(File file)
 		throws Exception
 		{
-			Properties map = Config.getProperties();
+			Map<Object,Object> map = Config.getProperties();
+			
+			if(map == null)
+				return null;
 			
 			if(this.bindMap != null)
 				map.putAll(this.bindMap);

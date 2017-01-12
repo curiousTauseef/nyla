@@ -1,4 +1,4 @@
-package nyla.solutions.global.patterns.servicefactory;
+package nyla.solutions.spring.servicefactory;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -8,7 +8,7 @@ import nyla.solutions.core.exception.RequiredException;
 import nyla.solutions.core.patterns.servicefactory.ServiceFactory;
 import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Debugger;
-import nyla.solutions.global.patterns.servicefactory.exceptions.SpringXmlFileNotFoundException;
+import nyla.solutions.spring.servicefactory.exceptions.SpringXmlFileNotFoundException;
 
 
 /**
@@ -19,7 +19,7 @@ import nyla.solutions.global.patterns.servicefactory.exceptions.SpringXmlFileNot
  * CLASSPATH. A configuration property or system property can be set to indicate a different location for 
  * spring XML configuration.
  * 
- * Sample system propertioes;
+ * Sample system properties;
  * -Dspring.xml.url=file:///projects/solutions/config/servicefactory.xml
  * -Dspring.xml.url=classpath:META-INF/spring-int-context.xml
  * 

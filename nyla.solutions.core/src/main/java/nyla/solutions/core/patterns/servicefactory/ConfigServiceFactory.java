@@ -2,7 +2,6 @@ package nyla.solutions.core.patterns.servicefactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 import nyla.solutions.core.exception.SetupException;
@@ -43,7 +42,7 @@ public class ConfigServiceFactory extends ServiceFactory implements SetUpable
 			String className = null;
 			
 			//Load
-			Properties properties = Config.getProperties();
+			Map<Object,Object> properties = Config.getProperties();
 			
 			String key = null;
 			

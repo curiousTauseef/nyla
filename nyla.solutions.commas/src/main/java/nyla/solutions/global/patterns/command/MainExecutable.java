@@ -1,5 +1,6 @@
 package nyla.solutions.global.patterns.command;
 
+import nyla.solutions.core.data.Environment;
 import nyla.solutions.core.exception.FatalException;
 import nyla.solutions.core.patterns.servicefactory.ServiceFactory;
 import nyla.solutions.core.util.Config;

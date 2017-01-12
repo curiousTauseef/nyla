@@ -1,4 +1,4 @@
-package nyla.solutions.global.patterns.scripting;
+package nyla.solutions.spring.scripting;
 import java.util.Hashtable;
 import java.util.Map;
 

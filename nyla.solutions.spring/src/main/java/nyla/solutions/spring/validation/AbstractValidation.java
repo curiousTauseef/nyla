@@ -1,4 +1,4 @@
-package nyla.solutions.global.patterns.validation.spring;
+package nyla.solutions.spring.validation;
 
 import java.lang.reflect.InvocationTargetException;
 

@@ -1,4 +1,4 @@
-package nyla.solutions.global.patterns.scripting;
+package nyla.solutions.spring.scripting;
 import java.util.Map;
 
 import org.springframework.expression.Expression;
@@ -7,11 +7,11 @@ import org.springframework.expression.ParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+import nyla.solutions.core.data.Environment;
 import nyla.solutions.core.exception.SystemException;
 import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Debugger;
-import nyla.solutions.global.patterns.command.Environment;
-import nyla.solutions.global.patterns.command.Executable;
+import nyla.solutions.global.patterns.command.Command;
 
 /**
  * <pre>
@@ -34,7 +34,7 @@ import nyla.solutions.global.patterns.command.Executable;
  * @author Gregory Green
  *
  */
-public class SpringExecutable implements Executable
+public class SpringExecutable implements Command<Integer, Environment>
 {
 	/**
 	 * Default constructor
@@ -47,6 +47,7 @@ public class SpringExecutable implements Executable
 	 * Evaluation the boolean based on the evaluation object
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
 	public Integer execute(Environment env)
 	{
 		 try

@@ -1,7 +1,7 @@
-package nyla.solutions.global.patterns.servicefactory.exceptions;
+package nyla.solutions.spring.servicefactory.exceptions;
 
 import nyla.solutions.core.exception.ConfigException;
-import nyla.solutions.global.patterns.servicefactory.SpringFactory;
+import nyla.solutions.spring.servicefactory.SpringFactory;
 
 /**
  * @author Gregory Green

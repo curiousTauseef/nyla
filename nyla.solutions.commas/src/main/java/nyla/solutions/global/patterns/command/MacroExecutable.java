@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import nyla.solutions.core.data.Environment;
 import nyla.solutions.core.exception.RequiredException;
 
 /**

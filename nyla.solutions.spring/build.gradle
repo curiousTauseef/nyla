@@ -1,0 +1,23 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'findbugs'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+
+sourceCompatibility = 1.8
+version = '0.1'
+// In this section you declare where to find the dependencies of your project
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    // The production code uses the SLF4J logging API at compile time
+    compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.core', version: '0.2-SNAPSHOT'
+    compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.commas', version: '0.1'
+    compile 'org.springframework:spring-context:4.3.5.RELEASE'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.5.7'
+    testCompile 'junit:junit:4.12'
+}
