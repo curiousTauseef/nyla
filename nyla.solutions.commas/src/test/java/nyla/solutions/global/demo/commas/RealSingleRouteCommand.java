@@ -3,15 +3,15 @@ package nyla.solutions.global.demo.commas;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import nyla.solutions.commas.annotations.Attribute;
+import nyla.solutions.commas.annotations.CMD;
+import nyla.solutions.commas.annotations.COMMAS;
+import nyla.solutions.commas.remote.partitioning.RmiAllRoutesAdvice;
+import nyla.solutions.commas.remote.partitioning.RmiOneRouteAdvice;
 import nyla.solutions.core.data.Criteria;
 import nyla.solutions.core.security.user.data.User;
 import nyla.solutions.core.security.user.data.UserProfile;
 import nyla.solutions.core.util.Debugger;
-import nyla.solutions.global.patterns.command.commas.annotations.Attribute;
-import nyla.solutions.global.patterns.command.commas.annotations.CMD;
-import nyla.solutions.global.patterns.command.commas.annotations.COMMAS;
-import nyla.solutions.global.patterns.command.remote.partitioning.RmiAllRoutesAdvice;
-import nyla.solutions.global.patterns.command.remote.partitioning.RmiOneRouteAdvice;
 
 @COMMAS
 public class RealSingleRouteCommand

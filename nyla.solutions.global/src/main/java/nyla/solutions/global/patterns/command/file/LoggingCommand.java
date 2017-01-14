@@ -1,7 +1,7 @@
 package nyla.solutions.global.patterns.command.file;
+import nyla.solutions.commas.Command;
 import nyla.solutions.core.exception.FatalException;
 import nyla.solutions.core.util.Debugger;
-import nyla.solutions.global.patterns.command.Command;
 
 /**
  * Use debugger to log input.

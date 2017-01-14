@@ -21,7 +21,7 @@ import nyla.solutions.core.util.Config;
  * ServiceFactory.config=someOtherFactory
  * #example
  * 
- * ServiceFactory.config=nyla.solutions.global.patterns.servicefactory.ConfigServiceFactory
+ * ServiceFactory.config=nyla.solutions.core.patterns.servicefactory.ConfigServiceFactory
  * 
  * </pre> 
  * @author Gregory Green
@@ -37,7 +37,7 @@ public abstract class ServiceFactory
    /**
     * DEFAULT_SERVICE_FACTORY = SpringFactory.class.getName()
     */
-   public static final String DEFAULT_SERVICE_FACTORY = "nyla.solutions.global.patterns.servicefactory.SpringFactory";
+   public static final String DEFAULT_SERVICE_FACTORY = "nyla.solutions.core.patterns.servicefactory.SpringFactory";
 
    
    /**

@@ -18,9 +18,9 @@ public class ClassPathTest extends TestCase
 	public void testClasspath() throws Exception
 	{
 		ClassPath classPath = new ClassPath();
-		String expectedClassName = "nyla.solutions.global.security.user.data.UserProfile";
+		String expectedClassName = "nyla.solutions.core.security.user.data.UserProfile";
 							        
-		Class<?> keyClass  = classPath.loadClass("nyla.solutions.global.security.user.data.UserProfiler");
+		Class<?> keyClass  = classPath.loadClass("nyla.solutions.core.security.user.data.UserProfiler");
 		
 		
 		File file = new File("bin/nyla/solutions/global/security/user/data/UserProfile.class");

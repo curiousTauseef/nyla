@@ -1,6 +1,6 @@
 package nyla.solutions.dao;
 
-import nyla.solutions.global.patterns.Disposable;
+import nyla.solutions.core.patterns.Disposable;
 
 /**
  * ACID (atomicity, consistency, isolation, durability) is a set of properties 

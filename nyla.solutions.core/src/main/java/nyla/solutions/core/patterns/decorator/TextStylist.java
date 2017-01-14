@@ -17,7 +17,7 @@ public abstract class TextStylist implements TextStyles
 {
 	/**
 	 * @return format(bindText,bindObj,Text.DATE_FORMAT) 
-	 * @see nyla.solutions.global.patterns.decorator.style.TextStyles#format(java.lang.String, java.lang.Object)
+	 * @see nyla.solutions.core.patterns.decorator.style.TextStyles#format(java.lang.String, java.lang.Object)
 	 */
 	public String format(String bindText, Object bindObj)
 			throws FormatException
@@ -26,7 +26,7 @@ public abstract class TextStylist implements TextStyles
 	}// --------------------------------------------------------
 
 	/**
-	 * @see nyla.solutions.global.patterns.decorator.style.Styles#formatMap(java.util.Map)
+	 * @see nyla.solutions.core.patterns.decorator.style.Styles#formatMap(java.util.Map)
 	 */
 	@Override
 	public void formatMap(Map<Object,Object> map) throws FormatException
@@ -89,7 +89,7 @@ public abstract class TextStylist implements TextStyles
 	}// --------------------------------------------------------
 	/**
 	 * 
-	 * @see nyla.solutions.global.patterns.decorator.style.TextStyles#formatWriter(java.lang.String, java.lang.Object, java.lang.String, java.io.Writer)
+	 * @see nyla.solutions.core.patterns.decorator.style.TextStyles#formatWriter(java.lang.String, java.lang.Object, java.lang.String, java.io.Writer)
 	 */
 	public void formatWriter(String text, Object bindObj, String dateFormat,
 			Writer writer) throws IOException, FormatException

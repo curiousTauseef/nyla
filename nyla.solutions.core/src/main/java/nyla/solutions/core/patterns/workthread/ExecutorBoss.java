@@ -233,7 +233,7 @@ public class ExecutorBoss implements Disposable
 
 	/**
 	 * Shutdown executor
-	 * @see nyla.solutions.global.patterns.Disposable#dispose()
+	 * @see nyla.solutions.core.patterns.Disposable#dispose()
 	 */
 	public void dispose()
 	{

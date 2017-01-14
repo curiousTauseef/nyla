@@ -2,8 +2,8 @@ package nyla.solutions.dao;
 
 import java.sql.SQLException;
 
-import nyla.solutions.global.exception.DuplicateRowException;
-import nyla.solutions.global.patterns.Disposable;
+import nyla.solutions.core.exception.DuplicateRowException;
+import nyla.solutions.core.patterns.Disposable;
 
 /**
  * Interface to insert data

@@ -34,7 +34,7 @@ public class SubjectTimerObserver implements SubjectObserver, TimeInterval
    }//--------------------------------------------
    /**
     *
-    * @see nyla.solutions.global.patterns.observer.SubjectObserver#update(nyla.solutions.global.patterns.observer.Subject, java.lang.Object)
+    * @see nyla.solutions.core.patterns.observer.SubjectObserver#update(nyla.solutions.core.patterns.observer.Subject, java.lang.Object)
     */
    public void update(Subject subject, Object data)
    {
@@ -88,7 +88,7 @@ public class SubjectTimerObserver implements SubjectObserver, TimeInterval
    }//--------------------------------------------
    /**
     * @return this.getClass().getName()+"START:"+startSubjectNamePattern+" END:"+endSubjectNamePattern
-    * @see nyla.solutions.global.data.Identifier#getId()
+    * @see nyla.solutions.core.data.Identifier#getId()
     */
    public String getId()
    {

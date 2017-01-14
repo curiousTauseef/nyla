@@ -2,7 +2,7 @@ package nyla.solutions.dao.jdbc.pooling;
 
 import javax.sql.DataSource;
 
-import nyla.solutions.global.exception.ConnectionException;
+import nyla.solutions.core.exception.ConnectionException;
 
 public interface JdbcConnectionFactory
 {

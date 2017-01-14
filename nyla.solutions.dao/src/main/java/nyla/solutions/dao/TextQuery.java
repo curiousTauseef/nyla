@@ -4,11 +4,11 @@
 package nyla.solutions.dao;
 
 
-import nyla.solutions.global.data.DataRow;
-import nyla.solutions.global.data.Textable;
-import nyla.solutions.global.exception.NoDataFoundException;
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.util.Debugger;
+import nyla.solutions.core.data.DataRow;
+import nyla.solutions.core.data.Textable;
+import nyla.solutions.core.exception.NoDataFoundException;
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.util.Debugger;
 
 /**
  * @author Gregory Green 

@@ -2,14 +2,14 @@ package nyla.solutions.global.io;
 import java.io.File;
 import java.io.IOException;
 
+import nyla.solutions.commas.Executable;
+import nyla.solutions.core.data.Environment;
 import nyla.solutions.core.exception.FatalException;
 import nyla.solutions.core.exception.RequiredException;
 import nyla.solutions.core.exception.SetupException;
 import nyla.solutions.core.io.IO;
 import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Debugger;
-import nyla.solutions.global.patterns.command.Environment;
-import nyla.solutions.global.patterns.command.Executable;
 
 /**
  * Backup the content of given file/folder

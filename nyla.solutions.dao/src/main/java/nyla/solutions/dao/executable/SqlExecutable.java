@@ -1,15 +1,16 @@
 package nyla.solutions.dao.executable;
 
+import java.sql.SQLException;
+
+import nyla.solutions.commas.Executable;
+import nyla.solutions.core.data.Environment;
+import nyla.solutions.core.exception.ConfigException;
+import nyla.solutions.core.exception.SystemException;
 import nyla.solutions.dao.AbstractDaoOperation;
 import nyla.solutions.dao.SQL;
-import nyla.solutions.global.exception.ConfigException;
-import nyla.solutions.global.exception.SystemException;
-import java.sql.*;
-import nyla.solutions.global.patterns.command.Environment;
-import nyla.solutions.global.patterns.command.Executable;
 
 /**
- *  * @deprecated use commands
+ *  * 
  *  
  * @author Gregory Green
  * @version 1.0
@@ -18,10 +19,10 @@ import nyla.solutions.global.patterns.command.Executable;
  * <b>SqlExecutable</b>  represents an executed SQL statement
  * 
  */
-@Deprecated
 public class  SqlExecutable extends AbstractDaoOperation
 implements Executable
 {
+
 	/**
 	 * Execute a single SQL statement
 	 */

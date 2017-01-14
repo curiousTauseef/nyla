@@ -46,7 +46,7 @@ public class PropertiesLoadBalanceRegistry implements LoadBalanceRegistry<String
 	}// --------------------------------------------------------
 	/**
 	 * 
-	 * @see nyla.solutions.global.patterns.SetUpable#setUp()
+	 * @see nyla.solutions.core.patterns.SetUpable#setUp()
 	 */
 	public void setUp()
 	{

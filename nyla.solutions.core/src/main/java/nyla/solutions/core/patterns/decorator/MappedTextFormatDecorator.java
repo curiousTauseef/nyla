@@ -27,7 +27,7 @@ public class MappedTextFormatDecorator implements Mapped<String,Textable>, Texta
    /**
     * 
     *
-    * @see nyla.solutions.global.data.Mapped#getMap()
+    * @see nyla.solutions.core.data.Mapped#getMap()
     */
    public Map<String,Textable> getMap()
    {      
@@ -36,7 +36,7 @@ public class MappedTextFormatDecorator implements Mapped<String,Textable>, Texta
    /**
     * 
     *asset all values are Textable
-    * @see nyla.solutions.global.data.Mapped#setMap(java.util.Map)
+    * @see nyla.solutions.core.data.Mapped#setMap(java.util.Map)
     */
    @Override
    public void setMap(Map<String,Textable> map)
@@ -74,7 +74,7 @@ public class MappedTextFormatDecorator implements Mapped<String,Textable>, Texta
     * Note the bind template is retrieved from
     * the URL provided in templateUrl.
     *
-    * @see nyla.solutions.global.data.Textable#getText()
+    * @see nyla.solutions.core.data.Textable#getText()
     */
    public String getText()
    {

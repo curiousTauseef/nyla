@@ -6,7 +6,7 @@ import org.junit.Ignore;
 
 import nyla.solutions.dao.SQL;
 import nyla.solutions.dao.jdbc.pooling.TomcatJdbcConnectionFactory;
-import nyla.solutions.global.exception.NoDataFoundException;
+import nyla.solutions.core.exception.NoDataFoundException;
 import junit.framework.TestCase;
 
 @Ignore

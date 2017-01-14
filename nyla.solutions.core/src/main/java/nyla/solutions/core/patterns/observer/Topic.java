@@ -128,7 +128,7 @@ public class Topic implements Subject
    /**
     * 
     *
-    * @see nyla.solutions.global.data.Copier#copy(nyla.solutions.global.data.Copier)
+    * @see nyla.solutions.core.data.Copier#copy(nyla.solutions.core.data.Copier)
     */
    public void copy(Copier from)
    {

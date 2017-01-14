@@ -11,10 +11,10 @@ import org.junit.Ignore;
 import nyla.solutions.dao.PreparedStatementConstructor;
 import nyla.solutions.dao.ResultSetObjectCreator;
 import nyla.solutions.dao.SQL;
-import nyla.solutions.global.exception.DataException;
-import nyla.solutions.global.patterns.iteration.PageCriteria;
-import nyla.solutions.global.patterns.iteration.Pagination;
-import nyla.solutions.global.patterns.iteration.PagingCollection;
+import nyla.solutions.core.exception.DataException;
+import nyla.solutions.core.patterns.iteration.PageCriteria;
+import nyla.solutions.core.patterns.iteration.Pagination;
+import nyla.solutions.core.patterns.iteration.PagingCollection;
 import junit.framework.TestCase;
 
 @Ignore

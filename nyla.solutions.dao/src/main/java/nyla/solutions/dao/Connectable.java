@@ -6,7 +6,7 @@ package nyla.solutions.dao;
  * @author Gregory Green
  *
  */
-public interface Connectable extends nyla.solutions.global.patterns.Connectable
+public interface Connectable extends nyla.solutions.core.patterns.Connectable
 {
 	
 }

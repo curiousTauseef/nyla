@@ -1,8 +1,9 @@
 package nyla.solutions.dao.patterns.command;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import nyla.solutions.global.data.Arrayable;
-import nyla.solutions.global.exception.SystemException;
+
+import nyla.solutions.core.data.Arrayable;
+import nyla.solutions.core.exception.SystemException;
 
 /**
  * Example

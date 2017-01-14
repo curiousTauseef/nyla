@@ -7,11 +7,11 @@ import java.sql.ResultSet;
 
 import nyla.solutions.dao.DAO;
 import nyla.solutions.dao.DAOFactory;
-import nyla.solutions.global.data.DataRow;
-import nyla.solutions.global.exception.ConnectionException;
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.security.data.SecurityCredential;
-import nyla.solutions.global.util.Debugger;
+import nyla.solutions.core.data.DataRow;
+import nyla.solutions.core.exception.ConnectionException;
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.security.data.SecurityCredential;
+import nyla.solutions.core.util.Debugger;
 
 
 /**

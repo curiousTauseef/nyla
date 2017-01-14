@@ -1,10 +1,10 @@
 package nyla.solutions.dao;
 import java.util.*;
 
-import nyla.solutions.global.exception.ConnectionException;
+import nyla.solutions.core.exception.ConnectionException;
 
-import nyla.solutions.global.data.*;
-import nyla.solutions.global.util.Config;
+import nyla.solutions.core.data.*;
+import nyla.solutions.core.util.Config;
 import java.sql.*;
 
 /**

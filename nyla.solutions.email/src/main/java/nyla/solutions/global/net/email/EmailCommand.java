@@ -1,8 +1,8 @@
 package nyla.solutions.global.net.email;
 
+import nyla.solutions.commas.Command;
 import nyla.solutions.core.patterns.decorator.TextDecorator;
 import nyla.solutions.core.util.Config;
-import nyla.solutions.global.patterns.command.Command;
 
 /**
  * @author Gregory Green

@@ -1,10 +1,10 @@
 package nyla.solutions.dao;
 
 
-import nyla.solutions.global.data.Textable;
-import nyla.solutions.global.exception.NoDataFoundException;
-import nyla.solutions.global.util.Debugger;
-import nyla.solutions.global.xml.XML;
+import nyla.solutions.core.data.Textable;
+import nyla.solutions.core.exception.NoDataFoundException;
+import nyla.solutions.core.util.Debugger;
+import nyla.solutions.xml.XML;
 
 /**
  * <pre>

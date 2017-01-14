@@ -22,7 +22,7 @@ import nyla.solutions.core.util.Debugger;
 		SpringSpELScripting<String,Object> spelScripting = new SpringSpELScripting<String,Object>();
 		//${T(solutions.global.util.Debugger).println('Hello World')}"
 		String results = spelScripting.interpret(
-		"new nyla.solutions.global.patterns.scripting.SpringSpELScriptingTest().getName()", null);
+		"new nyla.solutions.core.patterns.scripting.SpringSpELScriptingTest().getName()", null);
 		
 		Assert.assertEquals("SpringSpEL",results );
 		

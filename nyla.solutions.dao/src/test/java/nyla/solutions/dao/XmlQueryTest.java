@@ -5,11 +5,11 @@ package nyla.solutions.dao;
 
 import org.junit.Ignore;
 
-import nyla.solutions.dao.XmlQuery;
-import nyla.solutions.global.patterns.decorator.XmlXslDecorator;
-import nyla.solutions.global.patterns.servicefactory.ServiceFactory;
-import nyla.solutions.global.util.Debugger;
 import junit.framework.TestCase;
+//import nyla.solutions.core.patterns.decorator.XmlXslDecorator;
+import nyla.solutions.core.patterns.servicefactory.ServiceFactory;
+import nyla.solutions.core.util.Debugger;
+import nyla.solutions.xml.XmlXslDecorator;
 
 /**
  * @author Gregory Green

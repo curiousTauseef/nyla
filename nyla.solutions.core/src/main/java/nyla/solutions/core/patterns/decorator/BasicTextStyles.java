@@ -13,7 +13,7 @@ public class BasicTextStyles extends TextStylist
 {
 	/**
 	 * 
-	 * @see nyla.solutions.global.patterns.decorator.style.TextStyles#format(java.lang.String,
+	 * @see nyla.solutions.core.patterns.decorator.style.TextStyles#format(java.lang.String,
 	 *      java.lang.Object, java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")

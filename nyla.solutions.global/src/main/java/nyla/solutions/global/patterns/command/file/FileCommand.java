@@ -2,7 +2,7 @@ package nyla.solutions.global.patterns.command.file;
 
 import java.io.File;
 
-import nyla.solutions.global.patterns.command.Command;
+import nyla.solutions.commas.Command;
 
 /**
  * Interface to process a file

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import java.util.*;
 
-import nyla.solutions.global.data.DataRow;
+import nyla.solutions.core.data.DataRow;
 
 /**
  * 

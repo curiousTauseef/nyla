@@ -113,7 +113,7 @@ public class QuestMgr implements QuestService
 	}// --------------------------------------------------------
 	/**
 	 * 
-	 * @see nyla.solutions.core.patterns.search.queryService.QuestService#count(nyla.solutions.global.patterns.iteration.PageCriteria)
+	 * @see nyla.solutions.core.patterns.search.queryService.QuestService#count(nyla.solutions.core.patterns.iteration.PageCriteria)
 	 */
 	@Override
 	public long count(PageCriteria pageCriteria)
@@ -127,7 +127,7 @@ public class QuestMgr implements QuestService
 	}// --------------------------------------------------------
 	/**
 	 * 
-	 * @see nyla.solutions.core.patterns.search.queryService.QuestService#getPaging(nyla.solutions.global.patterns.iteration.PageCriteria)
+	 * @see nyla.solutions.core.patterns.search.queryService.QuestService#getPaging(nyla.solutions.core.patterns.iteration.PageCriteria)
 	 */
 	@Override
 	public Paging<DataRow> getPaging(PageCriteria pageCriteria)

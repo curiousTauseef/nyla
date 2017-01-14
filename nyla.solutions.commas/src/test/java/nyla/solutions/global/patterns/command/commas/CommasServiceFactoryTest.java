@@ -3,9 +3,11 @@ package nyla.solutions.global.patterns.command.commas;
 import org.junit.Ignore;
 
 import junit.framework.TestCase;
+import nyla.solutions.commas.Command;
+import nyla.solutions.commas.CommandFacts;
+import nyla.solutions.commas.CommasServiceFactory;
+import nyla.solutions.commas.json.JsonCommandSchema;
 import nyla.solutions.core.util.Debugger;
-import nyla.solutions.global.patterns.command.Command;
-import nyla.solutions.global.patterns.command.commas.json.JsonCommandSchema;
 
 @Ignore
 public class CommasServiceFactoryTest extends TestCase

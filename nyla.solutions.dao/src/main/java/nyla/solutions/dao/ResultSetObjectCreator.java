@@ -2,7 +2,7 @@ package nyla.solutions.dao;
 
 import java.sql.ResultSet;
 
-import nyla.solutions.global.patterns.creational.RowObjectCreator;
+import nyla.solutions.core.patterns.creational.RowObjectCreator;
 
 /**
  * Row mapper for a result set

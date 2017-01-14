@@ -2,25 +2,25 @@ package nyla.solutions.dao.jdo;
 
 import nyla.solutions.dao.SQL;
 import nyla.solutions.dao.exception.JDOException;
-import nyla.solutions.global.exception.ConnectionException;
-import nyla.solutions.global.exception.DuplicateRowException;
-import nyla.solutions.global.exception.IntegrityConstraintException;
-import nyla.solutions.global.exception.NoDataFoundException;
-import nyla.solutions.global.exception.SystemException;
+import nyla.solutions.core.exception.ConnectionException;
+import nyla.solutions.core.exception.DuplicateRowException;
+import nyla.solutions.core.exception.IntegrityConstraintException;
+import nyla.solutions.core.exception.NoDataFoundException;
+import nyla.solutions.core.exception.SystemException;
 
 
 
-import nyla.solutions.global.data.Attribute;
-import nyla.solutions.global.data.Auditable;
-import nyla.solutions.global.data.Copier;
-import nyla.solutions.global.data.Data;
-import nyla.solutions.global.data.Key;
-import nyla.solutions.global.data.Nameable;
-import nyla.solutions.global.data.NumberedProperty;
-import nyla.solutions.global.data.PrimaryKey;
-import nyla.solutions.global.patterns.Disposable;
-import nyla.solutions.global.security.data.*;
-import nyla.solutions.global.util.Debugger;
+import nyla.solutions.core.data.Attribute;
+import nyla.solutions.core.data.Auditable;
+import nyla.solutions.core.data.Copier;
+import nyla.solutions.core.data.Data;
+import nyla.solutions.core.data.Key;
+import nyla.solutions.core.data.Nameable;
+import nyla.solutions.core.data.NumberedProperty;
+import nyla.solutions.core.data.PrimaryKey;
+import nyla.solutions.core.patterns.Disposable;
+import nyla.solutions.core.security.data.*;
+import nyla.solutions.core.util.Debugger;
 
 import java.sql.SQLException;
 import java.util.*;

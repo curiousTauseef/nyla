@@ -18,8 +18,8 @@ import nyla.solutions.core.patterns.creational.builder.mapped.MappedKeyEngineer;
 import nyla.solutions.core.util.Debugger;
 import nyla.solutions.core.util.Text;
 import nyla.solutions.global.net.http.HTTP;
-import nyla.solutions.global.xml.DOM4J;
-import nyla.solutions.global.xml.DomJsoupHtmlStragety;
+import nyla.solutions.xml.DOM4J;
+import nyla.solutions.xml.DomJsoupHtmlStragety;
 
 /**
  * Use MappedKeyEngineer to construct output from HTML pages.

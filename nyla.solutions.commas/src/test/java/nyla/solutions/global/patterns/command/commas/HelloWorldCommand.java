@@ -1,7 +1,7 @@
 package nyla.solutions.global.patterns.command.commas;
 
-import nyla.solutions.global.patterns.command.commas.annotations.CMD;
-import nyla.solutions.global.patterns.command.commas.annotations.COMMAS;
+import nyla.solutions.commas.annotations.CMD;
+import nyla.solutions.commas.annotations.COMMAS;
 
 @COMMAS
 public class HelloWorldCommand

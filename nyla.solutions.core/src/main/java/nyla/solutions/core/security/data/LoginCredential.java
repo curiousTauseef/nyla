@@ -182,7 +182,7 @@ public class LoginCredential implements SecurityCredential, Principal, Serializa
    /**
     * 
     *this.setLoginID(id)
-    * @see nyla.solutions.global.data.Identifier#setId(java.lang.String)
+    * @see nyla.solutions.core.data.Identifier#setId(java.lang.String)
     */
    public void setId(String id)
    {

@@ -2,8 +2,8 @@ package nyla.solutions.global.patterns.command;
 
 import java.util.ArrayList;
 
-import nyla.solutions.global.patterns.command.ProxyCommand;
 import junit.framework.TestCase;
+import nyla.solutions.commas.ProxyCommand;
 
 public class ProxyCommandTest extends TestCase
 {

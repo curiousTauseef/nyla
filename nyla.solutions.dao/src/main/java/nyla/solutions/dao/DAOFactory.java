@@ -8,14 +8,13 @@ import java.util.*;
 
 import nyla.solutions.dao.jdbc.JdbcConstants;
 import nyla.solutions.dao.jdbc.pooling.JdbcConnectionFactory;
-import nyla.solutions.global.data.DataRow;
-import nyla.solutions.global.exception.ConnectionException;
-import nyla.solutions.global.operations.ClassPath;
-import nyla.solutions.global.patterns.iteration.PageCriteria;
-import nyla.solutions.global.patterns.iteration.Pagination;
-import nyla.solutions.global.patterns.servicefactory.Locator;
-import nyla.solutions.global.security.data.SecurityCredential;
-import nyla.solutions.global.util.*;
+import nyla.solutions.core.data.DataRow;
+import nyla.solutions.core.exception.ConnectionException;
+import nyla.solutions.core.operations.ClassPath;
+import nyla.solutions.core.patterns.iteration.PageCriteria;
+import nyla.solutions.core.patterns.iteration.Pagination;
+import nyla.solutions.core.security.data.SecurityCredential;
+import nyla.solutions.core.util.*;
 
 /**
  * 
@@ -229,22 +228,9 @@ public class DAOFactory
     {
        try
        {
-         /* Class.forName("oracle.jdbc.driver.OracleDriver");
-          Connection c = DriverManager.getConnection(
-                         "jdbc:oracle:thin:@localhost:1521:orcl",
-                         "sa.eo_user",
-                         "sa.eo_user");
-          */
-          String dsName = Config.getProperty(JdbcConstants.DS_NAME_PROP, "");
+      
           Connection connection = null;
-          if(!Text.isNull(dsName))
-          {
-             DataSource ds = (DataSource)Locator.getContext().lookup(dsName);
-             
-             connection = ds.getConnection();
-          }
-          else
-          {
+
              Class.forName(Config.getProperty(JdbcConstants.JDBC_DRIVER_PROP));
              
              String url = Config.getProperty(JdbcConstants.JDBC_CONNECTION_URL_PROP);
@@ -265,7 +251,7 @@ public class DAOFactory
              boolean autoCommit = Config.getPropertyBoolean(JdbcConstants.JDBC_AUTOCOMMIT_PROP,JdbcConstants.JDBC_DEFAULT_AUTOCOMMIT).booleanValue();
              connection.setAutoCommit(autoCommit);
              
-          }
+  
           return connection;
        }
        catch (Exception e)

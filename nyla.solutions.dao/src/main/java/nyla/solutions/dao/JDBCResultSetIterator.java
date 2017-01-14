@@ -6,8 +6,8 @@ import java.util.Iterator;
 
 
 
-import nyla.solutions.global.patterns.Disposable;
-import nyla.solutions.global.util.Debugger;
+import nyla.solutions.core.patterns.Disposable;
+import nyla.solutions.core.util.Debugger;
 
 /**
  * <pre>

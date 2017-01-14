@@ -2,9 +2,9 @@ package nyla.solutions.dao;
 
 import java.sql.SQLException;
 
-import nyla.solutions.global.exception.ConfigException;
-import nyla.solutions.global.exception.NoDataFoundException;
-import nyla.solutions.global.exception.SystemException;
+import nyla.solutions.core.exception.ConfigException;
+import nyla.solutions.core.exception.NoDataFoundException;
+import nyla.solutions.core.exception.SystemException;
 
 /**
  * Query represents a database query with results.

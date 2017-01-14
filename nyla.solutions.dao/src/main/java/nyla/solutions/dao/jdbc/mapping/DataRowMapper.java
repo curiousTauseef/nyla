@@ -5,8 +5,8 @@ import java.sql.SQLException;
 
 import nyla.solutions.dao.ResultSetDataRow;
 import nyla.solutions.dao.ResultSetObjectCreator;
-import nyla.solutions.global.data.DataRow;
-import nyla.solutions.global.exception.DataException;
+import nyla.solutions.core.data.DataRow;
+import nyla.solutions.core.exception.DataException;
 
 /**
  * @author Gregory Green

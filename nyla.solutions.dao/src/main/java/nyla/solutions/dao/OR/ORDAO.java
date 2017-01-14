@@ -5,7 +5,7 @@ import java.util.Collection;
 
 
 import nyla.solutions.dao.OR.query.QueryBuilder;
-import nyla.solutions.global.exception.NoDataFoundException;
+import nyla.solutions.core.exception.NoDataFoundException;
 
 /**
  * <pre>

@@ -36,7 +36,7 @@ import nyla.solutions.core.operations.logging.SystemOutLog;
  * Log.class=className
  * 
  * The logClass class name indicated must implement the 
- * nyla.solutions.global.operations.Log interface.
+ * nyla.solutions.core.operations.Log interface.
  * 
  * Sample Property File
  * 

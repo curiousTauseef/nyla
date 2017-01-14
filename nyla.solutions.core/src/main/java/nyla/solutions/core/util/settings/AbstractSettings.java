@@ -33,7 +33,7 @@ import nyla.solutions.core.util.Text;
  * JVM argument system properties can also by accessed by adding the
  * following to the configuration file; 
  * <span style="color:blue">
- * nyla.solutions.global.util.Config.mergeSystemProperties=true
+ * nyla.solutions.core.util.Config.mergeSystemProperties=true
  * </span>
  * 
  * Values in the System properties can be set with values for the configuration by using the following
@@ -43,7 +43,7 @@ import nyla.solutions.core.util.Text;
  * by the added the following property;
  * 
  * <span style="color:blue">
- * nyla.solutions.global.util.Config.useFormatting=true
+ * nyla.solutions.core.util.Config.useFormatting=true
  * 
  * <i>Example</i>
  * machineName=localhost
@@ -55,7 +55,7 @@ import nyla.solutions.core.util.Text;
  * configuration property file to always reload the property whenever 
  * a getProperty... method is called.
  * 
- * <span style="color:blue">nyla.solutions.global.util.Config.alwaysReloadProperties=true</span>
+ * <span style="color:blue">nyla.solutions.core.util.Config.alwaysReloadProperties=true</span>
  * </pre>
  * 
  * @author Gregory Green

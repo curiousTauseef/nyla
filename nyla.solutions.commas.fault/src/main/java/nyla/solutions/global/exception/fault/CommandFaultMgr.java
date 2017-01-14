@@ -1,6 +1,7 @@
 package nyla.solutions.global.exception.fault;
 
 
+import nyla.solutions.commas.Command;
 import nyla.solutions.core.exception.fault.FaultException;
 import nyla.solutions.core.exception.fault.FaultMgr;
 import nyla.solutions.core.exception.fault.FaultService;
@@ -8,7 +9,6 @@ import nyla.solutions.core.operations.ClassPath;
 import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Debugger;
 import nyla.solutions.global.net.email.EmailFaultCommand;
-import nyla.solutions.global.patterns.command.Command;
 
 
 /**

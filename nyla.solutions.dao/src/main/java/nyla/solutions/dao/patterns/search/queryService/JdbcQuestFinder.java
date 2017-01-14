@@ -15,21 +15,21 @@ import nyla.solutions.dao.ResultSetObjectCreator;
 import nyla.solutions.dao.SQL;
 import nyla.solutions.dao.jdbc.mapping.DataRowMapper;
 import nyla.solutions.dao.jdbc.mapping.ObjectArrayPreparedStatementConstructor;
-import nyla.solutions.global.data.DataRow;
-import nyla.solutions.global.exception.ConfigException;
-import nyla.solutions.global.exception.ConnectionException;
-import nyla.solutions.global.exception.RequiredException;
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.operations.ClassPath;
-import nyla.solutions.global.patterns.iteration.PageCriteria;
-import nyla.solutions.global.patterns.iteration.Paging;
-import nyla.solutions.global.patterns.iteration.PagingCollection;
-import nyla.solutions.global.patterns.search.queryService.QuestCriteria;
-import nyla.solutions.global.patterns.search.queryService.QuestFinder;
-import nyla.solutions.global.patterns.search.queryService.QuestKey;
-import nyla.solutions.global.util.Config;
-import nyla.solutions.global.util.Debugger;
-import nyla.solutions.global.util.Text;
+import nyla.solutions.core.data.DataRow;
+import nyla.solutions.core.exception.ConfigException;
+import nyla.solutions.core.exception.ConnectionException;
+import nyla.solutions.core.exception.RequiredException;
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.operations.ClassPath;
+import nyla.solutions.core.patterns.iteration.PageCriteria;
+import nyla.solutions.core.patterns.iteration.Paging;
+import nyla.solutions.core.patterns.iteration.PagingCollection;
+import nyla.solutions.core.patterns.search.queryService.QuestCriteria;
+import nyla.solutions.core.patterns.search.queryService.QuestFinder;
+import nyla.solutions.core.patterns.search.queryService.QuestKey;
+import nyla.solutions.core.util.Config;
+import nyla.solutions.core.util.Debugger;
+import nyla.solutions.core.util.Text;
 
 /**
  * The Quest finder query service implementation based on the JDBC

@@ -2,13 +2,13 @@ package nyla.solutions.dao.patterns.search.queryService;
 
 import org.junit.Ignore;
 
-import nyla.solutions.global.data.DataRow;
-import nyla.solutions.global.patterns.iteration.Paging;
-import nyla.solutions.global.patterns.search.queryService.QuestCriteria;
-import nyla.solutions.global.patterns.search.queryService.QuestFactory;
-import nyla.solutions.global.patterns.search.queryService.QuestKey;
-import nyla.solutions.global.patterns.search.queryService.QuestService;
-import nyla.solutions.global.util.Debugger;
+import nyla.solutions.core.data.DataRow;
+import nyla.solutions.core.patterns.iteration.Paging;
+import nyla.solutions.core.patterns.search.queryService.QuestCriteria;
+import nyla.solutions.core.patterns.search.queryService.QuestFactory;
+import nyla.solutions.core.patterns.search.queryService.QuestKey;
+import nyla.solutions.core.patterns.search.queryService.QuestService;
+import nyla.solutions.core.util.Debugger;
 import junit.framework.TestCase;
 
 @Ignore

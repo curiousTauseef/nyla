@@ -1,16 +1,17 @@
 package nyla.solutions.dao.patterns.command;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
+import nyla.solutions.commas.Command;
+import nyla.solutions.core.exception.ConfigException;
+import nyla.solutions.core.exception.SetupException;
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.io.IO;
 import nyla.solutions.dao.AbstractDaoOperation;
 import nyla.solutions.dao.SQL;
-import nyla.solutions.global.exception.ConfigException;
-import nyla.solutions.global.exception.SetupException;
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.io.IO;
 
-import java.io.IOException;
-import java.sql.*;
 
-import nyla.solutions.global.patterns.command.Command;
 /**
  *  
  * @author Gregory Green

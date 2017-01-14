@@ -2,8 +2,8 @@ package nyla.solutions.dao.jdbc.pooling;
 import javax.sql.DataSource;
 
 import org.apache.tomcat.jdbc.pool.PoolProperties;
-import nyla.solutions.global.exception.ConnectionException;
-import nyla.solutions.global.util.Config;
+import nyla.solutions.core.exception.ConnectionException;
+import nyla.solutions.core.util.Config;
 
 /**
  * The Tomcat JDBC connection pooling connection factory 

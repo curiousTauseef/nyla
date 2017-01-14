@@ -2,13 +2,13 @@
  * 
  */
 package nyla.solutions.dao;
-import nyla.solutions.global.data.DataRow;
-import nyla.solutions.global.data.Textable;
-import nyla.solutions.global.exception.ConfigException;
-import nyla.solutions.global.exception.FormatException;
-import nyla.solutions.global.exception.NoDataFoundException;
-import nyla.solutions.global.util.Debugger;
-import nyla.solutions.global.util.Text;
+import nyla.solutions.core.data.DataRow;
+import nyla.solutions.core.data.Textable;
+import nyla.solutions.core.exception.ConfigException;
+import nyla.solutions.core.exception.FormatException;
+import nyla.solutions.core.exception.NoDataFoundException;
+import nyla.solutions.core.util.Debugger;
+import nyla.solutions.core.util.Text;
 
 /**
  * @author Gregory Green 

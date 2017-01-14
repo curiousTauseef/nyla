@@ -1,6 +1,6 @@
 package nyla.solutions.dao.jdbc;
 
-import nyla.solutions.global.util.Config;
+import nyla.solutions.core.util.Config;
 
 public interface JdbcConstants
 {

@@ -10,6 +10,11 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import nyla.solutions.commas.Command;
+import nyla.solutions.commas.CommasServiceFactory;
+import nyla.solutions.commas.remote.RemoteCommand;
+import nyla.solutions.commas.remote.partitioning.PartitionCommasRemoteRegistry;
+import nyla.solutions.commas.remote.partitioning.RemoteCommasServer;
 import nyla.solutions.core.data.Criteria;
 import nyla.solutions.core.data.Envelope;
 import nyla.solutions.core.net.rmi.RMI;
@@ -20,10 +25,6 @@ import nyla.solutions.core.patterns.servicefactory.ServiceFactory;
 import nyla.solutions.core.security.user.data.User;
 import nyla.solutions.core.security.user.data.UserProfile;
 import nyla.solutions.global.demo.commas.RealSingleRouteCommand;
-import nyla.solutions.global.patterns.command.Command;
-import nyla.solutions.global.patterns.command.commas.CommasServiceFactory;
-import nyla.solutions.global.patterns.command.remote.partitioning.PartitionCommasRemoteRegistry;
-import nyla.solutions.global.patterns.command.remote.partitioning.RemoteCommasServer;
 
 @Ignore
 public class RemoteCommasTest

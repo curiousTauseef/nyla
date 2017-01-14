@@ -7,9 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import nyla.solutions.global.data.Arrayable;
-import nyla.solutions.global.data.DataRow;
-import nyla.solutions.global.util.Debugger;
+import nyla.solutions.core.data.Arrayable;
+import nyla.solutions.core.data.DataRow;
+import nyla.solutions.core.util.Debugger;
 
 /**
  * Represents an entity row

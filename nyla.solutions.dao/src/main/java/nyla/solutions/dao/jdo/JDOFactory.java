@@ -1,7 +1,7 @@
 package nyla.solutions.dao.jdo;
 
-import nyla.solutions.global.exception.ConnectionException;
-import nyla.solutions.global.util.*;
+import nyla.solutions.core.exception.ConnectionException;
+import nyla.solutions.core.util.*;
 
 import javax.jdo.PersistenceManager;
 

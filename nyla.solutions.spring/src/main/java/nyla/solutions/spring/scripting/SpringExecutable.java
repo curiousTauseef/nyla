@@ -7,11 +7,12 @@ import org.springframework.expression.ParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+import nyla.solutions.commas.Command;
 import nyla.solutions.core.data.Environment;
 import nyla.solutions.core.exception.SystemException;
 import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Debugger;
-import nyla.solutions.global.patterns.command.Command;
+
 
 /**
  * <pre>

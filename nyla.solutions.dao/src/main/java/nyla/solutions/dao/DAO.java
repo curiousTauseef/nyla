@@ -1,23 +1,4 @@
 package nyla.solutions.dao;
-import nyla.solutions.dao.jdbc.JdbcConstants;
-import nyla.solutions.global.exception.ConnectionException;
-import nyla.solutions.global.exception.DuplicateRowException;
-import nyla.solutions.global.exception.FormatException;
-import nyla.solutions.global.exception.IntegrityConstraintException;
-import nyla.solutions.global.exception.NoDataFoundException;
-import nyla.solutions.global.exception.SizeViolationException;
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.io.IO;
-import nyla.solutions.global.data.*;
-import nyla.solutions.global.patterns.iteration.PageCriteria;
-import nyla.solutions.global.patterns.iteration.Pagination;
-import nyla.solutions.global.patterns.iteration.Paging;
-import nyla.solutions.global.patterns.iteration.RangeCriteria;
-import nyla.solutions.global.patterns.iteration.ResultSetIterator;
-import nyla.solutions.global.security.data.SecurityCredential;
-import nyla.solutions.global.util.*;
-
-import java.util.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -25,10 +6,57 @@ import java.io.Reader;
 import java.io.Writer;
 import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
-import java.sql.*;
-import java.text.*;
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.CallableStatement;
+import java.sql.Clob;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.text.FieldPosition;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 import javax.sql.DataSource;
+
+import nyla.solutions.core.data.Arrayable;
+import nyla.solutions.core.data.Criteria;
+import nyla.solutions.core.data.Data;
+import nyla.solutions.core.data.DataRow;
+import nyla.solutions.core.data.Identifier;
+import nyla.solutions.core.data.Property;
+import nyla.solutions.core.exception.ConnectionException;
+import nyla.solutions.core.exception.DuplicateRowException;
+import nyla.solutions.core.exception.FormatException;
+import nyla.solutions.core.exception.IntegrityConstraintException;
+import nyla.solutions.core.exception.NoDataFoundException;
+import nyla.solutions.core.exception.SizeViolationException;
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.io.IO;
+import nyla.solutions.core.patterns.iteration.PageCriteria;
+import nyla.solutions.core.patterns.iteration.Pagination;
+import nyla.solutions.core.patterns.iteration.Paging;
+import nyla.solutions.core.patterns.iteration.RangeCriteria;
+import nyla.solutions.core.patterns.iteration.ResultSetIterator;
+import nyla.solutions.core.security.data.SecurityCredential;
+import nyla.solutions.core.util.Config;
+import nyla.solutions.core.util.Debugger;
+import nyla.solutions.core.util.JavaBean;
+import nyla.solutions.core.util.Text;
+import nyla.solutions.dao.jdbc.JdbcConstants;
 
 
 /**
@@ -48,6 +76,8 @@ import javax.sql.DataSource;
 */
 public abstract class DAO implements ACID, Connectable
 {
+	public static final int BATCH_SIZE = Config.getPropertyInteger(DAO.class,"BATCH_SIZE",10).intValue();
+	
 	/**
 	 * STRING_TYPENAME  = Config.getProperty(DAO.class,"STRING_TYPENAME", "VARCHAR")
 	 */
@@ -576,7 +606,7 @@ public abstract class DAO implements ACID, Connectable
         rs = this.select(stmt);
         
         ArrayList<Integer> l = new ArrayList<Integer>
-             (Config.getPropertyInteger(Constants.BATCH_LIST_SIZE_PROP,10).intValue());
+             ();
         while(rs.next()) 
         {
             l.add(new Integer(rs.getInt(1)));
@@ -628,7 +658,7 @@ public abstract class DAO implements ACID, Connectable
         rs = this.select(stmt);
         
         ArrayList<String> l = new ArrayList<String>
-             (Constants.BATCH_SIZE);
+             (BATCH_SIZE);
         while(rs.next()) 
         {
             l.add(rs.getString(1));
@@ -693,7 +723,7 @@ public abstract class DAO implements ACID, Connectable
         rs = this.select(stmt);
         
         ArrayList<Long> l = new ArrayList<Long>
-             (Constants.BATCH_SIZE);
+             (BATCH_SIZE);
         
         while(rs.next()) 
         {
@@ -779,7 +809,7 @@ public abstract class DAO implements ACID, Connectable
         rs = stmt.executeQuery(aSQL);
         
         ArrayList<Integer> l = new ArrayList<Integer>
-             (Config.getPropertyInteger(Constants.BATCH_LIST_SIZE_PROP, 10).intValue());
+             (BATCH_SIZE);
         while(rs.next()) 
         {
             l.add(new Integer(rs.getInt(1)));
@@ -1183,7 +1213,7 @@ protected <OutputType,CriteriaType> Pagination selectPaging(String sql, Criteria
         rs = stmt.executeQuery(aSQL);
         
         ArrayList<String> l = new ArrayList<String>
-             (Constants.BATCH_SIZE);
+             (BATCH_SIZE);
         while(rs.next()) 
         {
             l.add(rs.getString(1));
@@ -1249,7 +1279,7 @@ protected <OutputType,CriteriaType> Pagination selectPaging(String sql, Criteria
        rs = stmt.executeQuery(aSQL);
        
        ArrayList<Long> l = new ArrayList<Long>
-            (Constants.BATCH_SIZE);
+            (BATCH_SIZE);
        while(rs.next()) 
        {
            l.add(new Long(rs.getInt(1)));

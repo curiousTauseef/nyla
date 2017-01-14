@@ -2,12 +2,12 @@ package nyla.solutions.global.patterns.decorator;
 
 import java.util.ArrayList;
 
-import nyla.solutions.global.xml.XML;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import nyla.solutions.xml.XML;
 
 public class Html
 {

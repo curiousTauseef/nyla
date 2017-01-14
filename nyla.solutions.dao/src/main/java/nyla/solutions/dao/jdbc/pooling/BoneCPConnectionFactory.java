@@ -1,9 +1,9 @@
 package nyla.solutions.dao.jdbc.pooling;
 import javax.sql.DataSource;
 
-import nyla.solutions.global.exception.ConnectionException;
-import nyla.solutions.global.exception.SetupException;
-import nyla.solutions.global.util.Config;
+import nyla.solutions.core.exception.ConnectionException;
+import nyla.solutions.core.exception.SetupException;
+import nyla.solutions.core.util.Config;
 import com.jolbox.bonecp.BoneCPConfig;
 import com.jolbox.bonecp.BoneCPDataSource;
 

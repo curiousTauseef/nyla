@@ -175,7 +175,7 @@ implements User, Copier, Comparable<Object>
    /**
     * 
     *
-    * @see nyla.solutions.global.data.Criteria#copy(nyla.solutions.global.data.Copier)
+    * @see nyla.solutions.core.data.Criteria#copy(nyla.solutions.core.data.Copier)
     */
    public void copy(Copier from)
    {

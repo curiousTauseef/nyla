@@ -1,6 +1,6 @@
 package nyla.solutions.dao.exception;
 
-import nyla.solutions.global.exception.SystemException;
+import nyla.solutions.core.exception.SystemException;
 
 /**
  * <pre>

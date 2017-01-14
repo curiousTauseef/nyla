@@ -2,6 +2,7 @@ package nyla.solutions.global.patterns.command.file;
 
 import java.io.File;
 
+import nyla.solutions.core.data.Environment;
 import nyla.solutions.core.exception.FatalException;
 import nyla.solutions.core.exception.RequiredException;
 import nyla.solutions.core.exception.SummaryException;
@@ -12,7 +13,6 @@ import nyla.solutions.core.patterns.workthread.Boss;
 import nyla.solutions.core.patterns.workthread.MemorizedQueue;
 import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Debugger;
-import nyla.solutions.global.patterns.command.Environment;
 
 
 /**
