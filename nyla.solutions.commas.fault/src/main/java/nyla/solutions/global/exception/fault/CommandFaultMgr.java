@@ -8,7 +8,7 @@ import nyla.solutions.core.exception.fault.FaultService;
 import nyla.solutions.core.operations.ClassPath;
 import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Debugger;
-import nyla.solutions.global.net.email.EmailFaultCommand;
+import nyla.solutions.email.EmailFaultCommand;
 
 
 /**

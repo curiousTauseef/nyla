@@ -1,5 +1,6 @@
 package nyla.solutions.office.msoffice.excel.patterns.workthread;
-import nyla.solutions.global.exception.RequiredException;
+
+import nyla.solutions.core.exception.RequiredException;
 
 public class GenericExcelRowQueue extends AbstractExcelRowQueue
 {

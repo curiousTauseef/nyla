@@ -1,7 +1,7 @@
 package nyla.solutions.office.msoffice.excel;
 import java.util.Collection;
 
-import nyla.solutions.global.data.Nameable;
+import nyla.solutions.core.data.Nameable;
 
 /**
  * Abstraction for an excel sheet

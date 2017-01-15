@@ -1,22 +1,24 @@
 package nyla.solutions.office.msoffice.excel.patterns.validation;
 import java.util.Iterator;
 
-import junit.framework.TestCase;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
-import nyla.solutions.global.patterns.validation.spring.GenericValidation;
-import nyla.solutions.global.patterns.validation.spring.OrREValidation;
-import nyla.solutions.global.patterns.validation.spring.Violations;
-import nyla.solutions.global.patterns.workthread.Boss;
-import nyla.solutions.global.patterns.workthread.WorkQueue;
-import nyla.solutions.global.util.Config;
-import nyla.solutions.global.util.Debugger;
-import nyla.solutions.office.msoffice.excel.Excel;
-import nyla.solutions.office.msoffice.excel.ExcelSheet;
-
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import junit.framework.TestCase;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+import nyla.solutions.core.patterns.workthread.Boss;
+import nyla.solutions.core.patterns.workthread.WorkQueue;
+import nyla.solutions.core.util.Config;
+import nyla.solutions.core.util.Debugger;
+import nyla.solutions.office.msoffice.excel.Excel;
+import nyla.solutions.office.msoffice.excel.ExcelSheet;
+import nyla.solutions.spring.validation.GenericValidation;
+import nyla.solutions.spring.validation.OrREValidation;
+import nyla.solutions.spring.validation.Violations;
+
+
 
 @Ignore
 public class ExcelRegExpTest extends TestCase

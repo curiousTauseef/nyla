@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import nyla.solutions.global.io.IO;
+import nyla.solutions.core.io.IO;
 
 public class FOPTest
 {

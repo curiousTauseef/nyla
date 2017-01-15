@@ -1,8 +1,9 @@
 package nyla.solutions.office.msoffice.excel.patterns.workthread;
 
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.patterns.workthread.WorkQueue;
-import nyla.solutions.global.util.Debugger;
+
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.patterns.workthread.WorkQueue;
+import nyla.solutions.core.util.Debugger;
 import nyla.solutions.office.msoffice.excel.Excel;
 import nyla.solutions.office.msoffice.excel.ExcelSheet;
 

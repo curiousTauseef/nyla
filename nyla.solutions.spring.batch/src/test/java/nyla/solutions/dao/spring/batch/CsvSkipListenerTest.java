@@ -1,12 +1,12 @@
 package nyla.solutions.dao.spring.batch;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
-import nyla.solutions.dao.spring.batch.CsvArrayableSkipListener;
-import nyla.solutions.global.data.DataRow;
+import nyla.solutions.core.data.DataRow;
+import nyla.solutions.spring.batch.CsvArrayableSkipListener;
 
 @Ignore
 public class CsvSkipListenerTest

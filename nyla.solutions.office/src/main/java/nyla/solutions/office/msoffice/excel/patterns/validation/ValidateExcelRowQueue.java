@@ -3,9 +3,9 @@ package nyla.solutions.office.msoffice.excel.patterns.validation;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import nyla.solutions.global.exception.RequiredException;
-import nyla.solutions.global.patterns.validation.spring.ValidationTask;
+import nyla.solutions.core.exception.RequiredException;
 import nyla.solutions.office.msoffice.excel.patterns.workthread.AbstractExcelRowQueue;
+import nyla.solutions.spring.validation.ValidationTask;
 
 public class ValidateExcelRowQueue extends AbstractExcelRowQueue
 {

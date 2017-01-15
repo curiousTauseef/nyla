@@ -4,17 +4,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
+import nyla.solutions.core.data.Event;
+import nyla.solutions.core.data.Time;
+import nyla.solutions.core.data.TimeInterval;
+import nyla.solutions.core.data.TimeSlot;
+import nyla.solutions.core.exception.NoDataFoundException;
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.patterns.servicefactory.ServiceFactory;
+import nyla.solutions.core.security.user.data.User;
+import nyla.solutions.core.util.Debugger;
+import nyla.solutions.core.util.Scheduler;
 
-import nyla.solutions.global.data.Event;
-import nyla.solutions.global.data.Time;
-import nyla.solutions.global.data.TimeInterval;
-import nyla.solutions.global.data.TimeSlot;
-import nyla.solutions.global.exception.NoDataFoundException;
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.patterns.servicefactory.ServiceFactory;
-import nyla.solutions.global.security.user.data.User;
-import nyla.solutions.global.util.Debugger;
-import nyla.solutions.global.util.Scheduler;
+
 
 public class SchedulerMgr implements SchedulerService
 {

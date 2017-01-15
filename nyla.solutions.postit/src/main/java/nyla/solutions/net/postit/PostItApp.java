@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import nyla.solutions.core.util.settings.Settings;
-import nyla.solutions.global.net.email.Email;
+import nyla.solutions.email.Email;
 import nyla.solutions.net.postit.exception.PostItException;
 import nyla.solutions.spring.settings.EnvironmentSettings;
 

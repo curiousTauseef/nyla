@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import nyla.solutions.core.exception.NoDataFoundException;
 import nyla.solutions.core.util.Debugger;
-import nyla.solutions.global.net.email.Email;
+import nyla.solutions.email.Email;
 import nyla.solutions.net.postit.PostItService;
 import nyla.solutions.net.postit.Postable;
 import nyla.solutions.net.postit.RecipientDAORepository;

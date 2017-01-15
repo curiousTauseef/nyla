@@ -8,12 +8,10 @@ import java.util.Calendar;
 import org.junit.Before;
 import org.junit.Test;
 
-import nyla.solutions.global.io.IO;
-import nyla.solutions.global.util.Config;
-import nyla.solutions.global.util.Debugger;
-import nyla.solutions.office.chart.Chart;
-import nyla.solutions.office.chart.JFreeChartFacade;
 import junit.framework.TestCase;
+import nyla.solutions.core.io.IO;
+import nyla.solutions.core.util.Config;
+import nyla.solutions.core.util.Debugger;
 
 public class JFreeChartFacadeTest extends TestCase
 {

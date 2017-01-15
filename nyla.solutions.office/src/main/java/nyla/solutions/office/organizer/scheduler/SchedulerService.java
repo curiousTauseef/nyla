@@ -2,10 +2,10 @@ package nyla.solutions.office.organizer.scheduler;
 
 import java.util.Date;
 
+import nyla.solutions.core.data.Event;
+import nyla.solutions.core.data.TimeInterval;
+import nyla.solutions.core.security.user.data.User;
 
-import nyla.solutions.global.data.Event;
-import nyla.solutions.global.data.TimeInterval;
-import nyla.solutions.global.security.user.data.User;
 
 public interface SchedulerService
 {

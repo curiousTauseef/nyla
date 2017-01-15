@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import nyla.solutions.global.net.email.Email;
+import nyla.solutions.email.Email;
 import nyla.solutions.net.postit.data.Recipient;
 
 @Component

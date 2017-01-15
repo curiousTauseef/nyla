@@ -1,11 +1,11 @@
 package nyla.solutions.office.msoffice.excel;
 
-import junit.framework.TestCase;
-import nyla.solutions.global.util.Debugger;
-
 import java.util.Arrays;
 
 import org.junit.Assert;
+
+import junit.framework.TestCase;
+import nyla.solutions.core.util.Debugger;
 
 /**
  * Test for the Excel object

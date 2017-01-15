@@ -3,9 +3,9 @@ package nyla.solutions.office.chart;
 import java.awt.Color;
 import java.util.List;
 
-import nyla.solutions.global.data.Binary;
-import nyla.solutions.global.data.Nameable;
-import nyla.solutions.global.data.Type;
+import nyla.solutions.core.data.Binary;
+import nyla.solutions.core.data.Nameable;
+import nyla.solutions.core.data.Type;
 
 
 /**

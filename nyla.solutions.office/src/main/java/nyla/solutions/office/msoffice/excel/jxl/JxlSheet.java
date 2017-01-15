@@ -1,14 +1,12 @@
 package nyla.solutions.office.msoffice.excel.jxl;
-
-import nyla.solutions.global.exception.NotImplementedException;
-import nyla.solutions.office.msoffice.excel.ExcelSheet;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
 import jxl.Cell;
 import jxl.Sheet;
+import nyla.solutions.core.exception.NotImplementedException;
+import nyla.solutions.office.msoffice.excel.ExcelSheet;
 
 /**
  * Facade for the JXL Excel API to the implement the ExcelSheet interface

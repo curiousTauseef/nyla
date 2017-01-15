@@ -3,14 +3,13 @@ package nyla.solutions.office.fop;
 import java.io.File;
 import java.util.Map;
 
-import nyla.solutions.global.data.Textable;
-import nyla.solutions.global.exception.SystemException;
-import nyla.solutions.global.patterns.command.file.FileCommand;
-import nyla.solutions.global.util.Config;
-import nyla.solutions.global.util.Debugger;
-import nyla.solutions.global.util.JavaBean;
-import nyla.solutions.global.util.Text;
-
+import nyla.solutions.commas.file.FileCommand;
+import nyla.solutions.core.data.Textable;
+import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.util.Config;
+import nyla.solutions.core.util.Debugger;
+import nyla.solutions.core.util.JavaBean;
+import nyla.solutions.core.util.Text;
 
 
 /**

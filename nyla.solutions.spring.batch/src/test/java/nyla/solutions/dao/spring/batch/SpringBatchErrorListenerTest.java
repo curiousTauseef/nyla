@@ -6,14 +6,15 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import nyla.solutions.dao.spring.batch.SpringBatchErrorListener;
-import nyla.solutions.global.exception.fault.Fault;
-import nyla.solutions.global.exception.fault.FaultFormatTextDecorator;
-import nyla.solutions.global.exception.fault.FaultMgr;
-import nyla.solutions.global.exception.fault.FaultService;
-import nyla.solutions.global.patterns.command.net.EmailCommand;
-import nyla.solutions.global.patterns.decorator.ToStringTextDecorator;
-import nyla.solutions.global.patterns.servicefactory.ServiceFactory;
+import nyla.solutions.core.exception.fault.Fault;
+import nyla.solutions.core.exception.fault.FaultFormatTextDecorator;
+import nyla.solutions.core.exception.fault.FaultMgr;
+import nyla.solutions.core.exception.fault.FaultService;
+import nyla.solutions.core.patterns.decorator.ToStringTextDecorator;
+import nyla.solutions.core.patterns.servicefactory.ServiceFactory;
+import nyla.solutions.email.EmailCommand;
+import nyla.solutions.spring.batch.SpringBatchErrorListener;
+
 
 @Ignore
 public class SpringBatchErrorListenerTest
