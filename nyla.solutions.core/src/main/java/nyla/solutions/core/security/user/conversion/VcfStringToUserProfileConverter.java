@@ -8,7 +8,10 @@ import nyla.solutions.core.patterns.conversion.Converter;
 import nyla.solutions.core.security.user.data.UserProfile;
 
 /**
+ * <pre>
  * Support for vcards
+ * 
+ * Examples 
  * 
  * begin:vcard
 	version:3.0
@@ -18,6 +21,18 @@ import nyla.solutions.core.security.user.data.UserProfile;
 	n;charset=utf-8:Robinson;Estella;;;
 	tel;charset=utf-8;type=home:(201) 435-9523
 	end:vcard 
+	
+	
+	BEGIN:VCARD
+	VERSION:3.0
+	PRODID:-//Apple Inc.//Mac OS X 10.11.6//EN
+	N:Green;Gregory;;;
+	FN:Gregory Green
+	EMAIL;type=INTERNET;type=HOME;type=pref:grfd@yahoo.com
+	X-ABUID:49C77E65-29D8-48C7-A524-CB8E42A912CC:ABPerson
+	END:VCARD
+	</pre>
+	
  * @author Gregory Green
  *
  */
@@ -99,25 +114,35 @@ public class VcfStringToUserProfileConverter implements Converter<String, UserPr
 		if(text == null || text.trim().length() == 0)
 			return null;
 		
-		
 		String[] lines = text.split("\\\n");
 		
 		BiConsumer<String,UserProfile> strategy = null;
 		UserProfile userProfile = null;
-		
+		String lineUpper = null;
 		for (String line : lines)
 		{
 			//get first term
 			int index = line.indexOf(";");
 			if(index < 0)
 				continue; //skip line
-			
+			//
 			String term = line.substring(0, index);
 			
-			strategy = strategies.get(term);
-			
+			strategy = strategies.get(term.toLowerCase());
+			lineUpper = line.toUpperCase();
 			if(strategy == null)
-				continue;
+			{
+				//check for a different format
+				//N:Green;Gregory;;;
+				if(lineUpper.startsWith("N:"))
+					strategy = strategies.get("n");
+				else if(lineUpper.startsWith("FN:"))
+					strategy = strategies.get("fn");
+				else if(lineUpper.contains("EMAIL;"))
+					strategy = strategies.get("email");
+				else
+					continue; //skip
+			}
 			
 			if(userProfile == null)
 			{
