@@ -4,6 +4,7 @@
 package nyla.solutions.office.msoffice;
 
 import java.io.File;
+import java.util.Arrays;
 
 import javax.sql.DataSource;
 
@@ -79,7 +80,7 @@ public class ExcelSqlLoadCommand implements Command<Boolean,String>
 		finally
 		{
 			if(inserter != null)
-				try{ inserter.dispose(); } catch(Exception e){}
+				inserter.dispose(); 
 		}
 		
 	}// --------------------------------------------
@@ -196,15 +197,26 @@ public class ExcelSqlLoadCommand implements Command<Boolean,String>
 	 */
 	public char[] getDbPassword()
 	{
-		return dbPassword;
-	}
+		if(dbPassword == null)
+			return null;
+		
+		
+		return Arrays.copyOf(dbPassword,dbPassword.length);
+	}//------------------------------------------------
 	/**
 	 * @param dbPassword the dbPassword to set
 	 */
 	public void setDbPassword(char[] dbPassword)
 	{
-		this.dbPassword = dbPassword;
-	}
+		if(dbPassword == null)
+		{
+			this.dbPassword = null;
+		}
+		else
+		{
+			this.dbPassword = Arrays.copyOf(dbPassword,0);	
+		}
+	}//------------------------------------------------
 
 
 	private String dataSourceName = Config.getProperty(ExcelSqlLoadCommand.class,"dataSourceName",Config.getProperty(JdbcConstants.DS_NAME_PROP,""));

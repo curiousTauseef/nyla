@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import nyla.solutions.core.io.IO;
+import nyla.solutions.core.util.Debugger;
 
 public class FOPTest
 {
@@ -23,7 +24,9 @@ public class FOPTest
 		String fo = IO.readClassPath("pdf/example.fop");
 		
 		File file = new File("src/test/resources/pdf/test.pdf");
-		file.delete();
+		boolean results = file.delete();
+		
+		Debugger.println("previous deleted:"+results);
 		
 		FOP.writePDF(fo, file);
 		Assert.assertTrue(file.exists());

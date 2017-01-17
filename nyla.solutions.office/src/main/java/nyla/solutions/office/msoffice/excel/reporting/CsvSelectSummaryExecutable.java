@@ -6,6 +6,7 @@ package nyla.solutions.office.msoffice.excel.reporting;
 import java.io.File;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import nyla.solutions.commas.Executable;
@@ -140,7 +141,7 @@ public class CsvSelectSummaryExecutable extends AbstractDaoOperation implements 
 	      	try{ rs.close();} catch(Exception e){}
 	      	
 	        if(ps != null)
-		      	try{ ps.close();} catch(Exception e){}
+		      	try{ ps.close();} catch(Exception e){Debugger.printError(e);}
 	         if(sql != null)
 	            sql.dispose();
 	      }
@@ -160,20 +161,29 @@ public class CsvSelectSummaryExecutable extends AbstractDaoOperation implements 
 	public void setLabel(String label)
 	{
 	   this.label = label;
-	}
+	}//------------------------------------------------
 	/**
 	 * @return the header
 	 */
-	public static String[] getHeader()
+	public synchronized static String[] getHeader()
 	{	   
-	   return header;
+		if(header == null|| header.length == 0)
+			return null;
+		
+	   return Arrays.copyOf(header,header.length);
 	}// ----------------------------------------------
 	/**
 	 * @param header the header to set
 	 */
-	public static void setHeader(String[] header)
+	public static synchronized void setHeader(String[] header)
 	{
-	   CsvSelectSummaryExecutable.header = header;
+		if(header == null)
+			CsvSelectSummaryExecutable.header = null;
+		else
+		{
+			CsvSelectSummaryExecutable.header = Arrays.copyOf(header,header.length);	
+		}
+	   
 	}// ----------------------------------------------	
 	/**
 	 * @return the dateFormat
@@ -209,15 +219,24 @@ public class CsvSelectSummaryExecutable extends AbstractDaoOperation implements 
 	 */
 	public Object[] getParameters()
 	{
-	   return parameters;
-	}
+		if(parameters == null || parameters.length == 0)
+			return null;
+		
+	   return Arrays.copyOf(parameters,parameters.length);
+	}//------------------------------------------------
 	/**
 	 * @param parameters the parameters to set
 	 */
 	public void setParameters(Object[] parameters)
 	{
-	   this.parameters = parameters;
-	}
+		if(parameters == null || parameters.length == 0)
+			this.parameters = null;
+		else
+		{
+			this.parameters = Arrays.copyOf(parameters,parameters.length);
+		}
+	   
+	}//------------------------------------------------
 	
 	private Object[] parameters = null; 
 	private String dateFormat = Config.getProperty(CsvSelectSummaryExecutable.class,"dateFormat","yyyy-MM-dd:HH:mm:ss:SS");

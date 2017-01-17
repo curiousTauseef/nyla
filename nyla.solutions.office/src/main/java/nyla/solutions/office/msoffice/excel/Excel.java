@@ -249,9 +249,7 @@ public class Excel implements Disposable
 		   //get first sheet
 		   sheet = excel.retrieveSheet(1);
 		   if(sheet == null)
-			   throw new RequiredException("Could not retrieve first sheet");
-		   
-		   sheetName = sheet.getName();
+			   throw new RequiredException("Could not retrieve first sheet");		   
 	   }
 	   else
 	   {

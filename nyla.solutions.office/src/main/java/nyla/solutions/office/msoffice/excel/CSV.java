@@ -99,15 +99,6 @@ public class CSV
 		}
    }// --------------------------------------------------------
    /**
-    * 
-    *
-    * @see java.lang.Comparable#compareTo(java.lang.Object)
-    */
-   public int compareTo(Object arg0)
-   {
-      return 0;
-   }// --------------------------------------------   
-   /**
     * @return the separator
     */
    public String getSeparator()

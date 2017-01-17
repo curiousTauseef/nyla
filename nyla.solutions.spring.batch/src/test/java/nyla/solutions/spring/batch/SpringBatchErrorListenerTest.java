@@ -1,4 +1,4 @@
-package nyla.solutions.dao.spring.batch;
+package nyla.solutions.spring.batch;
 
 import java.io.IOException;
 

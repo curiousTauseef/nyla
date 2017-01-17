@@ -1,4 +1,4 @@
-package nyla.solutions.dao.spring.batch;
+package nyla.solutions.spring.batch;
 
 import static org.junit.Assert.fail;
 

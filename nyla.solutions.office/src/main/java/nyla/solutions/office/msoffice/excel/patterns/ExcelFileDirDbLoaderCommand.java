@@ -3,6 +3,7 @@ package nyla.solutions.office.msoffice.excel.patterns;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import nyla.solutions.commas.Command;
 import nyla.solutions.core.exception.SystemException;
@@ -90,7 +91,7 @@ public class ExcelFileDirDbLoaderCommand implements Command<Boolean, String[]>
 		 finally
 		 {
 			   if(dao != null)
-				   try{ dao.dispose(); } catch(Exception e){}
+				   try{ dao.dispose(); } catch(Exception e){Debugger.printError(e);}
 		 }
 		
 		
@@ -138,20 +139,29 @@ public class ExcelFileDirDbLoaderCommand implements Command<Boolean, String[]>
 	public void setDbUserName(String dbUserName)
 	{
 		this.dbUserName = dbUserName;
-	}
+	}//------------------------------------------------
 	/**
 	 * @return the dbPassword
 	 */
 	public char[] getDbPassword()
 	{
-		return dbPassword;
-	}
+		if(dbPassword == null || dbPassword.length == 0)
+			return null;
+		
+		return Arrays.copyOf(dbPassword,dbPassword.length);
+	}//------------------------------------------------
 	/**
 	 * @param dbPassword the dbPassword to set
 	 */
 	public void setDbPassword(char[] dbPassword)
 	{
-		this.dbPassword = dbPassword;
+		if(dbPassword == null || dbPassword.length == 0)
+			this.dbPassword = null;
+		else
+		{
+			this.dbPassword = Arrays.copyOf(dbPassword,dbPassword.length);	
+		}
+		
 	}
 	/**
 	 * @return the rootDirectory

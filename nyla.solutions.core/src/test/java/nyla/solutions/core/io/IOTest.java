@@ -3,8 +3,10 @@ package nyla.solutions.core.io;
 import java.io.File;
 import java.io.IOException;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import junit.framework.TestCase;
-import nyla.solutions.core.io.IO;
 
 public class IOTest extends TestCase
 {
@@ -45,6 +47,15 @@ public class IOTest extends TestCase
 	   assertTrue(!inputDirectory.exists()); 
 	   
 	}
-	
+	@Test
+	public void testlistFiles() throws Exception
+	{
+		File[] files = IO.listFiles(new File("src/test/resources/iotest"), "*");
+		
+		Assert.assertNotNull(files);
+		Assert.assertTrue(files.length == 4);
+		files = IO.listFiles(new File("src/test/resources/iotest"), "*.xml");
+		Assert.assertTrue(files.length == 2);
+	}
 	//private String directoryPath = "./runtime/tmp";
 }
