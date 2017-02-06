@@ -16,7 +16,7 @@
 		
 <!-- 		</gfe:cache> -->
 <!-- 	</beans> -->
-<gfe:client-cache id="gemfireCache" pool-name="my-pool" pdx-read-serialized="true"
+<gfe:client-cache id="gemfireCache" pool-name="my-pool" pdx-read-serialized="false"
 pdx-serializer-ref="reflectionBasedAutoSerializer" />
 
 
@@ -29,8 +29,9 @@ pdx-serializer-ref="reflectionBasedAutoSerializer" />
 <!-- 		<gfe:partitioned-region id="Recipient"/> -->
 <!-- 	</beans> -->
 	<gfe:client-region id="Recipient" shortcut="PROXY"/>
+	<gfe:client-region id="UserProfile" shortcut="PROXY"/>
 	<bean id="reflectionBasedAutoSerializer" class="org.apache.geode.pdx.ReflectionBasedAutoSerializer">
-		<property name="serializableClasses" value="nyla.solutions.net.postit.data.Recipient"/>
+		<property name="serializableClasses" value="nyla.solutions.net.postit.data.Recipient||nyla.solutions.core.security.user.data.UserProfile"/>
 	</bean>
 
 	<!-- If the 'pdx' profile is activated, pdx type information will be persisted using the configured disk store -->

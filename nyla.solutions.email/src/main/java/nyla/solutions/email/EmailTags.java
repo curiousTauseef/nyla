@@ -1,11 +1,6 @@
 package nyla.solutions.email;
 
-
-
-
-
 public interface EmailTags
-
 {
 
    public static final String MAIL_SESSION_JNDI_USED = "mail.smtp.jndi.session.used";
@@ -22,6 +17,7 @@ public interface EmailTags
     * MAIL_SUBJECT_PROP = "mail.subject"
     */
    public static final String MAIL_SUBJECT_PROP = "mail.subject";
+   
 
    /**
 

@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import nyla.solutions.core.exception.NoDataFoundException;
+import nyla.solutions.core.security.user.data.User;
+import nyla.solutions.core.security.user.data.UserProfile;
 import nyla.solutions.core.util.Debugger;
 import nyla.solutions.email.Email;
 import nyla.solutions.net.postit.PostItService;
@@ -50,9 +52,9 @@ public class MailPostItService implements PostItService
      
       try
       {
-    	  Iterable<Recipient> recipients = recipientDAORepository.findAll();
+    	  Iterable<UserProfile> recipients = recipientDAORepository.findAll();
     	  
-         for (Recipient recipient : recipients)
+         for (UserProfile recipient : recipients)
 		{
         	 this.post(recipient.getEmail(), aPostable);
 		}

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.StandardEnvironment;
 
+import nyla.solutions.core.security.user.data.UserProfile;
 import nyla.solutions.net.postit.data.Recipient;
 
 public class PostItMgrIntTest
@@ -29,7 +30,7 @@ public class PostItMgrIntTest
 			mgr.saveRecipient(recipient);
 			
 			
-			Iterable<Recipient> recipients = mgr.findRecipients();
+			Iterable<UserProfile> recipients = mgr.findRecipients();
 			
 			Assert.assertNotNull(recipients);
 			Assert.assertTrue(recipients.iterator().hasNext());
@@ -45,7 +46,7 @@ public class PostItMgrIntTest
 		try(AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(PostItApp.class))
 		{
 			PostItMgr mgr = ctx.getBean(PostItMgr.class);
-			Recipient recipient = new Recipient();
+			UserProfile recipient = new UserProfile();
 			try
 			{
 			
@@ -55,12 +56,12 @@ public class PostItMgrIntTest
 			catch(RuntimeException e)
 			{}
 			
-			recipient.setRecipientId("id");
+			recipient.setId("id");
 			
 			mgr.saveRecipient(recipient);
 			
 			
-			Iterable<Recipient> recipients = mgr.findRecipients();
+			Iterable<UserProfile> recipients = mgr.findRecipients();
 			
 			Assert.assertNotNull(recipients);
 			Assert.assertTrue(recipients.iterator().hasNext());

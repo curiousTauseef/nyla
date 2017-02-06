@@ -2,6 +2,7 @@ package nyla.solutions.email;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
@@ -230,17 +231,17 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 
 	/**
 	 * ending out E-mails through SMTP E-mail server. From the system
-	 * @param aTo E-mail TO: field in Internet E-mail address format. If there
+	 * @param to E-mail TO: field in Internet E-mail address format. If there
 	 *            are more than one E-mail addresses
-	 * @param aSubject E-mail subject line.
-	 * @param aMessageBody  E-mail body.
+	 * @param subject E-mail subject line.
+	 * @param messageBody  E-mail body.
 	 */
-	public synchronized void sendMail(String aTo, String aSubject,
-			String aMessageBody)
+	public synchronized void sendMail(String to, String subject,
+			String messageBody)
 	{
 
-		sendMail(aTo, Config.getProperty(EmailTags.MAIL_FROM_ADDRESS_PROP),
-				aSubject, aMessageBody);
+		sendMail(to, Config.getProperty(EmailTags.MAIL_FROM_ADDRESS_PROP),
+				subject, messageBody);
 
 	}// --------------------------------------------
 
@@ -277,7 +278,25 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 		sendMail(aTo, Config.getProperty(EmailTags.MAIL_FROM_ADDRESS_PROP),
 				aSubject, aMessageBody, aFile);
 	}// --------------------------------------------
-
+	/**
+	 * 
+	 * @param to the list bcc address
+	 * @param from from user
+	 * @param subject the subject
+	 * @param messageBody the message body
+	 */
+	public synchronized void sendMailBcc(String to, String from,
+	String subject, String messageBody)
+	{
+		sendMail(to,Message.RecipientType.BCC, from,
+		subject, messageBody, null);
+	}//------------------------------------------------
+	public synchronized void sendMail(String to, String from,
+	String subject, String aMessageBody, File aFile)
+	{
+		sendMail(to,Message.RecipientType.TO, from,
+		subject, aMessageBody, aFile);
+	}//------------------------------------------------
 	/**
 	 * Sending out E-mails through SMTP E-mail server.
 	 * 
@@ -290,7 +309,7 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 	 * @param aMessageBody E-mail body.
 	 */
 
-	public synchronized void sendMail(String to,String aFrom,
+	private synchronized void sendMail(String to,Message.RecipientType recipientType, String aFrom,
 	String aSubject, String aMessageBody, File aFile)
 	{
 		
@@ -311,7 +330,8 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 
 			}
 
-			mailMessage.setRecipients(Message.RecipientType.TO,
+			//Message.RecipientType.TO
+			mailMessage.setRecipients(recipientType,
 					this.getAllEmailAddress(to));
 
 			String subject = aSubject == null ? this.defaultSubject : aSubject;
@@ -496,7 +516,7 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 	 * @throws IOException  unknown error occurs
 	 * @throws Exception  unknown error occurs
 	 */
-	public void sendMail(String aTo, String aTemplateNM,
+	public synchronized void sendMail(String aTo, String aTemplateNM,
 			Map<Object, Object> aMap, Locale aLocale)
 
 	throws javax.mail.MessagingException, IOException, Exception
@@ -711,7 +731,7 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 	 * @param aFile the file attachment
 	 */
 
-	private void attach(MimeMessage aMessage, File aFile, String aMessageText)
+	private synchronized void attach(MimeMessage aMessage, File aFile, String aMessageText)
     throws Exception
 	{
 
@@ -784,7 +804,7 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 	/**
 	 * @return the contentType
 	 */
-	public String getContentType()
+	public synchronized String getContentType()
 	{
 		return contentType;
 	}
@@ -792,10 +812,10 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 	/**
 	 * @param contentType the contentType to set
 	 */
-	public void setContentType(String contentType)
+	public synchronized void setContentType(String contentType)
 	{
 		this.contentType = contentType;
-	}
+	}//------------------------------------------------
 
 	
 	/**
@@ -865,26 +885,38 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 	 */
 	public char[] getMailFromPassword()
 	{
-		return mailFromPassword;
+		if(mailFromPassword == null || mailFromPassword.length == 0)
+			return null;
+		
+		return Arrays.copyOf(mailFromPassword,mailFromPassword.length);
 	}
 	/**
 	 * @param mailFromPassword the mailFromPassword to set
 	 */
 	public void setMailFromPassword(char[] mailFromPassword)
 	{
-		this.mailFromPassword = mailFromPassword;
-	}
+		if(mailFromPassword == null || mailFromPassword.length == 0)
+		{
+			this.mailFromPassword = null;
+		}
+		else
+		{
+			this.mailFromPassword = Arrays.copyOf(mailFromPassword,mailFromPassword.length);	
+		}
+			
+		
+	}//------------------------------------------------
 	/**
 	 * @return the mailTransport
 	 */
-	public Transport getMailTransport()
+	public synchronized Transport getMailTransport()
 	{
 		return mailTransport;
 	}
 	/**
 	 * @param mailTransport the mailTransport to set
 	 */
-	public void setMailTransport(Transport mailTransport)
+	public synchronized void setMailTransport(Transport mailTransport)
 	{
 		this.mailTransport = mailTransport;
 	}
