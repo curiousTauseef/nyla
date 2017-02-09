@@ -55,15 +55,8 @@ public class ObjectMethodProxy
 
 	/**
 	 * Note that this methods does not support auto boxing of primitive types
-	 * 
-	 * @param aObject
-	 *            the object
-	 * @param aMethodName
-	 *            the method
-	 * @param aArguments
-	 *            the input argument
-	 * @return the object return values
-	 * @throws Exception
+	 * @param arguments the object method input arguments
+	 * @throws Exception when an unknowns errors occurs
 	 */
 	public Object execute(Object[] arguments) throws Exception
 	{

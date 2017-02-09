@@ -1,6 +1,5 @@
 package nyla.solutions.core.util;
 
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,7 +15,49 @@ public class ConfigTest extends TestCase
 	{
 		super(name);
 	}
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testLoadFromEnv() throws Exception
+	{
+		String path = System.getenv("PATH");
+		
+		Assert.assertEquals(path, Config.getProperty("PATH"));
+		
+		
+	}//------------------------------------------------
+	@Test
+	public void testLoadFromSystemProperties() throws Exception
+	{
+		String key = System.getProperties().keySet().iterator().next().toString();
+		String systemProp = System.getProperty(key);
+		
+		Assert.assertEquals(systemProp, Config.getProperty(key));
+		
+		
+	}//------------------------------------------------
+	@Test
+	public void testReload()
+	{
+		System.setProperty(Config.SYS_PROPERTY, "");
+		System.setProperty("mail.auth.required", "true");
+		Assert.assertEquals(System.getProperty("mail.auth.required"), "true");
+		
+		System.setProperty("mail.auth.required", "true");
+		Config.reLoad();
+		
+		Assert.assertTrue(Config.getPropertyBoolean("mail.auth.required"));
+		
 
+		System.setProperty("mail.auth.required", "false");
+
+		Config.reLoad();
+		Assert.assertTrue(!Config.getPropertyBoolean("mail.auth.required"));
+	}
+	
+	@Test
 	public void testLoadFromPropertyFile()
 	{
 		System.setProperty(Config.SYS_PROPERTY, "src/test/resources/config.properties");

@@ -68,7 +68,7 @@ public class RMI
 	}// --------------------------------------------------------
    /**
     * 
-    * @param rmiUrl rmi://localhost:port/serviceName
+    * @param name the rmi Url rmi://localhost:port/serviceName
     * @return the RemoteObject
     */
    @SuppressWarnings("unchecked")

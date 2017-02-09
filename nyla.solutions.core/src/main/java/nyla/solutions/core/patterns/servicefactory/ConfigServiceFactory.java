@@ -1,7 +1,10 @@
 package nyla.solutions.core.patterns.servicefactory;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import nyla.solutions.core.exception.SetupException;
@@ -9,6 +12,8 @@ import nyla.solutions.core.operations.ClassPath;
 import nyla.solutions.core.patterns.SetUpable;
 import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.JavaBean;
+import nyla.solutions.core.util.settings.ConfigSettings;
+import nyla.solutions.core.util.settings.Settings;
 
 
 
@@ -33,7 +38,28 @@ public class ConfigServiceFactory extends ServiceFactory implements SetUpable
 
 	public ConfigServiceFactory()
 	{
+		this.settings = Config.getSettings();
 	}// --------------------------------------------------------
+	public ConfigServiceFactory(String config)
+	{
+		Properties props = new Properties();
+		try(InputStream is = ClassPath.getSystemResourceAsStream(config))
+		{
+			props.load(is);
+			
+			settings = new ConfigSettings();
+			settings.setProperties(props);
+			Config.setSettings(settings);
+		}
+		catch(IOException e)
+		{
+			throw new SetupException("Unable to load resource config:"+config+" error:"+e.getMessage(),e);
+		}
+		
+	}// --------------------------------------------------------
+	/**
+	 * Setup the factory beans
+	 */
 	public synchronized void setUp()
 	{	
 			if(initialized)
@@ -42,7 +68,7 @@ public class ConfigServiceFactory extends ServiceFactory implements SetUpable
 			String className = null;
 			
 			//Load
-			Map<Object,Object> properties = Config.getProperties();
+			Map<Object,Object> properties = settings.getProperties();
 			
 			String key = null;
 			
@@ -76,7 +102,6 @@ public class ConfigServiceFactory extends ServiceFactory implements SetUpable
 	@Override
 	public <T> T create(Class<?> aClass)
 	{	
-		
 		return create(aClass.getName());
 	}// ------------------------------------------------
 	/**
@@ -92,7 +117,7 @@ public class ConfigServiceFactory extends ServiceFactory implements SetUpable
 	}// ------------------------------------------------
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T create(String aName)
+	public <T> T create(String aName, Object[] params)
 	{
 		if(aName == null || aName.length() == 0)
 			return null;
@@ -107,8 +132,8 @@ public class ConfigServiceFactory extends ServiceFactory implements SetUpable
 		if(serviceObj == null)
 		{
 			//create
-			String className = Config.getProperty(factoryName);
-			serviceObj = ClassPath.newInstance(className);
+			String className = settings.getProperty(factoryName,aName);
+			serviceObj = ClassPath.newInstance(className,params);
 			
 			if(setNestedProperties)
 				setProperties(factoryName, serviceObj);
@@ -136,7 +161,7 @@ public class ConfigServiceFactory extends ServiceFactory implements SetUpable
 		{
 			propertyNameText = propertyName.toString();
 			
-			configPropertyValue = Config.getProperty(new StringBuilder(factoryName).append(".").append(propertyNameText).toString(),"");
+			configPropertyValue = settings.getProperty(new StringBuilder(factoryName).append(".").append(propertyNameText).toString(),"");
 			
 			if("".equals(configPropertyValue))
 				continue;
@@ -144,14 +169,14 @@ public class ConfigServiceFactory extends ServiceFactory implements SetUpable
 			
 			JavaBean.setProperty(serviceObj, propertyNameText, configPropertyValue);
 		}
-	}
+	}//------------------------------------------------
 	/**
 	 * @return create(aName);
 	 */
-	public <T> T create(String aName, Object[] aParams)
+	public <T> T create(String aName)
 	{
 		
-		return create(aName);
+		return create(aName,null);
 	}// ------------------------------------------------
 	/**
 	 * @return create(aName);
@@ -160,7 +185,8 @@ public class ConfigServiceFactory extends ServiceFactory implements SetUpable
 	@Override
 	public <T> T create(String aName, Object aParam)
 	{
-		return (T)create(aName);
+		Object[] params = {aParam };
+		return (T)create(aName,params);
 	}// ------------------------------------------------
 	/**
 	 * 
@@ -176,6 +202,7 @@ public class ConfigServiceFactory extends ServiceFactory implements SetUpable
 		
 		return instance;
 	}// ------------------------------------------------
+	private final Settings settings;
 	private static ConfigServiceFactory instance = null;
 	private static boolean initialized = false;
 	private static boolean singletonCreation =  Config.getPropertyBoolean(ConfigServiceFactory.class,"singletonCreation",false).booleanValue();

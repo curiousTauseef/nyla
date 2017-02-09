@@ -13,22 +13,30 @@ public class MissingConfigPropertiesException extends ConfigException
 	 */
 	private static final long serialVersionUID = 5689827263132067133L;
 
+	  public MissingConfigPropertiesException()
+	   {
+		  this("");
+	   }
 /**
-
     * Constructor for SetupException initializes internal 
-
     * data settings.
 
     * 
 
     */
 
-   public MissingConfigPropertiesException()
+   public MissingConfigPropertiesException(String key)
    {
 	   
 	   try
 		{
-		   StringBuilder msg = new StringBuilder("Missing ")
+		   StringBuilder msg = new StringBuilder();
+		   if(key != null && key.length() > 0 )
+		   {
+			   msg.append("key=").append(key).append(" ");
+		   }
+		   
+		   msg.append("Missing ")
 		   .append(Config.RESOURCE_BUNDLE_NAME)
 		   .append(".properties")
 		   .append(" in classpath: ")

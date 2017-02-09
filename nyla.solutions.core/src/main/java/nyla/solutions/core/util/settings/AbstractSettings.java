@@ -168,7 +168,7 @@ public abstract class AbstractSettings implements Settings
 			String configSourceLocation = this.getLocation();
 			
 			if (configSourceLocation == null)
-				throw new MissingConfigPropertiesException();
+				throw new MissingConfigPropertiesException("key:"+key);
 
 			
 			throw new ConfigException("Configuration property \"" + key

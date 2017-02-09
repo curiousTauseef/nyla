@@ -3,6 +3,7 @@ package nyla.solutions.email;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
@@ -11,12 +12,14 @@ import java.util.StringTokenizer;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
+import javax.mail.AuthenticationFailedException;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.NoSuchProviderException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
+import javax.mail.Store;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -27,6 +30,7 @@ import javax.naming.InitialContext;
 
 import nyla.solutions.core.data.Data;
 import nyla.solutions.core.exception.CommunicationException;
+import nyla.solutions.core.exception.SecurityException;
 import nyla.solutions.core.exception.SetupException;
 import nyla.solutions.core.operations.logging.Log;
 import nyla.solutions.core.patterns.Connectable;
@@ -34,11 +38,12 @@ import nyla.solutions.core.patterns.Disposable;
 import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Debugger;
 import nyla.solutions.core.util.Text;
+import nyla.solutions.email.data.EmailMessage;
 
 //import javax.activation.*;
 
 /**
- * 
+ * <pre>
  * <b>Email </b> is a client interface for sending emails.
  * This class is used for most application email management.
  * 
@@ -53,7 +58,6 @@ mail.host=smtp.1and1.com
 mail.auth.required=true
  * 
  * <b>mail.store.protocol</b> Protocol for retrieving email.
- * 
  * 
  * 
  * Example:
@@ -132,13 +136,15 @@ mail.auth.required=true
  * <b>mail.debug</b>
  * 
  * Set to True to enable JavaMail debug output.
- * 
- * 
- * 
- * @version 1.0 #==========================================================
+ *  #==========================================================
  *          #Email Settings mail.debug=true mail.transport.protocol=smtp
  *          mail.from=XXXX mail.smtp.host=host mail.smtp.auth=false
  *          mail.smtp.user=XXX mail.password=
+ * 
+ * </pre>
+ * 
+ * @version 1.0
+ *          
  */
 public class Email implements EmailTags, Disposable, SendMail, Connectable
 {	
@@ -172,6 +178,11 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 			}
 			
 		}
+		catch (SetupException e)
+		{
+
+			throw e;
+		}
 		catch (Exception e)
 		{
 
@@ -199,11 +210,22 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 			if (this.mailTransport != null)
 				this.mailTransport.close();
 			
-			
 			this.mailSession = null;
 
 		}
 		catch (Exception e)
+		{
+			this.logger.warn(e);
+		}
+		
+		try
+		{
+			if(this.store != null)
+				this.store.close();
+			
+			this.store = null;
+		}
+		catch(Exception e)
 		{
 			this.logger.warn(e);
 		}
@@ -628,7 +650,28 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 		this.mailTransport = this.mailSession.getTransport();
 
 	}// --------------------------------------------
+	/**
+	 * 
+	 * @param count number of records to read
+	 * @param startIndex start index 1 or higher
+	 * @param subjectPattern the search pattern
+	 * @return collection of the message
+	 * @throws javax.mail.MessagingException a message exception occurs
+	 * @throws IOException IO exception occurs
+	 */
+	public synchronized Collection<EmailMessage> readMail(int count,  int startIndex, String subjectPattern)
+	throws javax.mail.MessagingException, IOException
+	{
 
+		logger.debug("readMail");
+		
+		this.connect();
+		
+		try(ReadMail reader = new ReadMail(this.store))
+		{
+			return reader.readWhereSubjectContains(count, startIndex, subjectPattern);
+		}
+	}//------------------------------------------------
 	/**
 	 * Initialize the email object
 	 * 
@@ -640,9 +683,16 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 
 			try
 			{
-				Properties sysProperties = System.getProperties();
+				Properties props = System.getProperties();
+				
+				Properties sysProperties = new Properties();
+				for(Map.Entry<Object, Object> entry: props.entrySet())
+				{
+					sysProperties.setProperty(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
+				}
 				sysProperties.put("mail.imap.host",
 						Config.getProperty("mail.imap.host", ""));
+				
 				sysProperties.put("mail.imap.port",
 						Config.getProperty("mail.imap.port", "143"));
 
@@ -652,8 +702,25 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 				sysProperties.put("mail.host",smtpHost);
 				//sysProperties.put("mail.smtp.host",
 				//		Config.getProperty(MAIL_SERVER_PROP, ""));
-				sysProperties.put(MAIL_AUTHENICATION_REQUIRED_PROP, Boolean.valueOf(
-						isAuthenicationRequired()));
+				
+				sysProperties.setProperty("mail.imap.auth.plain.disable", "false");
+				sysProperties.setProperty("mail.imap.auth.ntlm.disable", "false");
+				sysProperties.setProperty("mail.store.protocol", "imap");
+				
+				sysProperties.setProperty("mail.imap.starttls.enable","true");
+				sysProperties.setProperty("mail.imap.starttls.required","true");
+				sysProperties.setProperty("mail.imap.socketFactory.port","993");
+				sysProperties.setProperty("mail.imap.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+				sysProperties.setProperty("mail.imap.auth.login.disable","false");
+				sysProperties.setProperty("mail.imap.socketFactory.fallback","false");
+				sysProperties.setProperty("mail.imap.debug", "true");
+				sysProperties.setProperty("mail.imap.sasl.enable", "true");
+				sysProperties.setProperty("mail.imap.ssl.enable","true");
+				sysProperties.setProperty("mail.imap.auth.plain.disable","true");
+				sysProperties.setProperty("mail.imap.auth.mechanisms","LOGIN");
+
+				sysProperties.put(MAIL_AUTHENICATION_REQUIRED_PROP, this.authenicationRequired);
+				
 				sysProperties.put("mail.smtp.port",
 						Config.getProperty("mail.smtp.port", "25"));
 
@@ -690,7 +757,7 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 
 						return new PasswordAuthentication(
 								getMailFromUser(),
-								String.valueOf(getMailFromPassword()));
+								Text.toString(getMailFromPassword()));
 					}
 
 				});
@@ -698,6 +765,10 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 				mailTransport = mailSession.getTransport(Config.getProperty(
 						"mail.protocol", "smtp"));
 
+				initStore();
+
+				
+				
 				Debugger.println(this, "properties=" + mailSession.getProperties());
 
 				if (isAuthenicationRequired())
@@ -723,6 +794,60 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 			}
 
 	} // -----------------------------------------------------------
+	private void initStore()
+	throws MessagingException
+	{
+
+		String protocol = Config.getProperty(
+				"mail.read.protocol", "");
+		if(protocol.length() == 0)
+		{
+			protocol  = "imap";
+		}
+	
+		this.store = mailSession.getStore(protocol);
+		
+		if(store == null)
+			return;
+		
+		if (!isAuthenicationRequired())
+			return;
+		
+		String user = getMailFromUser();
+		if(user == null|| user.trim().length() == 0)
+					throw new SetupException("user is required. Set property:"+MAIL_FROM_ADDRESS_PROP);
+		
+		String mailReadHost = Config.getProperty("mail."+protocol+".host");
+		
+		char[] passwordArray = getMailFromPassword();
+		
+		String password = "";
+		
+		if(passwordArray != null && passwordArray.length > 0)
+			password = new String(passwordArray);
+		
+		try{
+			store.connect(mailReadHost, user,
+					password);
+		}
+		catch(AuthenticationFailedException e)
+		{
+			if(password == null || password.trim().length() == 0)
+				throw new SecurityException("Required password not provided in property:"+EmailTags.MAIL_FROM_PASSWORD_PROP);
+			else
+				throw new CommunicationException("Unable authenticate to host:"+mailReadHost+" user:"+user+" ERROR:"+e.getMessage(),e);
+		}
+		catch(MessagingException e)
+		{
+			throw new CommunicationException("Unable to connect to host:"+mailReadHost+" user:"+user+" ERROR:"+e.getMessage(),e);
+		}
+		catch(RuntimeException e)
+		{
+			throw new CommunicationException("Unable to connect to host:"+mailReadHost+" user:"+user+" ERROR:"+e.getMessage(),e);
+		}		
+		
+		
+	}//------------------------------------------------
 
 	/**
 	 * 
@@ -888,8 +1013,8 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 		if(mailFromPassword == null || mailFromPassword.length == 0)
 			return null;
 		
-		return Arrays.copyOf(mailFromPassword,mailFromPassword.length);
-	}
+		return mailFromPassword;
+	}//------------------------------------------------
 	/**
 	 * @param mailFromPassword the mailFromPassword to set
 	 */
@@ -945,6 +1070,7 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 			Boolean.FALSE).booleanValue();
 	private String smtpHost = Config.getProperty(MAIL_SERVER_PROP,"");
 	private Session mailSession = null;
+	private Store store = null;
 	private String contentType = Config.getProperty(Email.class.getName()
 			+ ".contentType", "text/html");
 	private Transport mailTransport = null;

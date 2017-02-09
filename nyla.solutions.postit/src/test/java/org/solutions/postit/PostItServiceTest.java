@@ -11,17 +11,20 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.junit.Assert;
-
 import nyla.solutions.core.patterns.servicefactory.ServiceFactory;
+import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Debugger;
 import nyla.solutions.net.postit.Package;
-import nyla.solutions.net.postit.PostItService;
+import nyla.solutions.net.postit.PostItMgr;
 
-
+/**
+ * Post It service tests
+ * 
+ * @author Gregory Green
+ *
+ */
 public class PostItServiceTest
 {
-
-
    public static void main(String[] args)
    {
    }// --------------------------------------------
@@ -29,11 +32,12 @@ public class PostItServiceTest
    /*
     * Test method for 'org.solutions.postit.PostItService.post(String, Postable)'
     */
+   //@Test
    public void testPost()
    throws Exception
    {
-      PostItService service = (PostItService)
-      ServiceFactory.getInstance().create(PostItService.SERVICE_NAME);
+	   PostItMgr service =
+      ServiceFactory.getInstance().create(PostItMgr.class);
       
       String text = "Testing 123";
       
@@ -55,24 +59,24 @@ public class PostItServiceTest
       
       Assert.assertTrue(text.equals(p.getText()));
       
-      service.post("green_gregory@businessedge.com",p);
-      
       //post all
-      service.post(p);
+      service.sendIt(p);
    }// --------------------------------------------
+   
+   //@Test
    public void testDavMail()
    throws Exception
    {
       Properties prop = new Properties();
       prop.setProperty("mail.debug","true");
       
-      // Set the default enveloppe sender address
+      // Set the default envelope sender address
       prop.setProperty("mail.davmail.from", "green_gregory@hotmail.com");
       Session ses = Session.getInstance(prop);
 
       // Create the transport connection
       Transport transport = ses.getTransport("davmail_xmit");
-      transport.connect(null, "green_gregory", "redmoon");
+      transport.connect(null, "green_gregory", String.valueOf(Config.getPropertyPassword("password")));
 
       // Prepare the message
       MimeMessage txMsg = new MimeMessage(ses);
@@ -92,6 +96,6 @@ public class PostItServiceTest
       // Send the message
       transport.sendMessage(txMsg, txMsg.getAllRecipients());
 
-   }
+   }//------------------------------------------------
 
 }

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import nyla.solutions.core.security.user.data.UserProfile;
 
-@Repository("Recipient")
+@Repository
 //@Region("Recipient")
 public interface RecipientDAORepository extends CrudRepository<UserProfile, String>
 {

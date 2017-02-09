@@ -108,7 +108,28 @@ public class VcfStringToUserProfileConverterTest
 			
 			Assert.assertEquals("Stick", user.getFirstName());
 			
-			Assert.assertEquals("stickandme@comcast.net", user.getEmail());			
+			Assert.assertEquals("stickandme@comcast.net", user.getEmail());		
+			
+			text = new StringBuilder("BEGIN:VCARD\n")
+					.append("VERSION:3.0\n")
+							.append("PRODID:-//Apple Inc.//Mac OS X 10.11.6//EN\n")
+							.append("N:;Stick;;;\n")
+							.append("FN:Stick\n")
+							.append("item1.EMAIL;type=INTERNET;type= pref:	stickandme@comcast.net\n")
+							.append("item1.X-ABLabel:_$!<Other>!$_\n")
+							.append("TEL;type=CELL;type=VOICE;type=pref:(908) 403-3865\n")
+							.append("NOTE:\n \n\n")
+							.append("BDAY:2007-05-26\n")
+							.append("X-ABUID:7F680101-8AA9-4637-A22B-60FBD0DEE276:ABPerson\n")
+							.append("END:VCARD\n").toString();
+			
+			user = converter.convert(text);
+			
+			Assert.assertNotNull(user);
+			
+			Assert.assertEquals("Stick", user.getFirstName());
+			
+			Assert.assertEquals("stickandme@comcast.net", user.getEmail());	
 		
 	}
 

@@ -164,6 +164,45 @@ public class ClassPath extends ClassLoader
 		return newInstance(aClass,paramTypes,initArgs);
 	}// --------------------------------------------------------
 	/**
+	 * Create a new instance of a given object
+	 * @param aClass the class the create
+	 * @param initargs the initial constructor arguments
+	 * @return the create instance
+	 * @throws SetupException when an initialize issue occurs
+	 */
+	public static <T> T newInstance(String className, Object[] initargs) 
+	throws SetupException
+	{
+		return newInstance(toClass(className),initargs);		
+	}//------------------------------------------------
+	/**
+	 * Create a new instance of a given object
+	 * @param aClass the class the create
+	 * @param initargs the initial constructor arguments
+	 * @return the create instance
+	 * @throws SetupException when an initialize issue occurs
+	 */
+	public static <T> T newInstance(Class<?> aClass, Object[] initargs) 
+	throws SetupException
+	{
+		Class<?>[] parameterTypes = null;
+		
+		if(initargs != null && initargs.length > 0)
+		{
+			parameterTypes = new Class<?>[initargs.length];
+			
+			for (int i = 0; i < initargs.length; i++)
+			{
+				if(initargs[i] == null)
+					continue; //skip
+				
+				parameterTypes[i] = initargs[i].getClass();
+			}
+		}
+		
+		return newInstance(aClass,parameterTypes,initargs);
+	}//------------------------------------------------
+	/**
 	 * Use a constructor of the a class to create an instance
 	 * @param aClass the class the create
 	 * @return the initiate object

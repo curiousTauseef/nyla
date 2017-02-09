@@ -21,7 +21,7 @@ public class ClassNotFoundFaultException extends FaultException
 
 	/**
 	 * 
-	 * @param functionName the function name
+	 * @param className the class name that was not found
 	 */
 	public ClassNotFoundFaultException(String className)
 	{

@@ -37,7 +37,7 @@ public abstract class ServiceFactory
    /**
     * DEFAULT_SERVICE_FACTORY = SpringFactory.class.getName()
     */
-   public static final String DEFAULT_SERVICE_FACTORY = "nyla.solutions.core.patterns.servicefactory.SpringFactory";
+   public static final String DEFAULT_SERVICE_FACTORY = ConfigServiceFactory.class.getName();
 
    
    /**
@@ -165,7 +165,7 @@ public abstract class ServiceFactory
       /**
        * Create object and check if object is a sub class of serviceClass
        * @param serviceClass the service interface
-       * @param componentName the object name
+       * @param name the object name
        * @return
        */
       public abstract <T> T create(Class<?> serviceClass, String name);
@@ -223,17 +223,19 @@ public abstract class ServiceFactory
 
    /**
     * 
-    * @param aServiceName the object/service name
+    * @param name the object/service name
+    * @param params the constructor parameters
     * @return an instance of the given class
     */
-   public abstract <T> T create(String aName,Object [] aParams );
+   public abstract <T> T create(String name,Object [] params );
    
    /**
     * 
-    * @param aServiceName the object/service name
+    * @param name the object/service name
+    * @param param the constructor parameters 
     * @return an instance of the given class
     */
-   public abstract <T> T create(String aName,Object aParam );
+   public abstract <T> T create(String name,Object param );
    
    private static Map<String,ServiceFactory>  instances = new Hashtable<String,ServiceFactory>();
 

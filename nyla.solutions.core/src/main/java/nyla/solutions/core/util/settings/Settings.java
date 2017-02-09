@@ -294,6 +294,10 @@ public interface Settings
 
 	Map<Object,Object> getProperties();
 	
+	/**
+	 * Set the setting properties
+	 * @param properties the properties
+	 */
 	void setProperties(Map<Object,Object> properties);
 	
 	/**

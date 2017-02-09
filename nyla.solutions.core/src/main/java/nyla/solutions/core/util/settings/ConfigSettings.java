@@ -20,12 +20,14 @@ import nyla.solutions.core.util.Text;
 public class ConfigSettings extends AbstractSettings
 {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see nyla.solutions.core.util.Settings#getProperties()
 	 */
 
 	@Override
-	public synchronized Map<Object,Object> getProperties()
+	public synchronized Map<Object, Object> getProperties()
 	{
 
 		if (properties == null || this.isAlwaysReload())
@@ -35,22 +37,25 @@ public class ConfigSettings extends AbstractSettings
 
 		// return copy
 
-		return new HashMap<Object,Object>(properties);
+		return new HashMap<Object, Object>(properties);
 	}// ------------------------------------------------------------
 
-
-	
-	/* (non-Javadoc)
-	 * @see nyla.solutions.core.util.Settings#setProperties(java.util.Properties)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * nyla.solutions.core.util.Settings#setProperties(java.util.Properties)
 	 */
 	@Override
-	public synchronized void setProperties(Map<Object,Object> properties)
+	public synchronized void setProperties(Map<Object, Object> properties)
 	{
 		this.properties = new Properties();
 		this.properties.putAll(properties);
 	}// --------------------------------------------
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see nyla.solutions.core.util.Settings#reLoad()
 	 */
 	@Override
@@ -58,6 +63,7 @@ public class ConfigSettings extends AbstractSettings
 	{
 		loadProperties();
 	}
+
 	/**
 	 * Load the configuration properties from the properties file.
 	 * <p/>
@@ -65,7 +71,8 @@ public class ConfigSettings extends AbstractSettings
 	 * <p/>
 	 * Caller must test to ensure that properties is Non-null.
 	 * 
-	 * @throws IllegalArgumentException Translates an IOException from reading
+	 * @throws IllegalArgumentException
+	 *             Translates an IOException from reading
 	 *             <p/>
 	 *             the properties file into a run time exception.
 	 */
@@ -77,15 +84,15 @@ public class ConfigSettings extends AbstractSettings
 		// thread through took care of loading the properties.
 		try
 		{
-			
+
 			boolean alwaysReload = this.isAlwaysReload();
-			
+
 			boolean useFormatting = this.isUseFormatting();
-			
+
 			String file = getSystemPropertyFile();
 			if (file != null && file.length() > 0)
 			{
-				// System.out.println("CONFIG: LOADING CONFIG properties  from "+
+				// System.out.println("CONFIG: LOADING CONFIG properties from "+
 				// file);
 				FileInputStream fis = new FileInputStream(file);
 
@@ -94,10 +101,10 @@ public class ConfigSettings extends AbstractSettings
 					properties = new Properties();
 					// Load the properties object from the properties file
 					properties.load(fis);
-					// System.out.println("CONFIG: FINISHED LOADING CONFIG properties  from "+
+					// System.out.println("CONFIG: FINISHED LOADING CONFIG
+					// properties from "+
 					// file);
-					
-					
+
 					configSourceLocation = file;
 				}
 				catch (Exception e)
@@ -117,36 +124,41 @@ public class ConfigSettings extends AbstractSettings
 			{
 				properties = new Properties();
 
-				String bundleName = getBundleName();
-
-				// try to get properties from resource bundle
-				ResourceBundle rb = ResourceBundle.getBundle(bundleName);
-
-				
-				URL url = Config.class.getResource(
-					bundleName + ".properties");
-				
-				if(url != null)
-					configSourceLocation = url.toString();
-				else
-					configSourceLocation = bundleName + ".properties";
-				
-				Enumeration<?> keys = rb.getKeys();
-
-				Object k = null;			
-
-				while (keys.hasMoreElements())
+				try
 				{
+					String bundleName = getBundleName();
 
-					k = keys.nextElement();
+					// try to get properties from resource bundle
+					ResourceBundle rb = ResourceBundle.getBundle(bundleName);
 
-					properties.put(k, rb.getString(k + ""));
+					URL url = Config.class.getResource(bundleName + ".properties");
 
+					if (url != null)
+						configSourceLocation = url.toString();
+					else
+						configSourceLocation = bundleName + ".properties";
+
+					Enumeration<?> keys = rb.getKeys();
+
+					Object k = null;
+
+					while (keys.hasMoreElements())
+					{
+
+						k = keys.nextElement();
+
+						properties.put(k, rb.getString(k + ""));
+
+					}
+				} // end els load from resource bundle
+				catch (MissingResourceException e)
+				{
 				}
-			}// end els load from resource bundle
+			}//end else
+			
 
-			String reloadBool = properties.getProperty(Config.class.getName()
-					+ ".alwaysReload");
+			//Determine global settings
+			String reloadBool = properties.getProperty(Config.class.getName() + ".alwaysReload");
 
 			if (reloadBool == null || reloadBool.length() == 0)
 			{
@@ -162,24 +174,36 @@ public class ConfigSettings extends AbstractSettings
 				alwaysReload = Boolean.valueOf(reloadBool).booleanValue();
 			}
 
-			
 			this.setAlwaysReload(alwaysReload);
 
-			//Merge SystemProperteis
-			mergeSystemProperties = Boolean.valueOf(properties.getProperty(Config.class.getName()
-					+ ".mergeSystemProperties", "false")).booleanValue();
-			
-			if(mergeSystemProperties)
+			// Merge SystemProperteis
+			mergeSystemProperties = Boolean
+					.valueOf(properties.getProperty(Config.class.getName() + ".mergeSystemProperties", "true"))
+					.booleanValue();
+
+			if (mergeSystemProperties)
 			{
-				//add system properties
+				// add system properties
 				properties.putAll(System.getProperties());
 			}
-			
+
+			// Envinronment SystemProperteis
+			mergeEnvProperties = Boolean
+					.valueOf(properties.getProperty(Config.class.getName() + ".mergeEnvProperties", "true"))
+					.booleanValue();
+
+			if (mergeEnvProperties)
+			{
+				// add env properties
+				properties.putAll(System.getenv());
+			}
+
 			// process formatting
 			String propName = Config.class.getName() + ".useFormatting";
 			String useFormattingText = properties.getProperty(propName);
-	
-			// System.out.println("CONFIG:  "+propName+"="+useFormattingText);
+
+			// System.out.println("CONFIG:
+			// "+propName+"="+useFormattingText);
 
 			if (useFormattingText == null || useFormattingText.length() == 0)
 			{
@@ -192,72 +216,56 @@ public class ConfigSettings extends AbstractSettings
 			}
 			else
 			{
-				useFormatting = Boolean.valueOf(useFormattingText)
-						.booleanValue();
+				useFormatting = Boolean.valueOf(useFormattingText).booleanValue();
 			}
 
 			if (useFormatting)
 			{
-				// System.out.println("CONFIG: FORMATTING MAP CONFIG properties ");
+				// System.out.println("CONFIG: FORMATTING MAP CONFIG
+				// properties ");
 				// format map (note this can be an expensive operation)
-				
+
 				Text.formatMap(properties);
-				// System.out.println("CONFIG: FORMATTED MAP CONFIG properties ");
+				// System.out.println("CONFIG: FORMATTED MAP CONFIG
+				// properties ");
 			}
-			
+
 			propName = Config.class.getName() + ".setSystemProperties";
-			setSystemProperties =  Boolean.valueOf(properties.getProperty(propName,"false")).booleanValue();
-			
-			//Set system properties with values from configuration
-			if(setSystemProperties)
+			setSystemProperties = Boolean.valueOf(properties.getProperty(propName, "false")).booleanValue();
+
+			// Set system properties with values from configuration
+			if (setSystemProperties)
 			{
 				Set<Object> keySet = properties.keySet();
 				String key;
 				String sysProp;
 				for (Iterator<Object> i = keySet.iterator(); i.hasNext();)
 				{
-					key = (String)i.next();
-					sysProp= System.getProperty(key);
-					
-					if(sysProp != null && sysProp.length() > 0)
-						continue; //do not override values
-					
-					//set system property
+					key = (String) i.next();
+					sysProp = System.getProperty(key);
+
+					if (sysProp != null && sysProp.length() > 0)
+						continue; // do not override values
+
+					// set system property
 					System.setProperty(key, properties.getProperty(key));
 				}
 			}
 		}
-		catch (MissingResourceException e)
-		{
-
-			/*
-			 * System.out.println("problem loading config properties from "
-			 * 
-			 * + propertiesFile
-			 * 
-			 * + "\n"
-			 * 
-			 * + e.toString());
-			 * 
-			 * System.out.println(Config.class.getName() +
-			 * "... continuing ...");
-			 */
-			// throw new MissingConfigPropertiesException();
-
-		}
-		catch(ConfigException e)
+		catch (ConfigException e)
 		{
 			throw e;
 		}
-		catch(FileNotFoundException e)
+		catch (FileNotFoundException e)
 		{
-			throw new ConfigException(e.getMessage(),e);
+			throw new ConfigException(e.getMessage(), e);
 		}
 		catch (Exception e)
 		{
-			throw new ConfigException(e.getMessage(),e);
+			throw new ConfigException(e.getMessage(), e);
 		}
 	}// ------------------------------------------------------------
+
 	/**
 	 * @return the system property file
 	 */
@@ -282,6 +290,7 @@ public class ConfigSettings extends AbstractSettings
 		return file;
 
 	}// -----------------------------------------------------------
+
 	/**
 	 * 
 	 * @return the configuration location
@@ -290,8 +299,10 @@ public class ConfigSettings extends AbstractSettings
 	{
 		return configSourceLocation;
 	}// --------------------------------------------------------
-	// private static long lastCheckTime = 0;
-	private boolean mergeSystemProperties = false;
+		// private static long lastCheckTime = 0;
+
+	private boolean mergeSystemProperties = true;
+	private boolean mergeEnvProperties = true;
 	private boolean setSystemProperties = false;
 
 	private String configSourceLocation = null;

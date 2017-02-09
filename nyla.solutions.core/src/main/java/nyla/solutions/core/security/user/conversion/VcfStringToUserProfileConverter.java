@@ -52,6 +52,9 @@ public class VcfStringToUserProfileConverter implements Converter<String, UserPr
 			
 			String email = vcfLine.substring(atIndex+1);
 			
+			if(email != null)
+				email = email.trim();
+			
 			userProfile.setEmail(email);
 		};
 		strategies.put("email",setEmail);
