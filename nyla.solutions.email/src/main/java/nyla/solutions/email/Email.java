@@ -654,12 +654,12 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 	 * 
 	 * @param count number of records to read
 	 * @param startIndex start index 1 or higher
-	 * @param subjectPattern the search pattern
+	 * @param pattern the search pattern
 	 * @return collection of the message
 	 * @throws javax.mail.MessagingException a message exception occurs
 	 * @throws IOException IO exception occurs
 	 */
-	public synchronized Collection<EmailMessage> readMail(int count,  int startIndex, String subjectPattern)
+	public synchronized Collection<EmailMessage> readMatches(int count,  int startIndex, String pattern)
 	throws javax.mail.MessagingException, IOException
 	{
 
@@ -669,7 +669,7 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 		
 		try(ReadMail reader = new ReadMail(this.store))
 		{
-			return reader.readWhereSubjectContains(count, startIndex, subjectPattern);
+			return reader.readMatches(count, startIndex, pattern,false);
 		}
 	}//------------------------------------------------
 	/**
@@ -1013,7 +1013,7 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 		if(mailFromPassword == null || mailFromPassword.length == 0)
 			return null;
 		
-		return mailFromPassword;
+		return Arrays.copyOf(mailFromPassword,mailFromPassword.length);
 	}//------------------------------------------------
 	/**
 	 * @param mailFromPassword the mailFromPassword to set

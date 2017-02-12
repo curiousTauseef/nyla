@@ -1,10 +1,8 @@
 package nyla.solutions.email;
 
 import java.util.Collection;
-
-import javax.mail.Message;
-
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import nyla.solutions.email.data.EmailMessage;
@@ -15,6 +13,7 @@ public class ReadMailTest
 	 * 
 	 * @throws Exception
 	 */
+	@Ignore
 	@Test
 	public void testRead()
 	throws Exception
@@ -25,7 +24,7 @@ public class ReadMailTest
 		int startIndex = 1;
 		String subjectPattern = ".*";
 		
-		Collection<EmailMessage> results = email.readMail(count, startIndex, subjectPattern);
+		Collection<EmailMessage> results = email.readMatches(count, startIndex, subjectPattern);
 		
 		Assert.assertTrue(results != null && !results.isEmpty());
 		
@@ -34,7 +33,7 @@ public class ReadMailTest
 		
 		subjectPattern = ".*fail.*";
 		
-		results = email.readMail(count, startIndex, subjectPattern);
+		results = email.readMatches(count, startIndex, subjectPattern);
 		
 		Assert.assertTrue(results != null && !results.isEmpty());
 		

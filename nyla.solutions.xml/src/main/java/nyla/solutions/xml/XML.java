@@ -97,7 +97,7 @@ public class XML
 	}// --------------------------------------------
 	/**
 	 * 
-	 * @param xml the xml to convert
+	 * @param url the URL that contains the input source
 	 * @return the created InputSource
 	 */
 	public static InputSource toInputSource(URL url)

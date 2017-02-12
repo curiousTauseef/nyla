@@ -5,9 +5,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.junit.Test;
+
 import junit.framework.TestCase;
 import nyla.solutions.core.util.Text;
 
+/**
+ * Test cases for Text
+ * @author Gregory Green
+ *
+ */
 public class TextTest extends TestCase
 {
 	@SuppressWarnings("rawtypes")
@@ -72,6 +79,13 @@ public class TextTest extends TestCase
 	   
 
 	}// --------------------------------------------------------
+	@Test
+	public void testMatches()
+	{
+		assertTrue(!Text.matches(null, "${NOT}.*America.*${AND}.*Kenya.${NOT}.*Paris.*"));
+		assertTrue(Text.matches(null, null));
+
+	}//------------------------------------------------
 	public void testFixedLengthIntInt()
 	{
 		assertEquals("001",Text.fixedLength(1, 3));

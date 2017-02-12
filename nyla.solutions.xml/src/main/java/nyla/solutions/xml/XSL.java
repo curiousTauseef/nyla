@@ -70,8 +70,8 @@ public class XSL
 
   /**
    * Convert Text into an in memory stream source
-   * @param text
-   * @return
+   * @param text the text XSL
+   * @return the stream source
    */
   public static StreamSource toStreamSource(String text)
   {

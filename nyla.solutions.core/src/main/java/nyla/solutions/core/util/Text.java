@@ -1331,7 +1331,7 @@ example, the regular expression �.*USA.*${AND}.*Greece.*�, only returns true
 
 <b>NOT Operation</b>
 The RE operation can supports negative logic (NOT) for expressions. This is accomplished by prefixing the 
-expressions with �${NOT}�. In the following example, the regular expression �.*USA.*� only returns true 
+expressions with  ${NOT}. In the following example, the regular expression �.*USA.*� only returns true 
 if the text does not contain the word �USA�. Note that multiple �${NOT}�(s) can be chained together with 
 �${AND}�(s) (see table below).
 
@@ -1348,7 +1348,15 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
     */
    public static boolean matches(String sourceValue, String complexRegularExpression)
    {
-      
+      //check for null
+	   if(sourceValue == null)
+	   {
+		   if(complexRegularExpression == null)
+			   return true;
+		   else
+			   return false;
+	   }
+	   
          try
          {
         	//test source contains AND

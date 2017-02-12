@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.stream.Collectors;
 
 import javax.mail.Address;
@@ -28,6 +27,11 @@ public class ReadMail implements Closeable
 	{
 		this(store,"Inbox");
 	}//------------------------------------------------
+	/**
+	 * Constructor
+	 * @param store the read mail
+	 * @param folderName the folder name
+	 */
 	public ReadMail(Store store, String folderName)
 	{
 		if(store == null)
@@ -46,10 +50,33 @@ public class ReadMail implements Closeable
 		{
 			throw new ConnectionException(e.getMessage(),e);
 		}
+		catch(RuntimeException e)
+		{
+			if(e.getMessage().contains("Not connected"))
+			{
+				throw new ConnectionException("Not connected, try the properties mail.auth.required,"+
+					" mail.from "+
+					" mail.from.password "+
+					" mail.imap.host "+
+					" mail.stmp.host "
+					);
+			}
+			throw e;
+			
+		}
+		
 	}//------------------------------------------------
-	
-
-	public Collection<EmailMessage> readWhereSubjectContains(int count, int startIndex, String subjectPattern) 
+	/**
+	 * 
+	 * @param count the number of records to read
+	 * @param startIndex the starting message index
+	 * @param pattern the Complex regular expression to match
+	 * @param subjectOnly flag to determine if only the subject will be checked
+	 * @return matching email message
+	 * @throws MessagingException when a mail server communication error occurs
+	 * @throws IOException when IO error occurs
+	 */
+	public Collection<EmailMessage> readMatches(int count, int startIndex, String pattern, boolean subjectOnly) 
 	throws MessagingException, IOException
 	{
 		inbox.open(Folder.READ_ONLY);
@@ -69,10 +96,23 @@ public class ReadMail implements Closeable
 			ArrayList<EmailMessage> results = Arrays.asList(msgs).stream().filter(msg -> {
 							try
 							{
-								return msg != null 
-										&& 
-										msg.getSubject() !=null && 
-										Text.matches(msg.getSubject(),subjectPattern);
+								if(msg == null)
+									return false;
+								
+								if(!Text.matches(msg.getSubject(),pattern))
+									return false;
+								
+								if(subjectOnly)
+								{	
+									return true;
+								}
+
+								return Text.matches(String.valueOf(msg.getContent()),pattern);
+								
+							}
+							catch (IOException e)
+							{
+								throw new nyla.solutions.core.exception.CommunicationException(e.getMessage());
 							}
 							catch (MessagingException e)
 							{

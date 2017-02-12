@@ -98,14 +98,19 @@ public class EmailMessage
 	 */
 	public Date getRecievedDate()
 	{
-		return recievedDate;
-	}
+		if(recievedDate == null)
+			return null;
+		
+		return new Date(recievedDate.getTime());
+	}//------------------------------------------------
 	/**
 	 * @param recievedDate the recievedDate to set
 	 */
 	public void setRecievedDate(Date recievedDate)
 	{
-		this.recievedDate = recievedDate;
+		if(recievedDate == null)
+			return;
+		this.recievedDate = new Date(recievedDate.getTime());
 	}
 	/**
 	 * @return the content

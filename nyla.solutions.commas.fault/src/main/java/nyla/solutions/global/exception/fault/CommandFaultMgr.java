@@ -19,9 +19,11 @@ import nyla.solutions.email.EmailFaultCommand;
  */
 public class CommandFaultMgr extends FaultMgr implements FaultService
 {
+	/**
+	 * Default constructore
+	 */
 	public CommandFaultMgr()
 	{
-		
 	}// --------------------------------------------------------
 
 	private void init() 
@@ -31,7 +33,8 @@ public class CommandFaultMgr extends FaultMgr implements FaultService
 			command = getCommand();
 	}// --------------------------------------------------------
 	/**
-	 * @see nyla.solutions.global.exception.fault.FaultMgr#raise(java.lang.Throwable)
+	 * Throw the exception with wrapped information
+	 * @param e the raise to wrap
 	 */
 	@Override
 	public FaultException raise(Throwable e)
@@ -57,9 +60,11 @@ public class CommandFaultMgr extends FaultMgr implements FaultService
 			return faultException;
 		}
 	}// --------------------------------------------------------
-
 	/**
-	 * @see nyla.solutions.global.exception.fault.FaultMgr#raise(java.lang.Throwable, java.lang.Object)
+	 * Wrapper the exception with needed information
+	 * @param e the exception to wrap
+	 * @param argument the arguments
+	 * 
 	 */
 	@Override
 	public FaultException raise(Throwable e, Object argument)

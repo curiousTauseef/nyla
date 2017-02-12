@@ -12,7 +12,7 @@ public class XmlXslDecorator implements TextDecorator<Textable>
    /**
     * 
     *
-    * @see nyla.solutions.core.patterns.decorator.TextDecorator#getTarget(java.lang.Object)
+    * @return the XML
     */
    public Textable getTarget()
    {
@@ -32,9 +32,8 @@ public class XmlXslDecorator implements TextDecorator<Textable>
       
    }//--------------------------------------------
    /**
-    * 
     *
-    * @see nyla.solutions.global.data.Textable#getText()
+    * @return the XML text
     */
    public String getText()
    {      

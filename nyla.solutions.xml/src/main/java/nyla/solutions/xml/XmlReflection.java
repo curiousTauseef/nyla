@@ -1,16 +1,16 @@
 package nyla.solutions.xml;
 
-
-
 import nyla.solutions.core.data.Textable;
 
-
+/**
+ * Converts a target object into XML
+ * @author Gregory Green
+ *
+ */
 public class XmlReflection implements Textable
 {
-
    /**
-    *
-    * @see nyla.solutions.core.patterns.decorator.TextDecorator#getTarget(java.lang.Object)
+    * @return the target object
     */
    public Object getTarget(Object target)
    {
@@ -18,8 +18,8 @@ public class XmlReflection implements Textable
    }//--------------------------------------------
 
    /**
-    *
-    * @see nyla.solutions.core.patterns.decorator.TextDecorator#setTarget(java.lang.Object)
+    * Set the target
+    * @param target the target
     */
    public void setTarget(Object target)
    {
@@ -27,15 +27,12 @@ public class XmlReflection implements Textable
    }//--------------------------------------------
    /**
     *
-    * @see nyla.solutions.global.data.Textable#getText()
+    * @return return XML.getInterpreter().toXML(target)
     */
    public String getText()
    {          
          return XML.getInterpreter().toXML(target);
 
    }//--------------------------------------------
- 
    private Object target = null;
-   
-
 }

@@ -38,9 +38,11 @@ import nyla.solutions.core.util.JavaBean;
 import nyla.solutions.core.util.Text;
 import nyla.solutions.xml.xstream.XStreamInterpreter;
 
-
-
-
+/**
+ * 
+ * @author Gregory Green
+ *
+ */
 public class DOM4J extends XML
 {
 	/**
@@ -99,7 +101,7 @@ public class DOM4J extends XML
 	}// --------------------------------------------
 	/**
 	 * 
-	 * @param xml the xml to convert
+	 * @param url the url where to read input source
 	 * @return the created InputSource
 	 */
 	public static InputSource toInputSource(URL url)
@@ -349,8 +351,6 @@ public class DOM4J extends XML
 	/**
 	 * lightweight XML parse method for retrieving XML elements
 	 * 
-	 * @param aXml
-	 *            the XML document
 	 * @param aXpath
 	 *            the full XPATH expression (attribs not supported)
 	 * @return the element from the aXml document
