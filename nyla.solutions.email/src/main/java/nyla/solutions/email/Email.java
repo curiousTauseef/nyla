@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
@@ -35,6 +36,7 @@ import nyla.solutions.core.exception.SetupException;
 import nyla.solutions.core.operations.logging.Log;
 import nyla.solutions.core.patterns.Connectable;
 import nyla.solutions.core.patterns.Disposable;
+import nyla.solutions.core.patterns.conversion.TextToEmailsConverter;
 import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Debugger;
 import nyla.solutions.core.util.Text;
@@ -650,6 +652,78 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 		this.mailTransport = this.mailSession.getTransport();
 
 	}// --------------------------------------------
+	public synchronized Collection<String> shouldRemoveEmails()
+			throws javax.mail.MessagingException, IOException
+	{
+		int batchCount = 100;
+		int startIndex = 1;
+		
+		String pattern = ".*delivered.*||.*unsubscribe.*||(.*invalid.*${AND}email.*)";
+		
+		Collection<EmailMessage>  emailMesssages = readMatches(batchCount, startIndex, pattern);
+		if(emailMesssages == null || emailMesssages.isEmpty())
+			return null;
+		
+		HashSet<String> results = new HashSet<String>(batchCount);
+		
+		String subject =null, body  =null;
+		
+		do
+		{
+			
+			for (EmailMessage emailMessage : emailMesssages)
+			{
+				//Should remove unscribe subjects
+				subject = emailMessage.getSubject();
+				if(subject != null)
+				{
+					subject = subject.toLowerCase(Locale.US);
+					
+					if(subject.contains("unsubscribe"))
+					{
+						if(emailMessage.getFrom() != null)
+						{
+							results.addAll(emailMessage.getFrom());
+						}
+					}
+				}
+				
+				body = emailMessage.getContent();
+				if(body == null)
+					continue;
+				
+				body = body.trim();
+				if(body.length() == 0)
+					continue;
+				
+				//find all emails
+				Collection<String> emailsToRemove = findEmails(body);
+				if(emailsToRemove != null)
+					results.addAll(emailsToRemove);
+			}
+			
+			//iterate
+			startIndex = startIndex + batchCount;
+			emailMesssages = readMatches(batchCount, startIndex, pattern);
+			
+		} while (emailMesssages != null && !emailMesssages.isEmpty());
+		
+		
+		if(results.isEmpty())
+			return null;
+		
+		return results;
+	}//------------------------------------------------
+	/**
+	 * 
+	 * @param context the email message text
+	 * @return new TextToEmailsConverter().convert(context);
+	 */
+	public Collection<String> findEmails(String context)
+	{
+		return new TextToEmailsConverter().convert(context);
+	}//------------------------------------------------
+	
 	/**
 	 * 
 	 * @param count number of records to read

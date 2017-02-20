@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import nyla.solutions.core.exception.RequiredException;
-import nyla.solutions.core.exception.SetupException;
 import nyla.solutions.core.operations.ClassPath;
 import nyla.solutions.core.util.Debugger;
 import nyla.solutions.core.util.Text;

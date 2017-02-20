@@ -61,7 +61,7 @@ public class RmiOneRouteAdvice implements Advice, SetUpable
 	}// --------------------------------------------------------
 	
 	@Override
-	public synchronized void setUp()
+	public void setUp()
 	{
 		if(this.registry != null)
 			return;
@@ -108,7 +108,7 @@ public class RmiOneRouteAdvice implements Advice, SetUpable
 	 * @return this.commandFacts;
 	 */
 	@Override
-	public CommandFacts getFacts()
+	public  CommandFacts getFacts()
 	{
 		return this.commandFacts;
 	}// --------------------------------------------------------
@@ -119,7 +119,7 @@ public class RmiOneRouteAdvice implements Advice, SetUpable
 	 * @see nyla.solutions.commas.aop.Advice#setFacts(nyla.solutions.commas.CommandFacts)
 	 */
 	@Override
-	public void setFacts(CommandFacts facts)
+	public  void setFacts(CommandFacts facts)
 	{
 		CommandAttribute advisedSkipMethodInvoke = new CommandAttribute(
 				CommasConstants.ADVISED_SKIP_METHOD_INVOKE_CMD_ATTRIB_NAME, 
@@ -176,7 +176,7 @@ public class RmiOneRouteAdvice implements Advice, SetUpable
 			this.lookupPropertyName = lookupPropertyName;
 		}// --------------------------------------------------------
 		@Override
-		public synchronized Serializable execute(Envelope<Serializable> env)
+		public Serializable execute(Envelope<Serializable> env)
 		{
 			if(registry == null)
 				setUp();

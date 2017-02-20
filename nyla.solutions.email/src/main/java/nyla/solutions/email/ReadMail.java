@@ -90,7 +90,7 @@ public class ReadMail implements Closeable
 		/* Get the messages which is unread in the Inbox */
 		Message[] msgs = inbox.getMessages(startIndex,startIndex+ count-1);
 		
-		if(msgs == null)
+		if(msgs == null || msgs.length == 0)
 			return null;
 		
 			ArrayList<EmailMessage> results = Arrays.asList(msgs).stream().filter(msg -> {
@@ -129,6 +129,9 @@ public class ReadMail implements Closeable
 							throw new RuntimeException(e);
 						}
 					}  ).collect(Collectors.toCollection(ArrayList::new));
+			
+			if(results.isEmpty())
+				return null;
 			
 			return results;
 		

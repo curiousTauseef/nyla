@@ -1,5 +1,10 @@
 package nyla.solutions.net.postit.mail;
 
+import java.io.IOException;
+import java.util.Collection;
+
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +13,7 @@ import nyla.solutions.core.security.user.data.User;
 import nyla.solutions.core.security.user.data.UserProfile;
 import nyla.solutions.core.util.Debugger;
 import nyla.solutions.email.Email;
+import nyla.solutions.email.data.EmailMessage;
 import nyla.solutions.net.postit.PostItService;
 import nyla.solutions.net.postit.Postable;
 import nyla.solutions.net.postit.RecipientDAORepository;
@@ -65,6 +71,28 @@ public class MailPostItService implements PostItService
          Debugger.printWarn(this,aNoDataFoundException);
       }      
    }// --------------------------------------------
+   public void cleanup()
+   throws IOException, MessagingException
+   {
+	   int count= 100;
+	   int startIndex =1;
+	   String pattern = ".*Undeliver.*";
+	   
+	   Email email = new Email();
+	   
+	  Collection<EmailMessage> collection = email.readMatches(count, startIndex, pattern);
+	  
+	  if(collection == null)
+		  return;
+	  
+	  for (EmailMessage emailMessage : collection)
+	  {
+		  System.out.println("DELETING:"+emailMessage);
+			
+		  //recipientDAORepository.delete(email);
+	  }
+	   
+   }//------------------------------------------------
    @Autowired
    private RecipientDAORepository recipientDAORepository;
    

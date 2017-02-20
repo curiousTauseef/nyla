@@ -46,7 +46,7 @@ public class ConditionFileCommand implements FileCommand<Object>
 	/**
 	 * @return the objectBooleanExpression
 	 */
-	public ObjectBooleanExpression getObjectBooleanExpression()
+	public synchronized ObjectBooleanExpression getObjectBooleanExpression()
 	{
 		return objectBooleanExpression;
 	}
@@ -56,7 +56,7 @@ public class ConditionFileCommand implements FileCommand<Object>
 	/**
 	 * @param objectBooleanExpression the objectBooleanExpression to set
 	 */
-	public void setObjectBooleanExpression(
+	public synchronized void setObjectBooleanExpression(
 			ObjectBooleanExpression objectBooleanExpression)
 	{
 		this.objectBooleanExpression = objectBooleanExpression;
@@ -67,7 +67,7 @@ public class ConditionFileCommand implements FileCommand<Object>
 	/**
 	 * @return the fileCommand
 	 */
-	public FileCommand<Object> getFileCommand()
+	public synchronized FileCommand<Object> getFileCommand()
 	{
 		return fileCommand;
 	}//---------------------------------------------
@@ -75,7 +75,7 @@ public class ConditionFileCommand implements FileCommand<Object>
 	/**
 	 * @param fileCommand the fileCommand to set
 	 */
-	public void setFileCommand(FileCommand<Object> fileCommand)
+	public synchronized void setFileCommand(FileCommand<Object> fileCommand)
 	{
 		this.fileCommand = fileCommand;
 	}

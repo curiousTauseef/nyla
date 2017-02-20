@@ -8,18 +8,21 @@ import org.junit.Test;
 
 import nyla.solutions.spring.scripting.SpringSpELScripting;
 
+/**
+ * Test cases for SpringSpELScripting
+ * @author Gregory Green
+ *
+ */
 public class SpringSpELScriptingTest
 {
-
 	public SpringSpELScriptingTest()
 	{
-	}
-
+	}//------------------------------------------------
+	
 	@Before
 	public void setUp() throws Exception
 	{
-	}
-
+	}//------------------------------------------------
 	@Test
 	public void testIntepret()
 	{
@@ -27,7 +30,7 @@ public class SpringSpELScriptingTest
 		SpringSpELScripting<String,Object> spelScripting = new SpringSpELScripting<String,Object>();
 		//${T(solutions.global.util.Debugger).println('Hello World')}"
 		String results = spelScripting.interpret(
-		"new nyla.solutions.core.patterns.scripting.SpringSpELScriptingTest().getName()", null);
+		"new "+SpringSpELScriptingTest.class.getName()+"().getName()", null);
 		
 		Assert.assertEquals("SpringSpEL",results );
 		
@@ -66,6 +69,6 @@ public class SpringSpELScriptingTest
 	}
 
 
-	private final  String name ="SpringSpEL";
+	private final static  String name ="SpringSpEL";
 
 }

@@ -4,16 +4,20 @@ import java.util.Collection;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
+import nyla.solutions.IntegrationTest;
 import nyla.solutions.email.data.EmailMessage;
 
+@Ignore
+@Category(IntegrationTest.class)
 public class ReadMailTest
 {
 	/**
 	 * 
 	 * @throws Exception
 	 */
-	@Ignore
+	@Category(IntegrationTest.class)
 	@Test
 	public void testRead()
 	throws Exception

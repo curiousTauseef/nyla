@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
@@ -28,6 +29,7 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import nyla.solutions.core.data.Textable;
 import nyla.solutions.core.exception.FormatException;
@@ -1092,7 +1094,27 @@ public static String[] toStrings(Object object)
       return "";
       
    }// --------------------------------------------
-
+   public static final Collection<String> grepAllTexts(String matchRegExp, String text)
+   {
+      if(text == null || matchRegExp == null)
+         return null;
+      
+      String[] words = text.split("[ \t]");
+      
+      if(words == null || words.length == 0)
+    	  return null;
+      
+      java.util.regex.Pattern p = java.util.regex.Pattern.compile(matchRegExp);
+      
+      List<String> wordsList = Arrays.asList(words);
+      List<String> results = wordsList.parallelStream().filter(
+    		  word -> p.matcher(word.trim()).find()).collect(Collectors.toList());
+       
+      if(results == null || results.isEmpty())
+    	  return null;
+      
+      return results;
+   }// --------------------------------------------
 
    /**
     * 

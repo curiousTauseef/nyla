@@ -83,7 +83,7 @@ public class RmiAllRoutesAdvice implements Advice, SetUpable
 	}// --------------------------------------------------------
 	
 	@Override
-	public synchronized void setUp()
+	public void setUp()
 	{
 		if(this.registry != null)
 			return;
@@ -208,7 +208,7 @@ public class RmiAllRoutesAdvice implements Advice, SetUpable
 		}// --------------------------------------------------------
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
-		public synchronized Serializable execute(Envelope<Serializable> env)
+		public Serializable execute(Envelope<Serializable> env)
 		{
 			if(registry == null)
 				setUp();
