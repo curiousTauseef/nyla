@@ -35,7 +35,7 @@ dependencies {
 		 compile 'org.springframework.batch:spring-batch-core:3.0.7.RELEASE'
 		 compile group: 'org.springframework.batch', name: 'spring-batch-infrastructure', version: '3.0.7.RELEASE'
 		 
-		compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.core', version: '0.2-SNAPSHOT'
+		compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.core', version: '0.2'
 	    compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.commas', version: '0.1'
 	    compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.dao', version: '0.1'
 	    compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.spring', version: '0.1'

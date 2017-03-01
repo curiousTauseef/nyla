@@ -56,8 +56,7 @@ repositories {
 }
 
 dependencies {
-	compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.core', version: '0.2-SNAPSHOT'
-	compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.core', version: '0.2-SNAPSHOT'
+	compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.core', version: '0.2'
 	compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.commas', version: '0.1'
 	compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.json', version: '0.1'
     compile group: 'commons-collections', name: 'commons-collections', version: '3.2'

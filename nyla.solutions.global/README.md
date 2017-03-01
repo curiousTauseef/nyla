@@ -22,7 +22,7 @@ Add the following to the config.properties
 #Building
 
 1. Change directory to the root directory
-2. $gradle install
+2. $mvn install
 
 #FAQ
 

@@ -57,7 +57,7 @@ repositories {
 	//
 dependencies {
    compile 'org.springframework.data:spring-data-gemfire:2.0.0.M1'
-	compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.core', version: '0.2-SNAPSHOT'
+	compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.core', version: '0.2'
 	compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.email', version: '0.1'
 	compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.spring', version: '0.1'
 	compile('org.springframework.boot:spring-boot-starter-mail:1.4.3.RELEASE')

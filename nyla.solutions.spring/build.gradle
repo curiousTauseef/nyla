@@ -18,7 +18,7 @@ repositories {
 
 dependencies {
     // The production code uses the SLF4J logging API at compile time
-    compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.core', version: '0.2-SNAPSHOT'
+    compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.core', version: '0.2'
     compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.commas', version: '0.1'
     compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.9'
     compile 'org.springframework:spring-context:4.3.5.RELEASE'
