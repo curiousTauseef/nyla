@@ -231,62 +231,6 @@ Debugger.printFatal(this,"Stack trace will not be printed, because this is not a
 }
 ```
 
-Sample Debugger Properties (Config.properties)
- 
-	#-------------------------------
-	# Debugger log instance uses Log4J
-	# You can directly include the log4J properties in the configuration property files (@see Config object)
-	# Log4J properties
-	#
-	log4j.rootLogger=DEBUG, stdout
-	log4j.logger.PACKAGE_NAME=ERROR,file_error
-	log4j.logger.YYY=DEBUG, file_all
-	log4j.logger.org.apache=ERROR,stdout
-	log4j.logger.org.springframework=ERROR,stdout 	
- 	
-	#Standard OUT
-	log4j.appender.stdout=org.apache.log4j.ConsoleAppender
-	log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
-	#log4j.appender.stdout.layout.ConversionPattern=%d [%F:%L] - %x %m%n
-	#log4j.appender.stdout.layout.ConversionPattern= %p: %d{HH:mm:ss} [%F:%L] - %x %m%n
-	#log4j.appender.stdout.layout.ConversionPattern=%d{HH:mm:ss} [%c:%L] %m%n
-	#log4j.appender.stdout.layout.ConversionPattern=%d{HH:mm:ss} %m%n
-	log4j.appender.stdout.layout.ConversionPattern=%p: %d [%c] - %m%n
-	 
-	#
-	# FILE Output
-	log4j.file_all.category=DEBUG
-	log4j.appender.file_all=org.apache.log4j.RollingFileAppender
-	log4j.appender.file_all.File=/temp/logs/system.log
-	log4j.appender.file_all.MaxFileSize=10MB
-	log4j.appender.file_all.MaxBackupIndex=3
-	log4j.appender.file_all.layout=org.apache.log4j.PatternLayout
-	log4j.appender.file_all.layout.ConversionPattern=%p: %d [%c] - %m%n
-	 	
-	 	
-	#
-	# FILE Output
-	#log4j.file_error.category=ERROR
-	log4j.appender.file_error=org.apache.log4j.RollingFileAppender
-	log4j.appender.file_error.File=temp/logs/error.log
-	log4j.appender.file_error.MaxFileSize=10MB
-	log4j.appender.file_error.MaxBackupIndex=3
-	log4j.appender.file_error.layout=org.apache.log4j.PatternLayout
-	log4j.appender.file_error.layout.ConversionPattern=%p: %d [%c] - %m%n
-	 	
-	 	
-	#Emailing example
-	#email appender
-	log4j.appender.mail=org.apache.log4j.net.SMTPAppender
-	log4j.appender.mail.BufferSize=1
-	log4j.appender.mail.SMTPHost=smtp.myservername.xx
-	log4j.appender.mail.From=fromemail@myservername.xx
-	log4j.appender.mail.To=toemail@myservername.xx
-	log4j.appender.mail.Subject=Log ...
-	log4j.appender.mail.threshold=error
-	log4j.appender.mail.layout=org.apache.log4j.PatternLayout
-	log4j.appender.mail.layout.ConversionPattern=%d{ABSOLUTE} %5p %c{1}:%L - %m%n
-
 
 ### BeanComparator
 
