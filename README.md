@@ -1,9 +1,13 @@
 NYLA solutions contains a collection of projects/libraries to assist with Java based development.
 
-## NYLA Solutions Global
+## NYLA Solutions
 
-[NYLA Solutions Global](https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.global) is an API provides support for basic application utilities (application configuration, 
-data encryption, debugger, text processing and more). This library also has implementation for standard Gang Of Four design patterns and some custom patterns (ex: Command Pattern - COMMAS, searching - QueryService and more).
+[NYLA Solutions Core](https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.core) is an API provides support for basic application utilities (application configuration, 
+data encryption, debugger, text processing and more). This library also has implementation for standard Gang Of Four design patterns.
+
+
+[NYLA Solutions Commas](https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.commas)
+is an API that provides an custom Command Pattern.
 
  
 ## NYLA DAO
@@ -20,10 +24,10 @@ data access. This project implements NYLA's Query Service pattern for database b
 
 ## NYLA Web
 
-[NYLA Web](https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.global.web)  project expands on NYLA's Command pattern (a.k.a. COMMAS) for building REST/web services. It implements its own Model View Controller pattern for pure JEE or web containers (ex: Jetty) MicroServices. This project provides NYLA's Query Service pattern for searches abstracted through web services.
+[NYLA Web](https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.web)  project expands on NYLA's Command pattern (a.k.a. COMMAS) for building REST/web services. It implements its own Model View Controller pattern for pure JEE or web containers (ex: Jetty) MicroServices. This project provides NYLA's Query Service pattern for searches abstracted through web services.
 
-## NYLA Solutions DAO Spring Batch
+## NYLA Solutions Spring Batch
 
-[NYLA Solutions DAO Spring Batch](https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.dao.spring.batch)  project provides password encryption, error Listener for email notifications and other utilities for the spring batch framework.
+[NYLA Solutions Spring Batch](https://github.com/nyla-solutions/nyla/tree/master/nyla.solutions.spring.batch)  project provides password encryption, error Listener for email notifications and other utilities for the spring batch framework.
 
 
