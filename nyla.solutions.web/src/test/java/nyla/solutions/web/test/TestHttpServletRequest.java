@@ -732,7 +732,7 @@ public class TestHttpServletRequest implements HttpServletRequest
 
 	private Map<String,Object> headers = new HashMap<String,Object>();
 	private String remoteUser = "";
-	@SuppressWarnings("rawtypes")
+	
 	private Map<String,String[]> params = new HashMap<String,String[]>();
 	private HttpSession session = null;
 	public long getContentLengthLong()

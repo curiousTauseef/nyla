@@ -658,7 +658,7 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 		int batchCount = 100;
 		int startIndex = 1;
 		
-		String pattern = ".*delivered.*||.*unsubscribe.*||(.*invalid.*${AND}email.*)";
+		String pattern = ".*failed.*||.*failure.*||.*Undelivered.*||.*could not be delivered.*||.*unsubscribe.*||(.*invalid.*${AND}.*email.*)";
 		
 		Collection<EmailMessage>  emailMesssages = readMatches(batchCount, startIndex, pattern);
 		if(emailMesssages == null || emailMesssages.isEmpty())
@@ -744,6 +744,16 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 		try(ReadMail reader = new ReadMail(this.store))
 		{
 			return reader.readMatches(count, startIndex, pattern,false);
+		}
+		catch(javax.mail.MessagingException e)
+		{
+			Debugger.printError(e);
+			throw e;
+		}
+		catch(IOException e)
+		{
+			Debugger.printError(e);
+			throw e;
 		}
 	}//------------------------------------------------
 	/**

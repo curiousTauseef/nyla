@@ -53,7 +53,7 @@ public class IOTest extends TestCase
 		File[] files = IO.listFiles(new File("src/test/resources/iotest"), "*");
 		
 		Assert.assertNotNull(files);
-		Assert.assertTrue(files.length == 4);
+		Assert.assertEquals(5,files.length);
 		files = IO.listFiles(new File("src/test/resources/iotest"), "*.xml");
 		Assert.assertTrue(files.length == 2);
 	}

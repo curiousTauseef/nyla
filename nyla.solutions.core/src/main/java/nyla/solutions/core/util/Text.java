@@ -1099,7 +1099,7 @@ public static String[] toStrings(Object object)
       if(text == null || matchRegExp == null)
          return null;
       
-      String[] words = text.split("[ \t]");
+      String[] words = text.split("[ \t\n]");
       
       if(words == null || words.length == 0)
     	  return null;

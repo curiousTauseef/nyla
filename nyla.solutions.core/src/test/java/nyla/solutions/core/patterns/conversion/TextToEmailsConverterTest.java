@@ -14,6 +14,7 @@ public class TextToEmailsConverterTest
 
 	@Test
 	public void testConvert()
+	throws Exception
 	{
 		String email =  "";
 		TextToEmailsConverter converter = new TextToEmailsConverter();
@@ -58,6 +59,17 @@ public class TextToEmailsConverterTest
 		emails = converter.convert(email);
 		Assert.assertEquals(2,emails.size());
 		Assert.assertTrue(emails.contains("nyla@solu.marketing"));
+		
+		String text = "<bevans@aol.com>: host core-acb05c.mail.aol.com[172.27.24.55] said: 554 5.7.1";
+		
+		emails = converter.convert(text);
+		Assert.assertNotNull(emails);
+		Assert.assertTrue(emails.contains("bevans@aol.com"));
+		
+		text = "Final-Recipient: rfc822;roncheve@msn.com";
+			
+		emails = converter.convert(text);
+		Assert.assertNotNull(emails);
+		Assert.assertTrue(emails.contains("roncheve@msn.com"));
 	}
-
 }

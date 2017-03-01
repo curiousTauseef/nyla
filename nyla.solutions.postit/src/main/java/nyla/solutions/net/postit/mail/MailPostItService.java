@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import nyla.solutions.core.exception.NoDataFoundException;
-import nyla.solutions.core.security.user.data.User;
 import nyla.solutions.core.security.user.data.UserProfile;
 import nyla.solutions.core.util.Debugger;
 import nyla.solutions.email.Email;
@@ -17,7 +16,6 @@ import nyla.solutions.email.data.EmailMessage;
 import nyla.solutions.net.postit.PostItService;
 import nyla.solutions.net.postit.Postable;
 import nyla.solutions.net.postit.RecipientDAORepository;
-import nyla.solutions.net.postit.data.Recipient;
 import nyla.solutions.net.postit.exception.PostItException;
 
 @Component

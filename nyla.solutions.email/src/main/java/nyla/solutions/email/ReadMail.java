@@ -79,7 +79,10 @@ public class ReadMail implements Closeable
 	public Collection<EmailMessage> readMatches(int count, int startIndex, String pattern, boolean subjectOnly) 
 	throws MessagingException, IOException
 	{
-		inbox.open(Folder.READ_ONLY);
+		if(!inbox.isOpen())
+		{
+			inbox.open(Folder.READ_ONLY);
+		}
 
 		if(startIndex< 1)
 			throw new IllegalArgumentException("startIndex must be greater than 0");
@@ -88,6 +91,15 @@ public class ReadMail implements Closeable
 			throw new IllegalArgumentException("Count must be greater than 0");
 			
 		/* Get the messages which is unread in the Inbox */
+		int totalCount = inbox.getMessageCount();
+		if(startIndex >  totalCount)
+			return null;
+		
+		if(startIndex+ count-1 > totalCount)
+		{
+			count = totalCount - startIndex;
+		}
+		
 		Message[] msgs = inbox.getMessages(startIndex,startIndex+ count-1);
 		
 		if(msgs == null || msgs.length == 0)
@@ -99,7 +111,7 @@ public class ReadMail implements Closeable
 								if(msg == null)
 									return false;
 								
-								if(!Text.matches(msg.getSubject(),pattern))
+								if(Text.matches(msg.getSubject(),pattern))
 									return false;
 								
 								if(subjectOnly)
@@ -107,7 +119,8 @@ public class ReadMail implements Closeable
 									return true;
 								}
 
-								return Text.matches(String.valueOf(msg.getContent()),pattern);
+								//do not filter/remove the matching patterns
+								return !Text.matches(getContent(msg),pattern);
 								
 							}
 							catch (IOException e)
@@ -136,16 +149,6 @@ public class ReadMail implements Closeable
 			return results;
 		
 	}//------------------------------------------------
-
-	private void printAllMessages(Message[] msgs) 
-	throws MessagingException, IOException
-	{
-		for (int i = 0; i < msgs.length; i++)
-		{
-			System.out.println("MESSAGE #" + (i + 1) + ":");
-			toEmailMessage(msgs[i]);
-		}
-	}
 
 	/* Print the envelope(FromAddress,ReceivedDate,Subject) */
 	private EmailMessage toEmailMessage(Message message) 
@@ -176,7 +179,7 @@ public class ReadMail implements Closeable
 		
 		emailMessage.setSubject(message.getSubject());
 		emailMessage.setRecievedDate(message.getReceivedDate());
-		emailMessage.setContent(message.getContent().toString());
+		emailMessage.setContent(getContent(message));
 		
 		System.out.println("emailMessage : " + emailMessage);
 		
@@ -187,11 +190,16 @@ public class ReadMail implements Closeable
 	private String getContent(Message msg) 
 	throws MessagingException, IOException
 	{
-
-			String contentType = msg.getContentType();
-			System.out.println("Content Type : " + contentType);
-			Multipart mp = (Multipart) msg.getContent();
-			int count = mp.getCount(); 
+		Object obj = msg.getContent();
+		
+		if(obj == null)
+			return null;
+		
+		if(!Multipart.class.isAssignableFrom(obj.getClass()))
+			return obj.toString();
+		
+		Multipart mp = (Multipart) msg.getContent();
+		int count = mp.getCount(); 
 			
 			StringBuilder results = new StringBuilder();
 			

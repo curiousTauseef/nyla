@@ -43,6 +43,9 @@ import nyla.solutions.xml.xstream.XStreamInterpreter;
  */
 public class XML 
 {
+	protected XML()
+	{
+	}//------------------------------------------------
 	/**
 	 * Extract the xpath results
 	 * @param xml the xml 
