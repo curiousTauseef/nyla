@@ -30,5 +30,16 @@ public class EmailTest
 		
 		Assert.assertTrue(!email.isAuthenicationRequired());
 	}
+	
+	@Test
+	public void testSendEmail()
+	{
+		String to = "green_gregory@yahoo.com";
+		String subject = "Test";
+		String messageBody = "<b>Hello World</b>";
+		
+		Email email = new Email();
+		email.sendMail(to, subject, messageBody);
+	}
 
 }

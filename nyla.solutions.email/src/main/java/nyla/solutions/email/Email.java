@@ -2,6 +2,7 @@ package nyla.solutions.email;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -33,6 +34,7 @@ import nyla.solutions.core.data.Data;
 import nyla.solutions.core.exception.CommunicationException;
 import nyla.solutions.core.exception.SecurityException;
 import nyla.solutions.core.exception.SetupException;
+import nyla.solutions.core.exception.SystemException;
 import nyla.solutions.core.operations.logging.Log;
 import nyla.solutions.core.patterns.Connectable;
 import nyla.solutions.core.patterns.Disposable;
@@ -373,6 +375,10 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 
 			sendMessage(mailMessage);
 		}
+		catch (SystemException e)
+		{
+			throw new CommunicationException(e);
+		}
 		catch (Exception e)
 		{
 			throw new CommunicationException(e);
@@ -385,40 +391,60 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 	 * @throws MessagingException
 	 */
 	private void sendMessage(MimeMessage aMailMessage)
-			throws MessagingException
 	{
 		boolean authNeeed = this.isAuthenicationRequired();
 		Debugger.println(this, "authNeeed=" + authNeeed);
 
-		if (authNeeed)
+		try
 		{
-			// -------------------------------------------
-			// set properties
-			Properties props = System.getProperties();
-			props.put("mail.smtp.auth", String.valueOf(authNeeed));
+			if (authNeeed)
+			{
+				// -------------------------------------------
+				// set properties
+//				if(!this.isConnected())
+//				{
+//					Properties props = System.getProperties();
+//					props.put("mail.smtp.auth", String.valueOf(authNeeed));
+//
+//					// try to connect and send it
+//					aMailMessage.saveChanges();					
+//				}
+//				
+//				Transport tp = this.mailSession.getTransport("smtp");
+//
+//				tp.connect(this.smtpHost,
+//						this.mailFromUser,
+//						String.valueOf(this.mailFromPassword));
+//				// send the thing off
+//				Transport.send(aMailMessage, aMailMessage.getAllRecipients());
+//				tp.close();
+				
+				mailTransport.sendMessage(aMailMessage, aMailMessage.getAllRecipients());
+				// -------------------------------------------
+				// aMailMessage.saveChanges();
+				// this.the_mailTransport.sendMessage(aMailMessage,
+				// aMailMessage.getAllRecipients());
 
-			// try to connect and send it
-			aMailMessage.saveChanges();
-			Transport tp = this.mailSession.getTransport("smtp");
+			}
+			else
+			{
 
-			tp.connect(this.smtpHost,
-					this.mailFromUser,
-					String.valueOf(this.mailFromPassword));
-			// send the thing off
-			Transport.send(aMailMessage, aMailMessage.getAllRecipients());
-			tp.close();
-			// -------------------------------------------
-			// aMailMessage.saveChanges();
-			// this.the_mailTransport.sendMessage(aMailMessage,
-			// aMailMessage.getAllRecipients());
+				Transport.send(aMailMessage);
 
+			}
 		}
-		else
-
+		catch (Exception e)
 		{
-
-			Transport.send(aMailMessage);
-
+			String message = e.getMessage();
+			
+			if(message.contains("530 Authentication"))
+			{
+				throw new SecurityException("Security issue, try setting properties "
+						+EmailTags.MAIL_AUTHENICATION_REQUIRED_PROP+", "+EmailTags.MAIL_FROM_ADDRESS_PROP+" and "+EmailTags.MAIL_FROM_PASSWORD_PROP+" error:"+message);
+			}
+			
+			
+			throw new CommunicationException("Unable to connect to server to send message. Try setting mail.host or mail.<protocol>.host (ex: mail.smtp.host). "+message,e);
 		}
 	}// --------------------------------------------
 
@@ -894,14 +920,20 @@ public class Email implements EmailTags, Disposable, SendMail, Connectable
 		if(store == null)
 			return;
 		
+		String mailReadHost = Config.getProperty("mail."+protocol+".host","");
+		if(mailReadHost == null || mailReadHost.length() ==0)
+			return; //do not nothing
+		
 		if (!isAuthenicationRequired())
 			return;
+		
+		
 		
 		String user = getMailFromUser();
 		if(user == null|| user.trim().length() == 0)
 					throw new SetupException("user is required. Set property:"+MAIL_FROM_ADDRESS_PROP);
 		
-		String mailReadHost = Config.getProperty("mail."+protocol+".host");
+		
 		
 		char[] passwordArray = getMailFromPassword();
 		

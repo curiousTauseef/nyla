@@ -1395,25 +1395,9 @@ public class IO
 
 		mkdir(file.getParentFile());
 
-		Writer writer = null;
-
-		try
+		try(Writer writer = new OutputStreamWriter(new FileOutputStream(file,append),charset.newEncoder()))
 		{
-			writer = new OutputStreamWriter(new FileOutputStream(file,append),charset.newEncoder()) ;
-
 			writer.write(text);
-		}
-		finally
-		{
-			if (writer != null)
-				try
-				{
-					writer.close();
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
 		}
 
 	}// ------------------------------------------------------
@@ -1431,6 +1415,19 @@ public class IO
 		IO.writeAppend(fileName,data,IO.CHARSET);
 		
 	}//--------------------------------------------------------
+	/**
+	 * 
+	 * @param fileName
+	 *            the file to write
+	 * @param data
+	 *            the data
+	 * @throws IOException
+	 */
+	public static void writeAppend(File file, String data)
+			throws IOException
+	{
+		IO.writeFile(file,data,true,IO.CHARSET);
+	}
 	/**
 	 * 
 	 * @param fileName
