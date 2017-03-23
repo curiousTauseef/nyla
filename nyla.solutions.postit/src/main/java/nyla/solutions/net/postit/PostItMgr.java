@@ -207,6 +207,9 @@ public class PostItMgr
 			
 			try
 			{
+				if(recipient.getEmail() == null || recipient.getEmail().trim().length() == 0)
+					continue;
+				
 				email.sendMail(recipient.getEmail(), from, subject,text);
 				
 				try

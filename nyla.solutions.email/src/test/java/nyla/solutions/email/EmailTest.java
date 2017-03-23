@@ -1,10 +1,12 @@
 package nyla.solutions.email;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import nyla.solutions.core.util.Config;
 
+@Ignore
 public class EmailTest
 {
 
