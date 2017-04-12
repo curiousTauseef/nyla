@@ -42,7 +42,6 @@ public interface Auditable extends Updateable, Createable
    
    /**
     * Delete the auditable object
-    * @return
     */
    public void delete();
 }

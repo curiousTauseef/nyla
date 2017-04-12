@@ -20,7 +20,12 @@ import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
@@ -31,9 +36,6 @@ import nyla.solutions.core.exception.SystemException;
 import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Debugger;
 import nyla.solutions.core.util.Text;
-
-
-
 
 /**
  * <pre>
@@ -75,6 +77,12 @@ public class IO
 	    * 1024
 	    */
 	   public static final int FILE_IO_BATCH_SIZE = 1024;
+	   
+	   /**
+	    * NEWLINE = System.getProperty("line.separator")
+	    */
+	   public static final String NEWLINE = System.getProperty("line.separator");
+	   
 	/**
 	 * 
 	 * @return the System.getProperty("file.separator");
@@ -174,6 +182,36 @@ public class IO
 		   try{ stream.close(); } catch(Exception e){Debugger.printWarn(e);}
 	   }
 	}// ----------------------------------------------
+	/**
+	 * 
+	 * @param files the files to merge
+	 */
+	public static void mergeFiles(File output, File ... filesToMerge)
+	throws IOException
+	{
+		if(output == null || filesToMerge == null || filesToMerge.length == 0)
+			return;
+		
+		
+		Path outFile= output.toPath();
+		
+	    
+	    try(FileChannel out=FileChannel.open(outFile, StandardOpenOption.CREATE, StandardOpenOption.WRITE)) 
+	    {
+	      
+	    	for(int i=0; i<filesToMerge.length; i++) 
+	    	{
+		    		
+		        Path inFile=filesToMerge[i].toPath();
+		        
+		        try(FileChannel in=FileChannel.open(inFile, StandardOpenOption.READ)) {
+		          for(long p=0, l=in.size(); p<l; )
+		            p+=in.transferTo(p, l-p, out);
+		        }
+	      }
+	    }
+		
+	}//------------------------------------------------
 	/**
 	 * Make a directory
 	 * @param folder the folder/directory to create
@@ -379,7 +417,7 @@ public class IO
 	 */
 	public static String newline()
 	{
-		return System.getProperty("line.separator");
+		return NEWLINE;
 	}// --------------------------------------------
 	/**
 	 * Copy a source folder to a destination folder
@@ -542,26 +580,12 @@ public class IO
 	                catch(Throwable throwable1) { }
 	        }
 	        return cl;
-	    }
+	    }//------------------------------------------------
 	/**
 	 * 
-	 * @param aFilePath
-	 *            the file path
-	 * @return the file name
-	 */
-	/*
-	 * public static String fileNameForPath(String aFilePath) { if (aFilePath ==
-	 * null || aFilePath.length() == 0) throw new IllegalArgumentException(
-	 * "aFilePath required in fileNameForPath");
-	 * 
-	 * int lastIndexOfSlash = aFilePath.lastIndexOf(aFilePath);
-	 * 
-	 * if (lastIndexOfSlash + 1 != aFilePath.length()) aFilePath =
-	 * aFilePath.substring(lastIndexOfSlash + 1, aFilePath .length()); else {
-	 * throw new IllegalArgumentException("Illegal Argument path " + aFilePath);
-	 * }
-	 * 
-	 * return aFilePath; }// --------------------------------------------
+	 * @param location  the list path
+	 * @param pattern the search patttern
+	 * @return array of files
 	 */
 	public static File[] listFiles(String location, String pattern)
 	{
@@ -892,52 +916,35 @@ public class IO
 	{
 		if (fileName == null || fileName.length() == 0)
 			return null;
-
-		BufferedReader buffreader = null;
-		File file = new File(fileName);
-		try
+		
+		Path path = Paths.get(fileName);
+		File file  = path.toFile();
+		
+		if(!file.exists())
 		{
-
-			buffreader = new BufferedReader(new InputStreamReader(
-					new FileInputStream(file), charSet));
-
-			String tmp = buffreader.readLine();
-			if (tmp == null)
-				return null;
-
-			StringBuilder results = new StringBuilder(tmp);
-
-			String newline = newline();
-
-			do
-			{
-
-				tmp = buffreader.readLine();
-
-				if (tmp != null)
-					results.append(newline).append(tmp);
-			}
-			while (tmp != null);
-
-			return results.toString();
+			throw new IllegalArgumentException("File:"+file.getAbsolutePath()+" does not exist");
 		}
-		catch (FileNotFoundException e)
+		
+		StringBuilder stringBuilder = new StringBuilder(Long.valueOf(file.length()).intValue());
+		
+	    String line = null;
+	    boolean firstTime = true;
+		try (BufferedReader reader = Files.newBufferedReader(path, charSet)) 
 		{
-			return null;
-		}
-		finally
-		{
-			if (buffreader != null)
-				try
-				{
-					buffreader.close();
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-
-		}
+		    while ((line = reader.readLine()) != null) 
+		    {
+		    	if(!firstTime)
+		    	{
+		    		stringBuilder.append(NEWLINE);
+		    	}
+		    	firstTime = false;
+		    	
+		    	stringBuilder.append(line);
+		    	
+		    	
+		    }
+		} 
+		return stringBuilder.toString();
 	}// --------------------------------------------------
 	/**
 	 * 

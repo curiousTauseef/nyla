@@ -1040,5 +1040,20 @@ public final class Organizer
 
 	}// --------------------------------------------
 
+		public static double[] toDoubles(List<Double> objects)
+		{
+			if (objects == null || objects.isEmpty())
+				return null;
+
+			double[] rets = new double[objects.size()];
+
+			for (int i = 0; i < rets.length; i++)
+			{
+				rets[i] = objects.get(i);
+			}
+			return rets;
+
+		}// --------------------------------------------
+
 	private static Log logger = Debugger.getLog(Organizer.class);
 }

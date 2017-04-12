@@ -76,12 +76,8 @@ public class RMI
    {
 	try
 	{
-		//String name = "Compute";
-		//mycomputer.example.com 45
-		//Registry registry = LocateRegistry.getRegistry("usxxgreeng3m1.corp.emc.com",27001);
-        return (T)registry.lookup(name);
 
-	   //return (T)Naming.lookup(rmiUrl);
+        return (T)registry.lookup(name);
 	}
 	catch(Exception e)
 	{
@@ -112,18 +108,14 @@ public class RMI
    }// ---------------------------------------------- 
    /**
     * 
-    * @param rmiUrl rmi://localhost:port/serviceName
+    * @param name the service name
     * @param remote the remote object to bind
     */
    public void rebind(String name,Remote remote)
    {
 	try
 	{
-	   /*createRegistry(port);
-	   
-	   Naming.rebind(rmiUrl, remote);
-	   */
-		
+
 		Remote stub = UnicastRemoteObject.exportObject(remote, 0);
 		
 		this.registry.rebind(name, stub);
@@ -148,27 +140,7 @@ public class RMI
 			return null;
 		}
    }
-   /**
-    * 
-    * @param rmiUrl rmi://localhost:port/serviceName
-    * @param remote the object to bind
-    */
-   /*public static void rebind(String rmiUrl, Remote remote)
-   {
-	try
-	{
-	   
-	   Naming.rebind(rmiUrl, remote);   
-	   
-	   Debugger.println(RMI.class,"Binded "+rmiUrl+" to class "+remote.getClass().getName());
-	   
-	} 
-	catch (Exception e)
-	{
-	   throw new SetupException("RMI url="+rmiUrl+" exception:"+Debugger.stackTrace(e));
-	}	
-   }*/
-   // ----------------------------------------------
+
    /**
     * Bind all object.
     * Note that the rmiUrl in located in the config.properties
@@ -210,28 +182,15 @@ public class RMI
    }// ----------------------------------------------
    /**
     * Create a new local registry on a local port
-    * @param port
-    * @return
-    * @throws RemoteException
+    * @return registry using configuration properties nyla.solutions.core.net.rmi.RMI.host nyla.solutions.core.net.rmi.RMI.port
+    * @throws RemoteException unknown occurs RMI.
     */
-   /*public static Registry createRegistry(int port)
-   throws RemoteException
-   {
-	try
-	{
-	   return LocateRegistry.createRegistry(port);
-	}
-	catch(ExportException exception)
-	{
-	   return getRegistry("localhost",port);
-	}
-   }*/
-   // ----------------------------------------------
+
    public static Registry getRegistry()
    throws RemoteException
 	{
 			return LocateRegistry.getRegistry(Config.getProperty(RMI.class,"host"), 
-												Config.getPropertyInteger(RMI.class,"host").intValue());
+												Config.getPropertyInteger(RMI.class,"port").intValue());
 	}// ----------------------------------------------
    
    public static Registry getRegistry(String host, int port)

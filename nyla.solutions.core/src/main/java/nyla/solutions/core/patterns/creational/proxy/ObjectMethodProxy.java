@@ -8,13 +8,18 @@ import nyla.solutions.core.util.Debugger;
 import nyla.solutions.core.util.PROXY;
 
 
+/**
+ * Proxy for execute of method calls
+ * @author Gregory Green
+ *
+ */
 public class ObjectMethodProxy
 {
 	/**
-	 * 
-	 * @param target
-	 * @param method
-	 * @param classTypes
+	 * Constructor with object/method information
+	 * @param target the target object
+	 * @param methodName the method
+	 * @throws NoSuchMethodException when method does not exits
 	 */
 	public ObjectMethodProxy(Object target, String methodName)
 			throws NoSuchMethodException
@@ -23,10 +28,10 @@ public class ObjectMethodProxy
 	}// ------------------------------------------------
 
 	/**
-	 * 
-	 * @param target
-	 * @param method
-	 * @param classTypes
+	 * Constructor with object/method information
+	 * @param target the target object
+	 * @param methodName the method name
+	 * @param parameterTypes the input method parameter types
 	 */
 	public ObjectMethodProxy(Object target, String methodName,
 			Class<?>[] parameterTypes) throws NoSuchMethodException

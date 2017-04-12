@@ -2,28 +2,77 @@ package nyla.solutions.core.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import junit.framework.TestCase;
 
-public class IOTest extends TestCase
+import nyla.solutions.core.io.csv.CsvReader;
+import nyla.solutions.core.io.csv.CsvWriter;
+
+public class IOTest
 {
-
-	public IOTest(String name)
+	@Test
+	public void testMergeFiles()
+	throws IOException
 	{
-		super(name);
-		//123
-	}
+		if(!Paths.get("target/runtime/").toFile().mkdirs())
+			System.out.println("Existing directoy deleted");
+		
+		File csv1 = new File("target/runtime/csv1.csv");
+		System.out.println(csv1.delete());
+		File csv2 = new File("target/runtime/csv2.csv");
+		System.out.println(csv2.delete());
+		
+		CsvWriter csvWriter1 = new CsvWriter(csv1);
 
+		csvWriter1.appendRow("1","1-1","1-2");
+		
+		CsvWriter csvWriter2 = new CsvWriter(csv2);
+
+		csvWriter2.appendRow("2","2-1","2-2","\"ny\"la");
+
+
+		File[] filesToMerge = {csv1, csv2};
+		File output = Paths.get("target/runtime/merged.csv").toFile();
+		System.out.println(output.delete());
+		
+		Assert.assertFalse(output.exists());
+		
+		IO.mergeFiles(output, filesToMerge);
+		
+		Assert.assertTrue(output.exists());
+		
+		CsvReader reader = new CsvReader(output);
+		
+		Assert.assertEquals(2, reader.size());
+		
+		
+		Assert.assertEquals(reader.row(0).get(0), "1");
+		Assert.assertEquals(reader.row(0).get(1), "1-1");
+		Assert.assertEquals(reader.row(0).get(2), "1-2");
+		Assert.assertEquals(reader.row(1).get(0), "2");
+		Assert.assertEquals(reader.row(1).get(1), "2-1");
+		Assert.assertEquals(reader.row(1).get(2), "2-2");
+		
+		String result = reader.row(1).get(3);
+		System.out.println("result:"+result);
+		Assert.assertEquals( "\"ny\"la", result);
+		
+		
+		
+		
+		
+	}//------------------------------------------------
+	@Test
 	public void testOverview()
 	throws IOException
 	{
 	  //Use mkdir to create entire directory paths 
 	   File inputDirectory = new File("./runtime/tmp/input");
 	   IO.mkdir(inputDirectory);
-	   assertTrue(inputDirectory.exists());
+	   Assert.assertTrue(inputDirectory.exists());
 	   
 	   //Write text or binary files
 	   String fileName = inputDirectory.getAbsolutePath()+"/test.txt";
@@ -32,19 +81,19 @@ public class IOTest extends TestCase
 	   
 	   //Read text or binary files 
 	   String output = IO.readFile(fileName);
-	   assertEquals("Hello"+IO.newline()+"world",output);
+	   Assert.assertEquals("Hello"+IO.newline()+"world",output);
 	   
 	   //Copy entire Directories and files nested files
 	   File outputDirectory = new File("./runtime/tmp/output");
 	   IO.copyDirectory(inputDirectory, outputDirectory);
-	   assertTrue(outputDirectory.length() >= inputDirectory.length());
+	   Assert.assertTrue(outputDirectory.length() >= inputDirectory.length());
 	   
 	    //Use Wildcard pattern to list files
-	   assertTrue(IO.list(outputDirectory, "*.txt").length > 0);
+	   Assert.assertTrue(IO.list(outputDirectory, "*.txt").length > 0);
 	   
 	   //Delete file or directory (all files are deleted from the given directory)
 	   IO.delete(inputDirectory);
-	   assertTrue(!inputDirectory.exists()); 
+	   Assert.assertTrue(!inputDirectory.exists()); 
 	   
 	}
 	@Test
@@ -56,6 +105,8 @@ public class IOTest extends TestCase
 		Assert.assertEquals(5,files.length);
 		files = IO.listFiles(new File("src/test/resources/iotest"), "*.xml");
 		Assert.assertTrue(files.length == 2);
+		
+	
 	}
 	//private String directoryPath = "./runtime/tmp";
 }

@@ -22,12 +22,33 @@ public class CsvWriter
 	public CsvWriter(File file)
 	{
 		this.file = file;
-	}
-
+	}//------------------------------------------------
 	/**
 	 * 
-	 * @param file
-	 * @param objects
+	 * @param cells the cells row to append
+	 * @throws IOException when IO error occurs
+	 */
+	public void appendRow(String ... cells) throws IOException
+	{
+		if(cells == null)
+			return;
+		StringBuilder text = new StringBuilder();
+		
+		for (int i = 0; i < cells.length; i++)
+		{
+			if (i != 0)
+				text.append(SEPARATOR);
+
+			text.append("\"").append(format(cells[i])).append("\"");
+
+		}
+
+		IO.writeAppend(file, new StringBuilder(text.toString()).append(IO.newline()).toString());
+	}
+	/**
+	 * 
+	 * @param row the row to append
+	 * @throws IOException when IO error occurs
 	 */
 	public void appendRow(List<String> row) throws IOException
 	{
@@ -57,19 +78,6 @@ public class CsvWriter
 				.append(format(text))
 				.append("\"").toString();
 	}//------------------------------------------------
-	/**
-	 * 
-	 * @param file
-	 * @param objects
-	 */
-	public void appendFile(Object... objects) throws IOException
-	{
-
-		String filePath = file.getAbsolutePath();
-
-		IO.writeAppend(filePath, toRow(objects));
-	}// --------------------------------------------
-
 	/**
 	 * 
 	 * @param objects
@@ -102,6 +110,7 @@ public class CsvWriter
 	private static String format(Object object)
 	{
 		String text = Text.toString(object);
+		
 		return Text.replace("\"", "\"\"", text); // TODO: need to check "
 	}// --------------------------------------------
 
