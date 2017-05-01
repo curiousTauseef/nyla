@@ -22,11 +22,15 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -54,35 +58,160 @@ public class IO
 	/**
 	 * CHARSET_NM = "UTF-8"
 	 */
-	public static final String CHARSET_NM = Config.getProperty(IO.class,"CHARSET","UTF-8");
-	
-	
+	public static final String CHARSET_NM = Config.getProperty(IO.class, "CHARSET", "UTF-8");
+
 	/**
 	 * CHARSET = Charset.forName("UTF-8")
 	 */
 	public static final Charset CHARSET = Charset.forName(CHARSET_NM);
-	
+
 	/**
 	 * File name cannot have characters /\<>*:?|
 	 */
 	public static final String DEFAULT_FILE_NM_INVALID_CHARACTERS_RE = "\\/|\\\\|:|\"|\\*|\\?|<|>|\\|";
 
-	 
-	   /**
-	    * Property "byte.buffer.size"
-	    * @see IO
-	    */
-	   public static final String BYTE_BUFFER_SIZE_PROP = "byte.buffer.size";
-	   /**
-	    * 1024
-	    */
-	   public static final int FILE_IO_BATCH_SIZE = 1024;
-	   
-	   /**
-	    * NEWLINE = System.getProperty("line.separator")
-	    */
-	   public static final String NEWLINE = System.getProperty("line.separator");
-	   
+	/**
+	 * Property "byte.buffer.size"
+	 * 
+	 * @see IO
+	 */
+	public static final String BYTE_BUFFER_SIZE_PROP = "byte.buffer.size";
+	/**
+	 * 1024
+	 */
+	public static final int FILE_IO_BATCH_SIZE = 1024;
+
+	/**
+	 * NEWLINE = System.getProperty("line.separator")
+	 */
+	public static final String NEWLINE = System.getProperty("line.separator");
+
+	/**
+	 * 
+	 * @param filePaths
+	 *            the list of the files paths
+	 * @param pattern
+	 *            the search pattern (ex: *.log)
+	 * @return list of matching files
+	 */
+	public static List<File> find(Collection<String> filePaths, String pattern)
+	{
+		if (filePaths == null)
+			return null;
+
+		ArrayList<File> results = new ArrayList<File>(filePaths.size());
+
+		File file = null;
+
+		WildCardFilter filter = new WildCardFilter(pattern);
+		List<File> nested = null;
+		for (String filePath : filePaths)
+		{
+			file = Paths.get(filePath).toFile();
+
+			nested = find(file, filter);
+			
+			if(nested != null && !nested.isEmpty())
+				results.addAll(nested);
+
+		}
+
+		if(results.isEmpty())
+			return null;
+		
+		results.trimToSize();
+		
+		return results;
+
+	}// ------------------------------------------------
+
+	public static List<File> find(File file, WildCardFilter filter)
+	{
+		File[] fileArray;
+
+		if (!file.exists())
+			return null;
+
+		ArrayList<File> results = new ArrayList<File>();
+
+		if (file.isDirectory())
+		{
+
+			fileArray = file.listFiles();
+
+			if (fileArray == null || fileArray.length == 0)
+				return null;
+
+			List<File> nesultedResults = null;
+			for (File nestedFile : fileArray)
+			{
+				nesultedResults = find(nestedFile, filter);
+
+				if (nesultedResults != null)
+				{
+					results.addAll(nesultedResults);
+				}
+			}
+		}
+		else if (filter.accept(file, file.getName()))
+		{
+			results.add(file);
+		}
+		
+		if(results.isEmpty())
+			return null;
+		
+		return results;
+	}
+
+	/**
+	 * 
+	 * @param text
+	 *            the search text
+	 * @param logFiles
+	 *            the list of files
+	 * @return the grep matches across all files
+	 * @throws IOException
+	 *             when an error occurs
+	 */
+	public static Map<File, Collection<String>> grep(String text, List<File> logFiles)
+	throws IOException
+	{
+		if (logFiles == null || logFiles.isEmpty())
+			return null;
+
+		HashMap<File, Collection<String>> map = new HashMap<File, Collection<String>>();
+
+		for (File file : logFiles)
+		{
+
+			if (!file.exists())
+			{
+				throw new IllegalArgumentException("File:" + file.getAbsolutePath() + " does not exist");
+			}
+
+			String line = null;
+			ArrayList<String> matches = new ArrayList<String>();
+			
+			try (BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8))
+			{
+				while ((line = reader.readLine()) != null)
+				{
+					if(line.contains(text))
+						matches.add(line);
+				}
+				
+				if(!matches.isEmpty())
+					map.put(file, matches);
+			}
+		}
+
+		if (map.isEmpty())
+			return null;
+
+		return map;
+	}// ------------------------------------------------
+
 	/**
 	 * 
 	 * @return the System.getProperty("file.separator");
@@ -91,326 +220,392 @@ public class IO
 	{
 		return System.getProperty("file.separator");
 	}// --------------------------------------------------------
-	
-	public static String readText(BufferedReader br) throws IOException 
+
+	public static String readText(BufferedReader br) throws IOException
 	{
 		String s = "";
 		StringBuilder sb = new StringBuilder();
-		while((s=br.readLine())!=null){
-				 sb.append(s+IO.newline());
+		while ((s = br.readLine()) != null)
+		{
+			sb.append(s + IO.newline());
 		}
-		
+
 		return sb.toString();
 	}
-	
-	
+
 	/**
 	 * Write obj to file
+	 * 
 	 * @param obj
 	 * @param file
 	 */
 	public static void serializeToFile(Object obj, File file)
 	{
-	   ObjectOutputStream stream = null;
-	   try
-	   {
-		   stream = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
-		   
-		   stream.writeObject(obj);		
-	   } 
-	   catch (Exception e)
-	   {
-		throw new SystemException(Debugger.stackTrace(e));
-	   }
-	   finally
-	   {
-		if(stream != null)
-		   try{ stream.close(); } catch(Exception e){}
-		
-	   }
+		ObjectOutputStream stream = null;
+		try
+		{
+			stream = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
+
+			stream.writeObject(obj);
+		}
+		catch (Exception e)
+		{
+			throw new SystemException(Debugger.stackTrace(e));
+		}
+		finally
+		{
+			if (stream != null)
+				try
+				{
+					stream.close();
+				}
+				catch (Exception e)
+				{
+				}
+
+		}
 	}// ----------------------------------------------
 
 	/**
 	 * Write obj to file
+	 * 
 	 * @param obj
 	 * @param file
 	 */
 	public static byte[] serializeToBytes(Object obj)
 	{
-	   ObjectOutputStream stream = null;
-	   try
-	   {
-		   ByteArrayOutputStream out = new ByteArrayOutputStream();
-		   
-		   stream = new ObjectOutputStream(new BufferedOutputStream(out));
-		   
-		   stream.writeObject(obj);		
-		   
-		   return out.toByteArray();
-	   } 
-	   catch (Exception e)
-	   {
-		throw new SystemException(Debugger.stackTrace(e));
-	   }
-	   finally
-	   {
-		if(stream != null)
-		   try{ stream.close(); } catch(Exception e){Debugger.printWarn(e);}
-		
-	   }
+		ObjectOutputStream stream = null;
+		try
+		{
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+			stream = new ObjectOutputStream(new BufferedOutputStream(out));
+
+			stream.writeObject(obj);
+
+			return out.toByteArray();
+		}
+		catch (Exception e)
+		{
+			throw new SystemException(Debugger.stackTrace(e));
+		}
+		finally
+		{
+			if (stream != null)
+				try
+				{
+					stream.close();
+				}
+				catch (Exception e)
+				{
+					Debugger.printWarn(e);
+				}
+
+		}
 	}// ----------------------------------------------
+
 	/**
 	 * Read object from file
-	 * @param file the file that has the object information
+	 * 
+	 * @param file
+	 *            the file that has the object information
 	 * @return the UN-serialized object
 	 */
 	public static Object deserialize(File file)
 	{
-	   ObjectInputStream stream = null;
-	   try
-	   {
-		stream = new ObjectInputStream(new FileInputStream(file));
-		return stream.readObject();
-	   } 
-	   catch (Exception e)
-	   {
-		throw new SystemException(Debugger.stackTrace(e));
-	   }
-	   finally
-	   {
-		if(stream != null)
-		   try{ stream.close(); } catch(Exception e){Debugger.printWarn(e);}
-	   }
+		ObjectInputStream stream = null;
+		try
+		{
+			stream = new ObjectInputStream(new FileInputStream(file));
+			return stream.readObject();
+		}
+		catch (Exception e)
+		{
+			throw new SystemException(Debugger.stackTrace(e));
+		}
+		finally
+		{
+			if (stream != null)
+				try
+				{
+					stream.close();
+				}
+				catch (Exception e)
+				{
+					Debugger.printWarn(e);
+				}
+		}
 	}// ----------------------------------------------
+
 	/**
 	 * 
-	 * @param files the files to merge
+	 * @param files
+	 *            the files to merge
 	 */
-	public static void mergeFiles(File output, File ... filesToMerge)
-	throws IOException
+	public static void mergeFiles(File output, File... filesToMerge) throws IOException
 	{
-		if(output == null || filesToMerge == null || filesToMerge.length == 0)
+		if (output == null || filesToMerge == null || filesToMerge.length == 0)
 			return;
-		
-		
-		Path outFile= output.toPath();
-		
-	    
-	    try(FileChannel out=FileChannel.open(outFile, StandardOpenOption.CREATE, StandardOpenOption.WRITE)) 
-	    {
-	      
-	    	for(int i=0; i<filesToMerge.length; i++) 
-	    	{
-		    		
-		        Path inFile=filesToMerge[i].toPath();
-		        
-		        try(FileChannel in=FileChannel.open(inFile, StandardOpenOption.READ)) {
-		          for(long p=0, l=in.size(); p<l; )
-		            p+=in.transferTo(p, l-p, out);
-		        }
-	      }
-	    }
-		
-	}//------------------------------------------------
+
+		Path outFile = output.toPath();
+
+		try (FileChannel out = FileChannel.open(outFile, StandardOpenOption.CREATE, StandardOpenOption.WRITE))
+		{
+
+			for (int i = 0; i < filesToMerge.length; i++)
+			{
+
+				Path inFile = filesToMerge[i].toPath();
+
+				try (FileChannel in = FileChannel.open(inFile, StandardOpenOption.READ))
+				{
+					for (long p = 0, l = in.size(); p < l;)
+						p += in.transferTo(p, l - p, out);
+				}
+			}
+		}
+
+	}// ------------------------------------------------
+
 	/**
 	 * Make a directory
-	 * @param folder the folder/directory to create
+	 * 
+	 * @param folder
+	 *            the folder/directory to create
 	 * @throws IOException
 	 */
-	public static boolean mkdir(File folder)
-	throws IOException
+	public static boolean mkdir(File folder) throws IOException
 	{
-		
-		if(folder == null || folder.exists())
+
+		if (folder == null || folder.exists())
 			return false;
-		
-		//check if parent directory exists
+
+		// check if parent directory exists
 		File parent = folder.getParentFile();
-		if(parent != null && !parent.exists())
-			mkdir(parent); //recursively check parentb
-		
+		if (parent != null && !parent.exists())
+			mkdir(parent); // recursively check parentb
+
 		return folder.mkdir();
 
-	}//---------------------------------------------
+	}// ---------------------------------------------
+
 	/**
 	 * 
-	 * @param folder the top folder
+	 * @param folder
+	 *            the top folder
 	 * @return the nest folders in a director
 	 */
 	public static File[] listFolders(File folder)
 	{
-		
-		if(folder == null)
+
+		if (folder == null)
 			throw new RequiredException("folder in IO");
-		
-		if(!folder.isDirectory())
-			throw new RequiredException(folder.getAbsolutePath()+" is not a folder");
-		
+
+		if (!folder.isDirectory())
+			throw new RequiredException(folder.getAbsolutePath() + " is not a folder");
+
 		return folder.listFiles(new FolderFilter());
-	}//---------------------------------------------
+	}// ---------------------------------------------
+
 	/**
 	 * Delete the file o folder
-	 * @param file the file/folder to delete
+	 * 
+	 * @param file
+	 *            the file/folder to delete
 	 */
-	public static boolean delete(File file)
-	throws IOException
+	public static boolean delete(File file) throws IOException
 	{
-		if(file == null)
+		if (file == null)
 			throw new RequiredException("file");
-		
-		if(!file.exists())
+
+		if (!file.exists())
 			return false;
-		
-		if(file.isDirectory())
+
+		if (file.isDirectory())
 			return deleteFolder(file);
 		else
 		{
-		    return file.delete();
-		    	
+			return file.delete();
+
 		}
-	}//---------------------------------------------	
+	}// ---------------------------------------------
+
 	/**
 	 * 
-	 * @param aFilePath the file to check if it exists
+	 * @param aFilePath
+	 *            the file to check if it exists
 	 * @return the true is file exists
 	 */
 	public static boolean exists(String aFilePath)
 	{
 		if (aFilePath == null)
-			throw new IllegalArgumentException(
-					"aFilePath required in IO.exists");
+			throw new IllegalArgumentException("aFilePath required in IO.exists");
 
 		File file = new File(aFilePath);
 
 		return file.exists();
 	}// --------------------------------------------
-	   /**
-	    * Write binary file data
-	    * 
-	    * @param file the file
-	    * @param data
-	    * @throws Exception
-	    */
-	   public static void writeFile(File file, byte[] data) throws IOException
-	   {
-		   writeFile(file.getAbsolutePath(), data);
-	   }//---------------------------------------------
-	   /**
-	    * Write data to property file
-	    * @param filePath the file to write
-	    * @param properties
-	    * @throws IOException
-	    */
-	   public static void writeProperties(String filePath, Properties properties)
-	   throws IOException
-	   {
-		   Writer writer = null;
-		   
-		   try
-			{
-				   writer = new OutputStreamWriter(new FileOutputStream(filePath), IO.CHARSET);
-				   
-				   properties.store(writer, filePath);
-			}
-			finally
-			{
-				if(writer != null)
-					try{ writer.close(); } catch(Exception e){e.printStackTrace();}
-			}
-		   
-	   }// --------------------------------------------------------
-	   /**
-	    * Read properties file
-	    * @param filePath the file to read
-	    * @param properties
-	    * @throws IOException
-	    */
-	   public static Properties readProperties(String filePath)
-	   throws IOException
-	   {
-		   Reader reader = null;
-		   Properties properties = new Properties();
-		   
-		   try
-			{
-			   reader = new InputStreamReader(new FileInputStream(filePath), CHARSET);
-				   
-			   properties.load(reader);
-			   
-			   return properties;
-			}
-			finally
-			{
-				if(reader != null)
-					try{ reader.close(); } catch(Exception e){Debugger.printWarn(e);}
-			}
-		   
-	   }// --------------------------------------------------------	   
-	   /**
-	    * 
-	    * @param file the full file path of which to read
-	    * @return string data
-	    * @throws IOException
-	    */
-	   public static String readFile(File file) throws IOException
-	   {
-		   if (file == null)
-			throw new RequiredException("file to read");
-		   
-		   if(!file.exists())
-			   throw new RequiredException("file must exist "+file.getAbsolutePath());
-		   
-		   return readFile(file.getAbsolutePath());
-	   }// ---------------------------------------------
-	   /**
-	    * 
-	    * @param inputStream the input stream
-	    * @param closeInputStream
-	    * @return
-	    * @throws IOException
-	    */
-	   public static String readText(InputStream inputStream, boolean closeInputStream)
-	   throws IOException
-	   {
-		   Reader reader = null;
-		   
-		   try
-		   {
-			   	reader = toReader(inputStream);
-		
-			   	BufferedReader buffreader = new BufferedReader(new InputStreamReader(inputStream, IO.CHARSET));
 
-			   	String tmp = buffreader.readLine();
-			   	if (tmp == null)
-			   		return null;
+	/**
+	 * Write binary file data
+	 * 
+	 * @param file
+	 *            the file
+	 * @param data
+	 * @throws Exception
+	 */
+	public static void writeFile(File file, byte[] data) throws IOException
+	{
+		writeFile(file.getAbsolutePath(), data);
+	}// ---------------------------------------------
 
-				StringBuilder line = new StringBuilder(tmp);
-	
-				while (tmp != null)
-				{
-					line.append("\n");
-					tmp = buffreader.readLine();
-					if (tmp != null)
-						line.append(tmp);
-				}
+	/**
+	 * Write data to property file
+	 * 
+	 * @param filePath
+	 *            the file to write
+	 * @param properties
+	 * @throws IOException
+	 */
+	public static void writeProperties(String filePath, Properties properties) throws IOException
+	{
+		Writer writer = null;
 
-	
-				return line.toString();
-		} 
+		try
+		{
+			writer = new OutputStreamWriter(new FileOutputStream(filePath), IO.CHARSET);
+
+			properties.store(writer, filePath);
+		}
 		finally
 		{
-			if(closeInputStream)
+			if (writer != null)
+				try
+				{
+					writer.close();
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+		}
+
+	}// --------------------------------------------------------
+
+	/**
+	 * Read properties file
+	 * 
+	 * @param filePath
+	 *            the file to read
+	 * @param properties
+	 * @throws IOException
+	 */
+	public static Properties readProperties(String filePath) throws IOException
+	{
+		Reader reader = null;
+		Properties properties = new Properties();
+
+		try
+		{
+			reader = new InputStreamReader(new FileInputStream(filePath), CHARSET);
+
+			properties.load(reader);
+
+			return properties;
+		}
+		finally
+		{
+			if (reader != null)
+				try
+				{
+					reader.close();
+				}
+				catch (Exception e)
+				{
+					Debugger.printWarn(e);
+				}
+		}
+
+	}// --------------------------------------------------------
+
+	/**
+	 * 
+	 * @param file
+	 *            the full file path of which to read
+	 * @return string data
+	 * @throws IOException
+	 */
+	public static String readFile(File file) throws IOException
+	{
+		if (file == null)
+			throw new RequiredException("file to read");
+
+		if (!file.exists())
+			throw new RequiredException("file must exist " + file.getAbsolutePath());
+
+		return readFile(file.getAbsolutePath());
+	}// ---------------------------------------------
+
+	/**
+	 * 
+	 * @param inputStream
+	 *            the input stream
+	 * @param closeInputStream
+	 * @return
+	 * @throws IOException
+	 */
+	public static String readText(InputStream inputStream, boolean closeInputStream) throws IOException
+	{
+		Reader reader = null;
+
+		try
+		{
+			reader = toReader(inputStream);
+
+			BufferedReader buffreader = new BufferedReader(new InputStreamReader(inputStream, IO.CHARSET));
+
+			String tmp = buffreader.readLine();
+			if (tmp == null)
+				return null;
+
+			StringBuilder line = new StringBuilder(tmp);
+
+			while (tmp != null)
+			{
+				line.append("\n");
+				tmp = buffreader.readLine();
+				if (tmp != null)
+					line.append(tmp);
+			}
+
+			return line.toString();
+		}
+		finally
+		{
+			if (closeInputStream)
 			{
 				if (reader != null)
-					try{  reader.close();} catch (Exception e){}
-			
-				
-					if(inputStream != null)
-						try{ inputStream.close(); } catch(Exception e){}
-							
+					try
+					{
+						reader.close();
+					}
+					catch (Exception e)
+					{
+					}
+
+				if (inputStream != null)
+					try
+					{
+						inputStream.close();
+					}
+					catch (Exception e)
+					{
+					}
+
 			}
 		}
 	}// --------------------------------------------
+
 	/**
 	 * 
 	 * @return System.getProperty("line.separator")
@@ -419,71 +614,76 @@ public class IO
 	{
 		return NEWLINE;
 	}// --------------------------------------------
+
 	/**
 	 * Copy a source folder to a destination folder
-	 * @param sourceFolder the source directory
-	 * @param destinationFolder the destination directory
+	 * 
+	 * @param sourceFolder
+	 *            the source directory
+	 * @param destinationFolder
+	 *            the destination directory
 	 * @throws IOException
 	 */
-	public static void copyDirectory(File sourceFolder, File destinationFolder)
-	throws IOException
+	public static void copyDirectory(File sourceFolder, File destinationFolder) throws IOException
 	{
-		if(sourceFolder == null || !sourceFolder.isDirectory())
+		if (sourceFolder == null || !sourceFolder.isDirectory())
 			throw new RequiredException("sourceFolder");
-		
-		if(destinationFolder == null)
+
+		if (destinationFolder == null)
 			throw new RequiredException("destinationFolder");
-		
-		if(!destinationFolder.exists())	    
+
+		if (!destinationFolder.exists())
 			IO.mkdir(destinationFolder);
-		
-		if(!destinationFolder.isDirectory())
+
+		if (!destinationFolder.isDirectory())
 			throw new RequiredException("destinationFile.isDirectory() in IO");
-		
-		
+
 		File[] sourceNestedFiles = sourceFolder.listFiles();
-		
-		if(sourceNestedFiles == null)
+
+		if (sourceNestedFiles == null)
 			return;
-		
-		for(int i = 0 ;  i < sourceNestedFiles.length;i++)
+
+		for (int i = 0; i < sourceNestedFiles.length; i++)
 		{
-			//copy file
-			if(sourceNestedFiles[i].isFile())
+			// copy file
+			if (sourceNestedFiles[i].isFile())
 				copy(sourceNestedFiles[i], destinationFolder.getAbsolutePath());
 			else
 			{
-				//copy directory
-				copyDirectory(sourceNestedFiles[i],new File(destinationFolder.getAbsolutePath()+File.separator+sourceNestedFiles[i].getName()));
+				// copy directory
+				copyDirectory(sourceNestedFiles[i],
+				new File(destinationFolder.getAbsolutePath() + File.separator + sourceNestedFiles[i].getName()));
 			}
 		}
-	}//---------------------------------------------
-	public static void copyDirectory(String source, String destination, String pattern)
-	throws IOException
+	}// ---------------------------------------------
+
+	public static void copyDirectory(String source, String destination, String pattern) throws IOException
 	{
-		File destinationFile = new File(destination);		
-		if(!destinationFile.exists())
-			Debugger.println(IO.class,"mkdir:"+destinationFile.mkdir());
-		
-		if(!destinationFile.isDirectory())
-			throw new RequiredException("destinationFile \""+destinationFile+"\" is must a directory");
-		
+		File destinationFile = new File(destination);
+		if (!destinationFile.exists())
+			Debugger.println(IO.class, "mkdir:" + destinationFile.mkdir());
+
+		if (!destinationFile.isDirectory())
+			throw new RequiredException("destinationFile \"" + destinationFile + "\" is must a directory");
+
 		File sourceFile = new File(source);
-		
+
 		File[] sourceNestedFiles = listFiles(sourceFile, pattern);
-		
-		for(int i = 0 ;  i < sourceNestedFiles.length;i++)
+
+		for (int i = 0; i < sourceNestedFiles.length; i++)
 		{
-			//copy file
-			if(sourceNestedFiles[i].isFile())
+			// copy file
+			if (sourceNestedFiles[i].isFile())
 				copy(sourceNestedFiles[i], destinationFile.getAbsolutePath());
 			else
 			{
-				//copy directory
-				copyDirectory(sourceNestedFiles[i].getAbsolutePath(),destinationFile.getAbsolutePath()+File.separator+sourceNestedFiles[i].getName(),pattern);
+				// copy directory
+				copyDirectory(sourceNestedFiles[i].getAbsolutePath(),
+				destinationFile.getAbsolutePath() + File.separator + sourceNestedFiles[i].getName(), pattern);
 			}
 		}
-	}//---------------------------------------------
+	}// ---------------------------------------------
+
 	/**
 	 * Remove characters from file name
 	 * 
@@ -496,13 +696,10 @@ public class IO
 		if (aFileName == null | aFileName.length() == 0)
 			return "";
 
-		String invalidCharRE = Config.getProperty(IO.class.getName()
-				+ ".formatFile.invalidCharRE",
-				DEFAULT_FILE_NM_INVALID_CHARACTERS_RE);
-		String replaceText = Config.getProperty(IO.class.getName()
-				+ ".formatFile.replaceText", "");
-		return Text
-				.replaceForRegExprWith(aFileName, invalidCharRE, replaceText);
+		String invalidCharRE = Config.getProperty(IO.class.getName() + ".formatFile.invalidCharRE",
+		DEFAULT_FILE_NM_INVALID_CHARACTERS_RE);
+		String replaceText = Config.getProperty(IO.class.getName() + ".formatFile.replaceText", "");
+		return Text.replaceForRegExprWith(aFileName, invalidCharRE, replaceText);
 
 	}// --------------------------------------------
 
@@ -513,8 +710,7 @@ public class IO
 	private static String readFully(Reader aReader) throws IOException
 	{
 		if (aReader == null)
-			throw new IllegalArgumentException(
-					"aReader required in IO.readFully");
+			throw new IllegalArgumentException("aReader required in IO.readFully");
 
 		BufferedReader buffreader = new BufferedReader(aReader);
 		String tmp = buffreader.readLine();
@@ -548,43 +744,51 @@ public class IO
 	{
 
 		ClassLoader classLoader = getDefaultClassLoader();
-		
-		 InputStream is;
-	        
-	     if(classLoader != null)
-	            is = classLoader.getResourceAsStream(path);
-	       else
-	            is = ClassLoader.getSystemResourceAsStream(path);
-	        if(is == null)
-	            throw new FileNotFoundException((new StringBuilder()).append(path).append(" cannot be opened because it does not exist").toString());
-	
-		
-		return readFully(new InputStreamReader(is,CHARSET));
+
+		InputStream is;
+
+		if (classLoader != null)
+			is = classLoader.getResourceAsStream(path);
+		else
+			is = ClassLoader.getSystemResourceAsStream(path);
+		if (is == null)
+			throw new FileNotFoundException(
+			(new StringBuilder()).append(path).append(" cannot be opened because it does not exist").toString());
+
+		return readFully(new InputStreamReader(is, CHARSET));
 	}// -------------------------------------------
-	  public static ClassLoader getDefaultClassLoader()
-	    {
-	        ClassLoader cl = null;
-	        try
-	        {
-	            cl = Thread.currentThread().getContextClassLoader();
-	        }
-	        catch(Throwable throwable) { }
-	        if(cl == null)
-	        {
-	            cl = IO.class.getClassLoader();
-	            if(cl == null)
-	                try
-	                {
-	                    cl = ClassLoader.getSystemClassLoader();
-	                }
-	                catch(Throwable throwable1) { }
-	        }
-	        return cl;
-	    }//------------------------------------------------
+
+	public static ClassLoader getDefaultClassLoader()
+	{
+		ClassLoader cl = null;
+		try
+		{
+			cl = Thread.currentThread().getContextClassLoader();
+		}
+		catch (Throwable throwable)
+		{
+		}
+		if (cl == null)
+		{
+			cl = IO.class.getClassLoader();
+			if (cl == null)
+				try
+				{
+					cl = ClassLoader.getSystemClassLoader();
+				}
+				catch (Throwable throwable1)
+				{
+				}
+		}
+		return cl;
+	}// ------------------------------------------------
+
 	/**
 	 * 
-	 * @param location  the list path
-	 * @param pattern the search patttern
+	 * @param location
+	 *            the list path
+	 * @param pattern
+	 *            the search patttern
 	 * @return array of files
 	 */
 	public static File[] listFiles(String location, String pattern)
@@ -599,33 +803,37 @@ public class IO
 
 	/**
 	 * List nested files
-	 * @param location the location of the top folder
-	 * @return 
+	 * 
+	 * @param location
+	 *            the location of the top folder
+	 * @return
 	 */
 	public static File[] listFiles(String location)
 	{
-		if(location == null || location.length() == 0)
+		if (location == null || location.length() == 0)
 			throw new RequiredException("location in IO");
-		
+
 		File folder = new File(location);
-		
+
 		return listFiles(folder);
 	}// --------------------------------------------
+
 	public static File[] listFiles(File folder)
 	{
-		if(!folder.isDirectory())
-			throw new RequiredException(folder.getAbsolutePath()+" is not a directory");
-		
+		if (!folder.isDirectory())
+			throw new RequiredException(folder.getAbsolutePath() + " is not a directory");
+
 		return folder.listFiles();
-	}//---------------------------------------------
+	}// ---------------------------------------------
+
 	/**
 	 * List the file under a given directory
 	 */
 	public static String[] list(File directory, String pattern)
 	{
-		if(pattern == null)
+		if (pattern == null)
 			return directory.list();
-		
+
 		WildCardFilter filter = createFilter(directory, pattern);
 
 		return directory.list(filter);
@@ -636,25 +844,25 @@ public class IO
 	 */
 	public static File[] listFiles(File directory, String pattern)
 	{
-		
-		if(pattern == null || pattern.length() == 0)
+
+		if (pattern == null || pattern.length() == 0)
 			throw new RequiredException("pattern in IO");
-		
+
 		validateDirectory(directory);
-		
-		//check for /
+
+		// check for /
 		int indexofSlash = pattern.indexOf("/");
-		if( indexofSlash > 0)
+		if (indexofSlash > 0)
 		{
-			//get text up still /
-			String suffix = pattern.substring(0,indexofSlash);
-			pattern = pattern.substring(indexofSlash+1);
-			//append directory
-			directory = new File(directory.getAbsolutePath()+"/"+suffix);
+			// get text up still /
+			String suffix = pattern.substring(0, indexofSlash);
+			pattern = pattern.substring(indexofSlash + 1);
+			// append directory
+			directory = new File(directory.getAbsolutePath() + "/" + suffix);
 			validateDirectory(directory);
-			
+
 		}
-		
+
 		WildCardFilter filter = createFilter(directory, pattern);
 
 		return directory.listFiles(filter);
@@ -671,28 +879,26 @@ public class IO
 	 */
 	private static WildCardFilter createFilter(File directory, String pattern)
 	{
-	
-	      if (pattern == null || pattern.length() == 0)
-		         throw new IllegalArgumentException(
-		         "pattern required in list");
-	      
-	      WildCardFilter filter = new WildCardFilter(pattern);
+
+		if (pattern == null || pattern.length() == 0)
+			throw new IllegalArgumentException("pattern required in list");
+
+		WildCardFilter filter = new WildCardFilter(pattern);
 		return filter;
 	}// --------------------------------------------
 
-	
 	private static void validateDirectory(File directory)
 	{
-		if(directory == null)
-	         throw new RequiredException("directory in IO.list");
-	
-	      if(!directory.exists())
-	         throw new IllegalArgumentException("Directory does not exist "+directory.getAbsolutePath());
-	
-	      if(!directory.isDirectory())
-	      {
-	        throw new IllegalArgumentException("Must provide a directory "+directory.getAbsolutePath());
-	      }
+		if (directory == null)
+			throw new RequiredException("directory in IO.list");
+
+		if (!directory.exists())
+			throw new IllegalArgumentException("Directory does not exist " + directory.getAbsolutePath());
+
+		if (!directory.isDirectory())
+		{
+			throw new IllegalArgumentException("Must provide a directory " + directory.getAbsolutePath());
+		}
 	}
 
 	/**
@@ -708,8 +914,8 @@ public class IO
 
 		Reader reader = null;
 		try
-		{		
-			
+		{
+
 			URL url = new URL(urlAddress);
 
 			URLConnection connection = url.openConnection();
@@ -717,13 +923,14 @@ public class IO
 			reader = toReader(connection.getInputStream());
 
 			return readFully(reader);
-		} catch (MalformedURLException e)
+		}
+		catch (MalformedURLException e)
 		{
 			throw new SystemException("URL=" + urlAddress + " " + e);
-		} 
+		}
 		finally
 		{
-			if(reader != null)
+			if (reader != null)
 				reader.close();
 		}
 
@@ -738,8 +945,7 @@ public class IO
 	public static String fixPath(String aPath)
 	{
 		if (aPath == null || aPath.length() == 0)
-			throw new IllegalArgumentException(
-					"aPath required in Documentum.fixPath");
+			throw new IllegalArgumentException("aPath required in Documentum.fixPath");
 
 		aPath = aPath.replace('\\', '/');
 
@@ -754,12 +960,10 @@ public class IO
 	 * @return the file length
 	 * @throws IllegalArgumentException
 	 */
-	public static long getFileSize(String aFilePath)
-			throws IllegalArgumentException
+	public static long getFileSize(String aFilePath) throws IllegalArgumentException
 	{
 		if (aFilePath == null)
-			throw new IllegalArgumentException(
-					"Cannot obtain file size, File Path not provided");
+			throw new IllegalArgumentException("Cannot obtain file size, File Path not provided");
 
 		return new File(aFilePath).length();
 	}// -------------------------
@@ -771,8 +975,7 @@ public class IO
 	 * @return Map version of property file
 	 */
 	@SuppressWarnings("rawtypes")
-	public static Map readMap(String aFilePath) throws IOException,
-			FileNotFoundException
+	public static Map readMap(String aFilePath) throws IOException, FileNotFoundException
 	{
 		InputStream in = getFileInputStream(aFilePath);
 
@@ -795,20 +998,21 @@ public class IO
 	 * @return file string content
 	 * @throws IOException
 	 */
-	public static byte[] readBinaryFile(File aFile, int aRetryCount,
-			long aRetryDelayMS) throws IOException
+	public static byte[] readBinaryFile(File aFile, int aRetryCount, long aRetryDelayMS) throws IOException
 	{
 		for (int i = 0; i <= aRetryCount; i++)
 		{
 			try
 			{
 				return IO.readBinaryFile(aFile);
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				try
 				{
 					Thread.sleep(aRetryDelayMS);
-				} catch (Exception interruptE)
+				}
+				catch (Exception interruptE)
 				{
 				}
 			}
@@ -823,21 +1027,20 @@ public class IO
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public static byte[] readBinaryFile(String aFilePath)
-			throws FileNotFoundException, IOException
+	public static byte[] readBinaryFile(String aFilePath) throws FileNotFoundException, IOException
 	{
 		return readBinaryFile(new File(aFilePath));
 	}// -----------------------------------------------
 
 	/**
 	 * 
-	 * @param file the file to read
+	 * @param file
+	 *            the file to read
 	 * @return binary file content
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public static byte[] readBinaryFile(File file)
-			throws FileNotFoundException, IOException
+	public static byte[] readBinaryFile(File file) throws FileNotFoundException, IOException
 	{
 		BufferedInputStream in = null;
 		try
@@ -876,39 +1079,45 @@ public class IO
 	 * @return file string content
 	 * @throws IOException
 	 */
-	public static String readFile(String aFilePath, int aRetryCount,
-			long aRetryDelayMS,Charset charset) throws IOException
+	public static String readFile(String aFilePath, int aRetryCount, long aRetryDelayMS, Charset charset)
+	throws IOException
 	{
 		for (int i = 0; i <= aRetryCount; i++)
 		{
 			try
 			{
-				return IO.readFile(aFilePath,charset);
-			} catch (Exception e)
+				return IO.readFile(aFilePath, charset);
+			}
+			catch (Exception e)
 			{
 				try
 				{
 					Thread.sleep(aRetryDelayMS);
-				} catch (Exception interruptE)
+				}
+				catch (Exception interruptE)
 				{
 				}
 			}
 		}
 		throw new IOException(aFilePath);
 	}// ----------------------------------------------------
+
 	/**
 	 * 
-	 * @param fileName  the full file path of which to read
+	 * @param fileName
+	 *            the full file path of which to read
 	 * @return string data
 	 * @throws IOException
 	 */
 	public static String readFile(String fileName) throws IOException
 	{
-		return readFile(fileName,IO.CHARSET);
-	}//--------------------------------------------------------
+		return readFile(fileName, IO.CHARSET);
+	}// --------------------------------------------------------
+
 	/**
 	 * 
-	 * @param fileName  the full file path of which to read
+	 * @param fileName
+	 *            the full file path of which to read
 	 * @return string data
 	 * @throws IOException
 	 */
@@ -916,39 +1125,40 @@ public class IO
 	{
 		if (fileName == null || fileName.length() == 0)
 			return null;
-		
+
 		Path path = Paths.get(fileName);
-		File file  = path.toFile();
-		
-		if(!file.exists())
+		File file = path.toFile();
+
+		if (!file.exists())
 		{
-			throw new IllegalArgumentException("File:"+file.getAbsolutePath()+" does not exist");
+			throw new IllegalArgumentException("File:" + file.getAbsolutePath() + " does not exist");
 		}
-		
+
 		StringBuilder stringBuilder = new StringBuilder(Long.valueOf(file.length()).intValue());
-		
-	    String line = null;
-	    boolean firstTime = true;
-		try (BufferedReader reader = Files.newBufferedReader(path, charSet)) 
+
+		String line = null;
+		boolean firstTime = true;
+		try (BufferedReader reader = Files.newBufferedReader(path, charSet))
 		{
-		    while ((line = reader.readLine()) != null) 
-		    {
-		    	if(!firstTime)
-		    	{
-		    		stringBuilder.append(NEWLINE);
-		    	}
-		    	firstTime = false;
-		    	
-		    	stringBuilder.append(line);
-		    	
-		    	
-		    }
-		} 
+			while ((line = reader.readLine()) != null)
+			{
+				if (!firstTime)
+				{
+					stringBuilder.append(NEWLINE);
+				}
+				firstTime = false;
+
+				stringBuilder.append(line);
+
+			}
+		}
 		return stringBuilder.toString();
 	}// --------------------------------------------------
+
 	/**
 	 * 
-	 * @param aFileNM  the full file path of which to read
+	 * @param aFileNM
+	 *            the full file path of which to read
 	 * @return string data
 	 * @throws IOException
 	 */
@@ -957,42 +1167,45 @@ public class IO
 		if (Data.isNull(aFileNM))
 			throw new IllegalArgumentException("file name not provided");
 
-
 		ArrayList<String> lines = new ArrayList<String>();
 		BufferedReader buffreader = null;
 		try
 		{
-			buffreader = new BufferedReader(new InputStreamReader(new FileInputStream(aFileNM),charset));
+			buffreader = new BufferedReader(new InputStreamReader(new FileInputStream(aFileNM), charset));
 
 			String tmp = buffreader.readLine();
-						
+
 			if (tmp == null)
 				throw new IOException(aFileNM + " empty file");
-			
+
 			lines.add(tmp);
 
 			while (tmp != null)
 			{
 				tmp = buffreader.readLine();
 				if (tmp != null)
-				   lines.add(tmp);
+					lines.add(tmp);
 			}
 
 			String[] lineArray = new String[lines.size()];
 			lines.toArray(lineArray);
 			return lineArray;
-		} 
+		}
 		finally
 		{
 			if (buffreader != null)
 				try
 				{
 					buffreader.close();
-				} catch (Exception e){Debugger.printWarn(e);}
+				}
+				catch (Exception e)
+				{
+					Debugger.printWarn(e);
+				}
 		}
 	}// --------------------------------------------------
-	public static void copy(File aFile, String aDestinationPath)
-			throws FileNotFoundException, IOException
+
+	public static void copy(File aFile, String aDestinationPath) throws FileNotFoundException, IOException
 	{
 		InputStream in = null;
 
@@ -1000,13 +1213,15 @@ public class IO
 		{
 			in = new BufferedInputStream(new FileInputStream(aFile));
 			write(aDestinationPath + File.separator + aFile.getName(), in);
-		} finally
+		}
+		finally
 		{
 			if (in != null)
 				try
 				{
 					in.close();
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 				}
 		}
@@ -1030,9 +1245,7 @@ public class IO
 			os = new FileOutputStream(aFileName);
 
 			is = aData.openStream();
-			int BYTE_BUFFER_SIZE = Config.getPropertyInteger(
-					BYTE_BUFFER_SIZE_PROP,
-					FILE_IO_BATCH_SIZE).intValue();
+			int BYTE_BUFFER_SIZE = Config.getPropertyInteger(BYTE_BUFFER_SIZE_PROP, FILE_IO_BATCH_SIZE).intValue();
 
 			byte[] bytes = new byte[BYTE_BUFFER_SIZE]; // 5 KB
 			int cnt = 0;
@@ -1041,20 +1254,23 @@ public class IO
 			{
 				os.write(bytes, 0, cnt);
 			}
-		} finally
+		}
+		finally
 		{
 			if (os != null)
 				try
 				{
 					os.close();
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 				}
 			if (is != null)
 				try
 				{
 					is.close();
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 				}
 		}
@@ -1068,10 +1284,11 @@ public class IO
 			reader = toReader(aInputStream);
 
 			return readFully(reader);
-		} finally
+		}
+		finally
 		{
 			if (reader != null)
-					reader.close();
+				reader.close();
 		}
 	}// --------------------------------------------
 
@@ -1082,12 +1299,9 @@ public class IO
 	 * @param aInputStream
 	 * @throws IOException
 	 */
-	public static void write(OutputStream aOutputStream,
-			InputStream aInputStream) throws IOException
+	public static void write(OutputStream aOutputStream, InputStream aInputStream) throws IOException
 	{
-		int BYTE_BUFFER_SIZE = Config.getPropertyInteger(
-				BYTE_BUFFER_SIZE_PROP, FILE_IO_BATCH_SIZE)
-				.intValue();
+		int BYTE_BUFFER_SIZE = Config.getPropertyInteger(BYTE_BUFFER_SIZE_PROP, FILE_IO_BATCH_SIZE).intValue();
 
 		byte[] bytes = new byte[BYTE_BUFFER_SIZE]; // 5 KB
 		// byte[] bytes = new byte[100]; //5 KB
@@ -1099,8 +1313,9 @@ public class IO
 			aOutputStream.write(bytes, 0, cnt);
 		}
 
-		//aOutputStream.flush();
+		// aOutputStream.flush();
 	}// ---------------------------------------------
+
 	/**
 	 * Write output stream to input stream
 	 * 
@@ -1108,12 +1323,9 @@ public class IO
 	 * @param aInputStream
 	 * @throws IOException
 	 */
-	public static void write(Writer aOutputStream,
-			Reader aInputStream) throws IOException
+	public static void write(Writer aOutputStream, Reader aInputStream) throws IOException
 	{
-		int BYTE_BUFFER_SIZE = Config.getPropertyInteger(
-				BYTE_BUFFER_SIZE_PROP, FILE_IO_BATCH_SIZE)
-				.intValue();
+		int BYTE_BUFFER_SIZE = Config.getPropertyInteger(BYTE_BUFFER_SIZE_PROP, FILE_IO_BATCH_SIZE).intValue();
 
 		char[] chars = new char[BYTE_BUFFER_SIZE]; // 5 KB
 		// byte[] bytes = new byte[100]; //5 KB
@@ -1134,7 +1346,7 @@ public class IO
 	 */
 	public static Reader toReader(InputStream aInputStream) throws IOException
 	{
-		return new java.io.InputStreamReader(aInputStream,CHARSET);
+		return new java.io.InputStreamReader(aInputStream, CHARSET);
 
 	}// ---------------------------------------------
 
@@ -1146,21 +1358,22 @@ public class IO
 	 *            the input stream data to write
 	 * @throws IOException
 	 */
-	public static void write(String aFilePath, InputStream aInputStream)
-			throws IOException
+	public static void write(String aFilePath, InputStream aInputStream) throws IOException
 	{
 		FileOutputStream os = null;
 		try
 		{
 			os = new FileOutputStream(aFilePath);
 			write(os, aInputStream);
-		} finally
+		}
+		finally
 		{
 			if (os != null)
 				try
 				{
 					os.close();
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 				}
 		}
@@ -1173,8 +1386,7 @@ public class IO
 	 * @return file input stream
 	 * @throws FileNotFoundException
 	 */
-	public static InputStream getFileInputStream(String aFilePath)
-			throws FileNotFoundException
+	public static InputStream getFileInputStream(String aFilePath) throws FileNotFoundException
 	{
 		return new FileInputStream(aFilePath);
 	}// ------------------------------------------------
@@ -1189,8 +1401,7 @@ public class IO
 	public static String hideExtension(String aFileName)
 	{
 		if (aFileName == null || aFileName.length() == 0)
-			throw new IllegalArgumentException(
-					"File Name required in IO hideExtension");
+			throw new IllegalArgumentException("File Name required in IO hideExtension");
 
 		int lastPeriodIndex = aFileName.lastIndexOf(".");
 
@@ -1211,8 +1422,7 @@ public class IO
 	public static String parseFileExtension(String aFileName)
 	{
 		if (aFileName == null || aFileName.length() == 0)
-			throw new IllegalArgumentException(
-					"aFileName required in parseFileExtension");
+			throw new IllegalArgumentException("aFileName required in parseFileExtension");
 
 		int lastPeriodIndex = aFileName.lastIndexOf(".");
 
@@ -1223,19 +1433,22 @@ public class IO
 
 		return null;
 	}// --------------------------------------------
+
 	/**
 	 * Parse folder path
+	 * 
 	 * @param filePath
 	 * @return absolute path of root directory
 	 */
 	public static String parseFolderPath(String filePath)
 	{
-	   if (filePath == null || filePath.length() == 0)
-		throw new RequiredException("filePath");
-	   File file = new File(filePath);
-	   
-	   return file.getParentFile().getAbsolutePath();
+		if (filePath == null || filePath.length() == 0)
+			throw new RequiredException("filePath");
+		File file = new File(filePath);
+
+		return file.getParentFile().getAbsolutePath();
 	}// ----------------------------------------------
+
 	/**
 	 * 
 	 * @param aFolderPath
@@ -1251,8 +1464,7 @@ public class IO
 			lastSeparatorIndex = lastBSIndex;
 
 		if (lastSeparatorIndex > -1)
-			return aFolderPath.substring(lastSeparatorIndex + 1, aFolderPath
-					.length());
+			return aFolderPath.substring(lastSeparatorIndex + 1, aFolderPath.length());
 
 		return aFolderPath;
 	}// ------------------------------------------------
@@ -1264,8 +1476,7 @@ public class IO
 	 * @param data
 	 * @throws Exception
 	 */
-	public static void writeFile(String filePath, byte[] data)
-			throws IOException
+	public static void writeFile(String filePath, byte[] data) throws IOException
 	{
 		writeFile(filePath, data, false);
 	}// --------------------------------------------
@@ -1277,15 +1488,13 @@ public class IO
 	 * @param aData
 	 * @throws Exception
 	 */
-	public static void writeFile(String aFilePath, byte[] aData, boolean append)
-			throws IOException
+	public static void writeFile(String aFilePath, byte[] aData, boolean append) throws IOException
 	{
 		if (aData == null)
 			throw new IOException("No bytes provided for file " + aFilePath);
 
 		if (aFilePath == null || aFilePath.length() == 0)
-			throw new IllegalArgumentException(
-					"aFilePath required in writeFile");
+			throw new IllegalArgumentException("aFilePath required in writeFile");
 
 		OutputStream os = null;
 		try
@@ -1294,120 +1503,141 @@ public class IO
 			os.write(aData);
 
 			os.flush();
-		} catch (FileNotFoundException e)
+		}
+		catch (FileNotFoundException e)
 		{
 			throw new IOException(Debugger.stackTrace(e) + " path=" + aFilePath);
-		} finally
+		}
+		finally
 		{
 			if (os != null)
 				try
 				{
 					os.close();
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 				}
 		}
 
 	}// -----------------------------------------------
-	public static void writeFile(String fileName, String text)
-	throws IOException
+
+	public static void writeFile(String fileName, String text) throws IOException
 	{
-		writeFile( fileName,  text,IO.CHARSET);
-	}//--------------------------------------------------------
+		writeFile(fileName, text, IO.CHARSET);
+	}// --------------------------------------------------------
+
 	/**
 	 * Write string file data
 	 * 
-	 * @param fileName the file to write
-	 * @param text the text to write
+	 * @param fileName
+	 *            the file to write
+	 * @param text
+	 *            the text to write
 	 * @throws IOException
 	 */
-	public static void writeFile(String fileName, String text,Charset charset)
-	throws IOException
+	public static void writeFile(String fileName, String text, Charset charset) throws IOException
 	{
-		writeFile(fileName, text,false,charset);
-	}//---------------------------------------------
+		writeFile(fileName, text, false, charset);
+	}// ---------------------------------------------
+
 	/**
 	 * Write string file data
 	 * 
-	 * @param fileName the file
-	 * @param text the text to write
+	 * @param fileName
+	 *            the file
+	 * @param text
+	 *            the text to write
 	 * @throws Exception
 	 */
-	public static void writeFile(String fileName, String text, boolean append)
-			throws IOException
+	public static void writeFile(String fileName, String text, boolean append) throws IOException
 	{
-		 writeFile( fileName,  text,  append,IO.CHARSET);
-	}//--------------------------------------------------------
-	/**
-	 * Write string file data
-	 * 
-	 * @param fileName the file
-	 * @param text the text to write
-	 * @throws Exception
-	 */
-	public static void writeFile(String fileName, String text, boolean append,Charset charset)
-			throws IOException
-	{
-		writeFile(new File(fileName),text,append,charset);
+		writeFile(fileName, text, append, IO.CHARSET);
 	}// --------------------------------------------------------
+
 	/**
 	 * Write string file data
 	 * 
-	 * @param file the file
-	 * @param text the text to write
-	 * @throws IOException unknown error occurs
-	 */
-	public static void writeFile(File file, String text)
-			throws IOException
-	{
-		writeFile(file,text,IO.CHARSET);
-	}//--------------------------------------------------------
-	/**
-	 * Write string file data
-	 * 
-	 * @param fileName the file
-	 * @param text the text to write
+	 * @param fileName
+	 *            the file
+	 * @param text
+	 *            the text to write
 	 * @throws Exception
 	 */
-	public static void writeFile(File file, String text,Charset charset)
-			throws IOException
+	public static void writeFile(String fileName, String text, boolean append, Charset charset) throws IOException
 	{
-		writeFile(file,text,false,charset);
+		writeFile(new File(fileName), text, append, charset);
 	}// --------------------------------------------------------
+
 	/**
 	 * Write string file data
 	 * 
-	 * @param file the file to write to
-	 * @param text the text to write
-	 * @param append boolean to determine if file must be appended
-	 * @throws IOException unknown error occurs
+	 * @param file
+	 *            the file
+	 * @param text
+	 *            the text to write
+	 * @throws IOException
+	 *             unknown error occurs
 	 */
-	public static void writeFile(File file, String text, boolean append)
-			throws IOException
+	public static void writeFile(File file, String text) throws IOException
 	{
-		writeFile( file,  text,  append, IO.CHARSET);
-	}//--------------------------------------------------------
+		writeFile(file, text, IO.CHARSET);
+	}// --------------------------------------------------------
+
 	/**
 	 * Write string file data
 	 * 
-	 * @param fileName the file
-	 * @param text the text to write
+	 * @param fileName
+	 *            the file
+	 * @param text
+	 *            the text to write
 	 * @throws Exception
 	 */
-	public static void writeFile(File file, String text, boolean append, Charset charset)
-			throws IOException
+	public static void writeFile(File file, String text, Charset charset) throws IOException
+	{
+		writeFile(file, text, false, charset);
+	}// --------------------------------------------------------
+
+	/**
+	 * Write string file data
+	 * 
+	 * @param file
+	 *            the file to write to
+	 * @param text
+	 *            the text to write
+	 * @param append
+	 *            boolean to determine if file must be appended
+	 * @throws IOException
+	 *             unknown error occurs
+	 */
+	public static void writeFile(File file, String text, boolean append) throws IOException
+	{
+		writeFile(file, text, append, IO.CHARSET);
+	}// --------------------------------------------------------
+
+	/**
+	 * Write string file data
+	 * 
+	 * @param fileName
+	 *            the file
+	 * @param text
+	 *            the text to write
+	 * @throws Exception
+	 */
+	public static void writeFile(File file, String text, boolean append, Charset charset) throws IOException
 	{
 		if (text == null)
 			return; // nothing to write
 
 		mkdir(file.getParentFile());
 
-		try(Writer writer = new OutputStreamWriter(new FileOutputStream(file,append),charset.newEncoder()))
+		try (Writer writer = new OutputStreamWriter(new FileOutputStream(file, append), charset.newEncoder()))
 		{
 			writer.write(text);
 		}
 
 	}// ------------------------------------------------------
+
 	/**
 	 * 
 	 * @param fileName
@@ -1416,12 +1646,12 @@ public class IO
 	 *            the data
 	 * @throws IOException
 	 */
-	public static void writeAppend(String fileName, String data)
-			throws IOException
+	public static void writeAppend(String fileName, String data) throws IOException
 	{
-		IO.writeAppend(fileName,data,IO.CHARSET);
-		
-	}//--------------------------------------------------------
+		IO.writeAppend(fileName, data, IO.CHARSET);
+
+	}// --------------------------------------------------------
+
 	/**
 	 * 
 	 * @param fileName
@@ -1430,11 +1660,11 @@ public class IO
 	 *            the data
 	 * @throws IOException
 	 */
-	public static void writeAppend(File file, String data)
-			throws IOException
+	public static void writeAppend(File file, String data) throws IOException
 	{
-		IO.writeFile(file,data,true,IO.CHARSET);
+		IO.writeFile(file, data, true, IO.CHARSET);
 	}
+
 	/**
 	 * 
 	 * @param fileName
@@ -1443,34 +1673,38 @@ public class IO
 	 *            the data
 	 * @throws IOException
 	 */
-	public static void writeAppend(String fileName, String data,Charset charset)
-			throws IOException
+	public static void writeAppend(String fileName, String data, Charset charset) throws IOException
 	{
-		writeFile(new File(fileName),data,true,charset);
+		writeFile(new File(fileName), data, true, charset);
 	}// --------------------------------------------
+
 	/**
 	 * Delete a given the directory
-	 * @param file the directory to delete
+	 * 
+	 * @param file
+	 *            the directory to delete
 	 */
-	private static boolean deleteFolder(File file)
-	throws IOException
+	private static boolean deleteFolder(File file) throws IOException
 	{
 		emptyFolder(file);
-		
+
 		return file.delete();
-	}//---------------------------------------------
+	}// ---------------------------------------------
+
 	/**
 	 * Delete all files in a given folder
-	 * @param directory the directory to empty
+	 * 
+	 * @param directory
+	 *            the directory to empty
 	 * @throws IOException
 	 */
 	public static void emptyFolder(File directory) throws IOException
 	{
 		File[] files = directory.listFiles();
-		
-		if(files != null && files.length > 0)
+
+		if (files != null && files.length > 0)
 		{
-			for(int i = 0; i < files.length;i++)
+			for (int i = 0; i < files.length; i++)
 				delete(files[i]);
 		}
 	}

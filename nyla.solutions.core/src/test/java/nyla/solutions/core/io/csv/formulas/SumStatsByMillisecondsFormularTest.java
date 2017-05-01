@@ -1,8 +1,6 @@
 package nyla.solutions.core.io.csv.formulas;
 
 import java.nio.file.Paths;
-
-import org.junit.Assert;
 import org.junit.Test;
 import nyla.solutions.core.io.csv.CsvReader;
 

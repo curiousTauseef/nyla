@@ -3,6 +3,10 @@ package nyla.solutions.core.io;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,6 +17,80 @@ import nyla.solutions.core.io.csv.CsvWriter;
 
 public class IOTest
 {
+	
+	@Test
+	public void testFind() throws Exception
+	{
+		List<String> filePaths = null;
+		String pattern  =null;
+		
+		Assert.assertNull(IO.find(filePaths, pattern));
+		
+		List<File> results = null;
+		
+		File dir = Paths.get("target/runtime/io").toFile();
+		dir.mkdirs();
+		
+		File file1 = Paths.get("target/runtime/io/1.txt").toFile();
+		IO.writeFile(file1, "Test A\n  TestB");
+		
+		File file2 = Paths.get("target/runtime/io/2.txt").toFile();
+		IO.writeFile(file2, "Test X\n  TestZ");
+		
+		pattern = "1.*";
+		filePaths = new ArrayList<String>();
+		filePaths.add(file1.getAbsolutePath());
+		filePaths.add(file2.getAbsolutePath());
+		results = IO.find(filePaths, pattern);
+		Assert.assertTrue(results != null && !results.isEmpty());
+		
+		
+		//test nested directories
+		
+		File dir1 = Paths.get("target/runtime/io/d1").toFile();
+		dir1.mkdirs();
+		
+		IO.writeFile(dir1.getAbsolutePath()+"/d1f1.nested", "Test A\n  TestB");
+		
+		File dir2 = Paths.get("target/runtime/io/d2").toFile();
+		dir2.mkdirs();
+		
+		IO.writeFile(dir1.getAbsolutePath()+"/d2f2.nested", "Test X\n  TestZ");
+		
+		filePaths.add("target/runtime/io");
+		results = IO.find(filePaths, "*.nested");
+		
+		Assert.assertTrue(results != null && !results.isEmpty());
+		
+	}//------------------------------------------------
+	@Test
+	public void testGrep() throws Exception
+	{
+
+		List<File> filePaths = null;
+		String pattern  =null;
+		
+		Assert.assertNull(IO.grep(pattern,filePaths));
+		
+		Map<File,Collection<String>> results = null;
+		
+		File dir = Paths.get("target/runtime/io").toFile();
+		dir.mkdirs();
+		
+		File file1 = Paths.get("target/runtime/io/1.txt").toFile();
+		IO.writeFile(file1, "Test A\n  TestB");
+		
+		File file2 = Paths.get("target/runtime/io/2.txt").toFile();
+		IO.writeFile(file2, "Test X\n  TestZ");
+		
+		pattern = "TestZ";
+		filePaths = new ArrayList<File>();
+		filePaths.add(file1);
+		filePaths.add(file2);
+		results = IO.grep(pattern, filePaths );
+		Assert.assertTrue(results != null && !results.isEmpty());
+		
+	}//------------------------------------------------
 	@Test
 	public void testMergeFiles()
 	throws IOException
@@ -95,7 +173,7 @@ public class IOTest
 	   IO.delete(inputDirectory);
 	   Assert.assertTrue(!inputDirectory.exists()); 
 	   
-	}
+	}//------------------------------------------------
 	@Test
 	public void testlistFiles() throws Exception
 	{
@@ -106,7 +184,6 @@ public class IOTest
 		files = IO.listFiles(new File("src/test/resources/iotest"), "*.xml");
 		Assert.assertTrue(files.length == 2);
 		
-	
 	}
 	//private String directoryPath = "./runtime/tmp";
 }
