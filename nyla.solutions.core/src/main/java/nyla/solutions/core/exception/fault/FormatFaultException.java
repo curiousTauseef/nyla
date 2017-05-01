@@ -12,8 +12,7 @@ package nyla.solutions.core.exception.fault;
 public class FormatFaultException extends FaultException
 {
 	/**
-	 * 
-	 * @param functionName the function name
+	 * Constructor
 	 */
 	public FormatFaultException()
 	{
@@ -22,8 +21,8 @@ public class FormatFaultException extends FaultException
 	}// -----------------------------------------------
 
 	/**
-	 * 
-	 * @param functionName the function name
+	 * Constructor
+	 * @param the exception
 	 */
 	public FormatFaultException(Exception exception)
 	{
@@ -34,8 +33,8 @@ public class FormatFaultException extends FaultException
 	}// -----------------------------------------------
 
 	/**
-	 * 
-	 * @param functionName the function name
+	 * Constructor
+	 * @param message the format message
 	 */
 	public FormatFaultException(String message)
 	{
@@ -44,7 +43,8 @@ public class FormatFaultException extends FaultException
 	}// -----------------------------------------------
 	/**
 	 * 
-	 * @param functionName the function name
+	 * @param message the message
+	 * @param the exception cause
 	 */
 	public FormatFaultException(String message, Throwable cause)
 	{

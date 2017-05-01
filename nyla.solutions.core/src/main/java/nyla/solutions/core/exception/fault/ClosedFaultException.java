@@ -11,15 +11,14 @@ package nyla.solutions.core.exception.fault;
 public class ClosedFaultException extends FaultException
 {
 	/**
-	 * 
-	 * @param functionName the function name
+	 * Constructor
 	 */
 	public ClosedFaultException()
 	{
 	}// -----------------------------------------------
 	/**
-	 * 
-	 * @param functionName the function name
+	 * Constructor
+	 * @param exception the exception
 	 */
 	public ClosedFaultException(Exception exception)
 	{
@@ -32,8 +31,9 @@ public class ClosedFaultException extends FaultException
 
 
 	/**
-	 * 
-	 * @param functionName the function name
+	 * Constructor
+	 * @param message the error message
+	 * @param e the root exception
 	 */
 	public ClosedFaultException(String message, Exception e)
 	{
@@ -42,10 +42,6 @@ public class ClosedFaultException extends FaultException
 		this.setCode("DF008");
 	}// -----------------------------------------------
 	
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3062061475584757100L;
 
 }

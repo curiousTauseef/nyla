@@ -29,7 +29,7 @@ public class IOTest
 		List<File> results = null;
 		
 		File dir = Paths.get("target/runtime/io").toFile();
-		dir.mkdirs();
+		System.out.println(dir.mkdirs());
 		
 		File file1 = Paths.get("target/runtime/io/1.txt").toFile();
 		IO.writeFile(file1, "Test A\n  TestB");
@@ -48,12 +48,12 @@ public class IOTest
 		//test nested directories
 		
 		File dir1 = Paths.get("target/runtime/io/d1").toFile();
-		dir1.mkdirs();
+		System.out.println(dir1.mkdirs());
 		
 		IO.writeFile(dir1.getAbsolutePath()+"/d1f1.nested", "Test A\n  TestB");
 		
 		File dir2 = Paths.get("target/runtime/io/d2").toFile();
-		dir2.mkdirs();
+		System.out.println(dir2.mkdirs());
 		
 		IO.writeFile(dir1.getAbsolutePath()+"/d2f2.nested", "Test X\n  TestZ");
 		
@@ -75,7 +75,7 @@ public class IOTest
 		Map<File,Collection<String>> results = null;
 		
 		File dir = Paths.get("target/runtime/io").toFile();
-		dir.mkdirs();
+		System.out.println(dir.mkdirs());
 		
 		File file1 = Paths.get("target/runtime/io/1.txt").toFile();
 		IO.writeFile(file1, "Test A\n  TestB");
