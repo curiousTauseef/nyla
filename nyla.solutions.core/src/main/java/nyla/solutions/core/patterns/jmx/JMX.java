@@ -201,7 +201,7 @@ public class JMX implements AutoCloseable, Disposable
   	}
       catch (Exception e)
 	{
-	   throw new JMXConnectionException("Cannot connect to URL="+connectionURL+" ERROR:"+e.getMessage());
+	   throw new JMXConnectionException("Cannot connect to URL="+connectionURL+" ERROR:"+e.getMessage(),e);
 	}
    }// ----------------------------------------------
    
