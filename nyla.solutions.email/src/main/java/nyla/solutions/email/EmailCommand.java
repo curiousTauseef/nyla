@@ -1,6 +1,7 @@
 package nyla.solutions.email;
 
-import nyla.solutions.commas.Command;
+import java.util.function.Function;
+
 import nyla.solutions.core.patterns.decorator.TextDecorator;
 import nyla.solutions.core.util.Config;
 
@@ -8,13 +9,13 @@ import nyla.solutions.core.util.Config;
  * @author Gregory Green
  *
  */
-public class EmailCommand<ReturnType,DecoratorType> implements Command<Object, DecoratorType>
+public class EmailCommand<ReturnType,DecoratorType> implements Function<DecoratorType,Object>
 {
 	/**
 	 * Send the mail
 	 */
 	@Override
-	public ReturnType execute(DecoratorType input)
+	public ReturnType apply(DecoratorType input)
 	{
 		textDecorator.setTarget(input);
 		

@@ -1,7 +1,7 @@
 package nyla.solutions.email;
 
 
-import nyla.solutions.commas.Executable;
+import java.util.function.Function;
 import nyla.solutions.core.data.Environment;
 import nyla.solutions.core.data.Textable;
 import nyla.solutions.core.exception.ConfigException;
@@ -14,12 +14,12 @@ import nyla.solutions.core.util.Config;
  * @author Gregory Green
  *
  */
-public class EmailFileExecutable implements Executable
+public class EmailFileExecutable implements Function<Environment,Integer>
 {
 	/**
 	 * Send a file via email
 	 */
-	public Integer execute(Environment env)
+	public Integer apply(Environment env)
 	{
 		sendMail();
 		
