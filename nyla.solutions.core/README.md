@@ -384,6 +384,81 @@ The RELookup supports negative logic (NOT) for expressions. This is accomplished
 	assertEquals(lookup.get("Blue with Live of pure").getCode(), "0003");
 	
 
+#nyla.solutions.core.exception.fault
+
+Use the FaultsHtmlTextDecorator to get HTML summary of the FaultException or just objects the implement the nyla.solutions.core.exception.fault.Fault interface.
+
+
+		Collection<Fault> faults = new ArrayList<Fault>();
+		faults.add(faultException);
+		FaultsHtmlTextDecorator decorator = new FaultsHtmlTextDecorator(faults);
+
+		String faultsSummaryHtml = decorator.getText();
+
+
+You can override the HTML template by putting the following files first in the classpath:
+
+	templates/FaultsHtmlTextDecorator_ROW.txt
+	templates/FaultsHtmlTextDecorator.txt
+	
+You can also override the default template classpath locator from "template" by setting the following config property.
+
+	nyla.solutions.core.util.Text.TEMPLATE_CLASSPATH_ROOT=myclassPathRoot
+	
+Example
+
+	nyla.solutions.core.util.Text.TEMPLATE_CLASSPATH_ROOT=/com/company/templates
+
+Example HTML output:
+
+	<html>	<body>
+			<div>
+				<table>
+					<tr>
+						<thead>
+							<td>code</td>
+							<td>message</td>
+							<td>category</td>
+							<td>module</td>
+							<td>errorStackTrace</td>
+						</thead>
+					</tr>
+					<tr>	<td>001</td>
+		<td>test_message</td>
+		<td></td>
+		<td></td>
+		<td>nyla.solutions.core.exception.fault.FaultException: test_message
+		at nyla.solutions.core.exception.fault.FaultsHtmlDecoratorTest.testGetText(FaultsHtmlDecoratorTest.java:34)
+		at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+		at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+		at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+		at java.lang.reflect.Method.invoke(Method.java:498)
+		at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+		at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+		at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+		at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+		at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
+		at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
+		at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
+		at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+		at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+		at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+		at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+		at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+		at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+		at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:86)
+		at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+		at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:459)
+		at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:678)
+		at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)
+		at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
+	</td>
+	</tr>
+	
+				</table>	
+			</div>
+		</body>
+	</html>
 
 #Building
 
@@ -396,6 +471,7 @@ The RELookup supports negative logic (NOT) for expressions. This is accomplished
 	
 	1. Install the gpg https://www.gnupg.org/download
 	2. /usr/local/gnupg-2.1/bin/gpg --gen-key
-	
+	3. gpg --list-keys
+	4. gpg --keyserver hkp://pgp.mit.edu --send-keys gpg --keyserver hkp://pgp.mit.edu --send-keys FB70F1D1
 	Also see http://blog.sonatype.com/2010/01/how-to-generate-pgp-signatures-with-maven/#.Vu84SRIrKjQ
 	

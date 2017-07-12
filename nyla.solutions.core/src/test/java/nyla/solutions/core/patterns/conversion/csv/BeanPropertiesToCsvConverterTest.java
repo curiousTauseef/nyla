@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import nyla.solutions.core.io.csv.BeanPropertiesToCsvConverter;
 import nyla.solutions.core.security.user.data.UserProfile;
-import nyla.solutions.core.util.Text;
 
 public class BeanPropertiesToCsvConverterTest
 {

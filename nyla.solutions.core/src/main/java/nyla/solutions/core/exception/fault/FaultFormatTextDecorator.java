@@ -18,12 +18,30 @@ import nyla.solutions.core.util.Text;
 public class FaultFormatTextDecorator implements TextDecorator<Fault>
 {
 	/**
+	 * Default construtor
+	 */
+	public FaultFormatTextDecorator(){}
+	
+	/**
+	 * 
+	 * @param target the fault format
+	 */
+	public FaultFormatTextDecorator(Fault target, String templateName)
+	{
+		this.target = target;
+		this.templateName = templateName;
+	}//------------------------------------------------
+	
+	/**
 	 * Converts the target fault into a formatted text.
 	 * @see nyla.solutions.core.data.Textable#getText()
 	 */
 	@Override
 	public String getText()
 	{
+		if(this.target == null)
+			return null;
+		
 			try
 			{
 				

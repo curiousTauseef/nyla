@@ -4,15 +4,15 @@ package nyla.solutions.core.exception.fault;
 
 
 /**
- * Security related error
+ * Generic for missing Required data
+ * 
  * @author Gregory Green
  *
  */
 public class RequiredFaultException extends FaultException
 {
 	/**
-	 * 
-	 * @param functionName the function name
+	 * Default constructor
 	 */
 	public RequiredFaultException()
 	{
@@ -22,7 +22,7 @@ public class RequiredFaultException extends FaultException
 	}// -----------------------------------------------
 	/**
 	 * 
-	 * @param functionName the function name
+	 * @param exception the nested exception
 	 */
 	public RequiredFaultException(Exception exception)
 	{
@@ -35,7 +35,7 @@ public class RequiredFaultException extends FaultException
 
 	/**
 	 * 
-	 * @param functionName the function name
+	 * @param message the default message
 	 */
 	public RequiredFaultException(String message)
 	{

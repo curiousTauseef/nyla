@@ -54,16 +54,31 @@ import nyla.solutions.core.patterns.decorator.TextStyles;
 
 public class Text
 {
+	 
+	   
    /**
     * TEMPLATE_DIR_PROP_NM = Text.class.getName()+".template.dir"
     */
    public static final String TEMPLATE_DIR_PROP_NM = Text.class.getName()+".template.dir";
+   
    
    /**
     * TEMPLATE_EXTENSION_PROP_NM = Text.class.getName()+".template.extension"
     */
    public static final String TEMPLATE_EXTENSION_PROP_NM = Text.class.getName()+".template.extension";
       
+
+   /**
+    * TEMPLATE_EXTENSION = Config.getProperty(TEMPLATE_EXTENSION_PROP_NM,".txt")
+    */
+   public static final String TEMPLATE_EXTENSION = Config.getProperty(TEMPLATE_EXTENSION_PROP_NM,".txt");
+   
+   /**
+    * TEMPLATE_CLASSPATH_ROOT = Config.getProperty(Text.class,"TEMPLATE_CLASSPATH_ROOT","templates")
+    */
+   public static final String TEMPLATE_CLASSPATH_ROOT = Config.getProperty(Text.class,"TEMPLATE_CLASSPATH_ROOT","templates");
+
+	 
    private static final String[] fixedNumberPrefixLookup =
    {
 	   "0","00","000","0000","00000","000000","0000000","00000000","000000000","0000000000"
@@ -1904,9 +1919,7 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
 
    public static final String formatFromTemplate(String aTemplateName,
                                                  Map<Object,Object> aBindMap, Locale aLocale)
-
-   throws Exception
-
+   throws IOException
    {
 
       return format(Text.loadTemplate(aTemplateName, aLocale), aBindMap);
@@ -2093,19 +2106,32 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
           if (Text.isNull(lang)) 
              lang= Config.getProperty(TEMPLATE_LOCALE_LANGUAGE,Locale.getDefault().getLanguage());
 
-          StringBuffer templatePath = new StringBuffer(Config
-         .getProperty(TEMPLATE_DIR_PROP_NM)).append("/").append(aTemplateNM);
+          String templateDir = Config.getProperty(TEMPLATE_DIR_PROP_NM,"");
           
-          //Append locale information
-          File file = new File(templatePath.toString());
-          if(!file.exists())
+          if(templateDir.length() > 0)
           {
-             templatePath.append("_").append(country.toLowerCase())
-             .append("_").append(lang.toLowerCase())
-             .append(Config.getProperty(TEMPLATE_EXTENSION_PROP_NM,".txt"));
+              StringBuffer templatePath = new StringBuffer(templateDir).append("/").append(aTemplateNM);
+              
+              //Append locale information
+              File file = new File(templatePath.toString());
+              if(!file.exists())
+              {
+                 templatePath.append("_").append(country.toLowerCase())
+                 .append("_").append(lang.toLowerCase())
+                 .append(Config.getProperty(TEMPLATE_EXTENSION_PROP_NM,".txt"));
+              }
+              
+             return IO.readFile(templatePath.toString());        	  
+          }
+          else
+          {
+        	  //use class path
+        	  String path = new StringBuilder().append(TEMPLATE_CLASSPATH_ROOT)
+        	  .append("/").append(aTemplateNM).append(TEMPLATE_EXTENSION).toString();
+        	  
+        	  return IO.readClassPath(path);
           }
           
-         return IO.readFile(templatePath.toString());
 
      
    } //------------------------------------------------------------

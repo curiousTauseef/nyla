@@ -8,7 +8,6 @@ import java.util.Map;
 import org.junit.Test;
 
 import junit.framework.TestCase;
-import nyla.solutions.core.util.Text;
 
 /**
  * Test cases for Text
@@ -17,6 +16,16 @@ import nyla.solutions.core.util.Text;
  */
 public class TextTest extends TestCase
 {
+	
+	/**
+	 * 
+	 */
+	public void testLoadTemplate()
+	throws Exception
+	{
+		assertNotNull(Text.loadTemplate("test"));		
+		
+	}//------------------------------------------------
 	@SuppressWarnings("rawtypes")
 	public void testText()
 	throws Exception

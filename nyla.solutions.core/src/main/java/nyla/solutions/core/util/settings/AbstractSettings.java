@@ -172,7 +172,7 @@ public abstract class AbstractSettings implements Settings
 
 			
 			throw new ConfigException("Configuration property \"" + key
-					+ "\" not found in keys " + " file:" + configSourceLocation);
+					+ "\" not found in environment variable, system properties or keys " + " file:" + configSourceLocation);
 		}
 
 		
@@ -607,6 +607,9 @@ public abstract class AbstractSettings implements Settings
 		char[] bVal = null;
 		String sVal = getSecureProperty(key);
 
+		if(sVal == null)
+			return null;
+		
 		bVal = sVal.toCharArray();
 
 		return bVal;

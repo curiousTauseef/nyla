@@ -12,7 +12,7 @@ public interface TextDecorator<DecoratorType> extends Textable
 	 * Set the target object to wrap
 	 * @param target the target
 	 */
-   public void setTarget(DecoratorType target);
+   public default void setTarget(DecoratorType target){}
    
    /**
     * 
