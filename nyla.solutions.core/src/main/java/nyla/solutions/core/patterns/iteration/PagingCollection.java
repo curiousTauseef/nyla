@@ -3,7 +3,9 @@ package nyla.solutions.core.patterns.iteration;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Keep items with a fixed size
@@ -31,6 +33,7 @@ public class PagingCollection<T> implements Paging<T>, Serializable, Collection<
 			this.first = true;
 	}// --------------------------------------------------------
 
+	
 	/**
 	 * @return the pageCriteria
 	 */
@@ -89,6 +92,8 @@ public class PagingCollection<T> implements Paging<T>, Serializable, Collection<
 		
 		return collection.add(value);
 	}// --------------------------------------------------------
+	
+	
 	/**
 	 * @param arg0
 	 * @return

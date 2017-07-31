@@ -28,7 +28,6 @@ public class QuestDirector
 	 * @param visitor the visitor to convert results to the data rows
 	 * @return the collection of data rows
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static final <T> Collection<DataRow> constructDataRows(Iterator<T> iterator, QuestCriteria questCriteria, DataRowCreator visitor)
 	{
 		if(iterator == null )
@@ -87,7 +86,8 @@ public class QuestDirector
 					if(savePagination && iterator.hasNext())
 					{
 						
-						pagination.constructPaging(iterator, pageCriteria, (RowObjectCreator)visitor);
+						pagination.constructPaging(iterator, pageCriteria);
+						//(RowObjectCreator)visitor
 					}
 					
 					break; //break look since page is filled

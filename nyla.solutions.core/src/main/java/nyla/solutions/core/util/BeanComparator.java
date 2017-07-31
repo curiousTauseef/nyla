@@ -122,7 +122,6 @@ public class BeanComparator implements Comparator<Object>, Serializable
 	{
 
 		if (this.propertyName == null || this.propertyName.length() == 0)
-
 		{
 
 			Debugger.printWarn(this,

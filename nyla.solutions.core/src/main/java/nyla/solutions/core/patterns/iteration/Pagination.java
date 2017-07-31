@@ -69,9 +69,10 @@ public abstract class Pagination implements Identifier, Disposable
 	 * 
 	 * @param dbCursor the results to page
 	 */
-	public abstract <IterationObjectType,CreatedObjectType>   
-	void constructPaging(Iterator<IterationObjectType> resultSet, PageCriteria pageCriteria, 
-			RowObjectCreator<CreatedObjectType,IterationObjectType> creator);
+	public abstract <IterationObjectType>   
+	void constructPaging(Iterator<IterationObjectType> resultSet, PageCriteria pageCriteria);
+	
+	//, RowObjectCreator<CreatedObjectType,IterationObjectType> creator
 	
 	/**
 	 * 
@@ -203,7 +204,27 @@ public abstract class Pagination implements Identifier, Disposable
 	/**
 	 * Cancel the processing
 	 */
-	public abstract void cancel();
+	public void cancel()
+	{
+		Set<Future<?>> futures = this.getFutures();
+		
+		if(futures == null || futures.isEmpty())
+			return;
+		
+		for (Future<?> future : futures)
+		{
+			if(future == null)
+				continue;
+			
+			try
+			{ 
+				future.cancel(true);
+			}
+			catch(Exception e)
+			{}
+		}
+		
+	}
 
 	/**
 	 * 
