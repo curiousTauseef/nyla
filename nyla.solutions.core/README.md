@@ -462,8 +462,14 @@ Example HTML output:
 
 #Building
 
+Set your ossrUsername and ossrhPassword to ~/.gradle
+	
+	ossrhUsername=userName
+	ossrhPassword=<password>
+
 1. Change directory to the root directory
 2. $gradle install
+
 
 #FAQ
 

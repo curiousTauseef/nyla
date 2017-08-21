@@ -10,10 +10,12 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import nyla.solutions.core.data.AbstractAuditable;
 import nyla.solutions.core.data.Auditable;
@@ -261,6 +263,93 @@ public final class Organizer
 			}
 		}
 	}// --------------------------------------------------------
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static <T> List<Collection<T>> toPages(Collection<T> collection,int pageSize)
+	{
+		if(collection == null || collection.isEmpty())
+			return null;
+				
+		int collectionSize = collection.size();
+		
+		if(pageSize <= 0 || collectionSize <= pageSize)
+			return (List<Collection<T>>)Collections.singletonList(collection);
+		
+		int initialSize = collectionSize /pageSize;
+		
+		ArrayList<Collection<T>> list = new ArrayList(initialSize);
+		
+		ArrayList<Object> current = new ArrayList<Object>();
+		for (Object object : collection)
+		{
+			current.add(object);
+			
+			if(current.size() >= pageSize)
+			{
+				current.trimToSize();
+				
+				list.add((Collection<T>)current);
+				current = new ArrayList<Object>();
+			}
+		}
+		
+		if(!current.isEmpty())
+			list.add((Collection<T>)current);
+		
+		return (List<Collection<T>>)list;
+	
+	}//------------------------------------------------
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static <K,V> List<Collection<K>> toKeyPages(Collection<Map.Entry<K, V>> mapEntries,int pageSize)
+	{
+		if(mapEntries == null || mapEntries.isEmpty())
+			return null;
+				
+		int collectionSize = mapEntries.size();
+		
+		if(pageSize <= 0 || collectionSize <= pageSize)
+		{
+			ArrayList<K> list = new ArrayList<K>(mapEntries.size());
+			for (Map.Entry<K, V> entry : mapEntries)
+			{
+				if(entry == null)
+					continue;
+				
+				list.add(entry.getKey());
+			}
+			
+			if(list.isEmpty())
+				return null;
+			
+			return Collections.singletonList(list);
+		}
+	
+		int initialSize = collectionSize /pageSize;
+		
+		ArrayList<Collection<K>> list = new ArrayList(initialSize);
+		
+		ArrayList<K> current = new ArrayList<K>();
+		for (Map.Entry<K, V> entry : mapEntries)
+		{
+			current.add(entry.getKey());
+			
+			if(current.size() >= pageSize)
+			{
+				current.trimToSize();
+				
+				list.add((Collection<K>)current);
+				current = new ArrayList<K>();
+			}
+		}
+		
+		if(!current.isEmpty())
+			list.add((Collection<K>)current);
+		
+		return (List<Collection<K>>)list;
+	
+	}//------------------------------------------------
+	
 	/**
 	 * Find the value with a given key in the map.
 	 * 
@@ -706,6 +795,18 @@ public final class Organizer
 	{
 		return sortByJavaBeanProperty(aProperyName, aCollection, false);
 	}// --------------------------------------------
+	
+	public static <K, V> Map<K, V> sortByValue(Map<K, V> map, BeanComparator beanComparator) {
+	    return map.entrySet()
+	              .stream()
+	              .sorted(Map.Entry.comparingByValue(beanComparator))
+	              .collect(Collectors.toMap(
+	                Map.Entry::getKey, 
+	                Map.Entry::getValue, 
+	                (e1, e2) -> e1, 
+	                LinkedHashMap::new
+	              ));
+	}
 
 	/**
 	 * Sort collection of object by a given property name
