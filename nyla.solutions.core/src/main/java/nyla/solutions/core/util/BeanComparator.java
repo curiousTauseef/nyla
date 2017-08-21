@@ -56,188 +56,92 @@ import java.util.List;
  * @version 1.0
  * 
  */
-
-
 public class BeanComparator implements Comparator<Object>, Serializable
-
 {
-	/**
-	 * 
-	 * @param aPropertyName property name format (nested property use . operator
-	 *            i.e. bean.child.value)
-	 * 
-	 */
+	private boolean descending;
+	private String propertyName;
+	static final long serialVersionUID = (long) BeanComparator.class.getName()
+			.hashCode();
 
-	public BeanComparator(String aPropertyName, boolean aDescending)
-	{
-
+	public BeanComparator(String aPropertyName, boolean aDescending) {
+		this.descending = false;
+		this.propertyName = "";
 		this.setPropertyName(aPropertyName);
 		this.descending = aDescending;
-
-	} // -----------------------------------------
-	
-	
-	/**
-	 * @return the descending
-	 */
-	public boolean isDescending()
-	{
-		return descending;
 	}
 
+	public boolean isDescending() {
+		return this.descending;
+	}
 
-	/**
-	 * @param descending the descending to set
-	 */
-	public final void setDescending(boolean descending)
-	{
+	public final void setDescending(boolean descending) {
 		this.descending = descending;
 	}
 
-
-	/**
-	 * 
-	 * @param aPropertyName property name format (nested property use . operator
-	 *            i.e. bean.child.value)
-	 * 
-	 */
-
-	public BeanComparator(String aPropertyName)
-
-	{
-
+	public BeanComparator(String aPropertyName) {
 		this(aPropertyName, false);
+	}
 
-	} // -----------------------------------------
+	public int compare(Object aBean1, Object aBean2) {
+		int results= internalCompare(aBean1, aBean2);
+		
+		if(descending)
+			return results * -1;
+		else
+			return results;
+	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-	 */
-
-	@SuppressWarnings("unchecked")
-	public int compare(Object aBean1, Object aBean2)
-
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private int internalCompare(Object aBean1, Object aBean2)
 	{
-
-		if (this.propertyName == null || this.propertyName.length() == 0)
-
-		{
-
+		if(aBean1 ==  aBean2)
+			return 0;
+		
+		if (this.propertyName != null && this.propertyName.length() != 0) {
+			try {
+				Comparable e = (Comparable) JavaBean.getProperty(aBean1,
+						this.propertyName);
+				Comparable comparable2 = (Comparable) JavaBean.getProperty(
+						aBean2, this.propertyName);
+				
+				if(e == comparable2)
+					return 0;
+				else if(e !=null && comparable2 != null)
+					return e.compareTo(comparable2);
+				else if(e != null && comparable2 == null)
+					return 1;
+				else
+					return -1;
+				
+			} catch (Exception arg4) {
+				throw new RuntimeException(Debugger.stackTrace(arg4));
+			}
+		} else {
 			Debugger.printWarn(this,
 					"Bean property not set, the list will not be sorted");
-
 			return 0;
-
 		}
+	}
 
-		try
+	public String getPropertyName() {
+		return this.propertyName;
+	}
 
-		{
+	public void setPropertyName(String aProperyName) {
+		this.propertyName = aProperyName;
+	}
 
-			Comparable<Object> comparable1 =
-
-			(Comparable<Object>) JavaBean.getProperty(aBean1, propertyName);
-
-			Comparable<Object> comparable2 =
-
-			(Comparable<Object>) JavaBean.getProperty(aBean2, propertyName);
-
-			return comparable1.compareTo(comparable2);
-
-		}
-
-		catch (Exception e)
-
-		{
-
-			throw new RuntimeException(Debugger.stackTrace(e));
-
-		}
-
-	} // ---------------------------------------
-
-	/**
-	 * 
-	 * @return property name format (nested property use . operator i.e.
-	 *         bean.child.value)
-	 * 
-	 */
-
-	public String getPropertyName()
-
-	{
-
-		return propertyName;
-
-	} // -----------------------------------------
-
-	/**
-	 * 
-	 * @param property name format (nested property use . operator i.e.
-	 *            bean.child.value)
-	 * 
-	 */
-
-	public void setPropertyName(String aProperyName)
-
-	{
-
-		propertyName = aProperyName;
-
-	} // -----------------------------------------
-
-	/**
-	 * 
-	 * 
-	 * 
-	 * @param aCollection the collection to sort
-	 * 
-	 * @return the sorted list
-	 * 
-	 */
-
-	public List<?> sort(Collection<?> aCollection)
-
-	{
-
-		List<?> list = null;
-
-		// convert to list
-
-		if (aCollection instanceof List)
-
-		{
-
+	public List<?> sort(Collection<?> aCollection) {
+		Object list = null;
+		if (aCollection instanceof List) {
 			list = (List<?>) aCollection;
-
-		}
-
-		else
-
-		{
-
+		} else {
 			list = new ArrayList<Object>(aCollection);
-
 		}
 
-		if (this.descending)
-		{
-			Collections.sort(list, Collections.reverseOrder());
-		}
-		else
-		{
-			Collections.sort(list, this);
-		}
+		Collections.sort((List<?>) list, this);
 
-		return list;
-
-	}// -----------------------------------------
-
-	private boolean descending = false;
-	private String propertyName = "";
-	static final long serialVersionUID = BeanComparator.class.getName()
-			.hashCode();
-
+		return (List<?>) list;
+	}
 }
+

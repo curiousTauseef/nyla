@@ -9,23 +9,6 @@ version = '0.2'
 	source = sourceSets.main.allJava
 	classpath = configurations.compile
 	}
-	
-//task projectJar(type: Jar) {
-//	from 'build/classes'
-//	baseName = 'nyla.solutions.global'
-//	into('../releases'){
-//		from configurations.runtime
-//	}
-	
-	
-//	copy
-//	{
-//		from 'build/libs'
-//		into 'releases'
-//	}
-//}
-
- //flatDir dirs: ["/Projects/solutions/nyla/dev/Solutions.Global/releases"]
 	repositories {
 		
 	    mavenCentral()
