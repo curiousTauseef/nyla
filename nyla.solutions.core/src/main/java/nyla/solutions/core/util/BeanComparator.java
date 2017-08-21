@@ -91,6 +91,7 @@ public class BeanComparator implements Comparator<Object>, Serializable
 			return results;
 	}
 
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private int internalCompare(Object aBean1, Object aBean2)
 	{

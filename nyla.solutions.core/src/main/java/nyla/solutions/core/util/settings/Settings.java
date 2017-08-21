@@ -120,12 +120,13 @@ public interface Settings
 	 * <p/>
 	 * Loads the file if not already initialized.
 	 * 
-	 * @param Key Name of the property to be returned.
+	 * @param key the Key Name of the property to be returned.
+	 * @param defaultValue the default value to use
 	 * 
 	 * @return Value of the property as a string or null if no property found.
 	 */
 
-	String getProperty(String key, String aDefault);
+	String getProperty(String key, String defaultValue);
 
 	/**
 	 * Get a configuration property as an Integer object.

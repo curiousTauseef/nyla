@@ -3,22 +3,21 @@ package nyla.solutions.core.util;
 import java.util.ArrayList;
 
 import org.junit.Test;
-
+import java.util.Collection;
+import java.util.Map;
+import java.util.TreeSet;
+import static org.junit.Assert.*;
+import nyla.solutions.core.data.MapEntry;
+import nyla.solutions.core.security.user.data.User;
 import nyla.solutions.core.security.user.data.UserProfile;
 import nyla.solutions.core.util.BeanComparator;
-import junit.framework.TestCase;
-
 /**
  * JUnit test for the BeanComparator
  * @author Gregory Green
  *
  */
-public class BeanComparatorTest extends TestCase
+public class BeanComparatorTest
 {
-	public BeanComparatorTest(String name)
-	{
-		super(name);
-	}// --------------------------------------------------------
 	
 	@Test
 	public void testCompare_descending()
@@ -56,6 +55,7 @@ public class BeanComparatorTest extends TestCase
 				 assertTrue(unSorted.get(0) == nyla);
 		
 	}//------------------------------------------------
+	@Test
 	public void testCompare()
 	{
 		//The constructor accepts a JavaBean property name
@@ -91,4 +91,18 @@ public class BeanComparatorTest extends TestCase
 		 assertTrue(unSorted.get(0) == josiah);
 	}
 
+	@Test
+	public void testNestedCompare()
+	{
+		//The constructor accepts a JavaBean property name
+		BeanComparator beanComparator = new BeanComparator("value.lastName");
+		
+		Collection<Map.Entry<String,User>> entries = new TreeSet<Map.Entry<String,User>>(beanComparator);
+		
+		entries.add(new MapEntry<String,User>("A", new UserProfile("email", "loginID", "firstName", "ZLastName")));
+		entries.add(new MapEntry<String,User>("A", new UserProfile("email", "loginID", "firstName", "ALastName")));
+		
+		
+		assertEquals("ALastName", entries.iterator().next().getValue().getLastName());
+	}
 }

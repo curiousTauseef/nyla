@@ -31,6 +31,7 @@ public class PagingCollection<T> implements Paging<T>, Serializable, Collection<
 			this.first = true;
 	}// --------------------------------------------------------
 
+	
 	/**
 	 * @return the pageCriteria
 	 */
@@ -89,6 +90,8 @@ public class PagingCollection<T> implements Paging<T>, Serializable, Collection<
 		
 		return collection.add(value);
 	}// --------------------------------------------------------
+	
+	
 	/**
 	 * @param arg0
 	 * @return
