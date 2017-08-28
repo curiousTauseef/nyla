@@ -40,7 +40,7 @@ dependencies {
 	    compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.dao', version: '0.1'
 	    compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.spring', version: '0.1'
 	    compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.xml', version: '0.1'
-	    compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.email', version: '0.1'
+	    compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.email', version: '0.0.2'
 	    compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.office', version: '1.0'
 	    compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.spring', version: '0.1'
 	    compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.9'

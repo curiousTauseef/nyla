@@ -5,6 +5,12 @@ import java.util.ResourceBundle;
 
 import nyla.solutions.core.exception.ConfigException;
 
+/**
+ * Interface for configuration settings
+ * 
+ * @author Gregory Green
+ *
+ */
 public interface Settings
 {
 
@@ -154,7 +160,7 @@ public interface Settings
 	/**
 	 * Get a configuration property as an Integer object.
 	 * 
-	 * @param Key Name of the numeric property to be returned.
+	 * @param key the Key Name of the numeric property to be returned.
 	 * 
 	 * @return Value of the property as an Integer or null if no property found.
 	 */
@@ -200,14 +206,10 @@ public interface Settings
 	/**
 	 * Get a configuration property as a Boolean object.
 	 * 
-	 * @param Key Name of the numeric property to be returned.
+	 * @param key Key Name of the numeric property to be returned.
 	 * 
 	 * @return Value of the property as an Boolean or null if no property found.
-	 *         <p/>
-	 *         <p/>
-	 *         <p/>
 	 *         Note that the value of the returned Boolean will be false if the
-	 *         <p/>
 	 *         property sought after exists but is not equal to "true" (ignoring
 	 *         case).
 	 */
@@ -217,13 +219,12 @@ public interface Settings
 	Boolean getPropertyBoolean(String key, Boolean aBool);
 
 	/**
+	 * @param aClass the class name prefix
 	 * @param key the configuration key
-	 * @param aBool default value
-	 * 
+	 * @param defaultValue the default value
 	 * @return aBool if the configuration value for the key is blank
 	 */
-
-	Boolean getPropertyBoolean(Class<?> aClass, String key, boolean aBool);
+	Boolean getPropertyBoolean(Class<?> aClass, String key, boolean defaultValue);
 	
 	/**
 	 * @param key the configuration key
@@ -247,15 +248,12 @@ public interface Settings
 	/**
 	 * Get a configuration property as a Password object.
 	 * 
-	 * @param Key Name of the numeric property to be returned.
+	 * @param key Key Name of the numeric property to be returned.
 	 * 
 	 * @return Value of the property as an Password or null if no property
 	 *         found.
-	 *         <p/>
-	 *         <p/>
-	 *         <p/>
+
 	 *         Note that the value of the returned Password will be false if the
-	 *         <p/>
 	 *         property sought after exists but is not equal to "true" (ignoring
 	 *         case).
 	 */
@@ -275,18 +273,18 @@ public interface Settings
 	 * Get the an encrypted password
 	 * 
 	 * @param key the key
-	 * @param defaultPassword
+	 * @param defaultPassword the default password
 	 * @return the default password if no password exists in the configuration
 	 */
 	char[] getPropertyPassword(String key, String defaultPassword);
 	
 	/**
+	 * @param aClass the default class prefix
 	 * @param key the configuration key
 	 * @param defaultPassword default value
 	 * 
 	 * @return defaultPassword if the configuration value for the key is blank
 	 */
-
 	char[] getPropertyPassword(Class<?> aClass, String key, char[] defaultPassword);
 	
 	/**
@@ -305,8 +303,8 @@ public interface Settings
 	 * 
 	 * @return System.getProperty("user.dir")
 	 */
-	//String getUserDir();
-	
-	//boolean isUseFormatting();
-
+	default String getUserDir()
+	{
+		return System.getProperty("user.dir");
+	}
 }

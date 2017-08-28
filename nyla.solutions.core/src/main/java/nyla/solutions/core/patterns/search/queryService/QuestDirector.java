@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import nyla.solutions.core.data.DataRow;
 import nyla.solutions.core.data.DataRowCreator;
+import nyla.solutions.core.patterns.creational.RowObjectCreator;
 import nyla.solutions.core.patterns.iteration.PageCriteria;
 import nyla.solutions.core.patterns.iteration.Pagination;
 import nyla.solutions.core.patterns.iteration.PagingCollection;
@@ -27,6 +28,7 @@ public class QuestDirector
 	 * @param visitor the visitor to convert results to the data rows
 	 * @return the collection of data rows
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static final <T> Collection<DataRow> constructDataRows(Iterator<T> iterator, QuestCriteria questCriteria, DataRowCreator visitor)
 	{
 		if(iterator == null )
@@ -85,8 +87,7 @@ public class QuestDirector
 					if(savePagination && iterator.hasNext())
 					{
 						
-						pagination.constructPaging(iterator, pageCriteria);
-						//(RowObjectCreator)visitor
+						pagination.constructPaging(iterator, pageCriteria, (RowObjectCreator)visitor);
 					}
 					
 					break; //break look since page is filled

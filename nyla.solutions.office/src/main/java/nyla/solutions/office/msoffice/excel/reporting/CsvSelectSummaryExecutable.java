@@ -115,7 +115,7 @@ public class CsvSelectSummaryExecutable extends AbstractDaoOperation implements 
 	         if(!csvFile.exists())
 		      {
 		         //write header
-		         CSV.appendFile(csvFile, header);
+		         CSV.appendFile(csvFile, (Object[])header);
 		      }
 	         
 	         double avg_fetch = 0;

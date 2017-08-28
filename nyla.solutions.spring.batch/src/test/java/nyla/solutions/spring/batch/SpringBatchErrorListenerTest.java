@@ -32,7 +32,7 @@ public class SpringBatchErrorListenerTest
 		
 		//Create Email Command to handle read errors
 		EmailCommand<Object,Fault> onProcessCmd = new EmailCommand<Object,Fault>();
-		listener.setProcessErrorCmd(onProcessCmd);
+		//TODO: listener.setProcessErrorCmd(onProcessCmd);
 		
 		
 		onProcessCmd.setSubject("Spring Batch Error Notification");

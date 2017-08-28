@@ -38,6 +38,7 @@ import nyla.solutions.core.data.conversation.ArrayListBag;
 import nyla.solutions.core.data.conversation.BaggedObject;
 import nyla.solutions.core.data.conversation.SerializationMapKeyWrapper;
 import nyla.solutions.core.data.conversation.SerializationRegionEntryWrapper;
+import nyla.solutions.core.exception.SystemException;
 
 
 public class JacksonJSON extends JSON
@@ -317,7 +318,7 @@ public class JacksonJSON extends JSON
 				}
 				catch (JsonMappingException e)
 				{
-					throw new JsonMappingException("keyNode"+keyNode+" keyClassNameNode"+keyClassNameNode,e);
+					throw new SystemException("keyNode"+keyNode+" keyClassNameNode"+keyClassNameNode,e);
 				}
 			
 

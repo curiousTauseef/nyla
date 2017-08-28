@@ -43,7 +43,8 @@ public class MissingConfigPropertiesException extends ConfigException
 		   .append(ClassPath.getClassPathText());
 			
 			
-			message = msg.toString();
+			String message = msg.toString();
+			this.setMessage(message);
 		}
 		catch (Exception e)
 		{
@@ -53,12 +54,6 @@ public class MissingConfigPropertiesException extends ConfigException
     
    }//--------------------------------------------
 
-   @Override
-	public String getMessage()
-	{
-	   return message;
-	}
-   private String message = null;
 	   
 
 }
