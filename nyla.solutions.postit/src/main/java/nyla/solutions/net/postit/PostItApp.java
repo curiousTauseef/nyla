@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import nyla.solutions.core.util.settings.Settings;
-import nyla.solutions.email.Email;
 import nyla.solutions.net.postit.exception.PostItException;
 import nyla.solutions.spring.settings.EnvironmentSettings;
 
@@ -58,26 +57,8 @@ public class PostItApp
 	}//------------------------------------------------
 	/**
 	 * 
-	 * @return
+	 * @return the setting object
 	 */
-	
-	@Bean
-	public Email getEmail()
-	{
-		Email email = new Email();		
-		Settings settings = this.getSettings();
-		email.setMailFromUser(settings.getProperty("mail.from"));
-		email.setSmtpHost(settings.getProperty("mail.host"));
-	
-		boolean authenticationRequired = settings.getPropertyBoolean("mail.auth.required",false).booleanValue();
-		email.setAuthenicationRequired(authenticationRequired);
-		
-		if(authenticationRequired)
-			email.setMailFromPassword(settings.getPropertyPassword("mail.from.password"));
-		
-		
-		return email;
-	}//------------------------------------------------
 	@Bean
 	public Settings getSettings()
 	{
@@ -88,13 +69,7 @@ public class PostItApp
 		
 		return settings;
 	}//------------------------------------------------
-	@RequestMapping("/")
-	@ResponseBody
-	String home()
-	{
-
-		return "Hello World!";
-	}//--------------------------------------------------------
+	
 	@RequestMapping("/postIt")
 	@ResponseBody
 	public void postIt()
@@ -111,6 +86,7 @@ public class PostItApp
 	 */
 	@PostMapping(path = "/sendIt", consumes = "application/json")
 	public void sendIt(@RequestBody Package pack)
+	throws Exception
 	{
 		postItMgr.sendIt(pack);
 	}//------------------------------------------------

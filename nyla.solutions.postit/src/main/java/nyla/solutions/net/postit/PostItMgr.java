@@ -28,8 +28,6 @@ public class PostItMgr
 	 */
 	public void removeRecipientsByEmails(String emails)
 	{
-		if(email == null)
-			return;
 		
 		String[] emailArray = toEmails(emails); 
 		
@@ -123,145 +121,136 @@ public class PostItMgr
 	 * @param pack the package
 	 */
 	public void sendIt(Package pack)
+	throws Exception
 	{
-		String to = pack.getTo();
-		
-		if (to == null || to.length() == 0)
-			throw new RequiredException("package.to");
-		
-		
-		String from = pack.getFrom();
-		
-		from = from == null || from.length() == 0 ? this.defaultFromEmail : from;
-		String subject = pack.getSubject();
-		
-
-		Map<Object,Object> map = null;
-		
-		String text = pack.getText();
-		
-		if (text == null || text.trim().length() == 0)
-			throw new RequiredException("Email message body");
-		
-		//StringBuilder toAddress = new StringBuilder();
-		//int toCount = 0;
-		
-		
-		List<UserProfile> emailsToSend =  new ArrayList<UserProfile>();
-		//List<UserProfile> emailsToSave =  new ArrayList<UserProfile>();
-		
-		String[] emails = toEmails(to);
-		
-		UserProfile user = null;
-		
-		for (String emailTo : emails)
+		try(Email email = new Email();)
 		{
-			if(emailTo == null)
-				continue;
-			
-			emailTo = emailTo.trim();
-			
-			if(emailTo.length() == 0)
-				continue;
-			
-			
-			//check exact
-			user = this.repository.findOne(emailTo);
-			if(user != null)
-			{
-				//add single users
-				emailsToSend.add(user);
-			}
-			else
-			{
-				List<UserProfile> tmp = this.repository.findByEmailLike(to);
 				
-				if(tmp == null || tmp.isEmpty())
+			String to = pack.getTo();
+			
+			if (to == null || to.length() == 0)
+				throw new RequiredException("package.to");
+			
+			
+			String from = pack.getFrom();
+			
+			from = from == null || from.length() == 0 ? this.defaultFromEmail : from;
+			String subject = pack.getSubject();
+			
+	
+			Map<Object,Object> map = null;
+			
+			String text = pack.getText();
+			
+			if (text == null || text.trim().length() == 0)
+				throw new RequiredException("Email message body");
+			
+			//StringBuilder toAddress = new StringBuilder();
+			//int toCount = 0;
+			
+			
+			List<UserProfile> emailsToSend =  new ArrayList<UserProfile>();
+			//List<UserProfile> emailsToSave =  new ArrayList<UserProfile>();
+			
+			String[] emails = toEmails(to);
+			
+			UserProfile user = null;
+			
+			for (String emailTo : emails)
+			{
+				if(emailTo == null)
+					continue;
+				
+				emailTo = emailTo.trim();
+				
+				if(emailTo.length() == 0)
+					continue;
+				
+				
+				//check exact
+				user = this.repository.findOne(emailTo);
+				if(user != null)
 				{
-					//add new user
-					user = new UserProfile();
-					user.setEmail(emailTo);
-				
+					//add single users
 					emailsToSend.add(user);
-					//emailsToSave.add(user);
 				}
 				else
 				{
-					emailsToSend.addAll(tmp);
+					List<UserProfile> tmp = this.repository.findByEmailLike(to);
+					
+					if(tmp == null || tmp.isEmpty())
+					{
+						//add new user
+						user = new UserProfile();
+						user.setEmail(emailTo);
+					
+						emailsToSend.add(user);
+						//emailsToSave.add(user);
+					}
+					else
+					{
+						emailsToSend.addAll(tmp);
+					}
+					
 				}
 				
+					
 			}
 			
-				
-		}
-		
-		
-		
-		
-		
-		
-		for (UserProfile recipient : emailsToSend)
-		{
-			map = JavaBean.toMap(recipient);
-			text = Text.format(text, map);
 			
-			try
+			
+			
+			CommunicationException error = null;
+			
+			for (UserProfile recipient : emailsToSend)
 			{
-				if(recipient.getEmail() == null || recipient.getEmail().trim().length() == 0)
-					continue;
-				
-				email.sendMail(recipient.getEmail(), from, subject,text);
+				map = JavaBean.toMap(recipient);
+				text = Text.format(text, map);
 				
 				try
 				{
-					this.saveRecipient(recipient);
+					if(recipient.getEmail() == null || recipient.getEmail().trim().length() == 0)
+						continue;
+					
+					email.sendMail(recipient.getEmail(), from, subject,text);
+					
+					try
+					{
+						this.saveRecipient(recipient);
+					}
+					catch(Exception e)
+					{
+						Debugger.printError(e);
+					}
 				}
-				catch(Exception e)
+				catch(CommunicationException e)
 				{
+					error = e;
 					Debugger.printError(e);
+					
+					//removing email
+					if(e.getMessage() != null && (e.getMessage().contains("SMTPAddressFailedException") || 
+							e.getMessage().contains("Invalid Addresses")))
+					{
+						Debugger.printWarn("removing:"+recipient.getEmail());
+						this.removeRecipientsByEmails(recipient.getEmail());
+					}
 				}
-			}
-			catch(CommunicationException e)
-			{
-				Debugger.printError(e);
 				
-				//removing email
-				if(e.getMessage() != null && (e.getMessage().contains("SMTPAddressFailedException") || 
-						e.getMessage().contains("Invalid Addresses")))
+				if(error != null)
 				{
-					Debugger.printWarn("removing:"+recipient.getEmail());
-					this.removeRecipientsByEmails(recipient.getEmail());
+					throw error;
 				}
-			}
-			
-		
-			
-			//toCount++;
-			
-			//send email in batches
-			//if(toCount >= this.emailBatchSize)
-			//{
 				
-			//	
-			//	toCount = 0;
-			//}
-				
-		}	
+					
+			}	
+
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
 		
-//		if(toAddress.length() > 0)
-//		{
-//			//send last
-//			email.sendMailBcc(toAddress.toString(), from, subject,text);
-//		}
-		
-		//save new emails
-//		if(!emailsToSave.isEmpty())
-//		{
-//			for (UserProfile userProfile : emailsToSave)
-//			{
-//				this.saveRecipient(userProfile);
-//			}
-//		}
 	}//------------------------------------------------
 	
 	/**
@@ -289,8 +278,7 @@ public class PostItMgr
 	//@Value("${mail.batchSize}")
 	//private int emailBatchSize;
 	
-	@Autowired
-	private Email email;
+	
 	
 	
 	@Value(value="${defaultFromEmail}")

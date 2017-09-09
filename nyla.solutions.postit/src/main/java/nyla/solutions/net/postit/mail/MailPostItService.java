@@ -34,11 +34,8 @@ public class MailPostItService implements PostItService
    public void post(String aTo, Postable aPostable)
    throws PostItException
    {
-      try
+      try(Email email = new Email();)
       {
-        Email email = new Email();
-        
-         
         email.sendMail(aTo, aPostable.getName(), aPostable.getText(), aPostable.getAttachment());
       }
       catch (Exception e)
@@ -76,19 +73,26 @@ public class MailPostItService implements PostItService
 	   int startIndex =1;
 	   String pattern = ".*Undeliver.*";
 	   
-	   Email email = new Email();
-	   
-	  Collection<EmailMessage> collection = email.readMatches(count, startIndex, pattern);
-	  
-	  if(collection == null)
-		  return;
-	  
-	  for (EmailMessage emailMessage : collection)
-	  {
-		  System.out.println("DELETING:"+emailMessage);
-			
-		  //recipientDAORepository.delete(email);
-	  }
+	   try(Email email = new Email();)
+	   {
+			   
+		   
+		  Collection<EmailMessage> collection = email.readMatches(count, startIndex, pattern);
+		  
+		  if(collection == null)
+			  return;
+		  
+		  for (EmailMessage emailMessage : collection)
+		  {
+			  System.out.println("DELETING:"+emailMessage);
+				
+			  //recipientDAORepository.delete(email);
+		  }
+	   }
+	   catch(Exception e)
+	   {
+		   e.printStackTrace();
+	   }
 	   
    }//------------------------------------------------
    @Autowired
