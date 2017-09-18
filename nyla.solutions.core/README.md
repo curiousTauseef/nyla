@@ -209,7 +209,7 @@ Debugger.printInfo("This is a INFO level message");
 
 //Two arguments can be passed where the first is the calling object
 //The debugger will prepend the calling objects class name to the logged output
-Debugger.println(this,"This is a DEBUG level message");
+Debugger.println(this, "This is a DEBUG level message");
 
 //Debugger can be used to efficiently print exception information
 text = null;
