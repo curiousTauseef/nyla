@@ -6,6 +6,10 @@ apply plugin: 'signing'
 
 sourceCompatibility = 1.8
 version = '1.0.3-SNAPSHOT'
+
+
+
+
 jar {
     manifest {
         attributes 'Implementation-Title': 'Nyla Core',
@@ -63,6 +67,7 @@ test {
 }
 
 uploadArchives {
+
 	  repositories {
 		  mavenDeployer {
 		      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }

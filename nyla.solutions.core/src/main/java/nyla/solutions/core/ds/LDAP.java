@@ -1,5 +1,6 @@
 package nyla.solutions.core.ds;
 
+import java.io.Closeable;
 import java.security.Principal;
 import java.util.Hashtable;
 import java.util.Properties;
@@ -27,9 +28,6 @@ import javax.security.auth.x500.X500Principal;
 import nyla.solutions.core.exception.NoDataFoundException;
 import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Debugger;
-
-
-
 
 
 /**
@@ -64,10 +62,11 @@ import nyla.solutions.core.util.Debugger;
  *    
  *    
  *    Sample config.properties
- *    ldap.server.url=@ldap.server.url@ 9
- *    ldap.root.dn=ou=people, o=some.com
- *    ldap.timeout.seconds=180
- *    #ldap.server.url=ldap://localhost:389
+ *    LDAP_SERVER_URL=@LDAP_SERVER_URL@ 9
+ *    LDAP_ROOT_DN=ou=people, o=some.com
+ *    LDAP_TIMEOUT_SECS=180
+ *    
+ *    #LDAP_SERVER_URL=ldap://localhost:389
  *    
  *  
  * </pre>
@@ -79,23 +78,26 @@ import nyla.solutions.core.util.Debugger;
  *  
  */
 
-public class LDAP
+public class LDAP implements Closeable
 {
 	   /**
-	    * SERVER_URL_PROP = "ldap.server.url"
+	    * SERVER_URL_PROP = "LDAP_SERVER_URL"
 	    * 
 	    */
-	   public final static String  SERVER_URL_PROP = "ldap.server.url";
+	   public final static String  SERVER_URL_PROP = "LDAP_SERVER_URL";
 	   
 	   /**
-	    * TIMEOUT_SECS_PROP = "ldap.timeout.seconds"
+	    * TIMEOUT_SECS_PROP = "LDAP_TIMEOUT_SECS"
 	    */
-	   public final static String TIMEOUT_SECS_PROP = "ldap.timeout.seconds";
+	   public final static String TIMEOUT_SECS_PROP = "LDAP_TIMEOUT_SECS";
 	   
 	   /**
-	    * ROOT_DN_PROP = "ldap.root.dn"
+	    * ROOT_DN_PROP = "LDAP_ROOT_DN"
 	    */
-	   public final static  String ROOT_DN_PROP = "ldap.root.dn";
+	   public final static  String ROOT_DN_PROP = "LDAP_ROOT_DN";
+	   
+	   
+	   public final static String UID_ATTRIB_NM_PROP = "LDAP_UID_ATTRIB_NM";
 	   	   
    /**
     * 
@@ -106,7 +108,6 @@ public class LDAP
    public LDAP(DirContext c)
    {
 
-      ctx = null;
 
       existanceConstraints = new SearchControls();
 
@@ -130,100 +131,62 @@ public class LDAP
     * @param env the environment hash map settings
     * @throws NamingException
     */
-   public LDAP(Hashtable<String,Object>  env) throws NamingException
-
-   {
-
-      ctx = null;
-
-      existanceConstraints = new SearchControls();
-
-      existanceConstraints.setSearchScope(0);
-
-      existanceConstraints.setCountLimit(0L);
-
-      existanceConstraints.setTimeLimit(0);
-
-      existanceConstraints.setReturningAttributes(new String[] {
-
-         "1.1" });
-
-      if (env.get("java.naming.security.authentication").equals("GSSAPI"))
-
-         setupKerberosContext(env);
-
-      else
-
-         ctx = openContext(env);
-
-   }//--------------------------------------------
-
-   
-   
-   /**
-    * Authenticate user ID and password against the LDAP server
-    * @param aUid i.e. greeng
-    * @param aPassword the user password
-    */
-   public static Principal authenicateUID(String aUid, char[] aPassword)
-   throws  SecurityException
-   {
-      return authenicateUID(Config.getProperty(SERVER_URL_PROP),aUid, aPassword);
-   }//--------------------------------------------
-
+//   public LDAP(Hashtable<String,Object>  env) throws NamingException
+//   {
+//      existanceConstraints = new SearchControls();
+//
+//      existanceConstraints.setSearchScope(0);
+//
+//      existanceConstraints.setCountLimit(0L);
+//
+//      existanceConstraints.setTimeLimit(0);
+//
+//      existanceConstraints.setReturningAttributes(new String[] {
+//
+//         "1.1" });
+//
+//      if (env.get("java.naming.security.authentication").equals("GSSAPI"))
+//
+//         setupKerberosContext(env);
+//
+//      else
+//      {
+//    	  LoginContext lc = null;
+//
+//          try
+//
+//          {
+//
+//             lc = new LoginContext(getClass().getName(), new JXCallbackHandler());
+//
+//             lc.login();
+//
+//          }
+//
+//          catch (LoginException ex)
+//
+//          {
+//
+//             ex.printStackTrace();
+//
+//             throw new NamingException("login problem: " + ex);
+//
+//          }
+//
+//          this.ctx = (DirContext) Subject.doAs(lc.getSubject(), new JndiAction(env));
+//
+//          if (ctx == null)
+//
+//             throw new NamingException("another problem with GSSAPI");
+//
+//          else
+//
+//             return;
+//      }
+//
+//   }//--------------------------------------------
+  
  
-   /**
-    * Authenticate user ID and password against the LDAP server
-    * @param aServerURL i.e. ldap://directory.xxxx.com:389
-    * @param aUid i.e. greeng
-    * @param aPassword the user password
-    */
-   public static Principal authenicateUID(String aServerURL, String aUid, char[] aPassword)
-   throws  SecurityException
-   {
-
-      String rootDN = Config.getProperty(ROOT_DN_PROP);
-      //Debugger.println(LDAP.class,"rootDN="+rootDN);
-      
-      int timeout = Config.getPropertyInteger(TIMEOUT_SECS_PROP).intValue();
-      Debugger.println(LDAP.class,"timeout="+timeout);
-      
-         LDAP ldap = null;
-         
-         LDAP authenicatedLDAP = null;
-         
-         try
-         {       
-            ldap = new LDAP(aServerURL);
-            
-            NamingEnumeration<?> results = ldap.searchSubTree(rootDN,"(uid="+aUid+")",1,timeout,null);
-            SearchResult searchResult = toSearchResult(results);
-            String dn = searchResult.getName()+", "+rootDN;
-            //Debugger.println(LDAP.class, "dn="+dn);
-
-            authenicatedLDAP = new LDAP(aServerURL, dn,aPassword );
-            
-            
-            return new X500Principal(dn);
-         }
-		catch (NamingException e)
-		{
-			throw new SecurityException(e.getMessage(),e);
-		}
-		catch (NoDataFoundException e)
-		{
-			throw new SecurityException("\""+aUid+"\" not found",e);
-		}
-         finally
-         {
-            if(authenicatedLDAP != null )
-               try{ authenicatedLDAP.close(); } catch(Exception e){}
-               
-               if(ldap != null )
-                  try{ ldap.close(); } catch(Exception e){e.printStackTrace();}               
-         }//end try authenticate
-
-   }//--------------------------------------------
    /**
     * Initial LDAP for kerberos support
     * @param env
@@ -234,37 +197,7 @@ protected void setupKerberosContext(Hashtable<String,Object> env)
    throws NamingException
    {
 
-      LoginContext lc = null;
-
-      try
-
-      {
-
-         lc = new LoginContext(getClass().getName(), new JXCallbackHandler());
-
-         lc.login();
-
-      }
-
-      catch (LoginException ex)
-
-      {
-
-         ex.printStackTrace();
-
-         throw new NamingException("login problem: " + ex);
-
-      }
-
-      ctx = (DirContext) Subject.doAs(lc.getSubject(), new JndiAction(env));
-
-      if (ctx == null)
-
-         throw new NamingException("another problem with GSSAPI");
-
-      else
-
-         return;
+    
 
    }//------------------------------------------------------------------
    /**
@@ -276,9 +209,6 @@ protected void setupKerberosContext(Hashtable<String,Object> env)
     */
    public LDAP(String url) throws NamingException
    {
-
-      ctx = null;
-
       existanceConstraints = new SearchControls();
 
       existanceConstraints.setSearchScope(0);
@@ -310,15 +240,13 @@ protected void setupKerberosContext(Hashtable<String,Object> env)
     * @param userDN
     *           example "cn=Manager,dc=green_gregory,dc=com"
     * 
-    * @param pwd
+    * @param pwd the user password
     * 
     * @throws NamingException
     *  
     */
    public LDAP(String url, String userDN, char pwd[]) throws NamingException
    {
-
-      ctx = null;
 
       existanceConstraints = new SearchControls();
 
@@ -332,75 +260,131 @@ protected void setupKerberosContext(Hashtable<String,Object> env)
 
          "1.1" });
 
-      Hashtable<String,Object>  env = new Hashtable<String,Object> ();
-
-      setupBasicProperties(env, url, false);
-
-      setupSimpleSecurityProperties(env, userDN, pwd);
-
-      ctx = openContext(env);
+      this.ctx = authenticateByDnForContext(url, userDN, pwd);
 
    }//--------------------------------------------
-
-   public LDAP(String url, String cacerts, String clientcerts,
-
-   char caKeystorePwd[], char clientKeystorePwd[], String caKeystoreType,
-
-   String clientKeystoreType, boolean tracing, boolean sslTracing,
-
-   String sslSocketFactory) throws NamingException
-
+   public DirContext authenticateByDnForContext(String url, String userDN, char[] pwd)
+		throws NamingException
+	{
+		Hashtable<String,Object>  env = new Hashtable<String,Object> ();
+	
+	      setupBasicProperties(env, url, false);
+	
+	      setupSimpleSecurityProperties(env, userDN, pwd);
+	
+	      return openContext(env);
+	}// --------------------------------------------------------------
+   
+   /**
+    * Authenticate user ID and password against the LDAP server
+    * @param uid i.e. greeng
+    * @param password the user password
+    */
+   public Principal authenicate(String uid, char[] password)
+   throws  SecurityException
    {
 
-      try
+      String rootDN = Config.getProperty(ROOT_DN_PROP);
+      
+      int timeout = Config.getPropertyInteger(TIMEOUT_SECS_PROP).intValue();
+      Debugger.println(LDAP.class,"timeout="+timeout);
+      
+      String uidAttributeName = Config.getProperty(UID_ATTRIB_NM_PROP);
+      
+      return authenicate(uid,  password,rootDN,uidAttributeName,timeout);
+   }// --------------------------------------------------------------
+   /**
+    * 
+    * @param uid ex: ggreen
+    * @param password the password (unencrypted)
+    * @param rootDN ex: ou
+    * @param uidAttributeName
+    * @param timeout the timeout
+    * @return principal
+    * @throws SecurityException
+    */
+    public Principal authenicate(String uid, char[] password,String rootDN,String uidAttributeName,int timeout)
+    throws  SecurityException
+    {
+         
+         try
+         {       
+            String uidSearch = new StringBuilder().append("(").append(uidAttributeName).append("=").append(uid).append(")").toString();
+                 
+            NamingEnumeration<?> results = searchSubTree(rootDN,
+            		uidSearch,1,timeout,null);
+            SearchResult searchResult = toSearchResult(results);
+            String dn = searchResult.getName()+", "+rootDN;
+                      
+            return new X500Principal(dn);
+         }
+		catch (NamingException e)
+		{
+			throw new SecurityException(e.getMessage(),e);
+		}
+		catch (NoDataFoundException e)
+		{
+			throw new SecurityException("\""+uid+"\" not found",e);
+		}
+   }//--------------------------------------------
 
-      {
-
-         ctx = null;
-
-         existanceConstraints = new SearchControls();
-
-         existanceConstraints.setSearchScope(0);
-
-         existanceConstraints.setCountLimit(0L);
-
-         existanceConstraints.setTimeLimit(0);
-
-         existanceConstraints.setReturningAttributes(new String[] {
-
-            "1.1" });
-
-         Hashtable<String,Object>  env = new Hashtable<String,Object> ();
-
-         setupBasicProperties(env, url, tracing);
-
-         setupSSLProperties(env, cacerts, clientcerts, caKeystorePwd,
-
-         clientKeystorePwd, caKeystoreType, clientKeystoreType,
-
-         sslTracing, sslSocketFactory);
-
-         ctx = openContext(env);
-
-      }
-
-      catch (NamingException e)
-
-      {
-
-         e.printStackTrace();
-
-      }
-
-      catch (Exception e)
-
-      {
-
-         e.printStackTrace();
-
-      }
-
-   }
+//   public LDAP(String url, String cacerts, String clientcerts,
+//
+//   char caKeystorePwd[], char clientKeystorePwd[], String caKeystoreType,
+//
+//   String clientKeystoreType, boolean tracing, boolean sslTracing,
+//
+//   String sslSocketFactory) throws NamingException
+//
+//   {
+//
+//      try
+//      {
+//
+//
+//         existanceConstraints = new SearchControls();
+//
+//         existanceConstraints.setSearchScope(0);
+//
+//         existanceConstraints.setCountLimit(0L);
+//
+//         existanceConstraints.setTimeLimit(0);
+//
+//         existanceConstraints.setReturningAttributes(new String[] {
+//
+//            "1.1" });
+//
+//         Hashtable<String,Object>  env = new Hashtable<String,Object> ();
+//
+//         setupBasicProperties(env, url, tracing);
+//
+//         setupSSLProperties(env, cacerts, clientcerts, caKeystorePwd,
+//
+//         clientKeystorePwd, caKeystoreType, clientKeystoreType,
+//
+//         sslTracing, sslSocketFactory);
+//
+//         ctx = openContext(env);
+//
+//      }
+//
+//      catch (NamingException e)
+//
+//      {
+//
+//        tho
+//
+//      }
+//
+//      catch (Exception e)
+//
+//      {
+//
+//         e.printStackTrace();
+//
+//      }
+//
+//   }
 
    /**
     * 
@@ -567,6 +551,8 @@ protected void setupKerberosContext(Hashtable<String,Object> env)
    {
 
       DirContext ctx = new InitialDirContext(env);
+      
+      
       return ctx;
 
    }// ------------------------------------------------
@@ -1258,13 +1244,9 @@ protected void setupKerberosContext(Hashtable<String,Object> env)
    }
 
    public void modifyAttributes(String dn, int mod_type, Attributes attr)
-
    throws NamingException
-
    {
-
       ctx.modifyAttributes(dn, mod_type, attr);
-
    }
 
    public void modifyAttributes(String dn, ModificationItem modList[])
@@ -1366,41 +1348,26 @@ protected void setupKerberosContext(Hashtable<String,Object> env)
     */
 
    public void close()
-
    {
 
       try
-
       {
 
          if (ctx == null)
-
          {
-
             return;
 
          }
-
          else
-
          {
-
             ctx.close();
-
             return;
-
          }
-
       }
-
       catch (NamingException e)
-
       {
-
          Debugger.printWarn(e);
-
       }
-
    }
 
    public void renameEntry(String OldDN, String NewDN, boolean deleteOldRDN)
@@ -1537,20 +1504,14 @@ protected void setupKerberosContext(Hashtable<String,Object> env)
 
    }
 
-   public void setContext(DirContext ctx)
-
-   {
-
-      this.ctx = ctx;
-
-   }
 
    //private static final String DEFAULT_CTX = "com.sun.jndi.ldap.LdapCtxFactory";
 
    private SearchControls existanceConstraints;
 
-   private DirContext ctx;
+   private final DirContext ctx;
 
    private static Properties nameParserSyntax = null;
+
 
 }
