@@ -290,8 +290,30 @@ public class Cryption
 
 			}
 
+			final String decryptedPassword;
+			
 			if (args[0].equals("-d"))
-				System.out.println(canonical.decryptText(args[1]));
+			{
+				if(args.length > 2)
+				{
+					StringBuilder p = new StringBuilder();
+					for (int i = 1; i < args.length; i++)
+					{
+						if(i > 1)
+							p.append(' ');
+						
+						p.append(args[i]);
+					}
+					
+					decryptedPassword = p.toString();
+				}
+				else
+				{
+					decryptedPassword = args[1];
+				}
+				
+				System.out.println(canonical.decryptText(decryptedPassword));
+			}
 			else
 				System.out.println(CRYPTION_PREFIX
 						+ canonical.encryptText(args[0]));
@@ -352,7 +374,6 @@ public class Cryption
 		int i = 0;
 
 		while (tok.hasMoreTokens())
-
 		{
 
 			bytes[i] = Byte.valueOf(tok.nextToken()).byteValue();

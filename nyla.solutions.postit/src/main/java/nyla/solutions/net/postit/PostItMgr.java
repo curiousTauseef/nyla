@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import nyla.solutions.core.exception.CommunicationException;
 import nyla.solutions.core.exception.RequiredException;
 import nyla.solutions.core.security.user.data.UserProfile;
+import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Debugger;
 import nyla.solutions.core.util.JavaBean;
 import nyla.solutions.core.util.Text;
@@ -198,12 +199,22 @@ public class PostItMgr
 			}
 			
 			
-			
+			//Send Emails
 			
 			CommunicationException error = null;
 			
+			/*
+			 * To stay just below the threshold, send one mail every 
+			 * minute with no more than 55 recipients and this will remain 
+			 * under the mail server's limitation of no more than 200 emails 
+			 * within 5 minutes, no more than 100 recipients at once, and at 
+			 * least a ten second delay between mailings.
+
+			 */
+			int cnt = 0,processCnt = 0;
 			for (UserProfile recipient : emailsToSend)
 			{
+				
 				map = JavaBean.toMap(recipient);
 				text = Text.format(text, map);
 				
@@ -212,7 +223,17 @@ public class PostItMgr
 					if(recipient.getEmail() == null || recipient.getEmail().trim().length() == 0)
 						continue;
 					
+					
 					email.sendMail(recipient.getEmail(), from, subject,text);
+					cnt++;
+					
+					if(cnt > this.batchSize)
+					{	
+						Debugger.println("Sleeping for "+this.delaySecs+" seconds");
+						Thread.sleep(this.delaySecs*1000);
+					}
+					//restart count
+					cnt = 0;
 					
 					try
 					{
@@ -222,6 +243,9 @@ public class PostItMgr
 					{
 						Debugger.printError(e);
 					}
+					
+					processCnt++;
+					
 				}
 				catch(CommunicationException e)
 				{
@@ -236,14 +260,13 @@ public class PostItMgr
 						this.removeRecipientsByEmails(recipient.getEmail());
 					}
 				}
-				
-				if(error != null)
-				{
-					throw error;
-				}
-				
-					
 			}	
+			
+			
+			if(error != null && processCnt ==0)
+			{
+				throw error;
+			}
 
 		}
 		catch(Exception e)
@@ -273,13 +296,7 @@ public class PostItMgr
 		String[] results = emails.split("[ ;:,]");
 		
 		return results;
-	}//------------------------------------------------
-
-	//@Value("${mail.batchSize}")
-	//private int emailBatchSize;
-	
-	
-	
+	}//------------------------------------------------	
 	
 	@Value(value="${defaultFromEmail}")
 	private String defaultFromEmail;
@@ -290,5 +307,6 @@ public class PostItMgr
 	@Autowired
 	GemfireTemplate template;
 	
-	
+	private int batchSize = Config.getPropertyInteger("batchSize",100).intValue();
+	private int delaySecs = Config.getPropertyInteger("delaySecs",6*60).intValue();
 }

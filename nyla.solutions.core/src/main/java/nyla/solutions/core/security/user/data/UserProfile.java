@@ -67,10 +67,17 @@ implements User, Copier, Comparable<Object>
     }//--------------------------------------------
     public String getName()
     {
-        StringBuffer name = new StringBuffer(lastName);
+    	    
+        StringBuilder name = new StringBuilder();
+        if(lastName != null && lastName.length() > 0)
+        		name.append(lastName);
+        
+        
         if(name.length() > 0)
             name.append(", ");
-        name.append(firstName);
+        if(firstName != null && firstName.length() > 0)
+        		name.append(firstName);
+        
         return name.toString();
     }//--------------------------------------------
     public void setLastName(String lastName)

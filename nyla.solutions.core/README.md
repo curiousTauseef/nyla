@@ -459,6 +459,16 @@ Example HTML output:
 			</div>
 		</body>
 	</html>
+	
+	
+# Cache Farm
+
+
+Cache Farm is a simple singleton implementation of cached key/value pairs.
+
+
+	Cache<Object,Object> cacheFarm = CacheFarm.getCache();
+
 
 #Building
 
