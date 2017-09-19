@@ -19,14 +19,7 @@ import nyla.solutions.core.exception.FatalException;
 public class ConfigException extends FatalException
 {
 	public static final String DEFAULT_ERROR_CODE = "CONF000";
-   /**
-    * 
-    */
-   public ConfigException()
-   {
-      super("Configuration error");
-      this.setCode(DEFAULT_ERROR_CODE);
-   }//-------------------------------------------
+
    /**
     * @param arg0
     */

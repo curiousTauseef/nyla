@@ -13,44 +13,16 @@ public class MissingConfigPropertiesException extends ConfigException
 	 */
 	private static final long serialVersionUID = 5689827263132067133L;
 
-	  public MissingConfigPropertiesException()
-	   {
-		  this("");
-	   }
-/**
+	/**
     * Constructor for SetupException initializes internal 
     * data settings.
-
     * 
-
     */
-
    public MissingConfigPropertiesException(String key)
    {
-	   
-	   try
-		{
-		   StringBuilder msg = new StringBuilder();
-		   if(key != null && key.length() > 0 )
-		   {
-			   msg.append("key=").append(key).append(" ");
-		   }
-		   
-		   msg.append("Missing ")
-		   .append(Config.RESOURCE_BUNDLE_NAME)
-		   .append(".properties")
-		   .append(" in classpath: ")
-		   .append(ClassPath.getClassPathText());
-			
-			
-			String message = msg.toString();
-			this.setMessage(message);
-		}
-		catch (Exception e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	   super("Missing configuration property key:"+key+ " in environment variables, JVM system properties and property file "
+			   + Config.RESOURCE_BUNDLE_NAME+".properties  in classpath:"+ClassPath.getClassPathText() );
+
     
    }//--------------------------------------------
 

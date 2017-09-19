@@ -608,7 +608,7 @@ public abstract class AbstractSettings implements Settings
 		String sVal = getSecureProperty(key);
 
 		if(sVal == null)
-			return null;
+			throw new MissingConfigPropertiesException(key);
 		
 		bVal = sVal.toCharArray();
 

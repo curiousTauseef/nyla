@@ -35,31 +35,19 @@ import nyla.solutions.core.util.Debugger;
  * <pre>
  * 
  * 
- *    
- * 
- *    LDAP provides a set of functions related to
- * 
- *    interfacing with directory servers
+ *    LDAP provides a set of functions related to interfacing with directory servers
  * 
  *   
- * 
  *    The following is list of common LDAP attributes
  * 
- *    
- * 
+ *   
  *    c = country
- * 
  *    o =  An organization or corporation
- * 
  *    ou - A division of an organization
- * 
  *    cn - common name of an entity ( often a user wher is can be first name
- * 
  *    or full name
- * 
  *    sn The surname (last name) of user
  *    uid - user unique ID
- *    
  *    
  *    Sample config.properties
  *    LDAP_SERVER_URL=@LDAP_SERVER_URL@ 9
@@ -80,7 +68,9 @@ import nyla.solutions.core.util.Debugger;
 
 public class LDAP implements Closeable
 {
-	   /**
+	   private static final String JAVA_NAMING_PROVIDER_URL = "java.naming.provider.url";
+
+	/**
 	    * SERVER_URL_PROP = "LDAP_SERVER_URL"
 	    * 
 	    */
@@ -104,8 +94,9 @@ public class LDAP implements Closeable
     * Constructor for LDAP initializes internal 
     * data settings.
     * @param c the directory context
+    * @param url the LDAP URL
     */
-   public LDAP(DirContext c)
+   public LDAP(DirContext c, String url)
    {
 
 
@@ -122,69 +113,11 @@ public class LDAP implements Closeable
          "1.1" });
 
       ctx = c;
-
+      
+      this.url = url;
+      
    }//--------------------------------------------
-   /**
-    * 
-    * Constructor for LDAP initializes internal 
-    * data settings.
-    * @param env the environment hash map settings
-    * @throws NamingException
-    */
-//   public LDAP(Hashtable<String,Object>  env) throws NamingException
-//   {
-//      existanceConstraints = new SearchControls();
-//
-//      existanceConstraints.setSearchScope(0);
-//
-//      existanceConstraints.setCountLimit(0L);
-//
-//      existanceConstraints.setTimeLimit(0);
-//
-//      existanceConstraints.setReturningAttributes(new String[] {
-//
-//         "1.1" });
-//
-//      if (env.get("java.naming.security.authentication").equals("GSSAPI"))
-//
-//         setupKerberosContext(env);
-//
-//      else
-//      {
-//    	  LoginContext lc = null;
-//
-//          try
-//
-//          {
-//
-//             lc = new LoginContext(getClass().getName(), new JXCallbackHandler());
-//
-//             lc.login();
-//
-//          }
-//
-//          catch (LoginException ex)
-//
-//          {
-//
-//             ex.printStackTrace();
-//
-//             throw new NamingException("login problem: " + ex);
-//
-//          }
-//
-//          this.ctx = (DirContext) Subject.doAs(lc.getSubject(), new JndiAction(env));
-//
-//          if (ctx == null)
-//
-//             throw new NamingException("another problem with GSSAPI");
-//
-//          else
-//
-//             return;
-//      }
-//
-//   }//--------------------------------------------
+
   
  
    /**
@@ -193,12 +126,31 @@ public class LDAP implements Closeable
     * @throws NamingException
     */
    @SuppressWarnings({ "rawtypes", "unchecked" })
-protected void setupKerberosContext(Hashtable<String,Object> env) 
+   protected DirContext setupKerberosContext(Hashtable<String,Object> env) 
    throws NamingException
    {
 
-    
+      LoginContext lc = null;
+      try
+      {
 
+    	 lc = new LoginContext(getClass().getName(), new JXCallbackHandler());
+         lc.login();
+
+      }
+      catch (LoginException ex)
+      {
+
+         throw new NamingException("login problem: " + ex);
+      }
+
+      DirContext ctx = (DirContext) Subject.doAs(lc.getSubject(), new JndiAction(env));
+
+      if (ctx == null)
+         throw new NamingException("another problem with GSSAPI");
+      else
+         return ctx;
+    
    }//------------------------------------------------------------------
    /**
     * 
@@ -209,6 +161,11 @@ protected void setupKerberosContext(Hashtable<String,Object> env)
     */
    public LDAP(String url) throws NamingException
    {
+	   if (url == null)
+		throw new IllegalArgumentException("url is required");
+	   
+	   this.url = url;
+	   
       existanceConstraints = new SearchControls();
 
       existanceConstraints.setSearchScope(0);
@@ -260,10 +217,11 @@ protected void setupKerberosContext(Hashtable<String,Object> env)
 
          "1.1" });
 
-      this.ctx = authenticateByDnForContext(url, userDN, pwd);
+      this.url = url;
+      this.ctx = authenticateByDnForContext( userDN, pwd);
 
    }//--------------------------------------------
-   public DirContext authenticateByDnForContext(String url, String userDN, char[] pwd)
+   public DirContext authenticateByDnForContext(String userDN, char[] pwd)
 		throws NamingException
 	{
 		Hashtable<String,Object>  env = new Hashtable<String,Object> ();
@@ -314,9 +272,17 @@ protected void setupKerberosContext(Hashtable<String,Object> env)
             NamingEnumeration<?> results = searchSubTree(rootDN,
             		uidSearch,1,timeout,null);
             SearchResult searchResult = toSearchResult(results);
-            String dn = searchResult.getName()+", "+rootDN;
-                      
-            return new X500Principal(dn);
+            String userDN = searchResult.getName()+", "+rootDN;
+            
+            
+          //validate pass
+            
+            this.authenticateByDnForContext( userDN, password);
+            
+            //
+            return new X500Principal(userDN);
+            
+       
          }
 		catch (NamingException e)
 		{
@@ -324,7 +290,7 @@ protected void setupKerberosContext(Hashtable<String,Object> env)
 		}
 		catch (NoDataFoundException e)
 		{
-			throw new SecurityException("\""+uid+"\" not found",e);
+			throw new SecurityException(uidAttributeName+":\""+uid+"\" not found",e);
 		}
    }//--------------------------------------------
 
@@ -438,7 +404,7 @@ protected void setupKerberosContext(Hashtable<String,Object> env)
 
       env.put("java.naming.security.authentication", "none");
 
-      env.put("java.naming.provider.url", url);
+      env.put(JAVA_NAMING_PROVIDER_URL, url);
 
    }//--------------------------------------------
 
@@ -1497,20 +1463,16 @@ protected void setupKerberosContext(Hashtable<String,Object> env)
    }
 
    public DirContext getContext()
-
    {
-
       return ctx;
-
    }
 
-
-   //private static final String DEFAULT_CTX = "com.sun.jndi.ldap.LdapCtxFactory";
 
    private SearchControls existanceConstraints;
 
    private final DirContext ctx;
 
+   private final String url;
    private static Properties nameParserSyntax = null;
 
 

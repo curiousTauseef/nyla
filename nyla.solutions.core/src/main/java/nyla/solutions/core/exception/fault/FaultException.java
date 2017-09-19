@@ -323,7 +323,6 @@ public class FaultException extends RuntimeException implements Fault
 	}
 
 
-
 	private String source = null;
 
 	private Object argument;
