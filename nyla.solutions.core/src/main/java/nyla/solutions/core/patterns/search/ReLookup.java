@@ -43,10 +43,10 @@ operation combines regular expressions with a special syntax to support AND/NOT 
 <h3>AND Operation</h3>
 
 The RELookup supports chaining expressions together with &quot;AND&quot; logic. This is accomplished 
-by chaining expressions together with <code>“${AND}”</code>. The string “&quot;{AND}&quot; can be used to separate 
+by chaining expressions together with <code>${AND}</code>. The string &quot;{AND}&quot; can be used to separate 
 two regular expressions. If any of the regular expressions return false then the entire regular 
-expression is false. In the following example, the regular expression “.*USA.*${AND}.*Greece.*”, 
-only returns true if the text contains both “USA” and “Greece”. 
+expression is false. In the following example, the regular expression .*USA.*${AND}.*Greece.*, 
+only returns true if the text contains both USA and Greece. 
 
 <table>
 <thead>
@@ -64,9 +64,9 @@ only returns true if the text contains both “USA” and “Greece”.
 
 <h3>NOT Operation</h3>
 The RELookup supports negative logic (NOT) for expressions. This is accomplished by prefixing the 
-expressions with “${NOT}”. In the following example, the regular expression “.*USA.*” only returns true 
-if the text does not contain the word “USA”. Note that multiple “&amp;{NOT}”(s) can be chained together 
-with “${AND}”(s) (see table below).
+expressions with ${NOT}. In the following example, the regular expression ${NOT}.*USA.* only returns true 
+if the text does not contain the word USA. Note that multiple ${NOT} can be chained together 
+with ${AND}(s) (see table below).
 
 <table>
 <thead>
