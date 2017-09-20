@@ -277,8 +277,18 @@ public class LDAP implements Closeable
             
           //validate pass
             
-            this.authenticateByDnForContext( userDN, password);
+            DirContext ctx = null;
             
+            try
+            { 
+            		ctx = this.authenticateByDnForContext( userDN, password);
+            }
+            finally
+            {
+            		if(ctx != null)
+            			ctx.close();
+            }	
+               
             //
             return new X500Principal(userDN);
             
