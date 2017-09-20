@@ -1,9 +1,5 @@
-/**
- * 
- */
+
 package nyla.solutions.core.exception.fault;
-
-
 
 
 /**
@@ -33,7 +29,8 @@ public class ClassNotFoundFaultException extends FaultException
 
 	/**
 	 * 
-	 * @param functionName the function name
+	 * @param className the class not found
+	 * @param e the exception
 	 */
 	public ClassNotFoundFaultException(String className, Exception e)
 	{

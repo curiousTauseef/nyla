@@ -43,10 +43,7 @@ public interface JDOQueryBuilder
 
     * Result list of the configure objects for the query
 
-    * 
-
-    * @see com.bms.informatics.gcsm.common.dao.jdo.JDOQueryBuilder#getQueryResults()
-
+    * @return the query results   
     */
 
    public Object getQueryResults();

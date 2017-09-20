@@ -22,13 +22,8 @@ public interface QueryBuilder
 {
 
    /**
-
     * Result list of the configure objects for the query
-
-    * 
-
-    * @see com.bms.informatics.gcsm.common.dao.jdo.JDOQueryBuilder#getQueryResults()
-
+    * @return the query results
     */
 
    public Object getQueryResults();
@@ -36,13 +31,9 @@ public interface QueryBuilder
    
 
    /**
-
     * PUBLIC: Function, return an expression that adds to a date based on the
-
     * specified datePart. This is eqivalent to the Sybase DATEADD funtion.
-
     * 
-
     * Example:
 
     * 

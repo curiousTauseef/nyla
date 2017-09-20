@@ -39,11 +39,7 @@ public class PDFSignaturesDecorator extends PDFDecorator
    {
       return new PDFSignaturesDecorator(aForm, "FO_SIGNATURES",PDF_TYPE, aViewer);
    }//--------------------------------------------
-   /**
-    * 
-    * 
-    * @see com.bms.informatics.gcsm.common.data.Textable#getText()
-    */
+  
    public String getText()
    {
       try

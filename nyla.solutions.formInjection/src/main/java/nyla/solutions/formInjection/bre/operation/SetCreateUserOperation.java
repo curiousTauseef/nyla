@@ -15,7 +15,7 @@ import nyla.solutions.global.util.Debugger;
  * <pre>
  * 
  *  
- * The class com.bms.informatics.gcsm.form.bre.operation.SetCreateUserOperation 
+ * The class SetCreateUserOperation 
  * was created to answer a question with the create user�s title, first name, 
  * and last name. The most efficient way to use this operation is via the 
  * MacroOperation executed with a logical expression that is always true 

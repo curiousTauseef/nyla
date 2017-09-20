@@ -675,9 +675,7 @@ public abstract class AbstractSettings implements Settings
 	 * Retrieves a configuration property as a encrypted value.
 	 * <p/>
 	 * Loads the file if not already initialized.
-	 * 
-	 * @param Key Name of the property to be returned.
-	 * 
+	 * @param key Name of the property to be returned.
 	 * @return Value of the property as a string or null if no property found.
 	 */
 

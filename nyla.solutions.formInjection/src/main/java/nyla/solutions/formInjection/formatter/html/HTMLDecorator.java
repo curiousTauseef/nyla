@@ -829,10 +829,7 @@ public abstract class HTMLDecorator extends FormDecorator implements Copier
 
    }// --------------------------------------------
 
-   /**
-    * 
-    * @see com.bms.informatics.gcsm.common.data.Copier#copy(com.bms.informatics.gcsm.common.data.Copier)
-    */
+
    public void copy(Copier aFrom)
    {
       HTMLDecorator from = (HTMLDecorator) aFrom;

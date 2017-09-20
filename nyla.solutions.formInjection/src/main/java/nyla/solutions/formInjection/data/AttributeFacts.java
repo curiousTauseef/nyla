@@ -44,7 +44,6 @@ implements Serializable
    }//--------------------------------------------
    /**
     * 
-    * @see com.bms.informatics.gcsm.common.data.Property#copy(com.bms.informatics.gcsm.common.data.Copier)
     */
    public void copy(Copier aFrom)
    {

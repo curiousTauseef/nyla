@@ -41,32 +41,6 @@ com.bms.informatics.gcsm.XXX.XXXBean - EJB implementation
 Note that service locators are referred to as "Lookup Service" in the GCSM
 development standards document written by John (see section 2.2.3 Business Delegate).
 
-The following is sample code of a Locator for the UserBean
-
-
-package com.bms.informatics.gcsm.security.user;
-import com.bms.informatics.gcsm.security.user.ejb.session.*;
-import com.bms.informatics.gcsm.common.ejb.*;
-import com.bms.informatics.gcsm.common.exception.*;
-public class UserLocator extends Locator
-{
-   public UserLocator()
-   throws Exception
-   {
-      super("UserBeanRemote", UserBeanHomeRemote.class);
-   }//--------------------------------------------
-   public static UserBeanRemote getUserBeanRemote()
-   {
-      try
-      {
-         return ((UserBeanHome)new UserLocator().locateRemoteHome()).create();
-      }
-      catch (Exception e)
-      {
-         throw new SystemException(e);
-      }
-
-   }//--------------------------------------------
 }
  * </pre>
  * @author Gregory Green

@@ -69,8 +69,7 @@ public class FileTokenizer
 		return fileNameTokens.clone();
 	}//---------------------------------------------
 	/**
-	 * @return
-	 * @see java.io.File#getName()
+	 * @return the file name
 	 */
 	public String getName()
 	{

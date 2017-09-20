@@ -18,7 +18,7 @@ import nyla.solutions.global.util.Debugger;
  *  PopulateYesNoChoicesOperation provides a function to
  *  set question choices with a Yes or No value.
  * 
- * The class com.bms.informatics.gcsm.form.bre.operation.PopulateYesNoChoicesOperation  
+ * The class PopulateYesNoChoicesOperation  
  * dynamically creates choices Yes or No choices for any selectable response type 
  * (checkboxes, list box, radio boxes).
  * The most efficient way to use this operation is via the MacroOperation 

@@ -497,7 +497,6 @@ public class IO
 	 * 
 	 * @param filePath
 	 *            the file to read
-	 * @param properties
 	 * @throws IOException when an unknown IO error occurs
 	 */
 	public static Properties readProperties(String filePath) throws IOException
@@ -736,8 +735,7 @@ public class IO
 	/**
 	 * Read Class Path resource
 	 * 
-	 * @param aPath
-	 *            the classpath location i.e. /properties/config.properties
+	 * @param path the classpath location i.e. /properties/config.properties
 	 * @return the string content from the class location
 	 */
 	public static String readClassPath(String path) throws IOException
@@ -989,13 +987,13 @@ public class IO
 	 * Retrieve contents of specified file. Retry reads the specified number of
 	 * times with the specified delay when errors occur
 	 * 
-	 * @param aFilePath
-	 *            the file path
+	 * @param aFile
+	 *            the file 
 	 * @param aRetryCount
 	 *            number of times to retry read
 	 * @param aRetryDelayMS
 	 *            delay in between read failures
-	 * @return file string content
+	 * @return file byte content
 	 * @throws IOException when an unknown IO error occurs
 	 */
 	public static byte[] readBinaryFile(File aFile, int aRetryCount, long aRetryDelayMS) throws IOException
@@ -1483,9 +1481,9 @@ public class IO
 	/**
 	 * Write binary file data
 	 * 
-	 * @param aFileName
-	 * @param aData
-	 * @throws Exception
+	 * @param aFilePath the file
+	 * @param aData the data to write
+	 * @throws IOException when an IO error occurs
 	 */
 	public static void writeFile(String aFilePath, byte[] aData, boolean append) throws IOException
 	{

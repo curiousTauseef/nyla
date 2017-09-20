@@ -22,7 +22,7 @@ public class FormatFaultException extends FaultException
 
 	/**
 	 * Constructor
-	 * @param the exception
+	 * @param exception the exception
 	 */
 	public FormatFaultException(Exception exception)
 	{
@@ -44,7 +44,7 @@ public class FormatFaultException extends FaultException
 	/**
 	 * 
 	 * @param message the message
-	 * @param the exception cause
+	 * @param cause the exception cause
 	 */
 	public FormatFaultException(String message, Throwable cause)
 	{

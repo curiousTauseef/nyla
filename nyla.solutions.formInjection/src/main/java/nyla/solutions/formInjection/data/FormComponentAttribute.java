@@ -35,10 +35,6 @@ public abstract class FormComponentAttribute implements Mappable, Attribute,
 		return key + "=" + value;
 	}
 
-	/**
-	 * 
-	 * @see com.bms.informatics.gcsm.common.data.Property#setValue(java.io.Serializable)
-	 */
 	public void setValue(Object value)
 	{
 		setValue((Serializable) value);
@@ -143,10 +139,6 @@ public abstract class FormComponentAttribute implements Mappable, Attribute,
 		return super.clone();
 	}// ----------------------------------------
 
-	/**
-	 * 
-	 * @see com.bms.informatics.gcsm.common.data.Copier#copy(com.bms.informatics.gcsm.common.data.Copier)
-	 */
 	/*
 	 * public void copy(Copier aFrom) { if (!(aFrom instanceof
 	 * FormComponentAttribute)) throw new IllegalArgumentException(
@@ -181,10 +173,6 @@ public abstract class FormComponentAttribute implements Mappable, Attribute,
 	 * this.setDeleted(from.isDeleted() ? true : false);
 	 * }//--------------------------------------------
 	 */
-	/**
-	 * 
-	 * @see com.bms.informatics.gcsm.common.data.Property#toString()
-	 */
 	public String toString()
 	{
 		StringBuffer txt = new StringBuffer(super.toString())
@@ -218,19 +206,12 @@ public abstract class FormComponentAttribute implements Mappable, Attribute,
 		this.dirty = dirty;
 	}// --------------------------------------------
 
-	/**
-	 * @return this.primaryKey < 1
-	 * @see com.bms.informatics.gcsm.common.data.DirtyMarker#isNew()
-	 */
+	
 	public boolean isNew()
 	{
 		return this.primaryKey < 1;
 	}// ----------------------------------------
 
-	/**
-	 * 
-	 * @see com.bms.informatics.gcsm.common.data.DirtyMarker#setDeleted(boolean)
-	 */
 	public void setDeleted(boolean aDeleted)
 	{
 		if (aDeleted)
@@ -239,18 +220,12 @@ public abstract class FormComponentAttribute implements Mappable, Attribute,
 			this.setDeletedCode(Data.NO);
 	}// --------------------------------------------
 
-	/**
-	 * 
-	 * @see com.bms.informatics.gcsm.common.data.DirtyMarker#setNew(boolean)
-	 */
+
 	public void setNew(boolean aNew)
 	{
 	}// --------------------------------------------
 
-	/**
-	 * 
-	 * @see com.bms.informatics.gcsm.common.data.Auditable#delete()
-	 */
+	
 	public void delete()
 	{
 		setDeletedCode("Y");

@@ -74,7 +74,6 @@ implements Serializable, Textable
    /**
     * @return number label
     * 
-    * @see com.bms.informatics.gcsm.common.data.Textable#getText()
     */
    public String getText()
    {

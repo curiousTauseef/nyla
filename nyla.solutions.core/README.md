@@ -468,7 +468,29 @@ Cache Farm is a simple singleton implementation of cached key/value pairs.
 
 
 	Cache<Object,Object> cacheFarm = CacheFarm.getCache();
+	cacheFarm.put("key",myObject);
+	
+LDAP
 
+
+The object nyla.solutions.core.ds.LDAP provides a simple wrapper for LDAP authentication and searching.
+
+
+	String url = "ldap://host:389";
+	String dn = "CN=serviceAcct,OU=nyla,ou=com";
+	String uidAttributeName = "uid";
+	String username = "balou";
+	String rootDn = "OU=nyla,ou=com";
+	int timeoutSecs = 5;
+	  
+	  try(LDAP ldap = new LDAP(url, dn,password))
+	   {     
+	                
+	         Principal principal =  ldap.authenicate(username, password, rootDn, uidAttribNm, timeoutSecs);
+              assertNotNull(principal);
+
+         }
+	
 
 #Building
 

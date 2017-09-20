@@ -23,12 +23,6 @@ public class EditCheckPoint extends AbstractCheckPoint
    {
       super();
    }//--------------------------------------------
-
-   /**
-    * 
-    * @see nyla.solutions.formInjection.security.CheckPoint#canProceed(nyla.solutions.formInjection.data.Form, com.bms.informatics.gcsm.security.data.SecurityCredential)
-    * @return !aForm.isReadOnly(aUser)
-    */
    public boolean canProceed(Form aForm, SecurityCredential aUser)
    {
       return !aForm.isReadOnly();

@@ -18,7 +18,7 @@ public interface Settings
 	
 	/**
 	 * the location of where the setting were loaded
-	 * @return
+	 * @return the location
 	 */
 	String getLocation();
 	
@@ -61,9 +61,9 @@ public interface Settings
 	/**
 	 * Multiple properties separated by white spaces
 	 * 
-	 * @param aClass
-	 * @param key
-	 * @return
+	 * @param aClass the class name
+	 * @param key the key
+	 * @return string property values for class.name.key
 	 */
 	String[] getPropertyStrings(Class<?> aClass, String key);
 	
