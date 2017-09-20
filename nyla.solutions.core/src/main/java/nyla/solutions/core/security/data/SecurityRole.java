@@ -47,18 +47,11 @@ implements java.security.Principal
       // TODO Auto-generated method stub
       return super.clone();
    }//--------------------------------------------
-   /**
-    * 
-    * @see com.bms.informatics.gcsm.security.data.SecurityAccess#getPermissions()
-    */
    public synchronized Collection<Permission> getPermissions()
    {
       return super.getPermissions();
    }//--------------------------------------------
-   /**
-    * 
-    * @see com.bms.informatics.gcsm.security.data.SecurityAccess#setPermissions(java.util.Vector)
-    */
+ 
    public synchronized void setPermissions(Collection<Permission> permissions)
    {
       // TODO Auto-generated method stub
