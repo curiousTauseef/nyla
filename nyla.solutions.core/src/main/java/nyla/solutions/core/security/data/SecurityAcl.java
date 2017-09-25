@@ -1,5 +1,6 @@
 package nyla.solutions.core.security.data;
 
+import java.io.Serializable;
 import java.security.Principal;
 import java.security.acl.Acl;
 import java.security.acl.AclEntry;
@@ -25,9 +26,13 @@ import nyla.solutions.core.exception.NotImplementedException;
  * @author Gregory Green
  * @version 1.0
  */
-public class SecurityAcl implements Acl
+public class SecurityAcl implements Acl, Serializable
 {
-	 public SecurityAcl()
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 15616038981342591L;
+	public SecurityAcl()
 	 {
 	     this("SecurityAcl");
 	 }//--------------------------------------------

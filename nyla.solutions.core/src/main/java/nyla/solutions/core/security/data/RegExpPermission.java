@@ -1,10 +1,21 @@
 package nyla.solutions.core.security.data;
 
+import java.io.Serializable;
 import java.security.acl.Permission;
 
-public class RegExpPermission implements Permission
+/**
+ * Permission based on matching  based on regular expressions against the permission toString
+ * @author Gregory Green
+ *
+ */
+public class RegExpPermission implements Permission, Serializable
 {
 	
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2130916801947682213L;
 
 	public RegExpPermission(String regExp)
 	{

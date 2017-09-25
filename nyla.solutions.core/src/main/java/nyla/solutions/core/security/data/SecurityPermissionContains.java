@@ -1,11 +1,19 @@
 package nyla.solutions.core.security.data;
 
+import java.io.Serializable;
 import java.security.acl.Permission;
 
-public class SecurityPermissionContains implements Permission
+public class SecurityPermissionContains implements Permission, Serializable
 {
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7042157206407846236L;
+
+
+
 	public SecurityPermissionContains(String text)
 	{
 		if (text == null || text.length() == 0)
