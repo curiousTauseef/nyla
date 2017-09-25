@@ -5,8 +5,6 @@ import java.security.acl.Permission;
 import java.util.Collection;
 import java.util.Enumeration;
 
-import nyla.solutions.core.data.Data;
-
 
 /**
  * <pre>
@@ -19,16 +17,33 @@ import nyla.solutions.core.data.Data;
 public class SecurityRole extends SecurityAccess 
 implements java.security.Principal
 {
-   
+	
+	  /**
+		 * @param principal
+		 * @param name
+		 */
+		public SecurityRole(String name)
+		{
+			super();
+			this.name = name;
+		}
    /**
+	 * @param principal
+	 * @param name
+	 */
+	public SecurityRole(Principal principal, String name)
+	{
+		super(principal);
+		this.name = name;
+	}
+/**
     * 
     * @see java.security.acl.AclEntry#addPermission(java.security.acl.Permission)
     */
    public boolean addPermission(Permission permission)
    {
       
-      return super.addPermission(permission);
-      //----------------------------------------
+      return super.addPermission(permission); 
    }
    /**
     * 
@@ -116,20 +131,18 @@ implements java.security.Principal
        
        return true;
    }//--------------------------------------------
-   /**
+   /* (non-Javadoc)
  * @see java.lang.Object#hashCode()
  */
 @Override
 public int hashCode()
 {
 	final int prime = 31;
-	int result = 1;
-	result = prime * result + ((code == null) ? 0 : code.hashCode());
+	int result = super.hashCode();
 	result = prime * result + ((name == null) ? 0 : name.hashCode());
-	result = prime * result + priority;
 	return result;
 }
-/**
+/* (non-Javadoc)
  * @see java.lang.Object#equals(java.lang.Object)
  */
 @Override
@@ -137,26 +150,17 @@ public boolean equals(Object obj)
 {
 	if (this == obj)
 		return true;
-	if (obj == null)
+	if (!super.equals(obj))
 		return false;
 	if (getClass() != obj.getClass())
 		return false;
 	SecurityRole other = (SecurityRole) obj;
-	if (code == null)
-	{
-		if (other.code != null)
-			return false;
-	}
-	else if (!code.equals(other.code))
-		return false;
 	if (name == null)
 	{
 		if (other.name != null)
 			return false;
 	}
 	else if (!name.equals(other.name))
-		return false;
-	if (priority != other.priority)
 		return false;
 	return true;
 }
@@ -176,42 +180,7 @@ public boolean equals(Object obj)
       return name;
    }//--------------------------------------------
 
-    public int getPriority() {
-        return priority;
-    }//--------------------------------------------
-    /**
-     * 
-     * @param priority the role priority
-     */
-    public void setPriority(int priority) 
-    {
-        this.priority = priority;
-    }//--------------------------------------------
-    /**
-     * 
-     * @return code
-     */
-    public String getCode() 
-    {
-        return code;
-    }//--------------------------------------------
-    public void setCode(String code) 
-    {
-       if(code == null)
-          code = "";
-       
-        this.code = code.trim();
-    }//--------------------------------------------
-    /**
-    * @param name The name to set.
-    */
-   public void setName(String name)
-   {
-      if (name == null)
-         name = "";
-      
-      this.name = name.trim();
-   }//--------------------------------------------
+  
    /**
     * 
     * @param aRoles the role name or code
@@ -244,12 +213,9 @@ public boolean equals(Object obj)
       
       aRole = aRole.trim();
       
-      return aRole.equalsIgnoreCase(name)
-              || aRole.equalsIgnoreCase(code);
+      return aRole.equalsIgnoreCase(name);
    }//--------------------------------------------
    
-   private int priority = Data.NULL;
-   private String code = "";
-   private String name = "";
+   private final String name;
    static final long serialVersionUID = 1;
 }

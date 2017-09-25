@@ -82,12 +82,17 @@ public synchronized Enumeration<AclEntry> entries()
     * 
     * @see java.security.acl.Acl#addEntry(java.security.Principal, java.security.acl.AclEntry)
     */
-   public synchronized boolean addEntry(Principal caller,Principal principal, String permission)
+   public synchronized boolean addEntry(Principal caller,Principal principal, Permission permission)
    throws NotOwnerException
    {
 	  return addEntry(caller,new SecurityAccess(principal,permission));
    }//------------------------------------------------
-   public synchronized boolean addEntry(Principal caller,Principal principal, boolean negative, String permission)
+   public synchronized boolean addEntry(Principal caller,Principal principal, String permission)
+   throws NotOwnerException
+   {
+			  return addEntry(caller,new SecurityAccess(principal,permission));
+	}//------------------------------------------------
+	public synchronized boolean addEntry(Principal caller,Principal principal, boolean negative, String permission)
    throws NotOwnerException
    {
 	  return addEntry(caller,new SecurityAccess(principal,negative,permission));
@@ -244,6 +249,12 @@ public synchronized Enumeration<AclEntry> entries()
    {
       return this.entries == null || this.entries.isEmpty();
    }//--------------------------------------------
+   
+   public void removeAllEntries()
+   {
+	   this.entries.clear();
+   }
+   
    private Map<Principal,Set<AclEntry>> entries = new HashMap<Principal,Set<AclEntry>>(); 
    private String name = "";
 }

@@ -47,7 +47,7 @@ public class SecurityAccess implements Serializable, AclEntry
 		negative = false;
 	}// --------------------------------------------
 
-	public SecurityAccess(Principal principal, SecurityPermission permission)
+	public SecurityAccess(Principal principal, Permission permission)
 	{
 		if (principal == null)
 			throw new IllegalArgumentException("principal is required");
