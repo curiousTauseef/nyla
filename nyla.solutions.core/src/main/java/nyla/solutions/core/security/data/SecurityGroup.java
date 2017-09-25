@@ -1,8 +1,14 @@
 package nyla.solutions.core.security.data;
-import java.security.acl.*;
-import java.security.*;
-import java.io.*;
-import java.util.*;
+
+import java.io.Serializable;
+import java.security.Principal;
+import java.security.acl.Group;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Vector;
+
 /**
  * <pre>
  * SecurityGroup provides a set of functions to
@@ -13,16 +19,7 @@ import java.util.*;
 public class SecurityGroup
 implements Group, Serializable
 {
-   /**
-    * 
-    * Constructor for SecurityGroup initializes internal 
-    * data settings.
-    *
-    */
-   public SecurityGroup()
-   {
-      groupMembers = new HashSet<Principal>(50, 100);      
-   }//--------------------------------------------
+ 
    public SecurityGroup(String aGroupName)
    {
       groupMembers = new HashSet<Principal>(50, 100);
@@ -45,18 +42,41 @@ implements Group, Serializable
   {
        return Collections.enumeration(groupMembers);
   }//--------------------------------------------
-   public boolean equals(Group group1)
-   {
-       return name.equals(group1.toString());
-   }//--------------------------------------------
-   public String toString()
+
+  
+  /* (non-Javadoc)
+ * @see java.lang.Object#equals(java.lang.Object)
+ */
+@Override
+public boolean equals(Object obj)
+{
+	if (this == obj)
+		return true;
+	if (obj == null)
+		return false;
+	if (!Group.class.isAssignableFrom(obj.getClass()))
+		return false;
+	
+	Group other = (Group) obj;
+
+	return this.name.equals(other.getName());
+
+}
+public String toString()
    {
        return name;
    }//--------------------------------------------
-   public int hashCode()
-   {
-       return name.hashCode();
-   }//--------------------------------------------
+   /* (non-Javadoc)
+ * @see java.lang.Object#hashCode()
+ */
+@Override
+public int hashCode()
+{
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((name == null) ? 0 : name.hashCode());
+	return result;
+}
    /**
     * 
     * Recursively look into groups for members
@@ -108,17 +128,7 @@ implements Group, Serializable
 
        return false;
    }//--------------------------------------------
-   /**
-    * @param name The name to set.
-    */
-   public void setName(String name)
-   {
-      if (name == null)
-         name = "";
-
-      this.name = name;
-   }//--------------------------------------------
-   private HashSet<Principal> groupMembers = null;
-   private String name;   
+   private Set<Principal> groupMembers = null;
+   private final String name;   
    static final long serialVersionUID = 1;
 }

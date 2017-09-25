@@ -3,19 +3,20 @@ package nyla.solutions.core.security.data;
 import java.security.Principal;
 import java.security.acl.Acl;
 import java.security.acl.AclEntry;
+import java.security.acl.Group;
 import java.security.acl.LastOwnerException;
 import java.security.acl.NotOwnerException;
 import java.security.acl.Permission;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import nyla.solutions.core.operations.logging.Log;
-import nyla.solutions.core.util.Debugger;
+import nyla.solutions.core.exception.NotImplementedException;
 
 /**
  * <pre>
@@ -26,7 +27,11 @@ import nyla.solutions.core.util.Debugger;
  */
 public class SecurityAcl implements Acl
 {
-
+	 public SecurityAcl()
+	 {
+	     this("SecurityAcl");
+	 }//--------------------------------------------
+	 
    /**
     * Constructor for SecurityAcl initializes internal 
     * data settings.
@@ -48,18 +53,23 @@ public class SecurityAcl implements Acl
     * 
     * @see java.security.acl.Acl#entries()
     */
-   public synchronized Enumeration<AclEntry> entries()
+   @SuppressWarnings({ "unchecked", "rawtypes" })
+public synchronized Enumeration<AclEntry> entries()
    {
-      return Collections.enumeration(this.entries);
+	   Set<Object> set = this.entries
+	      .values()
+	      .stream()
+	      .map(s -> s.stream()
+	      					.collect(Collectors.toSet())).collect(Collectors.toSet());
+
+	    return (Enumeration)Collections.enumeration(set);  					
+      //return ;
+      					
+      
+      
+      //.enumeration(this.entries.values());
    }//--------------------------------------------
-   /**
-    * 
-    * @return the collection Security Access objects
-    */
-   public synchronized Collection<AclEntry> getSecurityAccessEntries()
-   {
-      return entries;
-   }//--------------------------------------------
+  
    /**
     * 
     * @see java.security.acl.Acl#setName(java.security.Principal, java.lang.String)
@@ -72,53 +82,113 @@ public class SecurityAcl implements Acl
     * 
     * @see java.security.acl.Acl#addEntry(java.security.Principal, java.security.acl.AclEntry)
     */
-   public synchronized boolean addEntry(Principal caller, AclEntry aclEntry)
+   public synchronized boolean addEntry(Principal caller,Principal principal, String permission)
    throws NotOwnerException
    {
-      return this.entries.add(aclEntry);
+	  return addEntry(caller,new SecurityAccess(principal,permission));
+   }//------------------------------------------------
+   public synchronized boolean addEntry(Principal caller,Principal principal, boolean negative, String permission)
+   throws NotOwnerException
+   {
+	  return addEntry(caller,new SecurityAccess(principal,negative,permission));
+   }
+   /**
+    * 
+    * @see java.security.acl.Acl#addEntry(java.security.Principal, java.security.acl.AclEntry)
+    */
+   public synchronized boolean addEntry( Principal caller,AclEntry aclEntry)
+   throws NotOwnerException
+   {
+	   if( aclEntry == null)
+		   return false;
+
+	   Principal principal = aclEntry.getPrincipal();
+	   
+	   Set<AclEntry> set = this.entries.get(principal);
+	   
+	   if(set == null)
+		   set = new HashSet<AclEntry>();
+	   
+	   set.remove(aclEntry);
+	   set.add(aclEntry);
+      this.entries.put(principal,set);
+      
+      return true;
+      
    }//--------------------------------------------
    /**
     * 
     * @see java.security.acl.Acl#removeEntry(java.security.Principal, java.security.acl.AclEntry)
     */
-   public synchronized boolean removeEntry(Principal caller, AclEntry aAclEntry)
+   public synchronized boolean removeEntry(Principal caller, AclEntry aclEntry)
     throws NotOwnerException
    {
-      return this.entries.remove(aAclEntry);
+	   if(aclEntry == null)
+		   return false;
+	   
+	   Principal principal = aclEntry.getPrincipal();
+	   
+	   if(principal == null)
+		   return false;
+	   
+	   Set<AclEntry> set = this.entries.get(aclEntry.getPrincipal());
+	   if(set == null || set.isEmpty())
+		   return false;
+	   boolean r = set.remove(aclEntry);
+	   
+	   this.entries.put(principal, set);
+	   
+      return  r;
    }//--------------------------------------------
 
    /**
     * 
     * @see java.security.acl.Acl#checkPermission(java.security.Principal, java.security.acl.Permission)
     */
-   public synchronized boolean checkPermission(Principal aPrincipal, Permission aPermission)
+   public synchronized boolean checkPermission(Principal principal, Permission permission)
    {
-      if(aPermission == null)
-         throw new IllegalArgumentException("aPermission required in SecurityAcl");
       
-      if(aPrincipal == null)
-         throw new IllegalArgumentException("aPrincipal required in SecurityAcl");
+      if(principal == null)
+         return false;
       
-      logger.debug("Checking for permission \""+aPermission+"\" principal=\""+aPrincipal.getName());
+      if(permission == null)
+          return false; 
+       
+      Set<AclEntry> set = this.entries.get(principal);
       
-      
-      //loop thru ACLS
-      AclEntry aclEntry = null;
-      for (Iterator<AclEntry> i = this.entries.iterator(); i.hasNext();)
+      if(set != null && !set.isEmpty())
       {
-         aclEntry = (AclEntry) i.next();
-//         logger.debug("Check acl for principal aclEntry \""+aclEntry.getPrincipal().getName()
- //                    +"="+aPrincipal.getName());
-         if(aPrincipal.getName().equals(aclEntry.getPrincipal().getName()))
-         {
-//             logger.debug("====== Dumping Permissions ======");
-             //Debugger.dump(aPermission);
-            if(aclEntry.checkPermission(aPermission))
-               return true;
-         }
+          AclEntry  aclEntry = null;
+          for (Iterator<AclEntry> i = set.iterator(); i.hasNext();)
+          {
+             aclEntry = i.next();
+
+            	 if(aclEntry.checkPermission(permission))
+                   return true;
+          }
+      }
+      
+      
+      //did not find for user, not check for groups
+      if(SecurityUser.class.isAssignableFrom(principal.getClass()))
+      {
+    	  	return checkPermission(((SecurityUser)principal).getGroups(),permission);
       }
       return false;
    }//--------------------------------------------
+   public boolean checkPermission(Set<Group> groups, Permission permission)
+   {
+	   if(groups == null || groups.isEmpty())
+		   return false;
+	   
+	   for (Group group : groups)
+		{
+			if(checkPermission(group, permission))
+				return true;
+		}
+	   
+	   return false;
+   }
    /**
     * 
     * @see java.security.acl.Acl#checkPermission(java.security.Principal, java.security.acl.Permission)
@@ -126,7 +196,7 @@ public class SecurityAcl implements Acl
    public synchronized boolean checkPermission(Principal aPrincipal, String aPermission)
    {
       if(aPermission == null)
-         throw new IllegalArgumentException("aPermission required in SecurityAcl");
+    	  	return false;
       
       SecurityPermission securityPermission = new SecurityPermission(aPermission);
       
@@ -136,23 +206,9 @@ public class SecurityAcl implements Acl
     * 
     * @see java.security.acl.Acl#getPermissions(java.security.Principal)
     */
-   public synchronized Enumeration<Permission> getPermissions(Principal aPrincipal)
+   public synchronized Enumeration<Permission> getPermissions(Principal principal)
    {
-      if (aPrincipal == null)
-         throw new IllegalArgumentException(
-         "aPrincipal required in SecurityAcl");
-      
-      HashSet<Permission> permissions = new HashSet<Permission>(10);
-      AclEntry aclEntry = null;
-      for (Iterator<AclEntry> i = this.entries.iterator(); i.hasNext();)
-      {
-         aclEntry = (AclEntry) i.next();
-         
-         if(aPrincipal.equals(aclEntry.getPrincipal()))
-            permissions.addAll(Collections.list(aclEntry.permissions()));
-      }
-      
-      return Collections.enumeration(permissions);
+	   throw new NotImplementedException();
    }//--------------------------------------------
    /**
     * 
@@ -188,7 +244,6 @@ public class SecurityAcl implements Acl
    {
       return this.entries == null || this.entries.isEmpty();
    }//--------------------------------------------
-   private transient Log logger = Debugger.getLog(getClass());
-   private List<AclEntry> entries = new ArrayList<AclEntry>(); 
+   private Map<Principal,Set<AclEntry>> entries = new HashMap<Principal,Set<AclEntry>>(); 
    private String name = "";
 }

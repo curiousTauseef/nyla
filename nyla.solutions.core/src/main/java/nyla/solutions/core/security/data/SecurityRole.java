@@ -112,7 +112,9 @@ implements java.security.Principal
    public boolean setPrincipal(Principal principal)
    {
       // TODO Auto-generated method stub
-      return super.setPrincipal(principal);
+       super.setPrincipal(principal);
+       
+       return true;
    }//--------------------------------------------
    /**
  * @see java.lang.Object#hashCode()

@@ -3,9 +3,6 @@ package nyla.solutions.core.security.data;
 import java.io.Serializable;
 import java.security.acl.Permission;
 
-import nyla.solutions.core.data.Data;
-import nyla.solutions.core.data.PrimaryKey;
-
 
 
 /**
@@ -17,11 +14,15 @@ import nyla.solutions.core.data.PrimaryKey;
  * @version 1.0
  */
 public class SecurityPermission 
-implements Permission, PrimaryKey, Serializable
+implements Permission, Serializable
 {
-   public SecurityPermission()
-   {}//--------------------------------------------
-   /**
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5321184181505071682L;
+
+
+	/**
     * 
     * Constructor for SecurityPermission initializes internal 
     * data settings.
@@ -29,8 +30,9 @@ implements Permission, PrimaryKey, Serializable
     */
    public SecurityPermission(String aPermission)
    {
-      this.setPermission(aPermission);
+      this.permission = aPermission;
    }//--------------------------------------------
+   
    /**
     * @return Returns the permission.
     */
@@ -38,17 +40,7 @@ implements Permission, PrimaryKey, Serializable
    {
       return permission;
    }//--------------------------------------------
-   /**
-    * @param permission The permission to set.
-    */
-   public void setPermission(String permission)
-   {
-      if (permission == null|| permission.length() == 0)
-         throw new IllegalArgumentException(
-         "permission required in SecurityPermission");
-
-      this.permission = permission.trim();
-   }//--------------------------------------------
+ 
    /**
  * @see java.lang.Object#hashCode()
  */
@@ -59,7 +51,6 @@ public int hashCode()
 	int result = 1;
 	result = prime * result
 			+ ((permission == null) ? 0 : permission.hashCode());
-	result = prime * result + primaryKey;
 	return result;
 }
 /**
@@ -82,24 +73,9 @@ public boolean equals(Object obj)
 	}
 	else if (!permission.equals(other.permission))
 		return false;
-	if (primaryKey != other.primaryKey)
-		return false;
 	return true;
 }
-   /**
-    * @return Returns the primaryKey.
-    */
-   public synchronized int getPrimaryKey()
-   {
-      return primaryKey;
-   }//--------------------------------------------
-   /**
-    * @param primaryKey The primaryKey to set.
-    */
-   public synchronized void setPrimaryKey(int primaryKey)
-   {
-      this.primaryKey = primaryKey;
-   }//--------------------------------------------
+  
    /**
     * 
     * @see java.security.acl.Permission#toString()
@@ -110,7 +86,5 @@ public boolean equals(Object obj)
    }//--------------------------------------------
    
    
-   private String permission = "";
-   private int primaryKey = Data.NULL;
-   static final long serialVersionUID = 1;
+   private final String permission;
 }

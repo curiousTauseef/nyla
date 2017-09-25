@@ -26,6 +26,8 @@ import javax.security.auth.login.LoginException;
 import javax.security.auth.x500.X500Principal;
 
 import nyla.solutions.core.exception.NoDataFoundException;
+import nyla.solutions.core.security.data.SecurityGroup;
+import nyla.solutions.core.security.data.SecurityUser;
 import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Debugger;
 
@@ -88,6 +90,20 @@ public class LDAP implements Closeable
 	   
 	   
 	   public final static String UID_ATTRIB_NM_PROP = "LDAP_UID_ATTRIB_NM";
+	   
+	   /**
+	    * GROUP_ATTRIB_NM_PROP = "LDAP_GROUP_ATTRIB_NM"
+	    * 
+	    * Example export LDAP_MEMBEROF_ATTRIB_NM=CN
+	    */
+	   public final static String GROUP_ATTRIB_NM_PROP = "LDAP_GROUP_ATTRIB_NM";
+	   
+	   /**
+	    * MEMBEROF_ATTRIB_NM_PROP = "LDAP_MEMBEROF_ATTRIB_NM"
+	    * 
+	    * Example export LDAP_MEMBEROF_ATTRIB_NM=memberOf
+	    */
+	   public final static String MEMBEROF_ATTRIB_NM_PROP = "LDAP_MEMBEROF_ATTRIB_NM";
 	   	   
    /**
     * 
@@ -248,8 +264,10 @@ public class LDAP implements Closeable
       Debugger.println(LDAP.class,"timeout="+timeout);
       
       String uidAttributeName = Config.getProperty(UID_ATTRIB_NM_PROP);
+      String groupAttributeName = Config.getProperty(GROUP_ATTRIB_NM_PROP,"");
+      String memberOfAttributeName = Config.getProperty(MEMBEROF_ATTRIB_NM_PROP,"");
       
-      return authenicate(uid,  password,rootDN,uidAttributeName,timeout);
+      return authenicate(uid,  password,rootDN,uidAttributeName,memberOfAttributeName,groupAttributeName,timeout);
    }// --------------------------------------------------------------
    /**
     * 
@@ -261,7 +279,7 @@ public class LDAP implements Closeable
     * @return principal
     * @throws SecurityException
     */
-    public Principal authenicate(String uid, char[] password,String rootDN,String uidAttributeName,int timeout)
+    public Principal authenicate(String uid, char[] password,String rootDN,String uidAttributeName,String memberOfAttributeName,String groupNameAttributeName, int timeout)
     throws  SecurityException
     {
          
@@ -282,6 +300,35 @@ public class LDAP implements Closeable
             try
             { 
             		ctx = this.authenticateByDnForContext( userDN, password);
+            		SecurityUser securityUser = new SecurityUser(uid);
+            		
+            		if(memberOfAttributeName != null && memberOfAttributeName.length() > 0)
+            		{
+                		Attributes attributes = ctx.getAttributes(memberOfAttributeName); 
+                		if(attributes != null)
+                		{
+                      		Attribute attribute = attributes.get(groupNameAttributeName);
+
+                      		if(attribute != null )
+                      		{
+                          		NamingEnumeration<?> groupsEnumeration = attribute.getAll();
+                          		if(groupsEnumeration  != null)
+                          		{
+                              		while(groupsEnumeration.hasMore())
+                              		{
+                              			securityUser.addGroup(new SecurityGroup(String.valueOf(groupsEnumeration.next())));
+                              		}
+                          			
+                          		}
+                      			
+                      		}
+                      		
+                      	                			
+                		}
+                		
+            		}
+            		
+            		
             }
             finally
             {
@@ -300,7 +347,7 @@ public class LDAP implements Closeable
 		}
 		catch (NoDataFoundException e)
 		{
-			throw new SecurityException(uidAttributeName+":\""+uid+"\" not found",e);
+			throw new SecurityException(uidAttributeName+":\""+uid+"\" not found");
 		}
    }//--------------------------------------------
 

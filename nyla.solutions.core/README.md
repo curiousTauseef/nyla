@@ -470,7 +470,7 @@ Cache Farm is a simple singleton implementation of cached key/value pairs.
 	Cache<Object,Object> cacheFarm = CacheFarm.getCache();
 	cacheFarm.put("key",myObject);
 	
-LDAP
+# LDAP
 
 
 The object nyla.solutions.core.ds.LDAP provides a simple wrapper for LDAP authentication and searching.
@@ -490,11 +490,34 @@ The object nyla.solutions.core.ds.LDAP provides a simple wrapper for LDAP authen
               assertNotNull(principal);
 
          }
+
+# Security 
+
+**Access Control List**
 	
+	 Principal caller = null;
+	    Principal principal = null;
+	    
+		SecurityAcl securityAcl = new SecurityAcl();
+		
+		principal = new SecurityGroup("group");
+		caller = new SecurityClient("admin");
+		securityAcl.addEntry(caller,principal, false,"CLUSTER");
+		assertTrue(securityAcl.checkPermission(principal, "CLUSTER"));
+		
+		securityAcl.addEntry(caller,principal, true,"CLUSTER");
+		assertFalse(securityAcl.checkPermission(principal, "CLUSTER"));	
+
+# Graphics
+
+Capture screen shots
+
+	Graphics.printScreen(0, 0, 1000, 800, "png", new File("runtime/tmp/output/screenshot.png"));
+
 
 #Building
 
-Set your ossrUsername and ossrhPassword to ~/.gradle
+Set your ossrUsername and ossrhPassword in the ~/.gradle
 	
 	ossrhUsername=userName
 	ossrhPassword=<password>
