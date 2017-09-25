@@ -22,8 +22,12 @@ implements Group, Serializable
  
    public SecurityGroup(String aGroupName)
    {
-      groupMembers = new HashSet<Principal>(50, 100);
-      //groupMembers = new HashSet(50, 100);
+      groupMembers = new HashSet<Principal>();
+     
+      if(aGroupName != null)
+    	  aGroupName = aGroupName.trim().toUpperCase();
+      
+      
        name = aGroupName;
    }//--------------------------------------------
    public boolean addMember(Principal principal)

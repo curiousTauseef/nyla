@@ -1,12 +1,18 @@
 package nyla.solutions.core.security.data;
 
+import java.io.Serializable;
 import java.security.Principal;
 import java.security.acl.Group;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SecurityUser implements Principal
+public class SecurityUser implements Principal, Serializable
 {	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5904346274735822066L;
+
 	public SecurityUser()
 	{
 	}
@@ -17,8 +23,9 @@ public class SecurityUser implements Principal
 	public SecurityUser(String name,Set<Group> groups)
 	{
 		super();
-		this.groups = groups;
-		this.name = name;
+		this.setName(name);
+		
+		this.setGroups(groups);
 	}
 
 	/**
@@ -34,6 +41,9 @@ public class SecurityUser implements Principal
 	 */
 	public void setName(String name)
 	{
+		if(name != null)
+			name = name.trim().toUpperCase();
+		
 		this.name = name;
 	}
 

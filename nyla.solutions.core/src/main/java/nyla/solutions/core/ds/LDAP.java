@@ -23,11 +23,10 @@ import javax.naming.directory.SearchResult;
 import javax.security.auth.Subject;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
-import javax.security.auth.x500.X500Principal;
 
+import nyla.solutions.core.ds.security.LdapSecurityGroup;
+import nyla.solutions.core.ds.security.LdapSecurityUser;
 import nyla.solutions.core.exception.NoDataFoundException;
-import nyla.solutions.core.security.data.SecurityGroup;
-import nyla.solutions.core.security.data.SecurityUser;
 import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Debugger;
 
@@ -300,14 +299,17 @@ public class LDAP implements Closeable
             try
             { 
             		ctx = this.authenticateByDnForContext( userDN, password);
-            		SecurityUser securityUser = new SecurityUser(uid);
+            		
+            		
+            		LdapSecurityUser securityUser = new LdapSecurityUser(uid,userDN);
+            		Object groupEnumValue = null;
             		
             		if(memberOfAttributeName != null && memberOfAttributeName.length() > 0)
             		{
-                		Attributes attributes = ctx.getAttributes(memberOfAttributeName); 
+                		Attributes attributes = ctx.getAttributes(userDN); 
                 		if(attributes != null)
                 		{
-                      		Attribute attribute = attributes.get(groupNameAttributeName);
+                      		Attribute attribute = attributes.get(memberOfAttributeName);
 
                       		if(attribute != null )
                       		{
@@ -316,7 +318,12 @@ public class LDAP implements Closeable
                           		{
                               		while(groupsEnumeration.hasMore())
                               		{
-                              			securityUser.addGroup(new SecurityGroup(String.valueOf(groupsEnumeration.next())));
+                              			groupEnumValue = groupsEnumeration.next();
+                              			if(groupEnumValue == null)
+                              				continue;
+                              			
+                              	
+                              			securityUser.addGroup(new LdapSecurityGroup(groupEnumValue.toString(),groupNameAttributeName));
                               		}
                           			
                           		}
@@ -328,6 +335,7 @@ public class LDAP implements Closeable
                 		
             		}
             		
+            		return securityUser;
             		
             }
             finally
@@ -337,7 +345,7 @@ public class LDAP implements Closeable
             }	
                
             //
-            return new X500Principal(userDN);
+            //return new X500Principal(userDN);
             
        
          }

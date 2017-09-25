@@ -27,6 +27,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -514,6 +515,32 @@ public static String[] toStrings(Object object)
       return texts;
       
    }// --------------------------------------------
+   public static Collection<String> toUpperCase(Collection<String> collection)
+   {
+	   Function<String,String> function = text -> text != null  ? text.toUpperCase() : text;
+	   
+	   return transform(collection,function);
+	   
+   }
+   
+   
+   public static Collection<String> transform(Collection<String> collection, Function<String,String> function)
+   {
+	   if(collection == null)
+		   return null;
+	   
+	   if(collection.isEmpty())
+		   return collection;
+	   
+	   ArrayList<String> list = new ArrayList<String>(collection.size());
+	   
+	   for (String string : collection)
+		{
+		   list.add(string != null? string.toUpperCase() : string);
+		}
+	   
+	   return list;
+   }// --------------------------------------------------------------
    public static String toText(Collection<Object> collection, String separator)
    {
       if(collection == null || collection.isEmpty())
@@ -798,7 +825,7 @@ public static String[] toStrings(Object object)
            compareContent = aContent;
        }
 
-       ArrayList<String> results = new ArrayList<String>();
+       ArrayList<String> results = new ArrayList<String>(10);
        int indexOfHref = indexOf(compareContent, aStart);
        
        int startText = indexOfHref + aStart.length();
