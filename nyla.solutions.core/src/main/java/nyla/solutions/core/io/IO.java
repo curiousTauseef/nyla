@@ -28,7 +28,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,6 +88,31 @@ public class IO
 	 */
 	public static final String NEWLINE = System.getProperty("line.separator");
 
+	public static synchronized Date touch(File file)
+	throws FileNotFoundException, IOException
+	{
+		return touch(file,Calendar.getInstance().getTime());
+	}//// --------------------------------------------------------------
+	public static synchronized Date touch(File file, Date date)
+	throws FileNotFoundException, IOException
+	{
+		if(date == null)
+			date = Calendar.getInstance().getTime();
+		
+		if(!file.exists())
+		{
+			//create file
+			try(FileOutputStream fs = new FileOutputStream(file))
+			{
+			}
+
+		}
+
+		file.setLastModified(date.getTime());
+		
+		return date;
+	}
+	
 	/**
 	 * 
 	 * @param filePaths

@@ -30,6 +30,28 @@ public class SecurityAclTest
 	}
 	
 	@Test
+	public void test_multple_permissions_per_acl()
+	throws Exception
+	{
+		 Principal caller = null;
+	    Principal principal = null;
+	    
+		SecurityAcl securityAcl = new SecurityAcl();
+		
+		principal = new SecurityClient("greenID");
+		caller = new SecurityClient("admin");
+
+		securityAcl.addEntry(caller,principal, "CLUSTER");
+		securityAcl.addEntry(caller,principal, "MANAGE");
+		
+		assertTrue(securityAcl.checkPermission(principal, "MANAGE"));
+		assertTrue(securityAcl.checkPermission(principal, "CLUSTER"));
+		
+		assertFalse(securityAcl.checkPermission(principal, "ALL"));
+		
+	}
+	
+	@Test
 	public void testCheckPermissionGroupString()
 	throws Exception
 	{

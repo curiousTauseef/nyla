@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 
 import nyla.solutions.core.util.Debugger;
 
@@ -78,6 +77,9 @@ public class SecurityAccess implements Serializable, AclEntry
 	 */
 	public boolean addPermission(Permission permission)
 	{
+		if(permissions.contains(permission))
+			return false;
+		
 		return this.permissions.add(permission);
 	}// --------------------------------------------
 
@@ -122,10 +124,20 @@ public class SecurityAccess implements Serializable, AclEntry
 		if (permission == null)
 			return false;
 
+		boolean contains = false;
+		for (Permission accessPermission : permissions)
+		{
+			if(accessPermission.equals(permission))
+			{
+				contains = true;
+				break;
+			}
+		}
+		
 		if(negative)
-			return !this.permissions.contains(permission);
+			return !contains;
 		else
-			return this.permissions.contains(permission);
+			return contains;
 	}// --------------------------------------------
 
 	/**
@@ -220,7 +232,7 @@ public class SecurityAccess implements Serializable, AclEntry
 		if (aPermissions == null || aPermissions.isEmpty())
 			return;
 
-		Set<Permission> set =new HashSet<Permission>(aPermissions);
+		List<Permission> set =new ArrayList<Permission>(aPermissions);
 
 		this.permissions = set;
 
@@ -283,11 +295,12 @@ public class SecurityAccess implements Serializable, AclEntry
 
 		return true;
 	}
-
-	// private transient Log logger = Debugger.getLog(getClass());
+	
+	
+	
 
 	private Principal principal;
-	private Set<Permission> permissions = new HashSet<Permission>();
+	private List<Permission> permissions = new ArrayList<Permission>(10);
 	private boolean negative = false;
 	static final long serialVersionUID = 1;
 }

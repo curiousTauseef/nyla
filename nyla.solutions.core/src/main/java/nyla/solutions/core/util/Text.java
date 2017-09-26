@@ -868,7 +868,8 @@ public static String[] toStrings(Object object)
     * @param aIgnoreCase
     * @return collection of parse strings 
     */
-   public static Collection<Object> parse(Reader aReader, String aStart, String aEnd, boolean aIgnoreCase)
+   @SuppressWarnings("resource")
+public static Collection<Object> parse(Reader aReader, String aStart, String aEnd, boolean aIgnoreCase)
    throws IOException
    {
       BufferedReader reader = null;

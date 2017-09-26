@@ -70,7 +70,7 @@ public class SecurityUser implements Principal, Serializable
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!SecurityUser.class.isAssignableFrom( obj.getClass()))
 			return false;
 		SecurityUser other = (SecurityUser) obj;
 		if (name == null)

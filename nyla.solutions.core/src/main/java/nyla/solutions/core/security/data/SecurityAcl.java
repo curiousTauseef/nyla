@@ -114,18 +114,52 @@ public synchronized Enumeration<AclEntry> entries()
 
 	   Principal principal = aclEntry.getPrincipal();
 	   
-	   Set<AclEntry> set = this.entries.get(principal);
+	   Set<AclEntry> currentAcl = this.entries.get(principal.getName());
 	   
-	   if(set == null)
-		   set = new HashSet<AclEntry>();
+	   //find older aclEntry
 	   
-	   set.remove(aclEntry);
-	   set.add(aclEntry);
-      this.entries.put(principal,set);
+	   if(currentAcl != null)
+	   {
+		   	for (AclEntry currentEntry : currentAcl)
+			{
+		   		if(principal.equals(currentEntry.getPrincipal()))
+		   		{
+		   			//updated old
+		   			mergePermissions(aclEntry, currentEntry);
+		   		}
+		   		
+			}
+	   }
+	   else
+	   {
+		   Set<AclEntry> set = new HashSet<AclEntry>();
+		   set.add(aclEntry);
+		   this.entries.put(principal.getName(),set);
+		     
+	   }
+		 
+     
       
       return true;
       
    }//--------------------------------------------
+   
+   public void mergePermissions(AclEntry from, AclEntry to)
+	{
+		if(from == null || to == null)
+			return;
+		
+	
+		Enumeration<Permission> otherPermissions = from.permissions();
+		
+		if(otherPermissions == null)
+			return;
+		
+		while (otherPermissions.hasMoreElements())
+		{
+			to.addPermission(otherPermissions.nextElement());
+		}
+	}// --------------------------------------------------------------
    /**
     * 
     * @see java.security.acl.Acl#removeEntry(java.security.Principal, java.security.acl.AclEntry)
@@ -146,7 +180,7 @@ public synchronized Enumeration<AclEntry> entries()
 		   return false;
 	   boolean r = set.remove(aclEntry);
 	   
-	   this.entries.put(principal, set);
+	   this.entries.put(principal.getName(), set);
 	   
       return  r;
    }//--------------------------------------------
@@ -164,7 +198,7 @@ public synchronized Enumeration<AclEntry> entries()
       if(permission == null)
           return false; 
        
-      Set<AclEntry> set = this.entries.get(principal);
+      Set<AclEntry> set = this.entries.get(principal.getName());
       
       if(set != null && !set.isEmpty())
       {
@@ -260,6 +294,18 @@ public synchronized Enumeration<AclEntry> entries()
 	   this.entries.clear();
    }
    
-   private Map<Principal,Set<AclEntry>> entries = new HashMap<Principal,Set<AclEntry>>(); 
+   /* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		StringBuilder builder = new StringBuilder();
+		builder.append("SecurityAcl [entries=").append(entries).append(", name=")
+				.append(name).append("]");
+		return builder.toString();
+	}
+	
+	private Map<String,Set<AclEntry>> entries = new HashMap<String,Set<AclEntry>>(); 
    private String name = "";
 }
