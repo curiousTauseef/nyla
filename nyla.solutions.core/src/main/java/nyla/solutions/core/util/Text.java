@@ -536,7 +536,7 @@ public static String[] toStrings(Object object)
 	   
 	   for (String string : collection)
 		{
-		   list.add(string != null? string.toUpperCase() : string);
+		   list.add(string != null? string.toUpperCase() : "null");
 		}
 	   
 	   return list;

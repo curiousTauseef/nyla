@@ -107,8 +107,12 @@ public class IO
 			}
 
 		}
+		else if(file.setLastModified(date.getTime()))
+		{
+			throw new IOException("Could not update time");
+		}
 
-		file.setLastModified(date.getTime());
+	
 		
 		return date;
 	}

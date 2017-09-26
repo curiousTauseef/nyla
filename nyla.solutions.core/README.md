@@ -536,3 +536,10 @@ Set your ossrUsername and ossrhPassword in the ~/.gradle
 	4. gpg --keyserver hkp://pgp.mit.edu --send-keys gpg --keyserver hkp://pgp.mit.edu --send-keys FB70F1D1
 	Also see http://blog.sonatype.com/2010/01/how-to-generate-pgp-signatures-with-maven/#.Vu84SRIrKjQ
 	
+Add the following to gradle.properties
+	
+	signing.keyId=KEYID
+	#ossrh
+	signing.password=PASSWORD
+	signing.secretKeyRingFile=<HOME>/secring.gpg
+	
