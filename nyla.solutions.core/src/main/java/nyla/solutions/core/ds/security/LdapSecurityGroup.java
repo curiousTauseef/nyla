@@ -26,20 +26,21 @@ public class LdapSecurityGroup extends SecurityGroup
 		dn = this.getName();
 		
 		if(attributeName == null)
-			this.attributeNames = Collections.singleton(dn);
+			this.primaryLdapGroupName = dn;
 		else
 		{
-			attributeName = attributeName.toUpperCase();
-			
+	
 			String startsWith = new StringBuilder(attributeName).append("=").toString();
 			
 
-			Collection<String> results = Text.toUpperCase(nyla.solutions.core.util.Text.parse(dn, startsWith, ","));
+			String results = nyla.solutions.core.util.Text.parseText(dn, startsWith, ",");
 			
-			if(results == null || results.isEmpty())
-				results = Collections.singleton(dn);
+			if(results == null || results.length() == 0)
+				results = dn;
+			else
+				results = results.toUpperCase();
 			
-			this.attributeNames = results;
+			this.primaryLdapGroupName = results;
 
 		}
 	
@@ -56,8 +57,8 @@ public class LdapSecurityGroup extends SecurityGroup
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+  (attributeNames.isEmpty() ? 0 :
-						attributeNames.iterator().next().hashCode());
+				+  (primaryLdapGroupName == null ? 0 :
+					primaryLdapGroupName.hashCode());
 		return result;
 	}
 	/* (non-Javadoc)
@@ -79,10 +80,10 @@ public class LdapSecurityGroup extends SecurityGroup
 		if(otherGroupName == null)
 			return false;
 		
-		if (attributeNames == null)
+		if (primaryLdapGroupName == null)
 			return false;
 		
-		return attributeNames.contains(otherGroupName);
+		return primaryLdapGroupName.equals(otherGroupName);
 	}
 
 	
@@ -94,13 +95,13 @@ public class LdapSecurityGroup extends SecurityGroup
 	public String toString()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("LdapSecurityGroup [attributeNames=")
-				.append(attributeNames).append(", getName()=")
+		builder.append("LdapSecurityGroup [primaryLdapGroupName=")
+				.append(this.primaryLdapGroupName).append(", getName()=")
 				.append(getName()).append("]");
 		return builder.toString();
 	}
 
 
 
-	private final Collection<String> attributeNames;
+	private final String primaryLdapGroupName;
 }
