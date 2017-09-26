@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import nyla.solutions.core.exception.NotImplementedException;
+import nyla.solutions.core.exception.SecurityException;
 
 /**
  * <pre>
@@ -114,7 +115,7 @@ public synchronized Enumeration<AclEntry> entries()
 
 	   Principal principal = aclEntry.getPrincipal();
 	   
-	   Set<AclEntry> currentAcl = this.entries.get(principal.getName());
+	   Set<AclEntry> currentAcl = this.entries.get(principal);
 	   
 	   //find older aclEntry
 	   
@@ -122,7 +123,7 @@ public synchronized Enumeration<AclEntry> entries()
 	   {
 		   	for (AclEntry currentEntry : currentAcl)
 			{
-		   		if(principal.equals(currentEntry.getPrincipal()))
+		 		if(principal.equals(currentEntry.getPrincipal()))
 		   		{
 		   			//updated old
 		   			mergePermissions(aclEntry, currentEntry);
@@ -134,7 +135,7 @@ public synchronized Enumeration<AclEntry> entries()
 	   {
 		   Set<AclEntry> set = new HashSet<AclEntry>();
 		   set.add(aclEntry);
-		   this.entries.put(principal.getName(),set);
+		   this.entries.put(principal,set);
 		     
 	   }
 		 
@@ -154,10 +155,17 @@ public synchronized Enumeration<AclEntry> entries()
 		
 		if(otherPermissions == null)
 			return;
+
+		boolean changeNegative = from.isNegative() != to.isNegative();
 		
+		if(changeNegative)
+			throw new SecurityException("Cannot change or mixed different negative property for ACL from:"+from+" to ACL:"+to
+					+"  permission must be either all negative or all positive for a principal");
+			
 		while (otherPermissions.hasMoreElements())
 		{
-			to.addPermission(otherPermissions.nextElement());
+		
+				to.addPermission(otherPermissions.nextElement());
 		}
 	}// --------------------------------------------------------------
    /**
@@ -180,7 +188,7 @@ public synchronized Enumeration<AclEntry> entries()
 		   return false;
 	   boolean r = set.remove(aclEntry);
 	   
-	   this.entries.put(principal.getName(), set);
+	   this.entries.put(principal, set);
 	   
       return  r;
    }//--------------------------------------------
@@ -198,7 +206,7 @@ public synchronized Enumeration<AclEntry> entries()
       if(permission == null)
           return false; 
        
-      Set<AclEntry> set = this.entries.get(principal.getName());
+      Set<AclEntry> set = this.entries.get(principal);
       
       if(set != null && !set.isEmpty())
       {
@@ -306,6 +314,6 @@ public synchronized Enumeration<AclEntry> entries()
 		return builder.toString();
 	}
 	
-	private Map<String,Set<AclEntry>> entries = new HashMap<String,Set<AclEntry>>(); 
+	private Map<Principal,Set<AclEntry>> entries = new HashMap<Principal,Set<AclEntry>>(); 
    private String name = "";
 }

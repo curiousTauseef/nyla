@@ -2,6 +2,7 @@ package nyla.solutions.core.ds.security;
 
 import java.security.acl.Group;
 import java.util.Collection;
+import java.util.Collections;
 
 import nyla.solutions.core.security.data.SecurityGroup;
 import nyla.solutions.core.util.Text;
@@ -22,16 +23,24 @@ public class LdapSecurityGroup extends SecurityGroup
 	{
 		super(dn);
 		
+		dn = this.getName();
+		
 		if(attributeName == null)
-			this.attributeNames = null;
+			this.attributeNames = Collections.singleton(dn);
 		else
 		{
+			attributeName = attributeName.toUpperCase();
+			
 			String startsWith = new StringBuilder(attributeName).append("=").toString();
 			
 
-			this.attributeNames = Text.toUpperCase(nyla.solutions.core.util.Text.parse(dn, startsWith, ","));
+			Collection<String> results = Text.toUpperCase(nyla.solutions.core.util.Text.parse(dn, startsWith, ","));
 			
+			if(results == null || results.isEmpty())
+				results = Collections.singleton(dn);
 			
+			this.attributeNames = results;
+
 		}
 	
 			
@@ -45,9 +54,10 @@ public class LdapSecurityGroup extends SecurityGroup
 	public int hashCode()
 	{
 		final int prime = 31;
-		int result = super.hashCode();
+		int result = 1;
 		result = prime * result
-				+ ((attributeNames == null) ? 0 : attributeNames.hashCode());
+				+  (attributeNames.isEmpty() ? 0 :
+						attributeNames.iterator().next().hashCode());
 		return result;
 	}
 	/* (non-Javadoc)

@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.security.Principal;
 import java.util.Collections;
 
+import nyla.solutions.core.exception.SecurityException;
+
 import org.junit.Test;
 
 public class SecurityAclTest
@@ -86,8 +88,8 @@ public class SecurityAclTest
 		securityAcl.addEntry(caller,group, "CLUSTER");
 		
 		assertTrue(securityAcl.checkPermission(principal, "CLUSTER"));
-		securityAcl.addEntry(caller,group, true,"CLUSTER");
-		assertFalse(securityAcl.checkPermission(group, "CLUSTER"));
+		securityAcl.addEntry(caller,group, false,"CLUSTER");
+		assertTrue(securityAcl.checkPermission(group, "CLUSTER"));
 		
 		securityAcl.addEntry(caller,principal, "CLUSTER");
 		assertTrue(securityAcl.checkPermission(principal, "CLUSTER"));
@@ -109,7 +111,17 @@ public class SecurityAclTest
 		securityAcl.addEntry(caller,principal, false,"CLUSTER");
 		assertTrue(securityAcl.checkPermission(principal, "CLUSTER"));
 		
-		securityAcl.addEntry(caller,principal, true,"CLUSTER");
-		assertFalse(securityAcl.checkPermission(principal, "CLUSTER"));	
+		try{
+			securityAcl.addEntry(caller,principal, true,"CLUSTER");			
+		}
+		catch(SecurityException e)
+		{}
+		
+		//assertFalse(securityAcl.checkPermission(principal, "CLUSTER"));
+		
+		principal =  new SecurityGroup("group2");
+		
+		securityAcl.addEntry(caller,principal, true,"DATA-EDIT");
+		assertFalse(securityAcl.checkPermission(principal, "DATA-EDIT"));	
 	}
 }

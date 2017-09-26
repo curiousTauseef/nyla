@@ -12,7 +12,7 @@ public class AllPermission implements Permission
 	@Override
 	public String toString()
 	{
-		return "AllPermission";
+		return "ALL";
 	}//------------------------------------------------
 	
 	@Override
