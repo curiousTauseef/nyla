@@ -54,8 +54,8 @@ public class LdapSecurityUser extends SecurityUser
 	{
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
-			return false;
+		if (super.equals(obj))
+			return true;
 		if (getClass() != obj.getClass())
 			return false;
 		LdapSecurityUser other = (LdapSecurityUser) obj;
