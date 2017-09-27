@@ -18,7 +18,7 @@ public interface BaggedObject<T> extends Serializable
 	
 	/**
 	 * This method will unwrap a given object that was wrapped with the bag method
-	 * @return
+	 * @return the unbagged object
 	 */
 	T unbag();
 }

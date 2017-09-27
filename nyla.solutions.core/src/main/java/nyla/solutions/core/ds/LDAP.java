@@ -918,9 +918,9 @@ public class LDAP implements Closeable
     * ldap.searchOneLevel("dc=green_gregory,dc=com","(cn=*)",20,20);
     * @param searchbase dc=green_gregory,dc=com
     * @param filter (cn=*)
-    * @param limit 
-    * @param timeout
-    * @return
+    * @param limit the count limit
+    * @param timeout the timeout
+    * @return the matches
     * @throws NamingException
     */
    public NamingEnumeration<?> searchSubTree(String searchbase, String filter,
@@ -937,12 +937,12 @@ public class LDAP implements Closeable
    /**
     *     *    NamingEnumeration enum = 
     * ldap.searchOneLevel("dc=green_gregory,dc=com","(cn=*)",20,20);
-    * @param searchbase
-    * @param filter
-    * @param limit
-    * @param timeout
+    * @param searchbase the DN base
+    * @param filter the search filter
+    * @param limit the limit
+    * @param timeout the timeout
     * @param returnAttributes
-    * @return
+    * @return matches
     * @throws NamingException
     */
    public NamingEnumeration<?> searchSubTree(String searchbase, String filter,
@@ -1074,7 +1074,7 @@ public class LDAP implements Closeable
    /**
     * 
     * @param aAttributes
-    * @return
+    * @return the string of the attributes
     */
    public static String toString(Attributes aAttributes)
    {

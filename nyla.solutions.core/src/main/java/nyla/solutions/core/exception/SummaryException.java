@@ -38,11 +38,11 @@ public class SummaryException extends SystemException
    /**
     * Constructor for ExceptionSummary initializes internal 
     * data settings.
-    * @param arg0
+    * @param throwable the nest exception
     */
-   public SummaryException(Throwable aMessage)
+   public SummaryException(Throwable throwable)
    {
-      super(aMessage);
+      super(throwable);
    }//--------------------------------------------
 
    /**
@@ -89,7 +89,7 @@ public class SummaryException extends SystemException
    }//--------------------------------------------
    
    /**
-	 * @return
+	 * @return true if empty
 	 * @see java.util.Collection#isEmpty()
 	 */
 	public boolean isEmpty()
@@ -98,7 +98,7 @@ public class SummaryException extends SystemException
 	}//---------------------------------------------
 	
 	/**
-	 * @return
+	 * @return size
 	 * @see java.util.Collection#size()
 	 */
 	public int size()

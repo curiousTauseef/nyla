@@ -20,10 +20,6 @@ public class SecurityException extends FaultException
 		this.setCategory(DEFAULT_ERROR_CATEGORY);
 	}
 
-	/**
-	 * 
-	 * @param functionName the function name
-	 */
 	public SecurityException(Exception exception)
 	{
 		super(exception);
@@ -35,7 +31,7 @@ public class SecurityException extends FaultException
 
 	/**
 	 * 
-	 * @param functionName the function name
+	 * @param message the message error
 	 */
 	public SecurityException(String message)
 	{
@@ -44,10 +40,6 @@ public class SecurityException extends FaultException
 		this.setCode(DEFAULT_ERROR_CODE);
 	}// -----------------------------------------------
 
-	/**
-	 * 
-	 * @param functionName the function name
-	 */
 	public SecurityException(String message, Exception e)
 	{
 		super(message, e);

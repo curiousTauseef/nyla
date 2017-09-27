@@ -36,7 +36,7 @@ public class DataRowCreator implements JavaBeanVisitor, RowObjectCreator<DataRow
 	}// --------------------------------------------------------
 	/**
 	 * 
-	 * @return
+	 * @return the data row
 	 */
 	@SuppressWarnings("unchecked")
 	public DataRow getDataRow()

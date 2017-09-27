@@ -17,10 +17,7 @@ public class SessionExpiredException extends SecurityException
 	 */
 	private static final long serialVersionUID = -62434440533146476L;
 
-	/**
-	 * 
-	 * @param functionName the function name
-	 */
+
 	public SessionExpiredException()
 	{
 		this.setCategory("DEFAULT");
@@ -28,10 +25,6 @@ public class SessionExpiredException extends SecurityException
 		
 	}// -----------------------------------------------
 
-	/**
-	 * 
-	 * @param functionName the function name
-	 */
 	public SessionExpiredException(Exception exception)
 	{
 		super(exception);
@@ -43,7 +36,7 @@ public class SessionExpiredException extends SecurityException
 
 	/**
 	 * 
-	 * @param functionName the function name
+	 * @param message the message error
 	 */
 	public SessionExpiredException(String message)
 	{

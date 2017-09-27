@@ -22,10 +22,7 @@ public class ArrayListBag implements Serializable, BaggedObject<ArrayList<Object
 	}// ------------------------a--------------------------------
 
 
-	/**
-	 * Saves the arraylist to be unbagged later
-	 * @see io.pivotal.gemfire_addon.conversions.BaggedObject#bag(java.lang.Object)
-	 */
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void bag(ArrayList<Object> unBaggedObject)
@@ -82,9 +79,8 @@ public class ArrayListBag implements Serializable, BaggedObject<ArrayList<Object
 		
 		System.arraycopy(arrayObj, 0, this.arrayObj, 0, this.arrayObj.length);
 	}// --------------------------------------------------------
-	/**
+	/*
 	 * Creates arraylist from the wrapped object array 
-	 * @see io.pivotal.gemfire_addon.conversions.BaggedObject#unbag()
 	 */
 	@SuppressWarnings({ "rawtypes"})
 	@Override

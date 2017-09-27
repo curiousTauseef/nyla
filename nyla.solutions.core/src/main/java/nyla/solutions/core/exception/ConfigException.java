@@ -21,7 +21,7 @@ public class ConfigException extends FatalException
 	public static final String DEFAULT_ERROR_CODE = "CONF000";
 
    /**
-    * @param arg0
+    * @param aMessage the message
     */
    public ConfigException(String aMessage)
    {

@@ -11,10 +11,7 @@ public class AuthenticationFailedFaultException extends SecurityException
 {
 	public static final String DEFAULT_ERROR_CODE = "SC0003";
 	
-	/**
-	 * 
-	 * @param functionName the function name
-	 */
+
 	public AuthenticationFailedFaultException(Exception exception, String username)
 	{
 		super(exception);
@@ -24,10 +21,7 @@ public class AuthenticationFailedFaultException extends SecurityException
 		
 	}// -----------------------------------------------
 
-	/**
-	 * 
-	 * @param functionName the function name
-	 */
+
 	public AuthenticationFailedFaultException(String message, String username)
 	{
 		super(message+" user:"+username);
@@ -35,10 +29,7 @@ public class AuthenticationFailedFaultException extends SecurityException
 		this.username = username;
 	}// -----------------------------------------------
 
-	/**
-	 * 
-	 * @param functionName the function name
-	 */
+
 	public AuthenticationFailedFaultException(String message, Exception e, String username)
 	{
 		super(message+" user:"+username, e);
@@ -48,7 +39,7 @@ public class AuthenticationFailedFaultException extends SecurityException
 	
 	/**
 	 * 
-	 * @param functionName the function name
+	 * @param username the user name
 	 */
 	public AuthenticationFailedFaultException(String username)
 	{

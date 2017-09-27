@@ -64,7 +64,7 @@ public class SystemException extends FaultException
 
 	/**
 	 * @param aID integer value in the SystemException.properties file
-	 * @param aMesa
+	 * @param aMessage the error
 	 */
 	public SystemException(int aID, String aMessage)
 	{

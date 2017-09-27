@@ -105,9 +105,10 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 	   /**
 	 * @see nyla.solutions.core.data.DataRow#retrieveObject(int)
 	 */
-	   public Object retrieveObject(int aPosition)
+	   @SuppressWarnings("unchecked")
+	   public <T> T retrieveObject(int aPosition)
 	   {
-	      return positionEntries.get(aPosition -1);
+	      return (T)positionEntries.get(aPosition -1);
 	   }// --------------------------------------------------------
 	   /**
 	 * @see nyla.solutions.core.data.DataRow#assignObject(int, java.lang.Object)
@@ -139,9 +140,8 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 	   // --------------------------------------------------------
 	   
 		/**
-		 * @param key
-		 * @param value
-		 * @return
+		 * @param key the key to store
+		 * @param value the value for the key
 		 * @see java.util.HashMap#put(java.lang.Object, java.lang.Object)
 		 */
 		public void assignObject(String key, Object value)
@@ -275,8 +275,8 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 		
 		
 		/**
-		 * @param key
-		 * @return
+		 * @param key the key
+		 * @return the string for
 		 * @see java.util.HashMap#get(java.lang.Object)
 		 */
 		public String retrieveString(String key)
@@ -287,8 +287,8 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 			return (String)nameEntries.get(key);
 		}// --------------------------------------------------------
 		/**
-		 * @param key
-		 * @return
+		 * @param key the key
+		 * @return date the for the key
 		 * @see java.util.HashMap#get(java.lang.Object)
 		 */
 		public Date retrieveDate(String key)
@@ -299,8 +299,8 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 			return (Date)nameEntries.get(key);
 		}// --------------------------------------------------------
 		/**
-		 * @param key
-		 * @return
+		 * @param key the key to value
+		 * @return double the for the value
 		 * @see java.util.HashMap#get(java.lang.Object)
 		 */
 		public Double retrieveDouble(String key)
@@ -311,8 +311,8 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 			return (Double)nameEntries.get(key);
 		}// --------------------------------------------------------		
 		/**
-		 * @param key
-		 * @return
+		 * @param key the key
+		 * @return the integer for the key
 		 * @see java.util.HashMap#get(java.lang.Object)
 		 */
 		public Integer retrieveInteger(String key)
@@ -323,8 +323,8 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 			return (Integer)nameEntries.get(key);
 		}// --------------------------------------------------------			
 		/**
-		 * @param key
-		 * @return
+		 * @param key the key
+		 * @return the object
 		 * @see java.util.HashMap#get(java.lang.Object)
 		 */
 		public Object retrieveObject(String key)

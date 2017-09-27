@@ -35,33 +35,10 @@ implements Comparable<Object>, PrimaryKey, Cloneable, Copier, Serializable, Iden
       primaryKey = -1;
 
    }//--------------------------------------------
+  
    /**
     * 
-    * this.setPrimaryKey(Integer.valueOf(aKey.toString()));
-    * @see solutions.global.data.Key#setKey(java.lang.Object)
-    */
- /*  public void setKey(Object aKey)
-   {
-      if (aKey == null)
-         throw new IllegalArgumentException("aKey required in Criteria.setKey");
-      
-      
-      if (!Text.isInteger(aKey.toString()))
-         throw new IllegalArgumentException("Integer aKey required in Criteria.setKey key="+aKey);
-      else if(aKey instanceof Integer)
-      {
-         this.setPrimaryKey((Integer)aKey);
-      }
-      else
-      {
-         this.setPrimaryKey(Integer.valueOf(aKey.toString()));
-      }
-      
-   }*/
-   //--------------------------------------------
-   /**
-    * 
-    * Constructor for Criteria initalizes internal 
+    * Constructor for Criteria initializes internal 
     * data settings.
     * @param aPK the primary key
     * @throws IllegalArgumentException
@@ -81,7 +58,7 @@ implements Comparable<Object>, PrimaryKey, Cloneable, Copier, Serializable, Iden
 
     * 
 
-    * Constructor for Criteria initalizes primaryKey to aPK
+    * Constructor for Criteria initializes primaryKey to aPK
 
     * @param aPK the primary key
 
@@ -353,29 +330,16 @@ implements Comparable<Object>, PrimaryKey, Cloneable, Copier, Serializable, Iden
    {
       return this.getId();
    }//--------------------------------------------
-   /**
-    * @return this
-    * @see nyla.solutions.core.data.Mappable#getValue()
-    */
-   //public Object getValue()
-   //{
-   //   return this;
-   //}//--------------------------------------------   
-   /*public void setId(String id)
-   {
-      this.setKey(id);      
-   }*/
-   //--------------------------------------------
    
    private int primaryKey = Data.NULL;
    /**
- * @param id the id to set
- */
-public void setId(String id)
-{
-	this.id = id;
-}
-private String id;
-   static final long serialVersionUID = Criteria.class.getName().hashCode();
-
-}
+	 * @param id the id to set
+	 */
+	public void setId(String id)
+	{
+		this.id = id;
+	}
+	private String id;
+	   static final long serialVersionUID = Criteria.class.getName().hashCode();
+	
+	}

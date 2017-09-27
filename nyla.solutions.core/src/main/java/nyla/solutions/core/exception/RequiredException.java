@@ -20,7 +20,7 @@ public class RequiredException extends DataException
    /**
     * Constructor for RequiredException initializes internal 
     * data settings.
-    * @param aMesssage
+    * @param aField the field that is required
     */
    public RequiredException(String aField)
    {

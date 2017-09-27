@@ -37,12 +37,11 @@ public abstract class AbstractDirtyMarker
 
     }//--------------------------------------------
     /**
-     * f(aId1 != aId2)
+     * if(aId1 != aId2)
           aDirtyMarker.setDirty(true);
      * @param aDirtyMarker
-     * @param aId1
-     * @param aId2
-     * @return
+     * @param aId1 the ID 2
+     * @param aId2 the ID 2
      */
     public static void setDirty(DirtyMarker aDirtyMarker, int aId1, int aId2)
     {

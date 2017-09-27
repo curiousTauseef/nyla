@@ -64,7 +64,7 @@ public class DataException extends FaultException
 
 	/**
 	 * @param aID integer value in the SystemException.properties file
-	 * @param aMesa
+	 * @param aMessage the message
 	 */
 	public DataException(int aID, String aMessage)
 	{

@@ -46,7 +46,6 @@ public class DateBag implements Serializable, BaggedObject<Date>
 
 	/**
 	 * Wraps a given date in a format that can be easily unbagged
-	 * @see io.pivotal.gemfire_addon.conversions.BaggedObject#bag(java.lang.Object)
 	 */
 	@Override
 	public void bag(Date unBaggedObject)
@@ -57,10 +56,6 @@ public class DateBag implements Serializable, BaggedObject<Date>
 			this.time = unBaggedObject.getTime();
 		
 	}// --------------------------------------------------------
-	/**
-	 * 
-	 * @see io.pivotal.gemfire_addon.conversions.BaggedObject#unbag()
-	 */
 	@Override
 	public Date unbag()
 	{

@@ -214,7 +214,7 @@ public class Day  implements Comparable<Day>, Serializable
    * Compare this day to the specified day. If object is
    * not of type Day a ClassCastException is thrown.
    *
-   * @param day  Day object to compare to.
+   * @param object  Day object to compare to.
    * @return @see Comparable#compareTo(Object)
    * @throws IllegalArgumentException  If day is null.
    */
@@ -482,7 +482,6 @@ public class Day  implements Comparable<Day>, Serializable
 
   /**
    * Subtract a number of months from this day.
-   * @see #addMonths(int).
    *
    * @param nMonths  Number of months to subtract.
    * @return  Day as requested.
@@ -521,7 +520,6 @@ public class Day  implements Comparable<Day>, Serializable
 
   /**
    * Subtract a number of years from this day.
-   * @see #addYears(int).
    *
    * @param nYears  Number of years to subtract.
    * @return  Day as requested.

@@ -64,8 +64,8 @@ public class Mirror
 	}// -----------------------------------------------
 	/**
 	 * Return the class 
-	 * @param aClass
-	 * @return
+	 * @param className the class name
+	 * @return Class schema
 	 * @throws ClassNotFoundException 
 	 */
 	public static ClassSchema toClassSchema(String className) 

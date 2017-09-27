@@ -21,7 +21,7 @@ public class ReadOnlyException extends DataException
    /**
     * Constructor for RequiredException initializes internal 
     * data settings.
-    * @param aMesssage
+    * @param aField the field
     */
    public ReadOnlyException(String aField)
    {

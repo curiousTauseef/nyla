@@ -50,8 +50,7 @@ public class FileMonitor extends Observable
     * Used to wait for transferred file's content length to stop changes for
     * 5 seconds
     * 
-    * @param aFile
-    * @throws InterruptedException
+    * @param aFile the file
     */
    public static void waitFor(File aFile)
    
