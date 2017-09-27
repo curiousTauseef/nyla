@@ -8,14 +8,14 @@ public class AllPermissionTest
 {
 
 	@Test
-	public void test()
+	public void testIsAuthorized()
 	{
-		assertEquals(new AllPermission(), new SecurityPermission("TEST"));
-		assertEquals(new AllPermission(), new SecurityPermissionContains("TEST"));
-		assertEquals(new AllPermission(),"ALL");
-		assertEquals(new AllPermission(),new AllPermission());
+		assertTrue(new AllPermission().isAuthorized(new SecurityPermission("TEST")));
+		assertTrue(new AllPermission().isAuthorized( new SecurityPermissionContains("TEST")));
+		assertTrue(new AllPermission().isAuthorized(new SecurityPermission("ALL")));
+		assertTrue(new AllPermission().isAuthorized(new AllPermission()));
 		
-		assertNotEquals(new SecurityPermissionContains("All"), new AllPermission());
+		assertFalse(new SecurityPermissionContains("All").isAuthorized(new AllPermission()));
 
 	}
 

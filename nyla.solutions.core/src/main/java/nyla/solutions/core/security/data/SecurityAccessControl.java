@@ -2,51 +2,45 @@ package nyla.solutions.core.security.data;
 
 import java.io.Serializable;
 import java.security.Principal;
-import java.security.acl.AclEntry;
-import java.security.acl.Permission;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
-import nyla.solutions.core.util.Debugger;
-
 /**
  * <pre>
- * SecurityAccess access control list entry
+ * SecurityAccessControl access control list entry
  * </pre>
  * 
  * @author Gregory Green
  * @version 1.0
  */
-public class SecurityAccess implements Serializable, AclEntry
+public class SecurityAccessControl implements Serializable, AccessControl
 {
 	/**
 	 * 
-	 * Constructor for SecurityAccess initializes internal data settings.
+	 * Constructor for SecurityAccessControl initializes internal data settings.
 	 * 
 	 * @param principal
 	 *            the principal that has the security access
 	 */
-	public SecurityAccess(Principal principal)
+	public SecurityAccessControl(Principal principal)
 	{
 		this.principal = principal;
 	}// --------------------------------------------
 
 	/**
 	 * 
-	 * Constructor for SecurityAccess initializes internal data settings.
+	 * Constructor for SecurityAccessControl initializes internal data settings.
 	 *
 	 */
-	public SecurityAccess()
+	public SecurityAccessControl()
 	{
 		principal = null;
 		negative = false;
 	}// --------------------------------------------
 
-	public SecurityAccess(Principal principal, Permission permission)
+	public SecurityAccessControl(Principal principal, Permission permission)
 	{
 		if (principal == null)
 			throw new IllegalArgumentException("principal is required");
@@ -58,23 +52,21 @@ public class SecurityAccess implements Serializable, AclEntry
 		this.permissions.add(permission);
 	}// ------------------------------------------------
 
-	public SecurityAccess(Principal principal, boolean negative, String permission)
+	public SecurityAccessControl(Principal principal, boolean negative, String permission)
 	{
 		this(principal,permission);
 		this.negative = negative;
 	}
 
-	public SecurityAccess(Principal principal, String permission)
+	public SecurityAccessControl(Principal principal, String permission)
 	{
 		this(principal, new SecurityPermission(permission));
 	}// ------------------------------------------------
 
-	/**
-	 * 
-	 * @param permission
-	 *            the permission
-	 * @see java.security.acl.AclEntry#addPermission(java.security.acl.Permission)
+	/* (non-Javadoc)
+	 * @see nyla.solutions.core.security.data.AccessControl#addPermission(nyla.solutions.core.security.data.Permission)
 	 */
+	@Override
 	public boolean addPermission(Permission permission)
 	{
 		if(permissions.contains(permission))
@@ -83,17 +75,15 @@ public class SecurityAccess implements Serializable, AclEntry
 		return this.permissions.add(permission);
 	}// --------------------------------------------
 
-	/**
-	 * Add collection of permissions the acl entry
-	 * 
-	 * @param aPermssions
-	 *            the collection of permissions
+	/* (non-Javadoc)
+	 * @see nyla.solutions.core.security.data.AccessControl#addPermissions(java.util.Collection)
 	 */
+	@Override
 	public void addPermissions(Collection<Permission> aPermssions)
 	{
 		if (aPermssions == null)
 			throw new IllegalArgumentException(
-			"aPermssions required in SecurityAccess");
+			"aPermssions required in SecurityAccessControl");
 
 		// SecurityPermission element = null;
 		for (Iterator<Permission> i = aPermssions.iterator(); i.hasNext();)
@@ -102,67 +92,50 @@ public class SecurityAccess implements Serializable, AclEntry
 		}
 	}// --------------------------------------------
 
-	/**
-	 * 
-	 * @param permission
-	 *            the permission to remove
-	 * @see java.security.acl.AclEntry#removePermission(java.security.acl.Permission)
+	/* (non-Javadoc)
+	 * @see nyla.solutions.core.security.data.AccessControl#removePermission(nyla.solutions.core.security.data.Permission)
 	 */
+	@Override
 	public boolean removePermission(Permission permission)
 	{
 		return permissions.remove(permission);
 	}// --------------------------------------------
 
-	/**
-	 * 
-	 * @param permission
-	 *            the permission to check
-	 * @see java.security.acl.AclEntry#checkPermission(java.security.acl.Permission)
+	/* (non-Javadoc)
+	 * @see nyla.solutions.core.security.data.AccessControl#checkPermission(nyla.solutions.core.security.data.Permission)
 	 */
+	@Override
 	public boolean checkPermission(Permission permission)
 	{
 		if (permission == null)
 			return false;
 
-		boolean contains = false;
+		boolean authorized = false;
 		for (Permission accessPermission : permissions)
 		{
-			if(accessPermission.equals(permission))
+			if(accessPermission.isAuthorized(permission))
 			{
-				contains = true;
+				authorized = true;
 				break;
 			}
 		}
 		
 		if(negative)
-			return !contains;
+			return !authorized;
 		else
-			return contains;
+			return authorized;
 	}// --------------------------------------------
 
-	/**
-	 * Return enumeration of the permissions
-	 * 
-	 * @see java.security.acl.AclEntry#permissions()
+	/* (non-Javadoc)
+	 * @see nyla.solutions.core.security.data.AccessControl#getPermissions()
 	 */
-	public Enumeration<Permission> permissions()
+	@Override
+	public synchronized List<Permission> getPermissions()
 	{
 		if (permissions == null || permissions.isEmpty())
 			return null;
 
-		return Collections.enumeration(this.permissions);
-	}// --------------------------------------------
-
-	/**
-	 * 
-	 * @return the list of permission
-	 */
-	public synchronized Collection<Permission> getPermissions()
-	{
-		if (this.permissions == null || permissions.isEmpty())
-			return null;
-
-		return new ArrayList<Permission>(permissions);
+		return new ArrayList<Permission>(this.permissions);
 	}// --------------------------------------------
 	/*
 	 * (non-Javadoc)
@@ -174,58 +147,41 @@ public class SecurityAccess implements Serializable, AclEntry
 	public String toString()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("SecurityAccess [principal=").append(principal).append(", permissions=").append(permissions)
+		builder.append("SecurityAccessControl [principal=").append(principal).append(", permissions=").append(permissions)
 		.append(", negative=").append(negative).append("]");
 		return builder.toString();
 	}
-
-	/**
-	 * @return a copy of this object
-	 * @see java.lang.Object#clone()
+	/* (non-Javadoc)
+	 * @see nyla.solutions.core.security.data.AccessControl#setNegativePermissions()
 	 */
-	public synchronized Object clone()
-	{
-		try
-		{
-			return super.clone();
-		}
-		catch (Exception e)
-		{
-			throw new RuntimeException(Debugger.stackTrace(e));
-		}
-	}// --------------------------------------------
-
-	/**
-	 * 
-	 * @see java.security.acl.AclEntry#setNegativePermissions()
-	 */
+	@Override
 	public void setNegativePermissions()
 	{
 		this.negative = true;
 	}// --------------------------------------------
 
-	/**
-	 * 
-	 * @see java.security.acl.AclEntry#isNegative()
+	/* (non-Javadoc)
+	 * @see nyla.solutions.core.security.data.AccessControl#isNegative()
 	 */
+	@Override
 	public boolean isNegative()
 	{
 		return negative;
 	}// --------------------------------------------
 
-	/**
-	 * 
-	 * @see java.security.acl.AclEntry#getPrincipal()
+	/* (non-Javadoc)
+	 * @see nyla.solutions.core.security.data.AccessControl#getPrincipal()
 	 */
+	@Override
 	public Principal getPrincipal()
 	{
 		return principal;
 	}// --------------------------------------------b
 
-	/**
-	 * @param permissions
-	 *            The permissions to set.
+	/* (non-Javadoc)
+	 * @see nyla.solutions.core.security.data.AccessControl#setPermissions(java.util.Collection)
 	 */
+	@Override
 	public synchronized void setPermissions(Collection<Permission> aPermissions)
 	{
 		this.permissions.clear();
@@ -258,6 +214,9 @@ public class SecurityAccess implements Serializable, AclEntry
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	/* (non-Javadoc)
+	 * @see nyla.solutions.core.security.data.AccessControl#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -267,7 +226,7 @@ public class SecurityAccess implements Serializable, AclEntry
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		SecurityAccess other = (SecurityAccess) obj;
+		SecurityAccessControl other = (SecurityAccessControl) obj;
 		if (permissions == null)
 		{
 			if (other.permissions != null)

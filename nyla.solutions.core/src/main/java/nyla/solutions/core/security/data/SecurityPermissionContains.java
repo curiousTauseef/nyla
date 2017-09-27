@@ -1,7 +1,6 @@
 package nyla.solutions.core.security.data;
 
 import java.io.Serializable;
-import java.security.acl.Permission;
 
 public class SecurityPermissionContains implements Permission, Serializable
 {
@@ -46,25 +45,38 @@ public class SecurityPermissionContains implements Permission, Serializable
 			return true;
 		if (obj == null)
 			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SecurityPermissionContains other = (SecurityPermissionContains) obj;
+		if (text == null)
+		{
+			if (other.text != null)
+				return false;
+		}
+		else if (!text.equals(other.text))
+			return false;
+		return true;
+	}
+
+	@Override
+	public boolean isAuthorized(Permission permission)
+	{
+		if(permission == null)
+			return false;
 		
-		String string = obj.toString();
+		String string = permission.getText();
 		if(string == null || string.length() == 0)
 			return false;
 		
 		return string.contains(this.text);
 	}
 
-
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
-	public String toString()
+	public String getText()
 	{
 		return text;
 	}
-
 
 
 	private final String text;

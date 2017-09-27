@@ -1,5 +1,7 @@
 package nyla.solutions.core.ds.security;
 
+import java.security.Principal;
+
 import nyla.solutions.core.security.data.SecurityUser;
 
 
@@ -37,6 +39,14 @@ public class LdapSecurityUser extends SecurityUser
 		return builder.toString();
 	}
 	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode()
+	{
+		return super.hashCode();
+	}
+	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -44,20 +54,40 @@ public class LdapSecurityUser extends SecurityUser
 	{
 		if (this == obj)
 			return true;
-		if (super.equals(obj))
-			return true;
+		if (!super.equals(obj))
+			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		LdapSecurityUser other = (LdapSecurityUser) obj;
+		if (dn == null)
+		{
+			if (other.dn != null)
+				return false;
+		}
+		else if (!dn.equals(other.dn))
+			return false;
+		return true;
+	}
+
+	@Override
+	public Boolean apply(Principal principal)
+	{
+		if (this == principal)
+			return Boolean.TRUE;
+		
+		if (Boolean.TRUE.equals(super.apply(principal)))
+			return Boolean.TRUE;
+		
+		if (getClass() != principal.getClass())
+			return false;
+		LdapSecurityUser other = (LdapSecurityUser) principal;
 		if (dn == null || other.dn == null)
 		{
 				return false;
 		}
 
 		return dn.equals(other.dn);
-			
 	}
-
 
 	private final String dn;
 }

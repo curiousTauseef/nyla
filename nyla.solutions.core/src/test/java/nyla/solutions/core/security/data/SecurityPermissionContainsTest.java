@@ -8,12 +8,12 @@ public class SecurityPermissionContainsTest
 {
 
 	@Test
-	public void test()
+	public void testIsAuthorized()
 	{
 		//assertEquals( new SecurityPermissionContains("GREEN"), new SecurityPermission("GREEN"));
 		//assertEquals( new SecurityPermissionContains("GREEN"), new SecurityPermissionContains("GREEN"));
-		assertEquals(new SecurityPermissionContains("NYLA"),"NYLA GREEN");
-		assertNotEquals(new SecurityPermissionContains("GREG"),"NYLA GREEN");
+		assertTrue(new SecurityPermissionContains("NYLA").isAuthorized(new SecurityPermission("NYLA GREEN")));
+		assertFalse(new SecurityPermissionContains("GREG").isAuthorized(new SecurityPermission("NYLA GREEN")));
 		
 	}
 

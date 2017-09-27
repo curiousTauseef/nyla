@@ -8,14 +8,14 @@ public class RegExpPermissionTest
 {
 
 	@Test
-	public void testRegExpPermissionEquals()
+	public void testRegExpPermissionIsAuthorized()
 	{
-		assertEquals(new RegExpPermission(".*"), "ALL");
-		assertEquals(new RegExpPermission(".*"), "");
+		assertTrue(new RegExpPermission(".*").isAuthorized(new SecurityPermission("ALL")));
+		assertTrue(new RegExpPermission(".*").isAuthorized(new SecurityPermission("")));
 		
-		assertNotEquals(new RegExpPermission("NY.*"), "");
-		assertNotEquals(new RegExpPermission(".*"), null);
-		assertEquals(new RegExpPermission("NY.*"), "NY NJ");
+		assertFalse(new RegExpPermission("NY.*").isAuthorized(new SecurityPermission("")));
+		assertFalse(new RegExpPermission(".*").isAuthorized(new SecurityPermission(null)));
+		assertFalse(new RegExpPermission("NY NJ NC.*").isAuthorized(new SecurityPermission("NY NJ")));
 	}
 
 }

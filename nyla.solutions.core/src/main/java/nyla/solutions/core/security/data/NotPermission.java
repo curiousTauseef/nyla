@@ -1,9 +1,13 @@
 package nyla.solutions.core.security.data;
 
-import java.security.acl.Permission;
-
 public class NotPermission implements Permission
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1057689469500576446L;
+
+
 	/**
 	 * @param permission
 	 */
@@ -16,29 +20,18 @@ public class NotPermission implements Permission
 	}
 
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
-	public int hashCode()
+	public boolean isAuthorized(Permission permission)
 	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((permission == null) ? 0 : permission.hashCode());
-		return result;
+		return !this.permission.isAuthorized(permission);
 	}
 
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
-	public boolean equals(Object obj)
+	public String getText()
 	{
-		return !permission.equals(obj);
+	
+		return new StringBuilder("!").append(permission.getText()).toString();
 	}
-
 
 	private final Permission permission;
 }

@@ -1,7 +1,6 @@
 package nyla.solutions.core.security.data;
 
 import java.io.Serializable;
-import java.security.acl.Permission;
 
 /**
  * Permission based on matching  based on regular expressions against the permission toString
@@ -25,22 +24,22 @@ public class RegExpPermission implements Permission, Serializable
 	}
 	
 	@Override
-	public String toString()
+	public boolean isAuthorized(Permission permission)
 	{
-		return this.regExp;
-	}
-	
-	
-	@Override
-	public boolean equals(Object obj)
-	{
-		if(obj == null)
+		if(permission == null)
 			return false;
 		
-		String text = obj.toString();
+		String text = permission.getText();
+		if(text == null)
+			return false;
 		
 		return text.matches(regExp);
 	}//------------------------------------------------
 
+	@Override
+	public String getText()
+	{
+		return regExp;
+	}
 	private final String regExp;
 }

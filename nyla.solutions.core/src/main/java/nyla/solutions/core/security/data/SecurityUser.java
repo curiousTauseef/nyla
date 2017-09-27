@@ -6,7 +6,9 @@ import java.security.acl.Group;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SecurityUser implements Principal, Serializable
+import nyla.solutions.core.patterns.expression.BooleanExpression;
+
+public class SecurityUser implements Principal, Serializable, BooleanExpression<Principal>
 {	
 	/**
 	 * 
@@ -54,6 +56,7 @@ public class SecurityUser implements Principal, Serializable
 	@Override
 	public int hashCode()
 	{
+
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -121,6 +124,26 @@ public class SecurityUser implements Principal, Serializable
 			this.groups.clear();
 		else	
 			this.groups = new HashSet<Group>(groups);
+	}
+
+	@Override
+	public Boolean apply(Principal obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!SecurityUser.class.isAssignableFrom( obj.getClass()))
+			return false;
+		SecurityUser other = (SecurityUser) obj;
+		if (name == null)
+		{
+			if (other.name != null)
+				return false;
+		}
+		else if (!name.equals(other.name))
+			return false;
+		return true;
 	}
 
 

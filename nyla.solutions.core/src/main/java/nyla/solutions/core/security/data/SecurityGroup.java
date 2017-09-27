@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
 
+import nyla.solutions.core.patterns.expression.BooleanExpression;
+
 /**
  * <pre>
  * SecurityGroup provides a set of functions to
@@ -17,7 +19,7 @@ import java.util.Vector;
  * @version 1.0
  */
 public class SecurityGroup
-implements Group, Serializable
+implements Group, Serializable, BooleanExpression<Principal>
 {
  
    public SecurityGroup(String aGroupName)
@@ -132,6 +134,21 @@ public int hashCode()
 
        return false;
    }//--------------------------------------------
+   @Override
+   public Boolean apply(Principal obj)
+   {
+	   if (this == obj)
+			return Boolean.TRUE;
+		if (obj == null)
+			return Boolean.FALSE;
+		if (!Group.class.isAssignableFrom(obj.getClass()))
+			return Boolean.FALSE;
+		
+		Group other = (Group) obj;
+
+		return Boolean.valueOf(this.name.equals(other.getName()));
+   }
+
    private Set<Principal> groupMembers = null;
    private final String name;   
    static final long serialVersionUID = 1;

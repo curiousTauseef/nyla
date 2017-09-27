@@ -19,7 +19,7 @@ public class SecurityAclTest
 		 Principal caller = null;
 	    Principal principal = null;
 	    
-		SecurityAcl securityAcl = new SecurityAcl();
+		Acl securityAcl = new SecurityAcl();
 		assertFalse(securityAcl.checkPermission(principal, "CLUSTER"));
 		
 		principal = new SecurityClient("greenID");
@@ -38,7 +38,7 @@ public class SecurityAclTest
 		 Principal caller = null;
 	    Principal principal = null;
 	    
-		SecurityAcl securityAcl = new SecurityAcl();
+		Acl securityAcl = new SecurityAcl();
 		
 		principal = new SecurityClient("greenID");
 		caller = new SecurityClient("admin");
@@ -60,7 +60,7 @@ public class SecurityAclTest
 		 Principal caller = null;
 	    Principal principal = null;
 	    
-		SecurityAcl securityAcl = new SecurityAcl();
+		Acl securityAcl = new SecurityAcl();
 		
 		principal = new SecurityGroup("group");
 		caller = new SecurityClient("admin");
@@ -77,7 +77,7 @@ public class SecurityAclTest
 		 Principal caller = null;
 	    Principal principal = null;
 	    
-		SecurityAcl securityAcl = new SecurityAcl();
+		Acl securityAcl = new SecurityAcl();
 		
 		SecurityGroup group = new SecurityGroup("group");
 		principal = new SecurityUser("user",Collections.singleton(group));
@@ -104,7 +104,7 @@ public class SecurityAclTest
 		 Principal caller = null;
 	    Principal principal = null;
 	    
-		SecurityAcl securityAcl = new SecurityAcl();
+		Acl securityAcl = new SecurityAcl();
 		
 		principal = new SecurityGroup("group");
 		caller = new SecurityClient("admin");

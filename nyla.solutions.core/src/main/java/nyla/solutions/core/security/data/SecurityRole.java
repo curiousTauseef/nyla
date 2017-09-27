@@ -1,9 +1,8 @@
 package nyla.solutions.core.security.data;
 
 import java.security.Principal;
-import java.security.acl.Permission;
 import java.util.Collection;
-import java.util.Enumeration;
+import java.util.List;
 
 
 /**
@@ -14,7 +13,7 @@ import java.util.Enumeration;
  * @author Gregory Green
  * @version 1.0
  */
-public class SecurityRole extends SecurityAccess 
+public class SecurityRole extends SecurityAccessControl 
 implements java.security.Principal
 {
 	
@@ -53,16 +52,7 @@ implements java.security.Principal
    {
       return super.checkPermission(permission);
    }//--------------------------------------------
-   /**
-    * 
-    * @see java.lang.Object#clone()
-    */
-   public synchronized Object clone()
-   {
-      // TODO Auto-generated method stub
-      return super.clone();
-   }//--------------------------------------------
-   public synchronized Collection<Permission> getPermissions()
+   public synchronized List<Permission> getPermissions()
    {
       return super.getPermissions();
    }//--------------------------------------------
@@ -93,31 +83,13 @@ implements java.security.Principal
       return super.isNegative();
       //----------------------------------------
    }
-   /**
-    * 
-    * @see java.security.acl.AclEntry#permissions()
-    */
-   public Enumeration<Permission> permissions()
-   {
-      // TODO Auto-generated method stub
-      return super.permissions();
-   }//--------------------------------------------
-   /**
-    * 
-    * @see java.security.acl.AclEntry#removePermission(java.security.acl.Permission)
-    */
-   public boolean removePermission(Permission permission)
-   {
-      // TODO Auto-generated method stub
-      return super.removePermission(permission);
-   }//--------------------------------------------
+  
    /**
     * 
     * @see java.security.acl.AclEntry#setNegativePermissions()
     */
    public void setNegativePermissions()
    {
-      // TODO Auto-generated method stub
       super.setNegativePermissions();
    }//--------------------------------------------
    /**
