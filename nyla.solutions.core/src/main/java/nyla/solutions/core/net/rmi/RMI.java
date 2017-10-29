@@ -68,6 +68,7 @@ public class RMI
 	}// --------------------------------------------------------
    /**
     * 
+    * @param <T> the lookup value type
     * @param name the rmi Url rmi://localhost:port/serviceName
     * @return the RemoteObject
     */

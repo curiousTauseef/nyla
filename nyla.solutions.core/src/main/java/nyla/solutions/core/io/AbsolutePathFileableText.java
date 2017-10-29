@@ -18,7 +18,7 @@ public class AbsolutePathFileableText implements Textable
 {
 
 	/**
-	 * Return the file able.file.getAbsolutePath()
+	 * @return the file able.file.getAbsolutePath()
 	 */
 	public String getText()
 	{

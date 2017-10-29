@@ -9,8 +9,11 @@ import nyla.solutions.core.data.Nameable;
  * <pre>
  * Attribute provides a set of functions to
  * </pre> 
+ * 
  * @author Gregory Green
  * @version 1.0
+ * @param <K> the key class
+ * @param <V> the value class
  */
 public interface Attribute<K,V> extends Serializable, Mappable<K,V>, Nameable
 {

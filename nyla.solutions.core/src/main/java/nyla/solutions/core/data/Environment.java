@@ -18,7 +18,7 @@ public class Environment
 
 	/**
 	 * @param key
-	 * @return
+	 * @return boolean if key is in environment
 	 * @see java.util.Map#containsKey(java.lang.Object)
 	 */
 	public boolean containsKey(Object key)
@@ -28,7 +28,7 @@ public class Environment
 
 	/**
 	 * @param value
-	 * @return
+	 * @return boolean if value is in environment
 	 * @see java.util.Map#containsValue(java.lang.Object)
 	 */
 	public boolean containsValue(Object value)
@@ -37,8 +37,8 @@ public class Environment
 	}
 
 	/**
-	 * @param o
-	 * @return
+	 * @param o the other object
+	 * @return true if objects are equal
 	 * @see java.util.Map#equals(java.lang.Object)
 	 */
 	public boolean equals(Object o)
@@ -47,17 +47,19 @@ public class Environment
 	}
 
 	/**
+	 * @param <T> the type of teh key
 	 * @param key
-	 * @return
+	 * @return the object by the key
 	 * @see java.util.Map#get(java.lang.Object)
 	 */
-	public Object get(Object key)
+	@SuppressWarnings("unchecked")
+	public <T> T get(Object key)
 	{
-		return map.get(key);
+		return (T)map.get(key);
 	}
 
 	/**
-	 * @return
+	 * @return map.hashCode()
 	 * @see java.util.Map#hashCode()
 	 */
 	public int hashCode()
@@ -66,7 +68,7 @@ public class Environment
 	}
 
 	/**
-	 * @return
+	 * @return boolean if empty
 	 * @see java.util.Map#isEmpty()
 	 */
 	public boolean isEmpty()
@@ -75,7 +77,7 @@ public class Environment
 	}
 
 	/**
-	 * @return
+	 * @return the key set
 	 * @see java.util.Map#keySet()
 	 */
 	public Set<Object> keySet()
@@ -84,9 +86,9 @@ public class Environment
 	}
 
 	/**
-	 * @param key
-	 * @param value
-	 * @return
+	 * @param key the key
+	 * @param value the value
+	 * @return previous object
 	 * @see java.util.Map#put(java.lang.Object, java.lang.Object)
 	 */
 	public Object put(Object key, Object value)
@@ -104,8 +106,8 @@ public class Environment
 	}
 
 	/**
-	 * @param key
-	 * @return
+	 * @param key the key
+	 * @return the removed object
 	 * @see java.util.Map#remove(java.lang.Object)
 	 */
 	public Object remove(Object key)
@@ -114,7 +116,7 @@ public class Environment
 	}
 
 	/**
-	 * @return
+	 * @return the size of the environments
 	 * @see java.util.Map#size()
 	 */
 	public int size()
@@ -123,7 +125,7 @@ public class Environment
 	}
 
 	/**
-	 * @return
+	 * @return map.values();
 	 * @see java.util.Map#values()
 	 */
 	public Collection<Object> values()

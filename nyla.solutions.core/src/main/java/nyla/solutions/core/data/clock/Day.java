@@ -1,4 +1,4 @@
-package nyla.solutions.core.data;
+package nyla.solutions.core.data.clock;
 
 import java.io.Serializable;
 import java.util.Calendar;

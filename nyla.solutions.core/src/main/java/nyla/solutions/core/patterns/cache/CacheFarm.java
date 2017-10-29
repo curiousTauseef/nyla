@@ -26,7 +26,7 @@ public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
 	}
 
 	/**
-	 * @return
+	 * @return cloned object
 	 * @see java.util.Hashtable#clone()
 	 */
 	public Object clone()
@@ -49,7 +49,7 @@ public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
 
 	/**
 	 * @param value
-	 * @return
+	 * @return boolean if value exists
 	 * @see java.util.Hashtable#contains(java.lang.Object)
 	 */
 	public boolean contains(Object value)
@@ -58,8 +58,8 @@ public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
 	}
 
 	/**
-	 * @param key
-	 * @return
+	 * @param key the key to check
+	 * @return boolean if key exists
 	 * @see java.util.Hashtable#containsKey(java.lang.Object)
 	 */
 	public boolean containsKey(Object key)
@@ -69,7 +69,7 @@ public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
 
 	/**
 	 * @param value
-	 * @return
+	 * @return boolean if value exists
 	 * @see java.util.Hashtable#containsValue(java.lang.Object)
 	 */
 	public boolean containsValue(Object value)
@@ -78,7 +78,7 @@ public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
 	}
 
 	/**
-	 * @return
+	 * @return enumeration of elements
 	 * @see java.util.Hashtable#elements()
 	 */
 	public Enumeration<V> elements()
@@ -87,7 +87,7 @@ public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
 	}
 
 	/**
-	 * @return
+	 * @return set of entries
 	 * @see java.util.Hashtable#entrySet()
 	 */
 	public Set<Entry<K,V>> entrySet()
@@ -95,11 +95,6 @@ public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
 		return map.entrySet();
 	}// --------------------------------------------------------
 
-	/**
-	 * @param o
-	 * @return
-	 * @see java.util.Hashtable#equals(java.lang.Object)
-	 */
 	public boolean equals(Object o)
 	{
 		return map.equals(o);
@@ -107,7 +102,7 @@ public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
 
 	/**
 	 * @param key
-	 * @return
+	 * @return object value
 	 * @see java.util.Hashtable#get(java.lang.Object)
 	 */
 	public V get(Object key)
@@ -116,7 +111,7 @@ public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
 	}
 
 	/**
-	 * @return
+	 * @return map hash code
 	 * @see java.util.Hashtable#hashCode()
 	 */
 	public int hashCode()
@@ -125,7 +120,7 @@ public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
 	}
 
 	/**
-	 * @return
+	 * @return is empty boolean
 	 * @see java.util.Hashtable#isEmpty()
 	 */
 	public boolean isEmpty()
@@ -134,7 +129,7 @@ public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
 	}
 
 	/**
-	 * @return
+	 * @return enumeration of keys
 	 * @see java.util.Hashtable#keys()
 	 */
 	public Enumeration<K> keys()
@@ -143,7 +138,7 @@ public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
 	}
 
 	/**
-	 * @return
+	 * @return the key set for the map
 	 * @see java.util.Hashtable#keySet()
 	 */
 	public Set<K> keySet()
@@ -152,28 +147,29 @@ public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
 	}
 
 	/**
-	 * @param arg0
-	 * @param arg1
-	 * @return
+	 * @param key key 
+	 * @param value value
+	 * @return previous value
 	 * @see java.util.Hashtable#put(java.lang.Object, java.lang.Object)
 	 */
-	public V put(K arg0, V arg1)
+	public V put(K key, V value)
 	{
-		return map.put(arg0, arg1);
+		return map.put(key, value);
 	}
 
 	/**
-	 * @param arg0
+	 * @param m the map
 	 * @see java.util.Hashtable#putAll(java.util.Map)
 	 */
-	public void putAll(Map<? extends K, ? extends V> arg0)
+	@Override
+	public void putAll(Map<? extends K, ? extends V> m)
 	{
-		map.putAll(arg0);
+		this.map.putAll(m);
 	}
 
 	/**
 	 * @param key
-	 * @return
+	 * @return the removed value
 	 * @see java.util.Hashtable#remove(java.lang.Object)
 	 */
 	public V remove(Object key)
@@ -182,7 +178,7 @@ public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
 	}
 
 	/**
-	 * @return
+	 * @return the map size
 	 * @see java.util.Hashtable#size()
 	 */
 	public int size()
@@ -190,17 +186,13 @@ public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
 		return map.size();
 	}
 
-	/**
-	 * @return
-	 * @see java.util.Hashtable#toString()
-	 */
 	public String toString()
 	{
 		return map.toString();
 	}
 
 	/**
-	 * @return
+	 * @return the map values
 	 * @see java.util.Hashtable#values()
 	 */
 	public Collection<V> values()
@@ -253,6 +245,7 @@ public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
 	}//---------------------------------------------
 	/**
 	 * Remove object from cache
+	 * @param objClass the object class to remove by name
 	 */
 	public void removeObject(Class<?> objClass)
 	{

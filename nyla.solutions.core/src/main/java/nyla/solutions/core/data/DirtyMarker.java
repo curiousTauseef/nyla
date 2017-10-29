@@ -36,29 +36,20 @@ public interface DirtyMarker extends Serializable, Cloneable
 
     public abstract boolean isDirty();
 
-
     public abstract void setNew(boolean aNew);
 
-
-
-    //public abstract void resetNew();
-
     /**
+     * @return true when data is new
      * 
      */
     public abstract boolean isNew();
 
 
-
     public abstract void setDeleted(boolean aDeleted);
-
 
 
     public abstract boolean isDeleted();
 
-
-
-    //public abstract void resetDeleted();
 
 }
 

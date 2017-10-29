@@ -92,6 +92,7 @@ public class FaultException extends RuntimeException implements Fault
 	}// -----------------------------------------------
 	/**
 	 * 
+	 * @param e the root exception
 	 * @return the exception stack trace
 	 */
 	public static String stackTrace(Throwable e)

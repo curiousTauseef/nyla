@@ -9,7 +9,7 @@ public interface Log
 {
 	/**
 	 * 
-	 * @param the owner of the log
+	 * @param aClass the class of the logger
 	 */
 	public void setLoggingClass(Class<?> aClass);
 	

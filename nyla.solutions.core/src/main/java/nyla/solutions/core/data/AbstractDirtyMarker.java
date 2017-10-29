@@ -3,9 +3,7 @@ package nyla.solutions.core.data;
 import nyla.solutions.core.data.DirtyMarker;
 
 
-public abstract class AbstractDirtyMarker
-
-    implements DirtyMarker
+public abstract class AbstractDirtyMarker implements DirtyMarker
 
 {
 
@@ -72,7 +70,6 @@ public abstract class AbstractDirtyMarker
     /**
      * 
      * Set dirty flag
-     * @see nyla.solutions.core.data.DirtyMarker#resetDirty()
      */
     public void resetDirty()
     {
@@ -105,8 +102,7 @@ public abstract class AbstractDirtyMarker
     /**
      * 
      * set is new to false
-     * @see nyla.solutions.core.data.DirtyMarker#resetNew()
-     */
+      */
     public void resetNew()
     {
 
@@ -141,11 +137,6 @@ public abstract class AbstractDirtyMarker
 
         return deleted;
     }//--------------------------------------------
-    /**
-     * 
-     * 
-     * @see nyla.solutions.core.data.DirtyMarker#resetDeleted()
-     */
     public void resetDeleted()
     {
         deleted = false;

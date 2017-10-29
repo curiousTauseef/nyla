@@ -1,21 +1,18 @@
-package nyla.solutions.core.data;
+package nyla.solutions.core.data.clock;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import nyla.solutions.core.data.Event;
-import nyla.solutions.core.data.Time;
-import nyla.solutions.core.data.TimeInterval;
-import nyla.solutions.core.data.TimeSlot;
+import nyla.solutions.core.data.clock.Appointment;
 
 /**
  * 
- * <b>Event</b> represents a calendar event
+ * <b>Appointment</b> represents a calendar based event
  * 
  * @author Gregory Green
  *
  */
-public class Event implements Serializable, Comparable<Event>
+public class Appointment implements Serializable, Comparable<Appointment>
 {
 	/**
     * 
@@ -29,10 +26,10 @@ public class Event implements Serializable, Comparable<Event>
 	 * @param durationSeconds
 	 * @return a new event
 	 */
-	public static Event getEvent(String name, int startHour24,
+	public static Appointment getEvent(String name, int startHour24,
 			int durationSeconds)
 	{
-		Event event = new Event();
+		Appointment event = new Appointment();
 		event.setName(name);
 
 		Time time = new Time();
@@ -149,7 +146,7 @@ public class Event implements Serializable, Comparable<Event>
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Event other = (Event) obj;
+		Appointment other = (Appointment) obj;
 		if (location == null)
 		{
 			if (other.location != null)
@@ -187,7 +184,7 @@ public class Event implements Serializable, Comparable<Event>
 	 * 
 	 * @see java.lang.Comparable#compareTo(T)
 	 */
-	public int compareTo(Event other)
+	public int compareTo(Appointment other)
 	{
 		return this.timeSlot.compareTo(other.timeSlot);
 	}

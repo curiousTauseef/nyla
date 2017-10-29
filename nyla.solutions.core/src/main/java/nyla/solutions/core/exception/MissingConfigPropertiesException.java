@@ -16,6 +16,7 @@ public class MissingConfigPropertiesException extends ConfigException
 	/**
     * Constructor for SetupException initializes internal 
     * data settings.
+	 * @param key the key that is missing
     * 
     */
    public MissingConfigPropertiesException(String key)

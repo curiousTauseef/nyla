@@ -47,6 +47,7 @@ public class LoginCredential implements SecurityCredential, Principal, Serializa
     * data settings.
     * @param loginID the user login
     * @param password the user password
+    * @param domain the user belongs
     */
    public LoginCredential(String loginID, String password, String domain)
    {
@@ -61,6 +62,7 @@ public class LoginCredential implements SecurityCredential, Principal, Serializa
     * data settings.
     * @param loginID the user login
     * @param password the user password
+    *  * @param domain the user belongs
     */
    public LoginCredential(String loginID, char[] password, String domain)
    {
@@ -124,6 +126,7 @@ public class LoginCredential implements SecurityCredential, Principal, Serializa
    }// ------------------------------------------------
    /**
     * Implement a principal
+    * @return the login ID
     */
    public String getName()
 	{
@@ -173,7 +176,8 @@ public class LoginCredential implements SecurityCredential, Principal, Serializa
       return properties;
    }
    /**
-    * @param properties the properties to set
+    * @param key key the properties to set
+    * @param value value the properties to set
     */
    public void setProperty(String key, Object value)
    {

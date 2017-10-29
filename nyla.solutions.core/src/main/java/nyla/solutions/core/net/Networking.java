@@ -12,6 +12,8 @@ import java.net.UnknownHostException;
 public final class Networking
 {
 	/**
+	 * @param host1 a host name 
+	 * @param host2 another host name 
 	 * @return if two host names are equal by IP addresses or host name
 	 */
 	public static boolean hostEquals(String host1, String host2)

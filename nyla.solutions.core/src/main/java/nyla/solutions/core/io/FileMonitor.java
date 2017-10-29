@@ -17,6 +17,7 @@ import java.util.TimerTask;
 import nyla.solutions.core.util.Config;
 
 /**
+ * Observable for the file watching
  */
 public class FileMonitor extends Observable
 {
@@ -63,16 +64,18 @@ public class FileMonitor extends Observable
       long previousSize = IO.getFileSize(path);
       long currentSize = previousSize;
       
+      long sleepTime = Config.getPropertyLong("file.monitor.file.wait.time",100).longValue();
+      
       while(true)
       {
          try
          {
-           Thread.sleep(Config.getPropertyLong("file.monitor.file.wait.time",1000*5).longValue());
+           Thread.sleep(sleepTime);
          }
          catch(InterruptedException e){}
           
           currentSize = IO.getFileSize(path);
-          
+       
           if(currentSize == previousSize )
              return;
           
@@ -87,8 +90,9 @@ public class FileMonitor extends Observable
     * More than one file can be listened for. When the specified file is
     * created, modified or deleted, listeners are notified.
     * 
-    * @param file
-    *           File to listen for.
+    * @param aDirectory the directory to listen for.
+    * @param aFileNameFilter the file name
+    * @param aProcessCurrentFiles whether to process current names
     */
    public synchronized void monitor(String aDirectory, String aFileNameFilter, boolean aProcessCurrentFiles)
    {
@@ -205,10 +209,7 @@ public class FileMonitor extends Observable
             	return;
             
             System.out.println("Looking for "+ directory+File.separator+this.filter);
-            //System.out.println("length="+files.length);
-
-            //ArrayList filesInDir = new ArrayList(Arrays.asList(files));
-            // System.out.println("fielDir Len="+filesInDir.size());
+         
 
             File dirfile = null;
             Long lastModifiedTime = null;

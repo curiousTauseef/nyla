@@ -9,10 +9,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeSet;
 
-import nyla.solutions.core.data.Day;
-import nyla.solutions.core.data.Time;
-import nyla.solutions.core.data.TimeInterval;
-import nyla.solutions.core.data.TimeSlot;
+import nyla.solutions.core.data.clock.Day;
+import nyla.solutions.core.data.clock.Time;
+import nyla.solutions.core.data.clock.TimeInterval;
+import nyla.solutions.core.data.clock.TimeSlot;
 
 
 

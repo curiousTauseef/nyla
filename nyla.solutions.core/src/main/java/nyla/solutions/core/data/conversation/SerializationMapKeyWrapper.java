@@ -17,10 +17,7 @@ public class SerializationMapKeyWrapper
 	{}
 	/**
 	 * 
-	 * @param value the object
-	 * @param valueClassName
-	 * @param key
-	 * @param keyClassName
+	 * @param key the key to wrapped
 	 */
 	public SerializationMapKeyWrapper(Object key)
 	{
@@ -29,10 +26,8 @@ public class SerializationMapKeyWrapper
 
 	/**
 	 * 
-	 * @param value the object
-	 * @param valueClassName
-	 * @param key
-	 * @param keyClassName
+	 * @param key the key
+	 * @param keyClassName the class names
 	 */
 	public SerializationMapKeyWrapper(
 			Object key, String keyClassName)

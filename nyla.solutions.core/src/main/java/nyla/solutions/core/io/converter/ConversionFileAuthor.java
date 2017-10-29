@@ -13,10 +13,10 @@ public class ConversionFileAuthor<ObjectType>
 		this.file = file;
 		this.toHeader = toHeader;
 		this.toRow = toRow;
-	}
-
+	}//------------------------------------------------
 	/**
-	 * 3
+	 * @param obj the object to file
+	 * @throws IOException and IO error occurs
 	 */
 	public void appendFile(ObjectType obj) throws IOException
 	{

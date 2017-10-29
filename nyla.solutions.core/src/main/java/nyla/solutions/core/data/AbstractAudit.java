@@ -17,13 +17,9 @@ import nyla.solutions.core.data.Data;
  * 
  *  
  * 
- *  AbstractAudit is a value object representation of the 
- * 
+ *  AbstractAudit is a value object representation of the  
  *  AbstractAudit table and associated entities.
- * 
- *     
- * 
- *  
+ 
  * </pre>
  * 
  * 
@@ -75,17 +71,16 @@ implements Auditable, Copier, Serializable
 
    /**
     * 
-    * @param aPK
-    * 
-    * @throws IllegalArgumentException
+    * @param primaryKey the primary key
+     * @throws IllegalArgumentException
     *  
     */
 
-   public AbstractAudit(Criteria aPK) throws IllegalArgumentException
+   public AbstractAudit(Criteria primaryKey) throws IllegalArgumentException
 
    {
 
-      super(aPK);
+      super(primaryKey);
 
    }//--------------------------------------------
 
@@ -139,8 +134,7 @@ implements Auditable, Copier, Serializable
 
    /**
     * 
-    * @param createDate
-    *           The createDate to set.
+    * @param createDate   The createDate to set.
     *  
     */
 
@@ -246,9 +240,8 @@ implements Auditable, Copier, Serializable
 
    /**
     * 
-    * 
-    * 
-    * @see nyla.solutions.core.data.Criteria#setPrimaryKey(int)
+    * @param primaryKey the primary key
+    * @throws IllegalArgumentException when primary if not provided or invalid
     *  
     */
 

@@ -79,9 +79,9 @@ public final class SynchronizedIO
    /**
     * Write binary file data
     * 
-    * @param filePath
-    * @param data
-    * @throws Exception
+    * @param filePath the file path to write
+    * @param data the write
+    * @throws IOException when IO error occurs
     */
    public void writeFile(String filePath, byte[] data) throws IOException
    {
@@ -94,9 +94,10 @@ public final class SynchronizedIO
    /**
     * Write binary file data
     * 
-    * @param aFileName
-    * @param aData
-    * @throws Exception
+    * @param aFilePath the file path to write
+    * @param aData the data to write
+    * @param append to append or not
+    * @throws IOException when an IO error occurs
     */
    public void writeFile(String aFilePath, byte[] aData, boolean append) throws IOException
    {
@@ -110,9 +111,9 @@ public final class SynchronizedIO
    /**
     * Write string file data
     * 
-    * @param aFileName
-    * @param aData
-    * @throws Exception
+    * @param aFileName the file name
+    * @param aData the data to write
+    * @throws IOException when an IO error occurs
     */
    public void writeFile(String aFileName, String aData) throws IOException
    {

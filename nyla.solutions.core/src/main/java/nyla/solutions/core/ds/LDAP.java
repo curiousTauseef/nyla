@@ -103,6 +103,11 @@ public class LDAP implements Closeable
 	    * Example export LDAP_MEMBEROF_ATTRIB_NM=memberOf
 	    */
 	   public final static String MEMBEROF_ATTRIB_NM_PROP = "LDAP_MEMBEROF_ATTRIB_NM";
+	   
+	   /**
+	    * DEFAULT_uidAttributeName = Config.getProperty(UID_ATTRIB_NM_PROP,"uid")
+	    */
+	   public final static String DEFAULT_uidAttributeName = Config.getProperty(UID_ATTRIB_NM_PROP,"uid");
 	   	   
    /**
     * 
@@ -252,6 +257,8 @@ public class LDAP implements Closeable
     * Authenticate user ID and password against the LDAP server
     * @param uid i.e. greeng
     * @param password the user password
+	 * @return the user principal details
+	 * @throws SecurityException when security error occurs
     */
    public Principal authenicate(String uid, char[] password)
    throws  SecurityException
@@ -273,7 +280,9 @@ public class LDAP implements Closeable
     * @param uid ex: ggreen
     * @param password the password (unencrypted)
     * @param rootDN ex: ou
-    * @param uidAttributeName
+    * @param uidAttributeName (ex: uid)
+	 * @param memberOfAttributeName the member attribute (ex: memberOf)
+	 * @param groupNameAttributeName the group atribute name (ex: CN)
     * @param timeout the timeout
     * @return principal
     * @throws SecurityException
@@ -281,6 +290,10 @@ public class LDAP implements Closeable
     public Principal authenicate(String uid, char[] password,String rootDN,String uidAttributeName,String memberOfAttributeName,String groupNameAttributeName, int timeout)
     throws  SecurityException
     {
+         if(uidAttributeName == null || uidAttributeName.length() == 00)
+        	 {
+        	 	uidAttributeName = DEFAULT_uidAttributeName;
+        	 }
          
          try
          {       
@@ -419,12 +432,14 @@ public class LDAP implements Closeable
 
    /**
     * 
-    * @deprecated Method setupBasicProperties is deprecated
+    * @param env the properties
+	 * @param url  the URL
+	 * @throws NamingException when naming error occurs
+	 * @deprecated Method setupBasicProperties is deprecated
     *  
     */
 
    public static void setupBasicProperties(Hashtable<String,Object>   env, String url)
-
    throws NamingException
 
    {
@@ -491,18 +506,14 @@ public class LDAP implements Closeable
 
    }
 
-   /**
+   /*
     * 
     * @deprecated Method setupSSLProperties is deprecated
     *  
     */
-
    public static void setupSSLProperties(Hashtable<String,Object>  env, String cacerts,
-
    String clientcerts, char caKeystorePwd[], char clientKeystorePwd[],
-
    String caKeystoreType, String clientKeystoreType, boolean tracing,
-
    boolean sslTracing, String sslSocketFactory) throws NamingException
 
    {
@@ -1030,9 +1041,6 @@ public class LDAP implements Closeable
    }
 
    //--------------------------------------------------------
-   /**
-    * 
-    */
    public static SearchResult toSearchResult(NamingEnumeration<?> aNamingEnumeration)
    throws NoDataFoundException
    {
@@ -1044,19 +1052,15 @@ public class LDAP implements Closeable
    }//--------------------------------------------
    /**
     * 
+    * @param aEnum the enum
     * @return a string version of the enumeration
     *  
     */
-
    public static String toString(NamingEnumeration<?> aEnum)
    {
-
       if (aEnum == null)
-
       {
-
          return "";
-
       }
       StringBuffer sb = new StringBuffer();
       SearchResult element = null;

@@ -56,19 +56,20 @@ implements Auditable, Copier, Serializable
     * 
     * Values Y= Yes N=No
     * 
+    * @param auditable the auditable object
     * @param deletedCode
     *           The deletedCode to set.
     *  
     */
 
-   public static void setDeletedCode(Auditable Auditable, String deletedCode)
+   public static void setDeletedCode(Auditable auditable, String deletedCode)
    {
-      if(Auditable == null)
+      if(auditable == null)
          return;
 
          checkDeletedCode(deletedCode);
 
-         Auditable.setDeletedCode(deletedCode);
+         auditable.setDeletedCode(deletedCode);
    }//--------------------------------------------
    /**
     * 
@@ -199,21 +200,10 @@ implements Auditable, Copier, Serializable
     */
 
    public AbstractAuditable(String aPK) throws IllegalArgumentException
-
    {
-
       super(aPK);
 
    }//--------------------------------------------
-
-   /**
-    * 
-    * 
-    * 
-    * @see Criteria#setPrimaryKey(int)
-    *  
-    */
-
    public void setPrimaryKey(int primaryKey) throws IllegalArgumentException
 
    {
@@ -348,7 +338,8 @@ implements Auditable, Copier, Serializable
     * 
     * 
     * 
-    * @see Criteria#setPrimaryKey(int)
+    * @param primaryKey the primary key to set
+    * @throws IllegalArgumentException PrimaryKey is invalid
     *  
     */
 
@@ -364,12 +355,12 @@ implements Auditable, Copier, Serializable
     * 
     * 
     * 
-    * @see Criteria#setPrimaryKey(int)
+   * @param primaryKey the primary key to set
+    * @throws IllegalArgumentException PrimaryKey is invalid
     *  
     */
 
    public void setPrimaryKey(Criteria primaryKey)
-
    throws IllegalArgumentException
 
    {

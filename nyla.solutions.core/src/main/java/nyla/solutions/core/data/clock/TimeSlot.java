@@ -1,4 +1,4 @@
-package nyla.solutions.core.data;
+package nyla.solutions.core.data.clock;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -122,7 +122,7 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 
    /**
     *
-    * @see nyla.solutions.core.data.TimeInterval#getStartDate()
+    * @see nyla.solutions.core.data.clock.TimeInterval#getStartDate()
     */
    public Date getStartDate()
    {
@@ -134,7 +134,7 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 
    /**
     *
-    * @see nyla.solutions.core.data.TimeInterval#setStart(java.util.Date)
+    * @see nyla.solutions.core.data.clock.TimeInterval#setStart(java.util.Date)
     */
    public void setStartDate(Date start)
    {
@@ -147,7 +147,7 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
    }
    /**
     *
-    * @see nyla.solutions.core.data.TimeInterval#getEnd()
+    * @see nyla.solutions.core.data.clock.TimeInterval#getEnd()
     */
    public Date getEndDate()
    {
@@ -170,7 +170,7 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
    }// --------------------------------------------   
    /**
     *
-    * @see nyla.solutions.core.data.TimeInterval#setEnd(java.util.Date)
+    * @see nyla.solutions.core.data.clock.TimeInterval#setEnd(java.util.Date)
     */
    public void setEndDate(Date end)
    {

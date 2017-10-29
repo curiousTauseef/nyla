@@ -3,7 +3,7 @@ package nyla.solutions.core.patterns.observer;
 import java.util.Calendar;
 import java.util.Date;
 
-import nyla.solutions.core.data.TimeInterval;
+import nyla.solutions.core.data.clock.TimeInterval;
 import nyla.solutions.core.exception.SystemException;
 import nyla.solutions.core.patterns.decorator.TimeIntervalDecorator;
 import nyla.solutions.core.util.Debugger;

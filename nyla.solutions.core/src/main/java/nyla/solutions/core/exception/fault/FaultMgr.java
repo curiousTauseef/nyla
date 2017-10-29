@@ -39,6 +39,7 @@ public class FaultMgr implements FaultService
 	/**
 	 * Maps a given exception into a GEDI exception
 	 * @param e the throw exception
+	 * @param argument the argument when  error occurred
 	 * @return GediException with the correct mapped error codes/categories
 	 */
 	//@Override

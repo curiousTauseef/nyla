@@ -333,11 +333,62 @@ text = "Greg on line 1\nGreen on line two";
 String results = Text.grepText("Green", text);
 Assert.assertEquals("Green on line two",results);
 ```
+
+# IO
+
+## FileMonitor
+
+You can use the nyla.solutions.core.io.FileMonitor observer pattern to 
+notify object that implement the Observer interface.
+
+
+	//Create the file monitoring
+	FileMonitor fileMonitor = new FileMonitor();
+		
+		//Create an observer to be called for a file appears
+		Observer printFileObserver = new Observer()
+		{
+			@Override
+			public void update(Observable o, Object arg)
+			{
+				//Each argment is an instance of FileEvent
+				FileEvent fileEvent = (FileEvent)arg;
+				
+				//Note that file with assert the file is nto changing (ex: FTP files)
+				File file = fileEvent.getFile();
+				
+				//PRint file
+				System.out.println("file:"+file);
+				
+				//Set flag for test case
+				called = true;
+			}
+		};
+		
+		//Register the observer with the file monitor
+		fileMonitor.addObserver(printFileObserver);
+		
+		//Set the file, pattern and whether current files should trigger event
+		fileMonitor.monitor("runtime/", "*.txt", false);
+		
+		//Write file to trigger observer
+		String filePath = "runtime/"+Text.generateId()+".txt"; 
+		IO.writeFile(filePath, "Hello");
+		Thread.sleep(100);
+		
+		//Check if observer was trigger
+		assertTrue(called);
+		
+		//Cleanup file
+		IO.delete(Paths.get(filePath).toFile());
+
 ## Patterns
 
-##nyla.solutions.core.patterns.search
+## Search Patterns
 
-###ReLookup
+See nyla.solutions.core.patterns.search
+
+### ReLookup
 
  ReLookup is a map that supports searching for values using a complex regular expression syntax. The key is a regular expression. This operation is similar to the lookup operation. The RELookup will iterate through the given expressions looking for a match on the corresponding source attribute. The value  of the lookup is used if the regular expression matches the source attribute value.
 
@@ -384,7 +435,9 @@ The RELookup supports negative logic (NOT) for expressions. This is accomplished
 	assertEquals(lookup.get("Blue with Live of pure").getCode(), "0003");
 	
 
-#nyla.solutions.core.exception.fault
+# Fault Pattern
+
+See nyla.solutions.core.exception.fault
 
 Use the FaultsHtmlTextDecorator to get HTML summary of the FaultException or just objects the implement the nyla.solutions.core.exception.fault.Fault interface.
 
@@ -515,7 +568,7 @@ Capture screen shots
 	Graphics.printScreen(0, 0, 1000, 800, "png", new File("runtime/tmp/output/screenshot.png"));
 
 
-#Building
+# Building
 
 Set your ossrUsername and ossrhPassword in the ~/.gradle
 	
@@ -526,7 +579,7 @@ Set your ossrUsername and ossrhPassword in the ~/.gradle
 2. $gradle install
 
 
-#FAQ
+# FAQ
 
 - I get the following /bin/sh: gpg: command not found
 	

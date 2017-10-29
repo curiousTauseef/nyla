@@ -46,9 +46,7 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 	   /**
 	    * 
 	    * Constructor for DataRow initializes internal from the result set 
-	    * @param resultSet the database result set
 	    * @param rowNum starts from 0
-	    * @throws SQLException
 	    */
 	   public DataRow(int rowNum)
 	   {     
@@ -82,6 +80,8 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 	      positionEntries.add(aEntry);
 	   }// --------------------------------------------
 	   /**
+	 * @param aPosition the position
+	 * @return the string
 	 * @see nyla.solutions.core.data.DataRow#retrieveString(int)
 	 */
 	   public String retrieveString(int aPosition)
@@ -91,6 +91,8 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 		   
 	      Object  o = positionEntries.get(aPosition -1);
 	      
+	      if(o == null)
+	    	  return null;
 	      
 	      return String.valueOf(o);
 		 }
@@ -103,14 +105,19 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 		 }
 	   }// --------------------------------------------
 	   /**
-	 * @see nyla.solutions.core.data.DataRow#retrieveObject(int)
-	 */
+		 * @param aPosition the position to get
+		 * @param <T> the 
+		 * @return the object in the row at the position
+		 * @see nyla.solutions.core.data.DataRow#retrieveObject(int)
+		 */
 	   @SuppressWarnings("unchecked")
 	   public <T> T retrieveObject(int aPosition)
 	   {
 	      return (T)positionEntries.get(aPosition -1);
 	   }// --------------------------------------------------------
 	   /**
+	 * @param aPosition the position
+	 * @param obj  the object to assign
 	 * @see nyla.solutions.core.data.DataRow#assignObject(int, java.lang.Object)
 	 */
 	   public void assignObject(int aPosition , Object obj)
@@ -153,6 +160,8 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 		}// --------------------------------------------------------
 	   
 	   /**
+	 * @param aPosition the positions
+	 * @return the double at the position
 	 * @see nyla.solutions.core.data.DataRow#retrieveDouble(int)
 	 */
 	   public Double retrieveDouble(int aPosition)
@@ -170,6 +179,8 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 	      return new Double(text);
 	   }// --------------------------------------------
 	   /**
+	 * @param aPosition the position
+	 * @return the integer at the position
 	 * @see nyla.solutions.core.data.DataRow#retrieveInteger(int)
 	 */
 	   public Integer retrieveInteger(int aPosition)
@@ -188,6 +199,8 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 	   }// --------------------------------------------
 	   
 	   /**
+	 * @param aPosition the row column positions
+	 * @return object at the position
 	 * @see nyla.solutions.core.data.DataRow#retrieveDate(int)
 	 */
 	   public Date retrieveDate(int aPosition)
@@ -203,7 +216,8 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 	  
 	   
     /**
-	 * @see nyla.solutions.core.data.DataRow#getStrings()
+	 * @return array of string for the rows
+     * @see nyla.solutions.core.data.DataRow#getStrings()
 	 */
 	   public String[] getStrings()
 	   {
@@ -251,13 +265,15 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 	   }//--------------------------------------------
 	   
 	   /**
-	 * @see nyla.solutions.core.data.DataRow#getRowNum()
-	 */
+		 * @return the number of the row
+		 * @see nyla.solutions.core.data.DataRow#getRowNum()
+		 */
 		public int getRowNum()
 		{
 			return rowNum;
 		}// --------------------------------------------------------
 		/**
+		 * @param rowNum the row number
 		 * @see nyla.solutions.core.data.DataRow#setRowNum(int)
 		 */
 		public void setRowNum(int rowNum)
@@ -265,6 +281,7 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 			this.rowNum = rowNum;
 		}// --------------------------------------------------------
 		/**
+		 * @return arry entries of the row
 		 * @see nyla.solutions.core.data.DataRow#toArray()
 		 */
 		public Object[] toArray()
@@ -323,16 +340,18 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 			return (Integer)nameEntries.get(key);
 		}// --------------------------------------------------------			
 		/**
+		 * @param <T> the type of the object
 		 * @param key the key
 		 * @return the object
 		 * @see java.util.HashMap#get(java.lang.Object)
 		 */
-		public Object retrieveObject(String key)
+		@SuppressWarnings("unchecked")
+		public <T> T retrieveObject(String key)
 		{
 			if(nameEntries == null)
 				return null;
 			
-			return nameEntries.get(key);
+			return (T)nameEntries.get(key);
 		}// --------------------------------------------------------				
 
 		/**

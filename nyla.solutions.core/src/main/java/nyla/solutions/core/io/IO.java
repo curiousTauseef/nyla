@@ -370,8 +370,10 @@ public class IO
 
 	/**
 	 * 
-	 * @param files
-	 *            the files to merge
+	 * @param output
+	 *            the output file
+	 *  @param filesToMerge the files to merge
+	 *  @throws IOException and IP error occurs
 	 */
 	public static void mergeFiles(File output, File... filesToMerge) throws IOException
 	{
@@ -835,7 +837,7 @@ public class IO
 	 * 
 	 * @param location
 	 *            the location of the top folder
-	 * @return
+	 * @return the files
 	 */
 	public static File[] listFiles(String location)
 	{
@@ -857,6 +859,9 @@ public class IO
 
 	/**
 	 * List the file under a given directory
+	 * @param directory the directory
+	 * @param pattern the file pattern
+	 * @return the list of file names
 	 */
 	public static String[] list(File directory, String pattern)
 	{
@@ -870,6 +875,9 @@ public class IO
 
 	/**
 	 * List the file under a given directory
+	 * @param directory the directory
+	 * @param pattern the file pattern
+	 * @return the list of files
 	 */
 	public static File[] listFiles(File directory, String pattern)
 	{
@@ -935,6 +943,7 @@ public class IO
 	 * @param urlAddress
 	 *            the URL to read form
 	 * @return the URL text content
+	 * @throws IOException when an IO error occurs
 	 */
 	public static String readURL(String urlAddress) throws IOException
 	{

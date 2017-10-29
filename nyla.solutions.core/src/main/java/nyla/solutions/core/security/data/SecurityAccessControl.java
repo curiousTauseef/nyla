@@ -247,6 +247,7 @@ public class SecurityAccessControl implements Serializable, AccessControl
 	/**
 	 * @param principal
 	 *            the principal to set
+	 * @return true if principal edited
 	 */
 	public boolean setPrincipal(Principal principal)
 	{

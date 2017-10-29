@@ -69,9 +69,7 @@ public class CsvWriter
 
 		IO.writeAppend(file, text.toString() + IO.newline());
 	}// --------------------------------------------
-	/**
-	 * 
-	 */
+
 	public static String toCell(String text)
 	{
 		return new StringBuilder("\"")

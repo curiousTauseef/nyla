@@ -6,6 +6,7 @@ import java.util.Map;
 /**
  * This object encapsulates a request and response.
  * @author Gregory Green
+ * @param <PayloadType>  the payload type
  *
  */
 public class Envelope<PayloadType extends Object> implements Serializable
@@ -18,6 +19,7 @@ public class Envelope<PayloadType extends Object> implements Serializable
 	// --------------------------------------------------------
 	/**
 	 * Default constructor
+	 * @param payload the payload
 	 */
 	public Envelope(PayloadType payload)
 	{

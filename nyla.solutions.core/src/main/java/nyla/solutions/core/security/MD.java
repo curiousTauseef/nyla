@@ -19,8 +19,6 @@ public class MD
 	 * 
 	 * @param obj the object to create the check sum
 	 * @return the numeric checksum for an object
-	 * @throws IOException
-	 * @throws NoSuchAlgorithmException
 	 */
 	public static BigInteger checksum(Object obj) 
 	{

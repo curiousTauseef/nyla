@@ -40,7 +40,7 @@ public class FileEvent extends EventObject
       this.setEventType(eventType);
    }//---------------------------
    /**
-    * Fatory methd
+    * Factory method
     * @param aFile the file that was added
     * @return new FileEvent(aFile, FileEvent.ADDED)
     */
@@ -49,7 +49,7 @@ public class FileEvent extends EventObject
      return new FileEvent(aFile, FileEvent.ADDED);
    }//-------------------------
    /**
-    * Fatory methd
+    * Factory method
     * @param aFile the file that was added
     * @return new FileEvent(aFile, FileEvent.CHANGED)
     */
@@ -58,7 +58,7 @@ public class FileEvent extends EventObject
      return new FileEvent(aFile, FileEvent.CHANGED);
    }//-------------------------   
    /**
-    * Fatory methd
+    * Factory method
     * @param aFile the file that was added
     * @return new FileEvent(aFile, FileEvent.REMOVED)
     */
@@ -111,11 +111,18 @@ public class FileEvent extends EventObject
     */
    public String toString()
    {
+	   File file = (File)getSource();
+	   
+	   if(file == null)
+		   return "null";
+	   
+	   String name = file.getName();
+	   
       switch(this.eventType)
       {
-         case ADDED:   return "ADDED   "+this.getFile().getName();
-         case REMOVED: return "REMOVED "+this.getFile().getName();
-         default: return "CHANGED "+this.getFile().getName();
+         case ADDED:   return "ADDED   "+name;
+         case REMOVED: return "REMOVED "+name;
+         default: return "CHANGED "+name;
       }
    }//--------------------------------------------------
    /**

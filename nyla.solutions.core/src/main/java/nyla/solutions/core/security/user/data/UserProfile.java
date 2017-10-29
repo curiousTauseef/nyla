@@ -23,9 +23,8 @@ public class UserProfile extends Criteria
 implements User, Copier, Comparable<Object>
 {
    /**
-    * object
-    * 
-    * @see java.lang.Object#clone()
+    * @return clone of object
+    * @throws CloneNotSupportedException object cannot be cloned
     */
     public Object clone()
         throws CloneNotSupportedException
@@ -47,10 +46,10 @@ implements User, Copier, Comparable<Object>
    /**
     * Constructor for UserProfile initializes internal 
     * data settings.
-    * @param email
-    * @param loginID
-    * @param firstName
-    * @param lastName
+    * @param email the mail 
+    * @param loginID the login
+    * @param firstName the first name
+    * @param lastName the last name
     */
    public UserProfile(String email, String loginID, String firstName,
    String lastName)

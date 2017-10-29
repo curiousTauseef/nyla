@@ -1,10 +1,9 @@
-package nyla.solutions.core.data;
+package nyla.solutions.core.data.clock;
 
 import java.util.Calendar;
 import java.util.Date;
 
-import nyla.solutions.core.data.Day;
-import nyla.solutions.core.data.Time;
+import nyla.solutions.core.data.clock.Time;
 
 /**
  * A class representing a moment in time. Extends Day which represents

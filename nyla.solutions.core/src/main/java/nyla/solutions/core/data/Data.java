@@ -12,16 +12,11 @@ import java.util.List;
 
 import nyla.solutions.core.util.Debugger;
 
-//import solutions.global.data.CriteriaComparator;
-//import solutions.global.data.UpdateDateComparator;
-
 
 /**
 
- * <b>Data</b> represents a serializable data type.
-
+ * <b>Data</b> represents a Serializable data type.
  * @author Gregory Green
-
  * @version 1.0 
 
  */
@@ -92,27 +87,23 @@ implements Serializable
    /**
 
     * Determines whether the provided str is equal to null
-
     * or the length is equal to zero
-
+    * @param text the text to text
+    * @return true when str is null or length = 0
     */
 
-   public static boolean isNull(String str)
-
+   public static boolean isNull(String text)
    {
 
-      return str == null || str.trim().length() == 0 ||
+      return text == null || text.trim().length() == 0 ||
 
-            "null".equals(str.trim());
+            "null".equals(text.trim());
 
    } //---------------------------------------------
 
    /**
-
     * @return the string representation of a object
-
     */
-
    public String toString()
 
    {
@@ -123,19 +114,22 @@ implements Serializable
 
    /**
     * Sort a list 
+    * @param <T> the type
+	 * @param aVOs the value objects
+	 * @return collection the sorted criteria
     */
-   public static Collection<Object> sortByCriteria(Collection<Object> aVOs)
+   public static <T> Collection<T> sortByCriteria(Collection<T> aVOs)
    {
 
-      List<Object> list = null;
+      List<T> list = null;
 
       if (aVOs instanceof List)
 
-         list = (List<Object>) aVOs;
+         list = (List<T>) aVOs;
 
       else
 
-         list = new ArrayList<Object>(aVOs);
+         list = new ArrayList<T>(aVOs);
 
       Collections.sort(list, new CriteriaComparator());
 
@@ -144,25 +138,24 @@ implements Serializable
    } //-----------------------------------------------   
 
    /**
-
-       * Sort a list 
+     * Sort a list by a date property (Updateable) 
+	 * @param collection the collection 
+	 * @param <T> THE TYPE
+	 * @return COLLECTION OF type stored
 
        */
-
-   @SuppressWarnings({ "rawtypes", "unchecked" })
-public static Collection<Object> sortByUpdateDate(Collection aVOs)
-
+   public static<T> Collection<T> sortByUpdateDate(Collection<T> collection)
    {
 
-      List<Object> list = null;
+      List<T> list = null;
 
-      if (aVOs instanceof List)
+      if (collection instanceof List)
 
-         list = (List<Object>) aVOs;
+         list = (List<T>) collection;
 
       else
 
-         list = new ArrayList<Object>(aVOs);
+         list = new ArrayList<T>(collection);
 
       Collections.sort(list, new UpdateDateComparator());
 
@@ -178,12 +171,10 @@ public static Collection<Object> sortByUpdateDate(Collection aVOs)
    {
 
       /**
-
        *  implementation for the Comparator interface
-
        *  @param first the first object to be compared
-
        *  @param second the second object to be compared to
+       * @return 0 when equals < 0 less >0 greater than
 
        *  @throws ClassCastException if first or second is not an instance of this class
 
@@ -209,24 +200,18 @@ public static Collection<Object> sortByUpdateDate(Collection aVOs)
    } //-------------------------------------------------------------- 
 
    /**
-
-    * Comparator for th status active flag
-
+    * Comparator for the status active flag
     */
 
    public static class UpdateDateComparator implements Comparator<Object>, Serializable
    {
 
       /**
-
        *  implementation for the Comparator interface
-
        *  @param first the first object to be compared
-
        *  @param second the second object to be compared to
-
+       * @return 0 when equals < 0 less >0 greater than
        *  @throws ClassCastException if first or second is not an instance of this class
-
        */
 
       public int compare(Object first, Object second)

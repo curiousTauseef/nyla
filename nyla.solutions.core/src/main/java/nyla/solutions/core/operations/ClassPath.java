@@ -122,9 +122,9 @@ public class ClassPath extends ClassLoader
 	}// -----------------------------------------------
 	/**
 	 * Use a constructor of the a class to create an instance
-	 * @param aClass the class the create
+	 * @param className the class the create
+	 * @param <T> the type
 	 * @return the initiate object
-	 * @throws IllegalAccessException
 	 */
 	public static <T> T newInstance(String className) 
 	{
@@ -132,9 +132,12 @@ public class ClassPath extends ClassLoader
 	}// --------------------------------------------------------
 	/**
 	 * Use a constructor of the a class to create an instance
-	 * @param aClass the class the create
+	 * @param className the class the create
+	 * @param parameterType the parameter type
+	 * @param initarg the initial constructor argument
+	 * @param <T> the type to be created
 	 * @return the initiate object
-	 * @throws IllegalAccessException
+	 * @throws SetupException the setup error
 	 */
 	public static <T> T newInstance(String className, Class<?> parameterType,Object initarg) 
 	throws SetupException
@@ -151,9 +154,7 @@ public class ClassPath extends ClassLoader
 	}// --------------------------------------------------------
 	/**
 	 * Use a constructor of the a class to create an instance
-	 * @param aClass the class the create
-	 * @return the initiate object
-	 * @throws IllegalAccessException
+	 * @throws SetupException when an setup error occurs
 	 */
 	public static <T> T newInstance(Class<?> aClass, Class<?> parameterType,Object initarg) 
 	throws SetupException

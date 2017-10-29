@@ -14,6 +14,8 @@ public class CredentialAuthenticator extends Authenticator
    /**
     * 
     * Constructor for CredentialAuthenticator initializes internal
+     * @param aUsername the user name
+     * @param password the password
     */
    public CredentialAuthenticator(String aUsername, char[] password)
    {

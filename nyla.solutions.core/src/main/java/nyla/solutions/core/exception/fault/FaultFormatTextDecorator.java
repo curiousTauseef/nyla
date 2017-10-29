@@ -25,6 +25,7 @@ public class FaultFormatTextDecorator implements TextDecorator<Fault>
 	/**
 	 * 
 	 * @param target the fault format
+	 * @param templateName the template name
 	 */
 	public FaultFormatTextDecorator(Fault target, String templateName)
 	{

@@ -18,7 +18,7 @@ import nyla.solutions.core.exception.SecurityException;
  * @author Gregory Green
  * @version 1.0
  */
-public class SecurityAcl implements Acl
+public class SecurityAcl implements Acl, AclEditor
 {
 	/**
 	* 
@@ -32,6 +32,7 @@ public class SecurityAcl implements Acl
 
 	/**
 	 * Constructor for SecurityAcl initializes internal data settings.
+	 * @param aName the acl name
 	 * 
 	 */
 	public SecurityAcl(String aName)

@@ -1,6 +1,6 @@
 package nyla.solutions.core.patterns.decorator;
 
-import nyla.solutions.core.data.TimeInterval;
+import nyla.solutions.core.data.clock.TimeInterval;
 
 /**
  * 

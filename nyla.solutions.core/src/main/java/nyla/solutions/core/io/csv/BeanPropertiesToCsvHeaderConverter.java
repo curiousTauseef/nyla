@@ -6,7 +6,7 @@ import nyla.solutions.core.patterns.conversion.Converter;
 import nyla.solutions.core.util.Text;
 
 /**
- * 
+ * @param <ObjectType> the object type of the bean
  * @author Gregory Green
  *
  */

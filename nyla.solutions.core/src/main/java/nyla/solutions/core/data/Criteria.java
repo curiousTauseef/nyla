@@ -55,22 +55,18 @@ implements Comparable<Object>, PrimaryKey, Cloneable, Copier, Serializable, Iden
    }//--------------------------------------------
 
    /**
-
     * 
-
     * Constructor for Criteria initializes primaryKey to aPK
-
-    * @param aPK the primary key
-
+    * @param criteria the primary key
+    * @throws IllegalArgumentException When aPK is invalid
+    * 
     */   
-
-   public Criteria(Criteria aPK) throws IllegalArgumentException
-
+   public Criteria(Criteria criteria) throws IllegalArgumentException
    {
 
       primaryKey = -1;
 
-      setPrimaryKeyObject(aPK);
+      setPrimaryKeyObject(criteria);
 
    }//--------------------------------------------
 
@@ -101,13 +97,9 @@ implements Comparable<Object>, PrimaryKey, Cloneable, Copier, Serializable, Iden
    /**
 
     * 
-
     * @return the primary key
-
     * @see PrimaryKey#getPrimaryKey()
-
     */
-
    public int getPrimaryKey()
 
    {
@@ -115,25 +107,16 @@ implements Comparable<Object>, PrimaryKey, Cloneable, Copier, Serializable, Iden
       return primaryKey;
 
    }//--------------------------------------------
-   /**
-    * 
-    * @see java.lang.Object#clone()
-    */
    public Object clone() throws CloneNotSupportedException
    {
       return super.clone();    
    }//--------------------------------------------   
 
    /**
-
     * Set primary key
-
     * @param primaryKey the primary key to set
-
     * @throws IllegalArgumentException primary key is < 1
-
     */
-
    public void setPrimaryKey(int primaryKey) 
    throws IllegalArgumentException
    {
@@ -162,19 +145,12 @@ implements Comparable<Object>, PrimaryKey, Cloneable, Copier, Serializable, Iden
    }//--------------------------------------------
 
    /**
-
     * Set primary key
-
     * @param primaryKey the primary key to set
-
     * @throws IllegalArgumentException primary key is < 1
-
     */
-
    protected void setPrimaryKeyObject(PrimaryKey aCriteria)
-
-         throws IllegalArgumentException
-
+   throws IllegalArgumentException
    {
 
       if (aCriteria == null)
