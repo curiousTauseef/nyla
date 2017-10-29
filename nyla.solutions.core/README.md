@@ -283,9 +283,9 @@ Text is geared toward string based processing. It includes template engine suppo
 //with the corresponding values in a map.
 String text = "${company} A2D2 Solution Global Application Testings";
 Map<String,String> map = new HashMap<String,String>();
-map.put("company", "EMC");
+map.put("company", "MyCompany");
 text = Text.formatText(text,map);
-Assert.assertEquals("EMC A2D2 Solution Global Application Testings", text);
+Assert.assertEquals("MyCompany Solution Global Application Testings", text);
 
 
 //Use complex text matching boolean logic to regular expressions by adding ${AND}, ${NOT} and $OR} tags
