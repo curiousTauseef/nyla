@@ -126,6 +126,8 @@ public class Text
 
    /**
     * Append newline to text
+    * @param text the text
+    * @return the text with the appended the new line
     * 
     */
    public static String appendNewLine(String text)
@@ -1112,7 +1114,7 @@ public static Collection<Object> parse(Reader aReader, String aStart, String aEn
 
     * @param aMatchRegExp
     * @param aText
-    * @return
+    * @return the patching results
     */
    public static final String grepText(String aMatchRegExp, String aText)
    {
@@ -1164,22 +1166,19 @@ public static Collection<Object> parse(Reader aReader, String aStart, String aEn
     * Determines whether the provided str is equal to null
     * 
     * or the length is equal to zero
-    *  
+    *  @param str the text to text if is null
+    *  @return true if the string is em
     */
 
    public static boolean isNull(String str)
-
    {
-
       return str == null || str.trim().length() == 0 ||
-
       "null".equals(str.trim());
-
    } //---------------------------------------------
    /**
     * 
-    * @param aText
-    * @return 
+    * @param aText the text for convert to
+    * @return the String with initial caps
     */
    public static String initCaps(String aText)
    {
@@ -1271,7 +1270,7 @@ public static Collection<Object> parse(Reader aReader, String aStart, String aEn
 
    }//--------------------------------------------
    /**
-    * @param the double
+    * @param doubleText the double text
     * @return formatted currency
     */  
    public static String formatCurrency(String doubleText)
@@ -1293,6 +1292,7 @@ public static Collection<Object> parse(Reader aReader, String aStart, String aEn
    }//---------------------------------------
    /**
     * Used the"#,##0.0###" formatting for a given number
+    * @param aNumber the number to format
     * @return formatted number
     */  
    public static String formatDouble(String aNumber)
@@ -1300,7 +1300,8 @@ public static Collection<Object> parse(Reader aReader, String aStart, String aEn
 	   return formatDouble(aNumber,"#,##0.0###");
    }// --------------------------------------------------------
    /**
-    * 
+    * @param number the number to format
+    * @param format the format
     * @return formatted number
     */  
    public static String formatDouble(String number, String format)
@@ -1312,7 +1313,7 @@ public static Collection<Object> parse(Reader aReader, String aStart, String aEn
 	   
    }// --------------------------------------------------------
    /**
-    * 
+    * @param number the double number to format
     * @return formatted number
     */  
    public static String formatDouble(double number)
@@ -1320,20 +1321,19 @@ public static Collection<Object> parse(Reader aReader, String aStart, String aEn
 	   return formatDouble(number,"#,##0.0###");
    }// --------------------------------------------------------
    /**
-    * 
+    * @param number the number to format
+    * @param format the format
     * @return formatted number
     */  
    public static String formatDouble(double number, String format)
    {
-   
          DecimalFormat decimalFormat = new DecimalFormat(format);
-        // numberFormat.
         return decimalFormat.format(number);
 
    }//--------------------------------------------------------   
 
    /**
-    * 
+    * @param aNumber the number to format
     * @return formatted number
     */  
    public static String formatNumber(String aNumber)
@@ -1342,16 +1342,16 @@ public static Collection<Object> parse(Reader aReader, String aStart, String aEn
       return formatDouble(aNumber);
    }//--------------------------------------------------------
    /**
-    * 
+    * @param number the double number
     * @return formatted number
     */  
    public static String formatNumber(double number)
    {
-	   
-      return formatDouble(number);
+	  return formatDouble(number);
    }//--------------------------------------------------------
    /**
-    * 
+    * @param number the number to format
+    * @param format the format of the number
     * @return formatted number
     */  
    public static String formatNumber(double number, String format)
@@ -1360,7 +1360,7 @@ public static Collection<Object> parse(Reader aReader, String aStart, String aEn
       return formatDouble(number,format);
    }//--------------------------------------------------------   
    /**
-    * 
+    * @param number the percentage number to format
     * @return formatted number
     */
    public static String formatPercent(String number)
@@ -1374,7 +1374,7 @@ public static Collection<Object> parse(Reader aReader, String aStart, String aEn
    /**
     * 
     * @param number
-    * @return
+    * @return the formatted percent
     */
    public static String formatPercent(double number)
    {
@@ -1809,18 +1809,14 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
  
    Date formating ${lastUpdated?string("yyyy-MM-dd HH:mm:ss zzzz")}
     * 
-    * @param aBindText
-    * 
-    * @param aBindMap
-    *           values to insert into the bind text
-    * 
-    * 
-    *  
+    * @param aBindText the bind text
+    * @param aBindMap values to insert into the bind text
+    * @return the text the format
+    *  @throws FormatException the format exception
     */
    public static String format(String aBindText, Object aBindMap)
    throws FormatException
    {
-
       return Text.format(aBindText, aBindMap, DATE_FORMAT);
 
    }//------------------------------------------------------------------
@@ -1830,6 +1826,7 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
     * @param bindText ex: Hello # ${0}
     * @param inputs {"Green", "Red"}
     * @return format response ex: Hello # Green
+    * @throws FormatException
     */
    public static String formatArray(String bindText, Object[] inputs)
    throws FormatException
@@ -1879,7 +1876,8 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
    /**
     * Formats a java.util.Date object in the standard format
     * for the application.
-    * 
+    * @param date the date to format
+    * @return the format date
     */
    public static final String formatDate(Date date) {
   
@@ -1920,24 +1918,24 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
       z  Time zone  General time zone  Pacific Standard Time; PST; GMT-08:00  
       Z  Time zone  RFC 822 time zone  -0800  
 
-    * @param format
-    * @param aDate
-    * @return
+    * @param format the data format
+    * @param date the date to format
+    * @return formatted 
     */
-   public static final String formatDate(String aFormat, Date aDate) 
+   public static final String formatDate(String format, Date date) 
    {
-      if(aDate == null)
+      if(date == null)
          return "";
       
-      if (aFormat == null || aFormat.length() == 0)
+      if (format == null || format.length() == 0)
       {
-         return aDate.toString();
+         return date.toString();
          
       }          
       
-      SimpleDateFormat sdf = new SimpleDateFormat(aFormat);
+      SimpleDateFormat sdf = new SimpleDateFormat(format);
           
-      return sdf.format(aDate);
+      return sdf.format(date);
    }//--------------------------------------------
    public static final String formatDate(String text) 
    {
@@ -1965,31 +1963,26 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
     * 
     * results in a string "Today is Monday"
     * 
-    * 
-    * 
-    * @param aBindText 
-    * 
-    * @param aBindMap values to insert into the bind text
-    * 
-    * @param aDateFormat
-    *           i.e. MM/dd/yyyy
-    *  
+    * @param bindText the bind text ex: Today is ${DAY}" and bindPara DAY="Monday
+    * @param bindObj the map of values to insert into the bind text
+    * @param dateFormat i.e. MM/dd/yyyy
+    *  @return the formatted text
+    *  @throws FormatException when an format error occurs
     */
 
    public static String format(String bindText, Object bindObj,
                                String dateFormat)
-
    throws FormatException
-
    {
 	   return getTextStyles().format(bindText,bindObj,dateFormat);
    }//-----------------------------------------
    /**
     * Format text replacing place-holders prefixed with ${ and suffixed by } 
     * with the corresponding values in the map.
-    * @param text the text to format
+    * @param bindText the text to format
     * @param map the key/values
     * @return the formatted text
+    * @throws FormatException when an formating error occurs
     */
    public static String formatText(String bindText, Map<String,String> map)
    throws FormatException
@@ -1998,11 +1991,11 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
    }// --------------------------------------------------------
    /**
     * write formatted output to the writer
-    * @param aBindMap
-    * @param text
-    * @param writer
-    * @throws IOException
-    * @throws TemplateException
+    * @param aBindMap the placeholder key/value pairs
+    * @param text the text to format
+    * @param writer the writer to send formatted output
+    * @throws IOException when IO error occurs
+    * @throws FormatException a format error occurs
     */
    public static void formatWriter( String text, Object aBindMap, Writer writer) 
    throws IOException, FormatException
@@ -2011,11 +2004,13 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
    }//--------------------------------------------   
    /**
     * write formatted output to the writer
-    * @param aBindMap
-    * @param text
-    * @param writer
-    * @throws IOException
-    * @throws TemplateException
+    * @param aBindMap the placeholder name/value map
+    * @param text the text to format
+    * @param dateFormat the date format
+    * @param writer the writer to write the formatted output
+    * @throws IOException when IO error occurs
+    * @throws FormatException when formatting exception occurs 
+    * 
     */
    public static void formatWriter( String text, Object aBindMap, String dateFormat, Writer writer) 
    throws IOException, FormatException
@@ -2093,10 +2088,9 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
    /**
     * 
     * @param templateName
+    * @return the loaded template 
     * 
-    * @return @throws
-    * 
-    * IOException
+    * @throws IOException when an IO 
     *  
     */
    public static String loadTemplate(String templateName)

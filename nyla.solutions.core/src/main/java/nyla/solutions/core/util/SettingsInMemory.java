@@ -58,9 +58,7 @@ public class SettingsInMemory
     * Retrieves a Settings property as a String object. <p/>Loads the file
     * if not already initialized.
     * 
-    * @param Key
-    *           Name of the property to be returned.
-    * 
+    * @param key the Key name of the property to be returned
     * @return Value of the property as a string or null if no property found.
     */
 
@@ -119,12 +117,11 @@ public class SettingsInMemory
     * Retrieves a Settings property as a String object. <p/>Loads the file
     * if not already initialized.
     * 
-    * @param Key
-    *           Name of the property to be returned.
-    * 
+    * @param aClass the class name
+    * @param key the Key name of the property to be returned.
+    * @param aDefault the default value
     * @return Value of the property as a string or null if no property found.
     */
-
    public String getText(Class<?> aClass, String key, String aDefault)
    {
 	   return getText(aClass.getName()+"."+key, aDefault);
@@ -134,9 +131,8 @@ public class SettingsInMemory
     * Retrieves a Settings property as a String object. <p/>Loads the file
     * if not already initialized.
     * 
-    * @param Key
-    *           Name of the property to be returned.
-    * 
+    * @param key the Key name of the property to be returned.
+    * @param aDefault the default value
     * @return Value of the property as a string or null if no property found.
     */
 
@@ -167,9 +163,8 @@ public class SettingsInMemory
     * Get a Setting property as an Integer object.
     * 
     * @param aClass calling class
-    * @param Key
-    *           Name of the numeric property to be returned.
-    * 
+    * @param key the key name of the numeric property to be returned.
+    * @param defaultValue the default value
     * @return Value of the property as an Integer or null if no property found.
     */
 
@@ -196,9 +191,7 @@ public class SettingsInMemory
    /**
     * Get a Settings property as an Integer object.
     * 
-    * @param Key
-    *           Name of the numeric property to be returned.
-    * 
+    * @param key the Key Name of the numeric property to be returned.
     * @return Value of the property as an Integer or null if no property found.
     */
 
@@ -259,11 +252,10 @@ public class SettingsInMemory
    /**
     * Get a Setting property as a Boolean object.
     * 
-    * @param Key
-    *           Name of the numeric property to be returned.
+    * @param key the key name of the numeric property to be returned.
     * 
     * @return Value of the property as an Boolean or null if no property found.
-    *         <p/><p/><p/>Note that the value of the returned Boolean will be
+    *         Note that the value of the returned Boolean will be
     *         false if the <p/>property sought after exists but is not equal to
     *         "true" (ignoring case).
     */
@@ -295,11 +287,9 @@ public class SettingsInMemory
 
    }//------------------------------------------------------------
    /**
-    * @param key
-    *           the Settings key
-    * @param aBool
-    *           default value
-    * 
+    * @param aClass the class name
+    * @param key the Settings key
+    * @param aBool default value
     * @return aBool if the Settings value for the key is blank
     */
 

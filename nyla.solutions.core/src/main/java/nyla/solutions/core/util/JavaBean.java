@@ -42,6 +42,7 @@ public class JavaBean
 	 * Create new instance of the object
 	 * @param aValues the map value
 	 * @param aClass the class to create
+	 * @param <T> the type of the bean
 	 * @return the create object instance
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
@@ -53,12 +54,14 @@ public class JavaBean
 	 }// --------------------------------------------------------
 	  
     /**
-			 * Create new instance of the object
-			 * @param aValues the map value
-			 * @param aClass the class to create
-			 * @return the create object instance
-			 * @throws InstantiationException
-			 * @throws IllegalAccessException
+	 * Create new instance of the object
+	 * @param aValues the map value
+	 * @param aClass the class to create
+	 * @param <T> the type class
+	 * @param convert the conversion implementation
+	 * @return the create object instance
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
 	 */
 	 public static <T> T newBean(Map<?,?> aValues, Class<?> aClass, PropertyConverter<Object,Object> convert)
 	 throws InstantiationException, IllegalAccessException
@@ -72,6 +75,8 @@ public class JavaBean
 	 }// --------------------------------------------------------
 	 /**
 	  * Support nested map objects
+	  * @param values the key/value properties
+	  * @param bean the object to write to
 	  * 
 	  */
    public static void populate(Map<?,?> values, Object bean)
@@ -82,15 +87,17 @@ public class JavaBean
    
    /**
 	  * Support nested map objects
+	  * @param aValues the key/value properties
+	  * @param bean the object to write to
+	  * @param valueConverter the value converter strategy object
 	  * 
 	  */
- public static void populate(Map<?,?> aValues, Object aBean, PropertyConverter<Object, Object> valueConverter)
- {
-    
-    Object key = null;
-    
-    Object keyValue;
-    try
+   public static void populate(Map<?,?> aValues, Object bean, PropertyConverter<Object, Object> valueConverter)
+   {
+        Object key = null;
+	    
+	    Object keyValue;
+	    try
 		{
 
 			for(Map.Entry<?, ?> entry : aValues.entrySet())
@@ -99,7 +106,7 @@ public class JavaBean
 			     
 			   	 keyValue = entry.getValue();
 			    	 
-			    	 PropertyDescriptor desc =  getPropertyDescriptor(aBean, String.valueOf(key));
+			    	 PropertyDescriptor desc =  getPropertyDescriptor(bean, String.valueOf(key));
 			    	 if(desc == null)
 		    			 continue; //skip
 			    	 
@@ -114,7 +121,7 @@ public class JavaBean
 			    	 }
 			    
 			    	 Method invoke = desc.getWriteMethod();
-			    	 invoke.invoke(aBean, keyValue);
+			    	 invoke.invoke(bean, keyValue);
 		  }
 	}
 	catch (Exception e)
@@ -260,9 +267,8 @@ public class JavaBean
 
    /**
     * 
-    * @param bean the bean object
-    version of object
-    * @throws Exception
+    * @param bean the bean object version of object
+    * @return the map version of the of the object 
     */
   public static Map<Object, Object> toMap(Object bean)
   {
@@ -423,14 +429,12 @@ public class JavaBean
            return getPropertyDescriptors(bean.getClass());
    }
    /**
-    * 
+    * Retrieve the bean property
     * @param bean the bean
-    * @param name the property na,me
-    * @return
-    * @throws IllegalAccessException
-    * @throws InvocationTargetException
-    * @throws NoSuchMethodException
-    * @throws Exception
+    * @param name the property name
+    * @param <T> the type class of the property for casting
+    * @return the property
+    * @throws SystemException the an unknown error occurs
     */
    @SuppressWarnings("unchecked")
    public static <T> T getProperty(Object bean, String name)
@@ -447,16 +451,16 @@ public class JavaBean
    }//-------------------------------------------
    /**
     * 
-    * @param bean
-    * @param name
-    * @return
-    * @throws IllegalAccessException
-    * @throws InvocationTargetException
-    * @throws NoSuchMethodException
-    * @throws Exception
+    * @param bean the bean to get the property
+    * @param name the name
+    * @return the nested object
+    * @throws IllegalAccessException the illegal access exception
+    * @throws InvocationTargetException the invocation
+    * @throws NoSuchMethodException no such method
+    * @throws Exception when an unknown error occurs
     */
    @SuppressWarnings({ "unchecked", "rawtypes" })
-public static Object getNestedProperty(Object bean, String name)
+   public static Object getNestedProperty(Object bean, String name)
        throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, Exception
    {
        if(bean == null)

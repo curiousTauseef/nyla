@@ -79,15 +79,11 @@ public class Cryption
 
 	/**
 	 * 
-	 * 
-	 * 
 	 * Constructor for Cryption initializes internal data settings.
 	 * 
 	 * @param keyBytes the symmetric key to use
 	 * @param algorithm the encryption algorithm (example: AES or DES)
-	 * @throws Exception
 	 */
-
 	public Cryption(byte[] keyBytes, String algorithm)
 	{
 		if(algorithm == null)
@@ -126,12 +122,9 @@ public class Cryption
 	 * @param bytes the unencrypted bytes encrypt
 	 * 
 	 * @return  the encrypt bytes
-	 * 
-	 * @throws Exception
 	 */
 	public byte[] encrypt(byte[] bytes)
 	{
-
 		// Create the PKCS5Padding final block by encryption
 		try
 		{
@@ -388,8 +381,6 @@ public class Cryption
 	private final Cipher decryptCipher;
 	private final Cipher encryptCipher;
 	private final String algorithm;
-
-
 	private static final byte[] keyBytes =
 	{ -83, 48, 38, 87, -72, -49, 106, -28, -113, 60, 93, 58, -93, 7, -1, 16 };
 	private static Cryption canonical = new Cryption(keyBytes,DEFAULT_ALGORITHM);

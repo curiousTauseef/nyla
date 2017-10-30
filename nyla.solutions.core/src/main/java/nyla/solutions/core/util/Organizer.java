@@ -89,7 +89,7 @@ public final class Organizer
 	}
 
 	/**
-	 * 
+	 * @param <T> the type class
 	 * @param input the item to add
 	 * @param array the array where item is added
 	 * @return the update array
@@ -119,8 +119,9 @@ public final class Organizer
 				
 			    Organizer.flatten((Collection)results, flattedCollection);
 	   </pre>
-	 * @param input 
-	 * @param flattenOutput
+	 * @param input the input collection
+	 * @param flattenOutput the collection output
+	 * @param <T> the flatten output type
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> void flatten(Collection<Object> input,
@@ -140,11 +141,11 @@ public final class Organizer
 
 		}
 
-
 	}// --------------------------------------------------------
 	/**
 	 * Aggregates multiple collections into a single paging collection
 	 * @param collectionOfPaging the collection paging that 
+	 * @param <T> the type class
 	 * @return the flatten collections into a single collection
 	 */
 	public static <T> Paging<T> flattenPaging(Collection<Paging<T>> collectionOfPaging)
@@ -167,6 +168,7 @@ public final class Organizer
 	 * @param collectionOfPaging the collection paging that need to be flatten
 	 * @param sorter optional comparable for sorting
 	 * @param filter optional filter, if filter.
+	 * @param <T> the type class
 	 * @return the flatten collections into a single collection
 	 */	
 	public static <T> Paging<T> flattenPaging(Collection<Paging<T>> collectionOfPaging, 
@@ -183,6 +185,8 @@ public final class Organizer
 	 * @param collectionOfPaging the collection paging that need to be flatten
 	 * @param sorter optional comparable for sorting
 	 * @param filter optional filter, if filter.
+	 * @param pageCriteria the page criteria
+	 * @param <T> the collection page object type
 	 * @return the flatten collections into a single collection
 	 */	
 	@SuppressWarnings("unchecked")
@@ -238,6 +242,8 @@ public final class Organizer
 	}// --------------------------------------------------------
 	/**
 	 * Add all collections
+	 * @param <T> the type class
+	 * @param paging the paging output
 	 * @param pagingResults the results to add to
 	 * @param filter remove object where filter.getBoolean() == true
 	 */
@@ -378,14 +384,14 @@ public final class Organizer
 	 * @param list the list of strings
 	 * @return true if aText in aList
 	 */
-	public static boolean isStringIn(String aText, String[] aList)
+	public static boolean isStringIn(String text, String[] list)
 	{
-		if (aText == null)
+		if (text == null)
 			return false;
 
-		for (int i = 0; i < aList.length; i++)
+		for (int i = 0; i < list.length; i++)
 		{
-			if (aText.equals(aList[i]))
+			if (text.equals(list[i]))
 				return true;
 		}
 
@@ -497,17 +503,19 @@ public final class Organizer
 	/**
 	 * Copy collection objects to a given array
 	 * 
-	 * @param aCollection the collection source
-	 * @param aObject array destination
+	 * @param collection the collection source
+	 * @param objects array destination
 	 */
-	public static void copyToArray(Collection<Object> aCollection, Object[] aObjects)
+	public static void copyToArray(Collection<Object> collection, Object[] objects)
 	{
-		System.arraycopy(aCollection.toArray(), 0, aObjects, 0, aObjects.length);
+		System.arraycopy(collection.toArray(), 0, objects, 0, objects.length);
 	}// --------------------------------------------
 
 	/**
 	 * Add mappable to map
 	 * 
+	 * @param <K> the key
+	 * @param <V> the value
 	 * @param aMappables the collection of Mappables that must implement the
 	 *            Copier interface
 	 * @param aMap the map to add to
@@ -541,6 +549,8 @@ public final class Organizer
 	/**
 	 * Find values in map that match a given key
 	 * 
+	 * @param <K> the key type
+	 * @param <T> the map value type
 	 * @param aKeys the keys
 	 * @param aMap the map containing the data
 	 * @return Collection of values
@@ -566,9 +576,9 @@ public final class Organizer
 
 	/**
 	 * All object to a given collection
-	 * 
+	 * @param <T> the type class
 	 * @param aFrom the collection to add from
-	 * @param aTo the collecto to add to.
+	 * @param aTo the collection to add to.
 	 */
 	public static <T> void addAll(Collection<T> aFrom, Collection<T> aTo)
 	{
@@ -644,10 +654,10 @@ public final class Organizer
 	}// --------------------------------------------
 
 	/**
-	 * construct map for collection of criteria object wher the key is
+	 * construct map for collection of criteria object where the key is
 	 * Criteria.getId
 	 * 
-	 * @param aCriterias
+	 * @param aPrimaryKeys the primary keys
 	 * @return the map Criteria is the value and Criteria.getId is the key
 	 */
 	public static Map<Integer,PrimaryKey>  constructPrimaryKeyMap(Collection<PrimaryKey> aPrimaryKeys)
@@ -695,7 +705,7 @@ public final class Organizer
 
 	/**
 	 * Copy data from object to object
-	 * 
+	 * @param <K> the key
 	 * @param aFrom the object to copy from
 	 * @param aTo the object to copy to
 	 */
@@ -736,9 +746,10 @@ public final class Organizer
 
 	/**
 	 * Copy value form one map to another
-	 * 
-	 * @param aFormMap
-	 * @param aToMap
+	 * @param aAuditable the auditable to copy
+	 * @param aFormMap the input map of copiers
+	 * @param <K> the key name
+	 * @param aToMap the output map of copiers
 	 */
 	public static <K> void  makeAuditableCopies(Map<K,Copier> aFormMap, Map<K,Copier> aToMap,
 			Auditable aAuditable)
@@ -786,9 +797,10 @@ public final class Organizer
 	/**
 	 * Sort collection of object by a given property name
 	 * 
-	 * @param aProperyName the proeprty name
+	 * @param aProperyName the property name
 	 * @param aCollection the collection of object to sort
-	 * @return
+	 * @param <T> the type class
+	 * @return the collection of sorted values
 	 */
 	public static <T> Collection<T> sortByJavaBeanProperty(String aProperyName,
 			Collection<T> aCollection)
@@ -810,10 +822,11 @@ public final class Organizer
 
 	/**
 	 * Sort collection of object by a given property name
-	 * 
-	 * @param aProperyName the proeprty name
+	 * @param <T> the type class name
+	 * @param aProperyName the property name
+	 * @param aDescending boolean if sorting descending or not
 	 * @param aCollection the collection of object to sort
-	 * @return
+	 * @return the collection of sorted collection of the property
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> Collection<T> sortByJavaBeanProperty(String aProperyName,
@@ -833,11 +846,12 @@ public final class Organizer
 	}// --------------------------------------------
 
 	/**
-	 * 
+	 * @param aPropertyName the property name
 	 * @param aCollection the collection to construct set from (this object)
 	 *            must have an javaBean property that matches aPropertyName
-	 * 
+	 * @param <T> the type class
 	 * @return set of bean properties (HashSet)
+	 * @throws Exception when an unknown error occurs
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
@@ -857,21 +871,18 @@ public final class Organizer
 
 		return set;
 	}// --------------------------------------------
-
 	/**
 	 * 
-	 * 
-	 * 
-	 * @param aCollection the collection to filter
-	 * 
+	 * @param aList the list to filter
+	 * @param propertyName the property name to based the filters
+	 * @param aValue the value to compare
 	 * @return the filtered list
-	 * 
 	 */
 	public static Collection<Object> filterByJavaBeanProperty(
-			List<Object> aList, String aPropertyName, Comparable<Object> aValue)
+			List<Object> aList, String propertyName, Comparable<Object> aValue)
 	{
 
-		logger.debug("In Organizer filtering: " + aPropertyName
+		logger.debug("In Organizer filtering: " + propertyName
 				+ " for value: " + aValue);
 		try
 		{
@@ -886,9 +897,9 @@ public final class Organizer
 			for (Iterator<Object> i = aList.iterator(); i.hasNext();)
 			{
 				bean = i.next();
-				beanPropertyValue = JavaBean.getProperty(bean, aPropertyName);
+				beanPropertyValue = JavaBean.getProperty(bean, propertyName);
 				logger.debug("Got propertyValue: " + beanPropertyValue
-						+ " for propertyName: " + aPropertyName);
+						+ " for propertyName: " + propertyName);
 				if (aValue.compareTo(beanPropertyValue) == 0)
 				{
 					// only add equal this bean
@@ -907,36 +918,35 @@ public final class Organizer
 
 	/**
 	 * 
-	 * 
-	 * 
-	 * @param aCollection the collection to filter
-	 * 
-	 * @return the filtered list
-	 * 
+	 * @param list the list to filter
+	 * @param propertyName the property name to filter
+	 * @param startComparable  the formatted start date
+	 * @param endComparable the formatted end date
+	 * @return the filter results 
 	 */
-	public static Collection<Object> filterByJavaBeanDateProperty(ArrayList<Object> aList,
-			String aPropertyName, Comparable<Object> aValue, Comparable<Object> bValue)
+	public static Collection<Object> filterByJavaBeanDateProperty(List<Object> list,
+			String propertyName, Comparable<Object> startComparable, Comparable<Object> endComparable)
 	{
 
-		logger.debug("In Organizer filtering: " + aPropertyName
-				+ " for date value between : " + aValue + " and " + bValue);
+		logger.debug("In Organizer filtering: " + propertyName
+				+ " for date value between : " + startComparable + " and " + endComparable);
 		try
 		{
-			if (aList == null)
+			if (list == null)
 				throw new IllegalArgumentException(
 						"aCollection required in filterByJavaBeanProperty");
 
-			ArrayList<Object> filteredList = new ArrayList<Object>(aList.size());
+			ArrayList<Object> filteredList = new ArrayList<Object>(list.size());
 
 			Object bean = null;
 			Object beanPropertyValue = null;
-			for (Iterator<Object> i = aList.iterator(); i.hasNext();)
+			for (Iterator<Object> i = list.iterator(); i.hasNext();)
 			{
 				try
 				{
 					bean = i.next();
 					beanPropertyValue = JavaBean.getProperty(bean,
-							aPropertyName);
+							propertyName);
 					// logger.debug("Got propertyValue: " + beanPropertyValue+
 					// " for propertyName: " + aPropertyName);
 
@@ -944,16 +954,12 @@ public final class Organizer
 					DateFormat format = new SimpleDateFormat(
 							Config.getProperty("document.date.format"));
 					Date propDate = format.parse(beanPropertyValue.toString());
-					Date aDate = format.parse(aValue.toString());
-					Date bDate = format.parse(bValue.toString());
+					Date aDate = format.parse(startComparable.toString());
+					Date bDate = format.parse(endComparable.toString());
 
-					// logger.debug("Organizer ::  propDate : " + propDate);
-					// logger.debug("Organizer ::  aDate : " + aDate);
-					// logger.debug("Organizer ::  bDate : " + bDate);
 					if (propDate.after(aDate) && propDate.before(bDate))
 					{
 						filteredList.add(bean);
-						// logger.debug("Organizer added bean");
 					}
 				}
 				catch (Exception e)
@@ -1065,8 +1071,10 @@ public final class Organizer
 	/**
 	 * key=Mappable.getKey() value=Mappable.getValue()
 	 * 
-	 * @param aMappables
-	 * @return
+	 * @param aMappables the collection of mappable to convert
+	 * @param <K> the key
+	 * @param <V> the value
+	 * @return the mapped 
 	 */
 	public static <K,V> Map<K,V> toMap(Collection<Mappable<K,V>> aMappables)
 	{
@@ -1123,7 +1131,7 @@ public final class Organizer
 	/**
 	 * 
 	 * @param aObjects
-	 * @return
+	 * @return the array of the integers
 	 */
 	public static Integer[] toIntegers(Object[] aObjects)
 	{

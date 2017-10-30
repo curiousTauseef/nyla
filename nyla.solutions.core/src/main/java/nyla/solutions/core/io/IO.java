@@ -445,6 +445,8 @@ public class IO
 	 * 
 	 * @param file
 	 *            the file/folder to delete
+	 * @return true if file as deleted
+	 * @throws IOException when an IO error occurs
 	 */
 	public static boolean delete(File file) throws IOException
 	{

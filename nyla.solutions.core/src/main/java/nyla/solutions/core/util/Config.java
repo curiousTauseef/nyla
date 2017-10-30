@@ -114,10 +114,9 @@ public class Config
 
 	/**
 	 * Retrieves a configuration property as a String object.
-	 * <p/>
 	 * Loads the file if not already initialized.
 	 * 
-	 * @param Key Name of the property to be returned.
+	 * @param key Key Name of the property to be returned.
 	 * 
 	 * @return Value of the property as a string or null if no property found.
 	 */
@@ -140,9 +139,9 @@ public class Config
 	/**
 	 * Multiple properties separated by white spaces
 	 * 
-	 * @param aClass
-	 * @param key
-	 * @return
+	 * @param aClass the calling classes
+	 * @param key the key 
+	 * @return array of String
 	 */
 	public static String[] getPropertyStrings(Class<?> aClass, String key)
 	{
@@ -205,11 +204,11 @@ public class Config
 
 	/**
 	 * Retrieves a configuration property as a String object.
-	 * <p/>
 	 * Loads the file if not already initialized.
 	 * 
-	 * @param Key Name of the property to be returned.
-	 * 
+	 * @param aClass the class the name
+	 * @param key Name of the property to be returned.
+	 * @param aDefault the default value
 	 * @return Value of the property as a string or null if no property found.
 	 */
 
@@ -221,11 +220,11 @@ public class Config
 
 	/**
 	 * Retrieves a configuration property as a String object.
-	 * <p/>
+	 * 
 	 * Loads the file if not already initialized.
 	 * 
-	 * @param Key Name of the property to be returned.
-	 * 
+	 * @param key Key Name of the property to be returned.
+	 * @param aDefault the default value
 	 * @return Value of the property as a string or null if no property found.
 	 */
 
@@ -239,8 +238,8 @@ public class Config
 	 * Get a configuration property as an Integer object.
 	 * 
 	 * @param aClass calling class
-	 * @param Key Name of the numeric property to be returned.
-	 * 
+	 * @param key the Key Name of the numeric property to be returned.
+	 * @param defaultValue the default value
 	 * @return Value of the property as an Integer or null if no property found.
 	 */
 
@@ -352,7 +351,7 @@ public class Config
 	/**
 	 * Get a configuration property as a Boolean object.
 	 * 
-	 * @param Key Name of the numeric property to be returned.
+	 * @param  key the Key Name of the numeric property to be returned.
 	 * 
 	 * @return Value of the property as an Boolean or null if no property found.
 
@@ -378,6 +377,7 @@ public class Config
 	}// ------------------------------------------------------------
 
 	/**
+	 * @param aClass the class name
 	 * @param key the configuration key
 	 * @param aBool default value
 	 * 
@@ -474,6 +474,9 @@ public class Config
 	}// ------------------------------------------------------------
 
 	/**
+	 * Retrieve the password
+	 * 
+	 * @param aClass the class name
 	 * @param key the configuration key
 	 * @param defaultPassword default value
 	 * 

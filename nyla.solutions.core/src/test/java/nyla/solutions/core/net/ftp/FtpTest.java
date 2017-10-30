@@ -27,9 +27,6 @@ public class FtpTest extends TestCase
 		super.setUp();
 	}
 
-	/**
-	 * Test method for {@link nyla.solutions.core.net.ftp.Ftp#get(java.lang.String, java.lang.String)}.
-	 */
 	public void testGet()
 	throws IOException
 	{

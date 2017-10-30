@@ -44,7 +44,7 @@ public interface Settings
 	 * <p/>
 	 * Loads the file if not already initialized.
 	 * 
-	 * @param Key Name of the property to be returned.
+	 * @param key Key Name of the property to be returned.
 	 * 
 	 * @return Value of the property as a string or null if no property found.
 	 */
@@ -114,7 +114,9 @@ public interface Settings
 	 * <p/>
 	 * Loads the file if not already initialized.
 	 * 
-	 * @param Key Name of the property to be returned.
+	 * @param aClass the class name prefix for the property
+	 * @param key Key Name of the property to be returned.
+	 * @param aDefault the default value
 	 * 
 	 * @return Value of the property as a string or null if no property found.
 	 */
@@ -138,8 +140,8 @@ public interface Settings
 	 * Get a configuration property as an Integer object.
 	 * 
 	 * @param aClass calling class
-	 * @param Key Name of the numeric property to be returned.
-	 * 
+	 * @param key Key Name of the numeric property to be returned.
+	 * @param defaultValue the default value
 	 * @return Value of the property as an Integer or null if no property found.
 	 */
 

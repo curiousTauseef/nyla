@@ -16,10 +16,6 @@ import junit.framework.TestCase;
  */
 public class TextTest extends TestCase
 {
-	
-	/**
-	 * 
-	 */
 	public void testLoadTemplate()
 	throws Exception
 	{

@@ -9,14 +9,9 @@ import java.util.ResourceBundle;
 
 import nyla.solutions.core.exception.SystemException;
 
-
-
-
-
 /**
  * 
  * <pre>
- * 
  *  Presenter message view helper.
  *  
  *  All presentation messages can be written by the system configuration module.
@@ -97,16 +92,14 @@ public class Presenter
    /**
     * 
     * Singleton factory method
-    * 
     * @return a single instance of the Presenter object
-    * 
     * for the JVM
-    * 
+    * @param bundle the resource bundle
     */
 
-   public static Presenter getPresenter(ResourceBundle aBundle)
+   public static Presenter getPresenter(ResourceBundle bundle)
    {
-      return new Presenter(aBundle);
+      return new Presenter(bundle);
    }// --------------------------------------------
    /**
     * 
@@ -120,7 +113,7 @@ public class Presenter
    /**
     * 
     * New instance for the locale
-    * 
+    * @param aLocale the locale based for the resource bundle
     * @return a new instance of the Presenter
     * 
     */
@@ -132,11 +125,9 @@ public class Presenter
    /**
     * 
     * New instance for the class
-    * 
+    * @param aClass the class/path that contains the resource bundle
     * @return a new instance of the Presenter
-    * 
     */
-
    public static Presenter getPresenter(Class<?> aClass)
    {
       if (aClass == null)
@@ -175,19 +166,19 @@ public class Presenter
    /**
     * 
     * 
-    * 
-    * @param aKey
-    *           bundle message key
-    * 
+    * @param <K> the key 
+    * @param <V> the value
+    * @param key  bundle message key
+    * @param parameters the name/key to insert the placeholders
     * @return resourceBundle.getString(aKey)
     * 
     */
-   public <K,V> String getText(String aKey, Map<K,V>  aParameters)
+   public <K,V> String getText(String key, Map<K,V>  parameters)
    {
       try
       {
 
-         return Text.format(getText(aKey), aParameters);
+         return Text.format(getText(key), parameters);
       }
 
       catch (Exception e)
@@ -197,26 +188,26 @@ public class Presenter
    }// --------------------------------------------
    /**
     * 
-    * @param aKey the resource bundle keyu
-    * @param aValue the single place holder in resource text i.e. 
+    * @param key the resource bundle key
+    * @param values the single place holder in resource text i.e. 
     *  test=A single value placed here ${0} 
-    * @return
+    * @return the formatted text
     */
-   public String getText(String aKey, String [] aValues)
+   public String getText(String key, String [] values)
    {
-      if(aValues == null)
+      if(values == null)
          throw new IllegalArgumentException("aValues required in Presenter.getText");
       try
       {
          HashMap<String,String> map = new HashMap<String,String>();
          
-         for (int i = 0; i < aValues.length; i++)
+         for (int i = 0; i < values.length; i++)
          {
-            map.put(Integer.toString(i),aValues[i]);   
+            map.put(Integer.toString(i),values[i]);   
          }
          
 
-         return getText(aKey,map);
+         return getText(key,map);
       }
       catch (Exception e)
       {

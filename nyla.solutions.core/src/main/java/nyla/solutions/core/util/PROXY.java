@@ -51,10 +51,10 @@ public class PROXY
 
 	/**
 	 * Find the method for a target of its parent
-	 * @param objClass
-	 * @param methodName
-	 * @param parameterTypes
-	 * @return
+	 * @param objClass the object class
+	 * @param methodName the method name
+	 * @param parameterTypes the method parameter types
+	 * @return the method
 	 * @throws NoSuchMethodException
 	 */
 	public static Method findMethod(Class<?> objClass, String methodName,
