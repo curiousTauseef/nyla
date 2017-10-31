@@ -5,8 +5,8 @@ import nyla.solutions.dao.DAO;
 /**
  * 
  * @author Gregory Green
- *
- * @param <T>
+ * @param <I> the Input type
+ * @param <O>  the Output type
  */
 public abstract class AbstractDAOCommand<I,O> extends DAO implements DAOCommand<I,O>
 {

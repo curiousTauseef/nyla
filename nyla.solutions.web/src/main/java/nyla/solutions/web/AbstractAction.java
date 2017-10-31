@@ -43,7 +43,7 @@ public abstract class AbstractAction implements Serializable
     * @param aCollection
     *           map.put(new Integer(element.hashCode()),element);
     * 
-    * @return  
+    * @return   the map version of the collection
     */
 
    public Map<?,?> toMap(Collection<?> aCollection)
@@ -64,7 +64,7 @@ public abstract class AbstractAction implements Serializable
     * @param aCollection
     *           map.put(new Integer(element.hashCode()),element);
     * 
-    * @return  
+    * @return   the sorted map of the collection
     */
 
    public SortedMap<Object,Object> toSortedMap(Collection<?> aCollection)

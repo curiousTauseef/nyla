@@ -19,6 +19,8 @@ public abstract class AbstractExcelRowQueue implements WorkQueue
    /**
     * Constructor for ExcelRowQueue initializes internal 
     * data settings.
+    * @param aInputFile  the input file
+    * @throws Exception when an unknown error occurs
     */
    public AbstractExcelRowQueue(String aInputFile)
    throws Exception       
@@ -28,6 +30,9 @@ public abstract class AbstractExcelRowQueue implements WorkQueue
    /**
     * Constructor for ExcelRowQueue initializes internal 
     * data settings.
+	 * @param aInputFile  the input file
+	 * @param aSheet  the sheet
+	 * @throws Exception when an unknown error occurs
     */
    public AbstractExcelRowQueue(String aInputFile, String aSheet)
    throws Exception       
@@ -62,10 +67,6 @@ public abstract class AbstractExcelRowQueue implements WorkQueue
         throw new SystemException("Unable to open file "+aInputFile+"  error: "+Debugger.stackTrace(e));
       }
    }// --------------------------------------------
-   /**
-    * 
-    * @see solutions.global.patterns.workthread.WorkQueue#hasMoreTasks()
-    */
    public  synchronized boolean hasMoreTasks()
    {      
       if(currentRowNumber + 1 >= rowCount)
