@@ -9,9 +9,13 @@ import nyla.solutions.core.data.Textable;
 
 /**
  * A named timing event 
- * @author Gregory Green
- *
+ * 
+ * 
+ * @param <ValueType> the value type
  * @param <KeyType> the type
+ * 
+ * @author Gregory Green
+ * 
  */
 public class TimingAuditMappable<KeyType,ValueType> implements Serializable, Nameable, Mappable<KeyType,ValueType>, Identifier, Textable
 {

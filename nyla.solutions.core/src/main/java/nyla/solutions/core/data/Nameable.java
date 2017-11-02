@@ -17,7 +17,7 @@ public interface Nameable
    
    /**
     * 
-    * @param aName the name to set to
+    * @param name the name to set to
     */
    public void setName(String name);
 }

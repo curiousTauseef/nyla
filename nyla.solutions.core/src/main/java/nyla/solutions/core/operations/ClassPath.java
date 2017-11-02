@@ -154,6 +154,11 @@ public class ClassPath extends ClassLoader
 	}// --------------------------------------------------------
 	/**
 	 * Use a constructor of the a class to create an instance
+	 * @param aClass  the class object
+	 * @param parameterType the parameter type for the constructor
+	 * @param initarg the initial constructor argument
+	 * @param <T> the class type
+	 * @return the new created object
 	 * @throws SetupException when an setup error occurs
 	 */
 	public static <T> T newInstance(Class<?> aClass, Class<?> parameterType,Object initarg) 
@@ -166,8 +171,9 @@ public class ClassPath extends ClassLoader
 	}// --------------------------------------------------------
 	/**
 	 * Create a new instance of a given object
-	 * @param aClass the class the create
+	 * @param className the class the create
 	 * @param initargs the initial constructor arguments
+	 * @param <T> the class type
 	 * @return the create instance
 	 * @throws SetupException when an initialize issue occurs
 	 */
@@ -180,6 +186,7 @@ public class ClassPath extends ClassLoader
 	 * Create a new instance of a given object
 	 * @param aClass the class the create
 	 * @param initargs the initial constructor arguments
+	 * @param <T> the type class
 	 * @return the create instance
 	 * @throws SetupException when an initialize issue occurs
 	 */
@@ -206,8 +213,11 @@ public class ClassPath extends ClassLoader
 	/**
 	 * Use a constructor of the a class to create an instance
 	 * @param aClass the class the create
+	 * @param parameterTypes the constructor parameter types
+	 * @param initargs the constructor initial arguments
+	 * @param <T> the class type
 	 * @return the initiate object
-	 * @throws IllegalAccessException
+	 * @throws SetupException when internal error occurs
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T newInstance(Class<?> aClass, Class<?>[] parameterTypes,Object[] initargs) 
@@ -229,8 +239,8 @@ public class ClassPath extends ClassLoader
 	/**
 	 * Use a constructor of the a class to create an instance
 	 * @param aClass the class the create
+	 * @param <T> the type class
 	 * @return the initiate object
-	 * @throws IllegalAccessException
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T newInstance(Class<?> aClass) 
@@ -309,8 +319,9 @@ public class ClassPath extends ClassLoader
 					}//end catch
 			}// -----------------------------------------------'
 	/**
-	 * @param className
-	 *            the class name
+	 * @param className the class name
+	 * @return the loaded class
+	 * @throws ClassNotFoundException when the class not found
 	 */
 	public Class<?> loadClass(String className) 
 	throws ClassNotFoundException
@@ -391,8 +402,8 @@ public class ClassPath extends ClassLoader
 	/**
 	 * Find the class by it name
 	 * 
-	 * @param className
-	 *            the class name
+	 * @param className  the class name
+	 * @return the existing of loaded class
 	 */
 	public Class<?> findClass(String className)
 	{

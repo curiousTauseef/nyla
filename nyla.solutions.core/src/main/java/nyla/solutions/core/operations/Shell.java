@@ -41,7 +41,7 @@ public class Shell
 	/**
 	 * 
 	 * @param command the commands to execute
-	 * @throws IOException
+	 * @return process information handle
 	 */
 	public ProcessInfo execute(String...  command)
 	{

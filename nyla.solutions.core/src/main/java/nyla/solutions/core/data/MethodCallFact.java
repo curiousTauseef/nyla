@@ -90,9 +90,6 @@ public class MethodCallFact implements Serializable
    {	
       return this.getClass().getName()+" callerName="+callerName+" methodName="+methodName;	
    }// ----------------------------------------------
-   /**
-    * 
-    */
    public int hashCode()
    {
 	final int prime = 31;
@@ -104,9 +101,6 @@ public class MethodCallFact implements Serializable
 		+ ((methodName == null) ? 0 : methodName.hashCode());
 	return result;
    }// ----------------------------------------------
-   /**
-    * 
-    */
    public boolean equals(Object obj)
    {
 	if (this == obj)

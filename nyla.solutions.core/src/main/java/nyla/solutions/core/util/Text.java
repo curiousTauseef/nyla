@@ -319,7 +319,7 @@ public class Text
    /**
     * End all line with \r\n
     * @param s string to replace
-    * @return 
+    * @return  the converted newline
     */
    public static String newlineToCrLf(String s)
    {
@@ -335,7 +335,7 @@ public class Text
    
   /**
    * 
-   * @param text tokens separated by \t\n\r
+   * @param lines tokens separated by \t\n\r
    * @return tokens separated by \n (newline)
    */
    public static Set<String> toSet(String[] lines)
@@ -355,6 +355,7 @@ public class Text
     * @param aValue the value
     * @param aType the type of the value
     * @return value cast to the object type instance
+    * @throws ParseException the parse exception
     */
    public static Object toObject(String aValue, String aType)
    throws ParseException
@@ -385,9 +386,9 @@ public class Text
 
    /**
     * Use a regular expression to update a given text
-    * @param aText the text to update
-    * @param aRE the regular expression
-    * @param aReplaceText the replacement text
+    * @param text the text to update
+    * @param re the regular expression
+    * @param replaceText the replacement text
     * @return the formatted regular expression
     */
    public static String replaceForRegExprWith(final String text,final String re,final String replaceText)
@@ -466,7 +467,7 @@ public class Text
    }//---------------------------------------------
    /**
     * 
-    * @param collection convert collection of String to array
+    * @param object to convert collection of String to array
     * @return the array of strings
     */
    @SuppressWarnings("unchecked")
@@ -570,7 +571,7 @@ public static String[] toStrings(Object object)
    /**
     * Split a single text into many determined by the separation character
     * @param aText the text to split
-    * @param aSeparator the separation character
+    * @param re the regular expression separation character
     * @return the array of the split strings
     */
    public static String[] splitRE(String aText, String re)
@@ -601,8 +602,8 @@ public static String[] toStrings(Object object)
    }// --------------------------------------------
    /**
     * Split a single text into many determined by the separation character
-    * @param aText the text to split
-    * @param aSeparator the separation character
+    * @param text the text to split
+    * @param token the separation character
     * @return the array of the split strings
     */
    public static String[] split(String text, String token)
@@ -685,9 +686,8 @@ public static String[] toStrings(Object object)
    }// --------------------------------------------
    /**
     *  Convert a text string to a date instance
-    * @param aText the text to convert
+    * @param text the text to convert
     * @return date version of text
-    * @throws ParseException
     */
    public static Date toDate(String text)   
    {
@@ -698,8 +698,8 @@ public static String[] toStrings(Object object)
    /**
     *  Convert a text string to a date instance
     * @param aText the text to convert
+    * @param dateFormat the date format
     * @return date version of text
-    * @throws ParseException
     */
    public static Date toDate(String aText, String dateFormat)   
    {
@@ -746,10 +746,10 @@ public static String[] toStrings(Object object)
    }// --------------------------------------------
    /**
     * First occurrence of text
-    * @param aContent
-    * @param aStart
-    * @param aEnd
-    * @return
+    * @param aContent the content to parse
+    * @param aStart the start tag
+    * @param aEnd the end tag
+    * @return the collection of parsed output
     */
    public static String parseText(String aContent, String aStart, String aEnd)
    {
@@ -784,7 +784,7 @@ public static String[] toStrings(Object object)
     * @param aStart the content start tag
     * @param aEnd the content end tag
     * 
-    * @return 
+    * @return the collection of parsed string
     */
    public static Collection<String> parse(String aContent, String aStart, String aEnd)
    {
@@ -796,8 +796,8 @@ public static String[] toStrings(Object object)
     * @param aContent the content to parse
     * @param aStart the content start tag
     * @param aEnd the content end tag
-    * 
-    * @return 
+    * @throws IOException when an IO error occurs
+    * @return the collection of parsed objects
     */
    public static Collection<Object> parse(Reader aContent, String aStart, String aEnd)
    throws IOException
@@ -811,7 +811,7 @@ public static String[] toStrings(Object object)
     * @param aStart the content start tag
     * @param aEnd the content end tag
     * @param aIgnoreCase
-    * @return 
+    * @return  the collection of parsed output
     */
    public static Collection<String> parse(String aContent, String aStart, String aEnd, boolean aIgnoreCase)
    {
@@ -864,11 +864,13 @@ public static String[] toStrings(Object object)
    }//-----------------------------------------------
    /**
     * Parse all string surrounded by the aStart and aEnd tag
-    * @param aContent the content to parse
+    * @param aReader the reader content to parse
     * @param aStart the content start tag
     * @param aEnd the content end tag
     * @param aIgnoreCase
-    * @return collection of parse strings 
+    * @return collection of parse strings
+    * @throws IOException when an IO error occurs
+    *  
     */
    @SuppressWarnings("resource")
 public static Collection<Object> parse(Reader aReader, String aStart, String aEnd, boolean aIgnoreCase)
@@ -1751,23 +1753,14 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
 
    /**
     * 
-    * 
-    * 
-    * @param aInput
-    *           the input string
-    * 
-    * @return
+    * @param aInput the input string
+    * @return the input stream
     */
-
    public static InputStream toInputStream(String aInput)
-
    {
-
       if (aInput == null)
       {
-
          return null;
-
       }
 
       return new BufferedInputStream(
@@ -2032,20 +2025,12 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
    /**
     * 
     * Compares two strings. Similar to using the String.equals()
-    * 
     * method, but avoids NullPointerExceptions by having to check
-    * 
     * for either String being null
     * 
-    * 
-    * 
-    * @param str1
-    *           One of 2 strings to be compared
-    * 
-    * @param str2
-    *           Other of 2 strings to be compared
-    * 
-    * @return
+    * @param str1 One of 2 strings to be compared
+    * @param str2 Other of 2 strings to be compared
+    * @return the boolean
     */
 
    public static boolean strCompare(String str1, String str2)
@@ -2101,11 +2086,9 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
    /**
     * 
     * @param aTemplateNM
-    * 
+    * @param aLocale the locale
     * @return @throws
-    * 
-    * IOException
-    *  
+    * @throws IOException then the template cannot be loaded
     */
    public static String loadTemplate(String aTemplateNM, Locale aLocale)
   throws IOException

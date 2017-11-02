@@ -24,3 +24,4 @@ gradle-app.setting
 !gradle-wrapper.jar
 
 .DS_Store
+nyla.solutions.office/src/test/resources/pdf/test.pdf

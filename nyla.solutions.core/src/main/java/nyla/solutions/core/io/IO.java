@@ -298,10 +298,10 @@ public class IO
 	}// ----------------------------------------------
 
 	/**
-	 * Write obj to file
+	 * Convert the object to binary
 	 * 
-	 * @param obj
-	 * @param file
+	 * @param obj the object to write
+	 * @return the serialized bytes of the object
 	 */
 	public static byte[] serializeToBytes(Object obj)
 	{
@@ -405,6 +405,7 @@ public class IO
 	 * 
 	 * @param folder
 	 *            the folder/directory to create
+	 * @return true if the directory was created
 	 * @throws IOException when an unknown IO error occurs
 	 */
 	public static boolean mkdir(File folder) throws IOException
@@ -484,10 +485,9 @@ public class IO
 	/**
 	 * Write binary file data
 	 * 
-	 * @param file
-	 *            the file
+	 * @param file the file
 	 * @param data
-	 * @throws Exception
+	 * @throws IOException when an IO error occurs
 	 */
 	public static void writeFile(File file, byte[] data) throws IOException
 	{
@@ -530,8 +530,8 @@ public class IO
 	/**
 	 * Read properties file
 	 * 
-	 * @param filePath
-	 *            the file to read
+	 * @param filePath the file to read
+	 * @return the properties
 	 * @throws IOException when an unknown IO error occurs
 	 */
 	public static Properties readProperties(String filePath) throws IOException
@@ -581,11 +581,10 @@ public class IO
 	}// ---------------------------------------------
 
 	/**
-	 * 
-	 * @param inputStream
-	 *            the input stream
+	 * Read the text input
+	 * @param inputStream the input stream
 	 * @param closeInputStream
-	 * @return
+	 * @return the file String content
 	 * @throws IOException when an unknown IO error occurs
 	 */
 	public static String readText(InputStream inputStream, boolean closeInputStream) throws IOException
@@ -772,6 +771,7 @@ public class IO
 	 * 
 	 * @param path the classpath location i.e. /properties/config.properties
 	 * @return the string content from the class location
+	 * @throws IOException when IO error occurs
 	 */
 	public static String readClassPath(String path) throws IOException
 	{
@@ -1010,9 +1010,10 @@ public class IO
 
 	/**
 	 * 
-	 * @param aFilePath
-	 *            the file name/path
+	 * @param aFilePath the file name/path
 	 * @return Map version of property file
+	 * @throws IOException when an IO error occurs
+	 * @throws FileNotFoundException when the file does not exist
 	 */
 	@SuppressWarnings("rawtypes")
 	public static Map readMap(String aFilePath) throws IOException, FileNotFoundException
@@ -1109,12 +1110,10 @@ public class IO
 	 * Retrieve contents of specified file. Retry reads the specified number of
 	 * times with the specified delay when errors occur
 	 * 
-	 * @param aFilePath
-	 *            the file path
-	 * @param aRetryCount
-	 *            number of times to retry read
-	 * @param aRetryDelayMS
-	 *            delay in between read failures
+	 * @param aFilePath  the file path
+	 * @param aRetryCount number of times to retry read
+	 * @param aRetryDelayMS  delay in between read failures
+	 * @param charset the character set
 	 * @return file string content
 	 * @throws IOException
 	 */
@@ -1157,6 +1156,7 @@ public class IO
 	 * 
 	 * @param fileName
 	 *            the full file path of which to read
+	 * @param charSet the CHAR SET
 	 * @return string data
 	 * @throws IOException
 	 */
@@ -1196,8 +1196,8 @@ public class IO
 
 	/**
 	 * 
-	 * @param aFileNM
-	 *            the full file path of which to read
+	 * @param aFileNM  the full file path of which to read
+	 *  @param charset the character set
 	 * @return string data
 	 * @throws IOException
 	 */
@@ -1491,7 +1491,7 @@ public class IO
 	/**
 	 * 
 	 * @param aFolderPath
-	 * @return
+	 * @return file name of the path
 	 */
 	public static String parseFileName(String aFolderPath)
 	{
@@ -1511,9 +1511,9 @@ public class IO
 	/**
 	 * Write binary file data
 	 * 
-	 * @param filePath
-	 * @param data
-	 * @throws Exception
+	 * @param filePath the file to write
+	 * @param data the data to writer
+	 * @throws IOException when IO error occurs
 	 */
 	public static void writeFile(String filePath, byte[] data) throws IOException
 	{
@@ -1525,6 +1525,7 @@ public class IO
 	 * 
 	 * @param aFilePath the file
 	 * @param aData the data to write
+	 * @param append boolean to append or not
 	 * @throws IOException when an IO error occurs
 	 */
 	public static void writeFile(String aFilePath, byte[] aData, boolean append) throws IOException
@@ -1569,11 +1570,10 @@ public class IO
 	/**
 	 * Write string file data
 	 * 
-	 * @param fileName
-	 *            the file to write
-	 * @param text
-	 *            the text to write
-	 * @throws IOException
+	 * @param fileName the file to write
+	 * @param text the text to write
+	 * @param charset the character set
+	 * @throws IOException when IO error occurs
 	 */
 	public static void writeFile(String fileName, String text, Charset charset) throws IOException
 	{
@@ -1583,11 +1583,10 @@ public class IO
 	/**
 	 * Write string file data
 	 * 
-	 * @param fileName
-	 *            the file
-	 * @param text
-	 *            the text to write
-	 * @throws Exception
+	 * @param fileName the file
+	 * @param text the text to write
+	 * @param append boolean to append
+	 * @throws IOException when an IO error occurs
 	 */
 	public static void writeFile(String fileName, String text, boolean append) throws IOException
 	{
@@ -1597,11 +1596,11 @@ public class IO
 	/**
 	 * Write string file data
 	 * 
-	 * @param fileName
-	 *            the file
-	 * @param text
-	 *            the text to write
-	 * @throws Exception
+	 * @param fileName the file
+	 * @param text the text to write
+	 * @param append whether to append to a current file
+	 * @param charset the character set
+	 * @throws IOException when IO error occurs
 	 */
 	public static void writeFile(String fileName, String text, boolean append, Charset charset) throws IOException
 	{
@@ -1654,6 +1653,8 @@ public class IO
 	 * 
 	 * @param file  the file
 	 * @param text the text to write
+	 * @param append to append to the file
+	 * @param charset the character set
 	 * @throws IOException
 	 */
 	public static void writeFile(File file, String text, boolean append, Charset charset) throws IOException
@@ -1686,8 +1687,7 @@ public class IO
 
 	/**
 	 * 
-	 * @param fileName
-	 *            the file to write
+	 * @param file  the file to write
 	 * @param data
 	 *            the data
 	 * @throws IOException when an unknown IO error occurs
@@ -1699,10 +1699,9 @@ public class IO
 
 	/**
 	 * 
-	 * @param fileName
-	 *            the file to write
-	 * @param data
-	 *            the data
+	 * @param fileName    the file to write
+	 * @param data the data
+	 * @param charset the character set
 	 * @throws IOException when an unknown IO error occurs
 	 */
 	public static void writeAppend(String fileName, String data, Charset charset) throws IOException

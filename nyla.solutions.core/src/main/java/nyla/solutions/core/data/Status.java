@@ -10,19 +10,12 @@ import nyla.solutions.core.data.Status;
 
 
 /**
-
  * <pre>
-
  * Status is a value object representation of an object that has a status
-
  *  state.
-
  * </pre> 
-
  * @author Gregory Green
-
  * @version 1.0
-
  */
 
 @SuppressWarnings("rawtypes")
@@ -75,7 +68,7 @@ public class Status implements PrimaryKey, Mappable, Comparable, Nameable
    }//--------------------------------------------
    /**
     * Set name to key
-    * @see nyla.solutions.core.data.Key#setKey(java.lang.Object)
+    * @param key the key to set
     */
    public void setKey(Object key)
    {
@@ -248,10 +241,6 @@ public boolean equals(Object obj)
       .append(" name=").append(name);
       return text.toString();
    }//--------------------------------------------
-   /**
-    * 
-    * @see nyla.solutions.core.data.Copier#copy(nyla.solutions.core.data.Copier)
-    */
    public void copy(Copier aFrom)
    {
       if(aFrom == null)

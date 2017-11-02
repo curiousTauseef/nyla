@@ -176,14 +176,8 @@ public class Appointment implements Serializable, Comparable<Appointment>
 		else if (!timeSlot.equals(other.timeSlot))
 			return false;
 		return true;
-	}
-
-	/**
-	 * 
-	 * Compare the timeslots of two events
-	 * 
-	 * @see java.lang.Comparable#compareTo(T)
-	 */
+	}//------------------------------------------------
+	
 	public int compareTo(Appointment other)
 	{
 		return this.timeSlot.compareTo(other.timeSlot);

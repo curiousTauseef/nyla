@@ -4,7 +4,9 @@ import java.io.Serializable;
 
 /**
  * <pre>
- * Key provides a set of functions to
+ * Any object that has a key.
+ * @param <T> the key type
+ * 
  * </pre> 
  * @author Gregory Green
  * @version 1.0

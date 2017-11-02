@@ -46,7 +46,7 @@ public class Scheduler
     * 
     * @param days the days to add or subtract
     * @param dayOfWeek the day of week to set
-    * @return
+    * @return the new date time
     */
    public static Date toDateAddDaysSetOfWeek(int days, int dayOfWeek)
    {
@@ -181,7 +181,7 @@ public class Scheduler
    }// ----------------------------------------------
    
    /**
-    * @return
+    * @return purge schedule
     * @see java.util.Timer#purge()
     */
    public int purgeSchedules()
@@ -191,7 +191,7 @@ public class Scheduler
    /**
     * Convert timer task to a runnable
     * @param runnable
-    * @return
+    * @return timer task for the runnable
     */
    public static TimerTask toTimerTask(Runnable runnable)
    {

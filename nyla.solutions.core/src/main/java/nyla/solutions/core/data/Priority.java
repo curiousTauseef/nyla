@@ -6,19 +6,12 @@ import nyla.solutions.core.util.Text;
 
 
 /**
-
  * <pre>
-
- * Priority provides a set of functions to
-
+ * Represents an object that has a priority
  * </pre> 
-
  * @author Gregory Green
-
  * @version 1.0
-
  */
-
 public class Priority
 implements PrimaryKey, Mappable<Object,Object>
 
@@ -48,7 +41,7 @@ implements PrimaryKey, Mappable<Object,Object>
    /**
     * 
     * this.setPrimaryKey(Integer.valueOf(aKey.toString()));
-    * @see nyla.solutions.core.data.Key#setKey(java.lang.Object)
+    * @param aKey the key to set
     */
    public void setKey(Object aKey)
    {

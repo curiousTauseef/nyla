@@ -170,7 +170,7 @@ implements Comparable<Object>, Mappable<Object,Object>, Serializable, Nameable, 
    /**
     * 
     * this.setPrimaryKey(Integer.valueOf(aKey.toString()));
-    * @see nyla.solutions.core.data.Key#setKey(java.lang.Object)
+    * @param aKey the key to set
     */
    public void setKey(Object aKey)
    {

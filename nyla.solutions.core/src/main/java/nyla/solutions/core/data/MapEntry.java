@@ -37,6 +37,7 @@ public class MapEntry<K, V> implements Map.Entry<K, V>
 
 	/**
 	 * @param value the value to set
+	 * @return the set value
 	 */
 	public V setValue(V value)
 	{

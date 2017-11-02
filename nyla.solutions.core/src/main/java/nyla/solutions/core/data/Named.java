@@ -148,10 +148,6 @@ implements Comparable<Object>, Serializable, Nameable, Textable
       return super.hashCode() + name.hashCode();
 
    }//--------------------------------------------
-   /**
-    * 
-    * @see nyla.solutions.core.data.Copier#copy(nyla.solutions.core.data.Copier)
-    */
    public void copy(Copier aFrom)
    {
       if(aFrom == null)
@@ -163,7 +159,6 @@ implements Comparable<Object>, Serializable, Nameable, Textable
    /**
     * Calls setName(aText)
     * @param aText the text to set
-    * @return the text
     */
    public void setText(String aText)
    {

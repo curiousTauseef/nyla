@@ -8,16 +8,10 @@ import nyla.solutions.core.util.Text;
 /**
  * 
  * 
- * 
  * <pre>
  * 
- * 
  *  Property is a value object representation of a entity Property with
- *  name and a value
- * 
- *  
- * 
- *  
+ *  name and a value 
  * </pre>
  * 
  * @author Gregory Green
@@ -51,10 +45,6 @@ Attribute<Object,Object>
       this.setValue(aValue);
       
    }//--------------------------------------------
-   /**
-    * 
-    * @see java.lang.Object#clone()
-    */
    public Object clone() throws CloneNotSupportedException
    {
       return super.clone();
@@ -220,7 +210,7 @@ public boolean equals(Object obj)
    }//--------------------------------------------
    /**
     * Set name to key
-    * @see nyla.solutions.core.data.Key#setKey(java.lang.Object)
+    * @param key the key to set
     */
    public void setKey(Object key)
    {
