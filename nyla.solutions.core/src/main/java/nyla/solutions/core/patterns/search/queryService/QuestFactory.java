@@ -41,7 +41,7 @@ public class QuestFactory
 	}// --------------------------------------------------------
 	
 	/**
-	 * 
+	 * @param criteria the criteria
 	 * @param dataSource data source
 	 * @return quest finder instance
 	 */
@@ -60,7 +60,7 @@ public class QuestFactory
 		}
 	}// --------------------------------------------------------
 	/**
-	 * 
+	 * @param <T> the type class
 	 * @param name the instance to compare
 	 * @return the comparator by name
 	 */
@@ -71,7 +71,7 @@ public class QuestFactory
 		return comparator;
 	}// --------------------------------------------------------
 	/**
-	 * 
+	 * @param <T> the class type
 	 * @param name the boolean expression name (can  be the full classpath name)
 	 * @return the created instance
 	 */

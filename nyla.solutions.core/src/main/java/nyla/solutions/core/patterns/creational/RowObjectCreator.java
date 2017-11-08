@@ -1,6 +1,7 @@
 package nyla.solutions.core.patterns.creational;
 
 /**
+ * @param <ResultsType> the result type
  * Row mapper for a result set
  * @author Gregory Green
  *

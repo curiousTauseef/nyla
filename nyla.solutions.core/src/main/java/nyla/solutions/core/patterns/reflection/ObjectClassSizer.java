@@ -74,11 +74,11 @@ public class ObjectClassSizer
 	/**
 	 * 
 	 * @param aClass the class to estimate
-	 * @return
+	 * @return the long size 
 	 */
     public long sizeInBytes(Class<?> aClass)
     { 	    	
-    	 if(!String.class.equals(aClass) && ClassPath.isPrimitive(aClass) )
+    	 	if(!String.class.equals(aClass) && ClassPath.isPrimitive(aClass) )
          {
               
          	Long sizeLong = this.defaultTypeSizes.get(aClass);

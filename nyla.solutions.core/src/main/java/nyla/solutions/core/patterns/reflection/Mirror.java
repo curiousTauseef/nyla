@@ -52,9 +52,9 @@ public class Mirror
 		
 	}// -----------------------------------------------
 	/**
-	 * Return the class 
-	 * @param aClass
-	 * @return
+	 * Return the class schema meta-data
+	 * @param aClass the class to process
+	 * @return class schema
 	 * @throws ClassNotFoundException 
 	 */
 	public static ClassSchema toClassSchema(Class<?> aClass) 
@@ -108,7 +108,8 @@ public class Mirror
 	private char mychar = 'f';
 	private short myshort = 0;
 	 * @param fieldName the object field name
-	 * @param text the representation of the field value
+	 * @param fieldValue the representation of the field value
+	 * @throws IllegalAccessException the illegal access exception
 	 */
 	public void setField(String fieldName, Object fieldValue)
 	throws IllegalAccessException

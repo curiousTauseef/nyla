@@ -51,7 +51,7 @@ public class FileMonitorTest extends FileMonitor
 		//Write file to trigger observer
 		String filePath = "runtime/"+Text.generateId()+".txt"; 
 		IO.writeFile(filePath, "Hello");
-		Thread.sleep(100);
+		Thread.sleep(200);
 		
 		//Check if observer was trigger
 		assertTrue(called);

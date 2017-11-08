@@ -3,6 +3,8 @@ package nyla.solutions.core.util;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+import org.junit.Test;
+
 import junit.framework.TestCase;
 import nyla.solutions.core.util.Cryption;
 
@@ -23,6 +25,8 @@ public class CryptionTest extends TestCase
 		//Use the encryptText method to encrypt strings
 		String original = "Text to encrypt";
 		String encrypted = cryption.encryptText(original);
+		
+		System.out.println("encrypted:"+encrypted);
 		assertTrue(!original.equals(encrypted));
 		
 		//Use the decryptText method to decrypt
@@ -48,6 +52,13 @@ public class CryptionTest extends TestCase
 		assertEquals(decrypted, original);
 	
 		
+	}
+	@Test
+	public void testMain() throws Exception
+	{
+		String [] args = {"PASSWORD"};
+		
+		Cryption.main(args);
 	}
 
 }

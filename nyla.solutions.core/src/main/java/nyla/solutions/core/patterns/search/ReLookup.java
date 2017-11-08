@@ -98,6 +98,9 @@ with ${AND}(s) (see table below).
 </table>
 
    </pre>
+   
+   @param <T> the value map type
+   
  * @author Gregory Green
  * 
  */
@@ -110,11 +113,10 @@ public class ReLookup<T> implements Map<String,T>
  	public ReLookup()
 	{
 	}// ---------------------------
-	/** <summary>
-		// / Lookup a value of the dictionary
-		// / </summary>
-		// / <param name="text">the value to compare the keys</param>
-		@return the match value for the key</returns>
+	/** 
+	 *  Lookup a value of the dictionary
+		@param text the value to compare the keys
+		@return the match value for the key
     */
 	public T lookup(String text)
 	{
@@ -169,18 +171,13 @@ public class ReLookup<T> implements Map<String,T>
 	{
 		return this.lookupMap.put(regularExpKey, value);
 	}// --------------------------------------------------------
-
-	/**
-	 * @return
-	 * @see java.util.Map#isEmpty()
-	 */
 	public boolean isEmpty()
 	{
 		return lookupMap.isEmpty();
 	}
 	/**
 	 * @param obj
-	 * @return
+	 * @return true if the object contains the keys
 	 * @see java.util.Map#containsKey(java.lang.Object)
 	 */
 	public boolean containsKey(Object obj)
@@ -189,7 +186,7 @@ public class ReLookup<T> implements Map<String,T>
 	}
 	/**
 	 * @param obj
-	 * @return
+	 * @return true of the RE contains the value
 	 * @see java.util.Map#containsValue(java.lang.Object)
 	 */
 	public boolean containsValue(Object obj)
@@ -203,51 +200,30 @@ public class ReLookup<T> implements Map<String,T>
 	public void clear()
 	{
 		lookupMap.clear();
-	}
-	/**
-	 * @return
-	 * @see java.util.Map#keySet()
-	 */
+	}//------------------------------------------------
 	public Set<String> keySet()
 	{
 		return lookupMap.keySet();
-	}
-	/**
-	 * @return
-	 * @see java.util.Map#entrySet()
-	 */
+	}//------------------------------------------------
 	public Set<java.util.Map.Entry<String, T>> entrySet()
 	{
 		return lookupMap.entrySet();
-	}
-	/**
-	 * @param obj
-	 * @return
-	 * @see java.util.Map#equals(java.lang.Object)
-	 */
+	}//------------------------------------------------
 	public boolean equals(Object obj)
 	{
 		return lookupMap.equals(obj);
-	}
-	/**
-	 * @return
-	 * @see java.util.Map#hashCode()
-	 */
+	}//------------------------------------------------
 	public int hashCode()
 	{
 		return lookupMap.hashCode();
-	}
-	/**
-	 * @return
-	 * @see java.util.Map#size()
-	 */
+	}//------------------------------------------------
 	public int size()
 	{
 		return lookupMap.size();
 	}// --------------------------------------------------------
 	/**
-	 * @param obj
-	 * @return
+	 * @param obj the key
+	 * @return the removed object
 	 * @see java.util.Map#remove(java.lang.Object)
 	 */
 	public T remove(Object obj)
@@ -262,10 +238,6 @@ public class ReLookup<T> implements Map<String,T>
 	{
 		lookupMap.putAll(map);
 	}// --------------------------------------------------------
-	/**
-	 * @return
-	 * @see java.util.Map#values()
-	 */
 	public Collection<T> values()
 	{
 		return lookupMap.values();

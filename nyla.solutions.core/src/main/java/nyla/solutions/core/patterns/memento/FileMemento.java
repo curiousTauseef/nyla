@@ -25,7 +25,10 @@ import nyla.solutions.core.util.Debugger;
 public class FileMemento implements Memento
 {
    /**
-    * Retrieve the deserialized object
+    * Retrieve the de-serialized object
+    * @param savePoint the save point
+    * @param objClass the object class
+    * @return the object the object
     */
    public Object restore(String savePoint, Class<?> objClass)
    {
@@ -43,6 +46,8 @@ public class FileMemento implements Memento
 
    /**
     * Store the serialized object
+    * @param savePoint the save point
+    * @param obj the object to save
     */
    public void store(String savePoint, Object obj)
    {

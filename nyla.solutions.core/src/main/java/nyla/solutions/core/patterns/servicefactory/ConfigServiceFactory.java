@@ -171,6 +171,8 @@ public class ConfigServiceFactory extends ServiceFactory implements SetUpable
 		}
 	}//------------------------------------------------
 	/**
+	 * @param aName the name of the config property
+	 * @param <T> the property value type
 	 * @return create(aName);
 	 */
 	public <T> T create(String aName)

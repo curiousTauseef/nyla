@@ -12,7 +12,7 @@ public class MappedKeyDirector<K,V>
 {
 	/**
 	 * 
-	 * @param url the url to look for map
+	 * @param path the path 
 	 * @return the map of text object
 	 * @throws NoDataFoundException
 	 */
@@ -26,8 +26,8 @@ public class MappedKeyDirector<K,V>
 	}// --------------------------------------------
 	/**
 	 * Director method to construct a document
-	 * @param path the 
-	 * @param engineer
+	 * @param id the for construction
+	 * @param engineer the strategy creation
 	 */
 	public void constructDocument(String id, MappedKeyEngineer<K,V> engineer)
 	{

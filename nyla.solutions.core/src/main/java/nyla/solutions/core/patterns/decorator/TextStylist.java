@@ -16,8 +16,10 @@ import nyla.solutions.core.util.Text;
 public abstract class TextStylist implements TextStyles
 {
 	/**
+	 * @param bindText the bind test
+	 * @param bindObj the bind object
 	 * @return format(bindText,bindObj,Text.DATE_FORMAT) 
-	 * @see nyla.solutions.core.patterns.decorator.style.TextStyles#format(java.lang.String, java.lang.Object)
+	 * @throws FormatException when an formatting issue occurs
 	 */
 	public String format(String bindText, Object bindObj)
 			throws FormatException
@@ -25,9 +27,6 @@ public abstract class TextStylist implements TextStyles
 		return format(bindText,bindObj,Text.DATE_FORMAT);
 	}// --------------------------------------------------------
 
-	/**
-	 * @see nyla.solutions.core.patterns.decorator.style.Styles#formatMap(java.util.Map)
-	 */
 	@Override
 	public void formatMap(Map<Object,Object> map) throws FormatException
 	{
@@ -87,10 +86,6 @@ public abstract class TextStylist implements TextStyles
 	{
 		this.templateSuffix = templateSuffix;
 	}// --------------------------------------------------------
-	/**
-	 * 
-	 * @see nyla.solutions.core.patterns.decorator.style.TextStyles#formatWriter(java.lang.String, java.lang.Object, java.lang.String, java.io.Writer)
-	 */
 	public void formatWriter(String text, Object bindObj, String dateFormat,
 			Writer writer) throws IOException, FormatException
 	{

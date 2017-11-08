@@ -11,11 +11,7 @@ import nyla.solutions.core.util.Text;
 
 public class BasicTextStyles extends TextStylist
 {
-	/**
-	 * 
-	 * @see nyla.solutions.core.patterns.decorator.style.TextStyles#format(java.lang.String,
-	 *      java.lang.Object, java.lang.String)
-	 */
+
 	@SuppressWarnings("unchecked")
 	public String format(String aBindText, Object obj, String aDateFormat)
 			throws FormatException

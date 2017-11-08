@@ -12,10 +12,6 @@ import nyla.solutions.core.util.Debugger;
  */
 public class StartState implements WorkState 
 {   
-   /**
-    * 
-    * @see java.lang.Runnable#run()
-    */
    public void advise(SupervisedWorker worker)
    {
 	   if(worker == null)

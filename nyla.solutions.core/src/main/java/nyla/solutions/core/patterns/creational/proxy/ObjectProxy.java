@@ -34,7 +34,7 @@ public class ObjectProxy
    /**
     * Note that this methods does not support auto boxing of primitive types
     * @param aObject the object
-    * @param aMethodName the method
+    * @param methodName the method
     * @param aArguments the input argument
     * @return the object return values
     * @throws Exception

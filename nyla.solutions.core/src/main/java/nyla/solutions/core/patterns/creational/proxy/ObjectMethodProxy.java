@@ -32,6 +32,7 @@ public class ObjectMethodProxy
 	 * @param target the target object
 	 * @param methodName the method name
 	 * @param parameterTypes the input method parameter types
+	 * @throws NoSuchMethodException method does not exist
 	 */
 	public ObjectMethodProxy(Object target, String methodName,
 			Class<?>[] parameterTypes) throws NoSuchMethodException
@@ -61,6 +62,7 @@ public class ObjectMethodProxy
 	/**
 	 * Note that this methods does not support auto boxing of primitive types
 	 * @param arguments the object method input arguments
+	 * @return the return of the method call
 	 * @throws Exception when an unknowns errors occurs
 	 */
 	public Object execute(Object[] arguments) throws Exception

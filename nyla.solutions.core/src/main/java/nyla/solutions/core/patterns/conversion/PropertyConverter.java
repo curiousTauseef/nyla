@@ -4,7 +4,8 @@ public interface PropertyConverter<SourceType, TargetType>
 {
 	/**
 	 * 
-	 * @param sourceType
+	 * @param sourceObject the source object
+	 * @param aClass the class to dictate the conversion
 	 * @return the target type
 	 */
 	public TargetType convert(Object sourceObject, Class<?> aClass);

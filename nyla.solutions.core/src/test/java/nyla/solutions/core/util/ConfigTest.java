@@ -125,6 +125,9 @@ public class ConfigTest extends TestCase
 		 //An exception will be thrown if the password is not encrypted correctly in the property file
 		 //The following is example encrypted password stored in the property file
 		 //password={cryption} 2 -21 23 12 2 -21 23 12 2 -21 23 12 2 -21 23 12 2 -21 23 12
+		 
+		 assertFalse(Cryption.isEncrypted("password"));
+		 
 		 char[] password = Config.getPropertyPassword("password");
 		 assertNotNull(password);
 		 

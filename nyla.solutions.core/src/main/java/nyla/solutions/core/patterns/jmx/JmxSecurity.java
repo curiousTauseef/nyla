@@ -53,7 +53,6 @@ public class JmxSecurity
 	 * Example return encrypted(........)
 	 * 
 	 * @param password String to be encrypted
-	 * @param echo if true prints result to system.out
 	 * @return String encrypted String
 	 */
 	public static char[] encrypt(char[] password)

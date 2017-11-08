@@ -9,10 +9,6 @@ import nyla.solutions.core.exception.RequiredException;
 import nyla.solutions.core.util.Debugger;
 
 
-
-
-
-
 /**
  * 
  * <b>Topic</b> is a implementation of subject 
@@ -111,11 +107,6 @@ public class Topic implements Subject
       
       this.name = name;
    }// --------------------------------------------
-   /**
-    * 
-    * Compare the names of two subjects
-    * @see java.lang.Comparable#compareTo(T)
-    */
    public int compareTo(Object object)
    {
       if(!(object instanceof Subject))
@@ -125,11 +116,6 @@ public class Topic implements Subject
       
       return this.name.compareTo(subject.getName());
    }// --------------------------------------------
-   /**
-    * 
-    *
-    * @see nyla.solutions.core.data.Copier#copy(nyla.solutions.core.data.Copier)
-    */
    public void copy(Copier from)
    {
       if(!(from instanceof Topic))

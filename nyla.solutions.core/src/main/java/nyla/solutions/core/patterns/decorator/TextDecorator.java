@@ -3,7 +3,9 @@ package nyla.solutions.core.patterns.decorator;
 import nyla.solutions.core.data.Textable;
 
 /**
- * TextDecorator interface to wrap a target object with additional text 
+ * TextDecorator interface to wrap a target object with additional text.
+ * 
+ * @param <DecoratorType> the decorator type
  * @author Gregory Green
  */
 public interface TextDecorator<DecoratorType> extends Textable

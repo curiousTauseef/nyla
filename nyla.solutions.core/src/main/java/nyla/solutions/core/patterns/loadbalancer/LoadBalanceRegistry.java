@@ -14,8 +14,8 @@ public interface LoadBalanceRegistry<K,V>
 {
 	/**
 	 * Lookup item registered with key or return new register previously registered based on balancing
-	 * @param key
-	 * @return
+	 * @param key the object key
+	 * @return the object of the 
 	 */
 	V lookup(K key);
 	

@@ -386,8 +386,7 @@ public class FileMonitor extends Observable
 
    /**
     * @return Returns the pollingInterval.
-    * 
-    * @uml.property name="pollingInterval"
+    *
     */
    public long getPollingInterval() {
       return pollingInterval;
@@ -395,8 +394,6 @@ public class FileMonitor extends Observable
 
    /**
     * @param pollingInterval The pollingInterval to set.
-    * 
-    * @uml.property name="pollingInterval"
     */
    public void setPollingInterval(long pollingInterval) {
       this.pollingInterval = pollingInterval;

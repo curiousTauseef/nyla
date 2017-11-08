@@ -53,6 +53,7 @@ public class RangeCriteria extends Data
    }//--------------------------------------------   
    /**
       * point to next buffer buffer slice
+      * @return the boolean for the previous
       */
      public final boolean hasPrevious()
      {
@@ -110,9 +111,6 @@ public class RangeCriteria extends Data
       
      the_total  = val;
    }//--------------------------------------------
-   /**
-    * @return
-    */
    public int getFetched()
    {
       if(fetched < 0 )

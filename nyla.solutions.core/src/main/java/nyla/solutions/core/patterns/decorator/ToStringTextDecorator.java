@@ -46,10 +46,6 @@ public class ToStringTextDecorator implements TextDecorator<Object>
 
       this.target = target;
    }//--------------------------------------------
-
-   /**
-    * return target.toString()
-    */
    public String getText()
    {
      return Text.toString(this.target);

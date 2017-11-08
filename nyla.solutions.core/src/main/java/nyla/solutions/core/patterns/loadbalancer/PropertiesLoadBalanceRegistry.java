@@ -130,9 +130,8 @@ public class PropertiesLoadBalanceRegistry implements LoadBalanceRegistry<String
 	}// --------------------------------------------------------
 	/**
 	 * 
-	 * @param type
-	 * @param key
-	 * @param remote
+	 * @param id the ID 
+	 *  @param location abstraction of the location to register
 	 */
 	public synchronized void register(String id, String location )
 	{

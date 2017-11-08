@@ -1218,8 +1218,8 @@ public static Collection<Object> parse(Reader aReader, String aStart, String aEn
       
       return results.toString();
    }//--------------------------------------------
+   
    public static String toByteText(byte[] aByte)
-
    {
 
       if (aByte == null)

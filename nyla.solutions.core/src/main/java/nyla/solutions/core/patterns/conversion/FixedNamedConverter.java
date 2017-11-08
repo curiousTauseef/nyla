@@ -1,8 +1,10 @@
 package nyla.solutions.core.patterns.conversion;
 
 /**
+ * 
+ * @param <SourceType> the source type
+ * @param <TargetType> the target type
  * @author Gregory Green
- *
  */
 public class FixedNamedConverter<SourceType, TargetType> implements NameableConverter<SourceType, TargetType>
 {

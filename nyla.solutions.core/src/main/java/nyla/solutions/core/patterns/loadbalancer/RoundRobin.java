@@ -66,7 +66,7 @@ public class RoundRobin<T>
 	}// --------------------------------------------------------
 	/**
 	 * 
-	 * @see nyla.solutions.core.data.Arrayable#toArray()
+	 * @return the collection
 	 */
 	@SuppressWarnings("unchecked")
 	public Collection<T> toCollection()

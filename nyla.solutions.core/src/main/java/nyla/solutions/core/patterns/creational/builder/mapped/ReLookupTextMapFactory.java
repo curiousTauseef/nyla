@@ -9,6 +9,8 @@ import nyla.solutions.core.util.Text;
 
 
 /**
+ * @param <K> the key
+ * @param <V> the value
  * Implements a MapFactory by id.
  * 
  * The LookupTable is a map of maps where the key is a regular expression.
@@ -18,8 +20,6 @@ import nyla.solutions.core.util.Text;
 public class   ReLookupTextMapFactory<K,V>  implements MapFactoryById<K,V>
 {
 	/**
-	 * 
-	 * @param input the value to check against a regular expression
 	 * @return Map of Textable objects
 	 */
 	public Map<K,V> createMap()

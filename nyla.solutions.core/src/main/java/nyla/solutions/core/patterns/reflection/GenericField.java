@@ -75,7 +75,6 @@ public class GenericField implements Serializable
 	}// -----------------------------------------------
 	/**
 	 * 
-	 * @param field
 	 * @return true if field class is java.util.Date
 	 */
 	public  boolean isDate()

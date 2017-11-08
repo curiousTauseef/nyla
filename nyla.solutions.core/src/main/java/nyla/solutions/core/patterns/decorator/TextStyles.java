@@ -11,11 +11,13 @@ public interface TextStyles extends Styles
 {
 	/**
 	 * The template prefix (mark the beginning of a place-holder)
+	 * @return the template prefix
 	 */
 	public String getTemplatePrefix();
 	
 	/**
 	 * The template suffix
+	 * @return the template suffix
 	 */
 	public String getTemplateSuffix();
 	
@@ -33,15 +35,13 @@ public interface TextStyles extends Styles
 	 * 
 	 * @param aBindText
 	 * 
-	 * @param aBindMap values to insert into the bind text
+	 * @param obj values to insert into the bind text
 	 * 
 	 * @param aDateFormat i.e. MM/dd/yyyy
-	 * 
+	 * @return the formatted output
+	 * @throws FormatException when a format exception
 	 */
-
-	public abstract String format(String aBindText, Object obj,
-			String aDateFormat)
-
+	public abstract String format(String aBindText, Object obj,String aDateFormat)
 	throws FormatException;
 
 	/**
@@ -67,7 +67,8 @@ public interface TextStyles extends Styles
 	 * @param aBindText
 	 * 
 	 * @param aBindMap values to insert into the bind text
-	 * 
+	 * @return the formated output
+	 * @throws FormatException when an format issues
 	 * 
 	 * 
 	 */
@@ -78,11 +79,12 @@ public interface TextStyles extends Styles
 	/**
 	 * write formatted output to the writer
 	 * 
-	 * @param aBindMap
-	 * @param text
+	 * @param bindObject the bind object
+	 * @param text the template test
+	 * @param dateFormat the date format
 	 * @param writer
-	 * @throws IOException
-	 * @throws TemplateException
+	 * @throws IOException when an IO exception
+	 * @throws FormatException when an format exception
 	 */
 	public abstract void formatWriter(String text, Object bindObject,
 			String dateFormat, Writer writer) throws IOException,

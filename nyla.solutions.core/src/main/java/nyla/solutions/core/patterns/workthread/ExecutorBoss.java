@@ -103,7 +103,9 @@ public class ExecutorBoss implements Disposable
 	}// --------------------------------------------------------
 	/**
 	 * Start the array of the callables
-	 * @param queue of callables
+	 * @param <T> the type class
+	 * @param callables of callables
+	 * @return the collection of returned object from the callables
 	 */
 	 public <T> Collection<T> startWorking(Callable<T>[] callables) 
 	 {
@@ -140,10 +142,7 @@ public class ExecutorBoss implements Disposable
 		     
 		  return resultList;
 	 }// --------------------------------------------------------
-	 /**
-		 * 
-		 * @param callable the collection of callables
-		 */
+
 		 @SuppressWarnings("unchecked")
 		public <T,I> Collection<T> startWorking(Collection<Callable<I>> callables) 
 		 {
@@ -220,17 +219,10 @@ public class ExecutorBoss implements Disposable
 			}
 		    
    }// --------------------------------------------------------
-	 /**
-	 * 
-	 * @param queue
-	 */
 	public Future<?> startWorking(Worker worker) 
     {
 	   return executor.submit(worker);		    
 	 }// --------------------------------------------------------
-
-	//private Hashtable<String,Worker> startedWorkerMap;
-
 	/**
 	 * Shutdown executor
 	 * @see nyla.solutions.core.patterns.Disposable#dispose()

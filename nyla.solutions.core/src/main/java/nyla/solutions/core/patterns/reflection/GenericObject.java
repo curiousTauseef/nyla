@@ -52,7 +52,7 @@ public class GenericObject implements Serializable
 	}// -----------------------------------------------
 	/**
 	 * List all fields
-	 * @return
+	 * @return the array of generic fields
 	 */
 	public GenericField[] getFields()
 	{

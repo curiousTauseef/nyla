@@ -17,8 +17,8 @@ public class FileMappedKeyDirector<K,V> extends MappedKeyDirector<K,V>
 	
 	/**
 	 * Director method to construct a document
-	 * @param path the 
-	 * @param engineer
+	 * @param filePath the file path the output 
+	 * @param engineer the strategy 
 	 */
 	public void constructDocument(String filePath, MappedKeyEngineer<K,V> engineer)
 	{
@@ -34,8 +34,8 @@ public class FileMappedKeyDirector<K,V> extends MappedKeyDirector<K,V>
 	}// --------------------------------------------
 	/**
 	 * Director method to construct a document
-	 * @param path the 
-	 * @param engineer
+	 * @param file the file the walk through
+	 * @param engineer the mapped key engineer
 	 */
 	protected void crawl(File file, MappedKeyEngineer<K,V> engineer)
 	{

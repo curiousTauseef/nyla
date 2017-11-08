@@ -125,7 +125,7 @@ public class ClassSchema implements Serializable, ClassSchemaElement
 
 	/**
 	 * List all fields
-	 * @return
+	 * @return the array of types schemas
 	 */
 	public TypeSchema[] getFieldSchemas()
 	{

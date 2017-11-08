@@ -46,7 +46,7 @@ public class ScriptingText implements Textable
    {
    }// ----------------------------------------------
    /**
-    * 
+    * @return the text of output of the script
     */
    public String getText()
    {

@@ -39,6 +39,7 @@ public abstract class Pagination implements Identifier, Disposable
 	
 	/**
 	 * Store the given pagination data
+	 * @param <ObjectType> the object to store
 	 * @param storeObject the object to store
 	 * @param pageCriteria the page criteria
 	 */
@@ -46,7 +47,10 @@ public abstract class Pagination implements Identifier, Disposable
 	
     /**
      * Create a pagination instance
-     * @return
+     * @param <StoredObjectType> the stored object type
+     * @param <ResultSetType> the results set type
+     * @param pageCriteria the page criteria
+     * @return pagination instance
      */
     public static <StoredObjectType, ResultSetType> Pagination createPagination(PageCriteria pageCriteria)
     {
@@ -65,17 +69,14 @@ public abstract class Pagination implements Identifier, Disposable
     	
     }// --------------------------------------------------------
     
-	/**
-	 * 
-	 * @param dbCursor the results to page
-	 */
+
 	public abstract <IterationObjectType,CreatedObjectType>   
 	void constructPaging(Iterator<IterationObjectType> resultSet, PageCriteria pageCriteria, 
 			RowObjectCreator<CreatedObjectType,IterationObjectType> creator);
 	
 	/**
 	 * 
-	 * @return his.getFuture().isDone();
+	 * Wait for this.getFuture().isDone();
 	 */
 	public void waitForCompletion()
 	{
@@ -97,10 +98,8 @@ public abstract class Pagination implements Identifier, Disposable
 		}
 	}// --------------------------------------------------------
 	/**
-	 * 
-	 * @param pageCriteria the page criteria
-	 * @param aClass pagination
-	 * @return
+	 *  @param id the page identifier
+	 * @return pagination
 	 */
 	public static Pagination getPaginationById(String id)
 	{
@@ -122,8 +121,7 @@ public abstract class Pagination implements Identifier, Disposable
 	/**
 	 * 
 	 * @param pageCriteria the page criteria
-	 * @param aClass pagination
-	 * @return
+	 * @return page details for the page criteria
 	 */
 	public static Pagination getPagination(PageCriteria pageCriteria)
 	{
@@ -154,6 +152,7 @@ public abstract class Pagination implements Identifier, Disposable
 	 * 
 	 * @param pageCriteria the page criteria
 	 * @param pageClass the page Class
+	 * @param <ReturnTypes> the return types
 	 * @return the paging object
 	 */
 	public abstract<ReturnTypes> Paging<ReturnTypes> getPaging(PageCriteria pageCriteria, Class<?> pageClass);
@@ -161,6 +160,7 @@ public abstract class Pagination implements Identifier, Disposable
 	/**
 	 * 
 	 * @param pageCriteria page criteria
+	 * @param <ReturnTypes> the return types
 	 * @return the Paging
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -182,7 +182,7 @@ public abstract class Pagination implements Identifier, Disposable
 	/**
 	 * 
 	 * @param pageCriteria
-	 * @return
+	 * @return the page counts
 	 * @throws NoDataFoundException
 	 */
 	public abstract long count(PageCriteria pageCriteria);

@@ -11,21 +11,11 @@ import java.util.Stack;
  */
 public class MemorizedQueue implements WorkQueue
 {
-	
-	/**
-    * 
-    * @see nyla.solutions.core.patterns.workthread.WorkQueue#add(java.lang.Runnable)
-    */
    public synchronized void add(Runnable tasks)
    {
       
       this.queue.add(tasks);
    }// --------------------------------------------
-
-   /**
-    * 
-    * @see nyla.solutions.core.patterns.workthread.WorkQueue#nextTasks()
-    */
    public synchronized Runnable nextTask()
    {
          return (Runnable)queue.pop();

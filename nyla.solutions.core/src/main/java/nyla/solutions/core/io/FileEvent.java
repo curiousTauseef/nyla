@@ -84,7 +84,6 @@ public class FileEvent extends EventObject
    /**
     * @return Returns the eventType.
     * 
-    * @uml.property name="eventType"
     */
    public short getEventType() {
       return eventType;

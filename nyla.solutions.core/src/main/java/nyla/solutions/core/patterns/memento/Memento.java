@@ -19,7 +19,7 @@ public interface Memento
     * Retrieve the object information
     * @param savePoint the reference id
     * @param objClass the class of the object
-    * @return
+    * @return the object that restored
     */
    Object restore(String savePoint, Class<?> objClass);
    

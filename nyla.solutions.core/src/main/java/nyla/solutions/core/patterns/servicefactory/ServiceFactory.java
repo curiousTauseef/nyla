@@ -78,8 +78,9 @@ public abstract class ServiceFactory
    }// --------------------------------------------
    /**
     * Singleton factory method
-    * @return a single instance of the ServiceFactory object 
     * for the JVM
+    * @param configurationPath the configuration details
+    * @return a single instance of the ServiceFactory object 
     */
    public synchronized static ServiceFactory getInstance(String configurationPath)
    {
@@ -89,6 +90,7 @@ public abstract class ServiceFactory
     * Singleton factory method
     * @return a single instance of the ServiceFactory object 
     * for the JVM
+    * @param aClass the class implementation
     */
    public synchronized static ServiceFactory getInstance(Class<?> aClass)
    {
@@ -96,6 +98,8 @@ public abstract class ServiceFactory
    }// --------------------------------------------------------
       /**
        * Singleton factory method
+       * @param aClass the class implements
+       * @param configurationPath the path to the configuration details
        * @return a single instance of the ServiceFactory object 
        * for the JVM
        */
@@ -157,6 +161,7 @@ public abstract class ServiceFactory
       /**
        * Create object based on the object's full type name
        * @param aClass the object/service name
+       * @param <T> the create class type
        * @return an instance of the given class
        */
       public abstract <T> T create(Class<?> aClass);
@@ -165,14 +170,15 @@ public abstract class ServiceFactory
       /**
        * Create object and check if object is a sub class of serviceClass
        * @param serviceClass the service interface
+       * @param <T> the type class
        * @param name the object name
-       * @return
+       * @return the create instance
        */
       public abstract <T> T create(Class<?> serviceClass, String name);
       
    /**
-    * 
-    * @param aServiceName the object/service name
+    * @param <T> the type class
+    * @param aName the object/service name
     * @return an instance of the given class
     */
    public abstract <T> T create(String aName);
@@ -186,7 +192,7 @@ public abstract class ServiceFactory
 	  </code>	
     * @param names the object/service names
     * @param objectOutput array to place results
-    * @return an instance of the given class
+    * @param <T> the type class
     */
    public <T> void createForNames(String[] names, T[] objectOutput)
    {
@@ -222,7 +228,7 @@ public abstract class ServiceFactory
    
 
    /**
-    * 
+    *  @param <T> the type class
     * @param name the object/service name
     * @param params the constructor parameters
     * @return an instance of the given class
@@ -230,7 +236,7 @@ public abstract class ServiceFactory
    public abstract <T> T create(String name,Object [] params );
    
    /**
-    * 
+    * @param <T> the type class
     * @param name the object/service name
     * @param param the constructor parameters 
     * @return an instance of the given class

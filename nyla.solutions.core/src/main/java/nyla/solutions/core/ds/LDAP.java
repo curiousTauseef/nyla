@@ -1126,16 +1126,6 @@ public class LDAP implements Closeable
       }
       return text.toString();
    }//--------------------------------------------
-   /**
-    * 
-    * @param searchbase
-    * @param filter
-    * @param limit
-    * @param timeout
-    * @param returnAttributes
-    * @return
-    * @throws NamingException
-    */
    protected NamingEnumeration<?> rawSearchBaseEntry(Name searchbase,
 
    String filter, int limit, int timeout, String returnAttributes[])

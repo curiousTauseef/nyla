@@ -18,7 +18,7 @@ public interface SearchEngine
 	/**
 	 * Indexes a file or directory
 	 * 
-	 * @param fileName  the name of a text file or a folder we wish to add to the
+	 * @param file  file or a folder we wish to add to the
 	 *            index
 	 * @throws java.io.IOException
 	 */
@@ -27,24 +27,20 @@ public interface SearchEngine
 
 	/**
 	 * 
-	 * @param querystr
+	 * @param query the query used by the engine
 	 * @param field
 	 * @return return array  ScoreDoc[]
-	 * @throws IOException
-	 * @throws ParseException
 	 */
 	public abstract Object[] search(String query, String field);
 	
 	
 	/**
 	 * 
-	 * @param querystr
-	 * @param field
+	 * @param query the query
+	 * @param <T> the type
 	 * @return return array  ScoreDoc[]
-	 * @throws IOException
-	 * @throws ParseException
 	 */
-	public abstract Object[] search(String query);
+	public abstract <T> T[] search(String query);
 	
 
 }

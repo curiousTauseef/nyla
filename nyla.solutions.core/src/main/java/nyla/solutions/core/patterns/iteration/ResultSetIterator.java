@@ -59,10 +59,6 @@ public class ResultSetIterator implements Iterator<ResultSet>, Disposable
 		
 		return resultSet;
 	}// --------------------------------------------------------
-	/**
-	 * 
-	 * @param resultSet the result set to cleanup
-	 */
 	public void dispose()
 	{
 		try

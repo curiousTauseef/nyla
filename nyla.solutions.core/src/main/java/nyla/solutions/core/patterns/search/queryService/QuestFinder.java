@@ -16,8 +16,8 @@ public interface QuestFinder extends Callable<Collection<DataRow>>, Disposable
 {
 	
 	/**
-	 * 
-	 * @param structureCriteria the criteria to use
+	 * @param source the source name
+	 * @param questCriteria the criteria to use
 	 */
 	void assignCriteria(QuestCriteria questCriteria, String source);
 	

@@ -23,7 +23,8 @@ public class QuestDirector
 	   
 	/**
 	 * Process results with support for paging
-	 * @param results the results to be converted to data rows 
+	 * @param <T> the type
+	 * @param iterator the results to be converted to data rows 
 	 * @param questCriteria the input query search criteria
 	 * @param visitor the visitor to convert results to the data rows
 	 * @return the collection of data rows

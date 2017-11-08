@@ -3,7 +3,10 @@ package nyla.solutions.core.patterns.scripting;
 import java.util.Map;
 
 /**
- * Interface for using bean scripting frameworks (such as GROOVY, SpEL, JRuby, etc)
+ * Interface for using bean scripting frameworks (such as GROOVY, SpEL, JRuby, etc).
+ * 
+ * @param <ReturnType> the return type
+ * @param <EvalObjectType> the eval object type
  * @author Gregory Green
  *
  */

@@ -42,7 +42,7 @@ import nyla.solutions.core.patterns.Disposable;
  *  
  *    This object is based JMX object in the NYLA Java framework
  *    
- *    @link https://github.com/ggreen/nyla/blob/master/dev/Solutions.Global/src/main/java/nyla/solutions/global/patterns/jmx/JMX.java
+ *    https://github.com/ggreen/nyla/blob/master/dev/Solutions.Global/src/main/java/nyla/solutions/global/patterns/jmx/JMX.java
  *    
  * @author Gregory Green
  *
@@ -60,8 +60,10 @@ public class JMX implements AutoCloseable, Disposable
    private static final String ThreadMX_NAME = "java.lang:type=Threading";
    
    /**
-	 *
+	 * @param key the key
 	 * @return RuntimeMXBean.getSystemProperties
+	 * @throws InstanceNotFoundException the instance not found exception
+	 * @throws MalformedObjectNameException the malformed object name
 	 */
 	public String getSystemProperty(String key)
 	throws MalformedObjectNameException, InstanceNotFoundException
@@ -90,7 +92,7 @@ public class JMX implements AutoCloseable, Disposable
     * @param operationName
     * @param params
     * @param signature
-    * @return 
+    *  @return the return object from the method call
     */
    public Object invoke(ObjectName objectName,String operationName,Object[]  params, String[] signature)
    {
@@ -102,7 +104,8 @@ public class JMX implements AutoCloseable, Disposable
     * @param operationName
     * @param params
     * @param signature
-    * @return 
+    * @param interfaceClass the interface class
+    * @return the return object from the method call
     */
    public Object invoke(Class<?> interfaceClass, ObjectName objectName,String operationName,Object[]  params, String[] signature)
    {
@@ -127,10 +130,11 @@ public class JMX implements AutoCloseable, Disposable
 	return (T)javax.management.JMX.newMBeanProxy(connection, objectName, interfaceClass);
    }// --------------------------------------------------------
    /**
-    * 
-    * @param objectName
-    * @param attributes 
+    * @param <T> the type
+    * @param objectName the object name
+    * @param attribute the attribute
     * @return the attributes for the given object name
+    * @throws InstanceNotFoundException when the instance if not found
     */
    @SuppressWarnings("unchecked")
    public <T> T getAttribute(ObjectName objectName, String attribute)
@@ -213,7 +217,7 @@ public class JMX implements AutoCloseable, Disposable
     * 
     * @param host the JMX host
     * @param port the jmx port
-    * @return
+    * @return JMX the connected instance
     */
    public static JMX connect(String host, int port)
    {
@@ -359,7 +363,7 @@ public class JMX implements AutoCloseable, Disposable
       }
   }
    /**
-    * @return
+    * @return default domain
     * @throws IOException
     * @see javax.management.MBeanServerConnection#getDefaultDomain()
     */
@@ -368,7 +372,7 @@ public class JMX implements AutoCloseable, Disposable
 	return connection.getDefaultDomain();
    }
    /**
-    * @return
+    * @return connection.getMBeanCount()
     * @throws IOException
     * @see javax.management.MBeanServerConnection#getMBeanCount()
     */
@@ -377,10 +381,8 @@ public class JMX implements AutoCloseable, Disposable
 	return connection.getMBeanCount();
    }
    /**
-    * @param objectName ex: GemFire:*,name=*
-    * @param queryExp
-    * @return
-    * @throws IOException
+    * @param objectNamePattern ex: GemFire:*,name=*
+    * @return set of the matching object names
     * @see javax.management.MBeanServerConnection#queryNames(javax.management.ObjectName, javax.management.QueryExp)
     */
    public Set<ObjectName> searchObjectNames(String objectNamePattern)  
@@ -398,7 +400,7 @@ public class JMX implements AutoCloseable, Disposable
     * 
     * @param objectNamePattern the object names to look for
     * @param queryExp the query express
-    * @return
+    * @return set the object names
     */
    public Set<ObjectName> searchObjectNames(String objectNamePattern, QueryExp queryExp) 
    {
@@ -496,9 +498,9 @@ public class JMX implements AutoCloseable, Disposable
    /**
     * 
     * Adds a listener to a registered MBean. Notifications emitted by the MBean will be forwarded to the listener.
-    * @param name - The name of the MBean on which the listener should be added.
-    * @param listener - The listener object which will handle the notifications emitted by the registered MBean.
-    * @param filter - The filter object. If filter is null, no filtering will be performed before handling notifications.
+    * @param objectName - The name of the MBean on which the listener should be added.
+    * @param notificationListener - The listener object which will handle the notifications emitted by the registered MBean.
+    * @param notificationFilter - The filter object. If filter is null, no filtering will be performed before handling notifications.
     * @param handback - The context to be sent to the listener when a notification is emitted.
     * @throws InstanceNotFoundException
     * @throws IOException

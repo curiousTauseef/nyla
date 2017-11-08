@@ -94,7 +94,7 @@ public class Boss implements Supervisor
 
    /**
     * Manage a number of default worker threads
-    * @see nyla.solutions.core.patterns.workthread.Supervisor#manageThread(java.lang.Thread)
+    * @param workersCount the worker count
     */
    public void manage(int workersCount)
    {
@@ -111,7 +111,7 @@ public class Boss implements Supervisor
 
    /**
     * Add thread to managed list 
-    * @see Supervisor#manageThread(java.lang.Thread)
+    * @param workers the supervised workers
     */
    public void manage(Collection<SupervisedWorker> workers)
    {
@@ -132,6 +132,7 @@ public class Boss implements Supervisor
    /**
     * 
     * Start workers by setting the start to "StartState"
+    * @param workCount the work count
     */
    public void startWorkers(int workCount)
    {
@@ -156,7 +157,7 @@ public class Boss implements Supervisor
    }// --------------------------------------------
    /**
     * Add thread to managed list 
-    * @see nyla.solutions.core.patterns.workthread.Supervisor#manageThread(java.lang.Thread)
+    * @param worker the supervised worker
     */
    public void manage(SupervisedWorker worker)
    {      
@@ -167,10 +168,6 @@ public class Boss implements Supervisor
       
       this.workers.add(worker);
    }// --------------------------------------------
-   /**
-    * 
-    * @see nyla.solutions.core.patterns.workthread.Supervisor#nextTask()
-    */
    public WorkQueue getWorkQueue()
    {
       return this.workQueue;

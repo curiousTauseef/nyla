@@ -42,6 +42,7 @@ public class TextFormatDecorator implements TextDecorator<Textable>
 
 	/**
 	 * Set the target 
+	 * @param target the target text format 
 	 */
 	public void setTarget(Textable target)
 	{

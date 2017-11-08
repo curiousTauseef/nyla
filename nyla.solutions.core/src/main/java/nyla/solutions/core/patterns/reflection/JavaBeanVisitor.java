@@ -4,7 +4,8 @@ public interface JavaBeanVisitor
 {
 	/**
 	 * 
-	 * @param className
+	 * @param aClass the class name
+	 * @param object the object
 	 */
 	public void visitClass(Class<?> aClass, Object object);
 	

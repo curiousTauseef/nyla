@@ -16,6 +16,7 @@ public class PagingCollection<T> implements Paging<T>, Serializable, Collection<
 	/**
 	 * Set the collection
 	 * @param collection
+	 * @param pageCriteria the page criteria
 	 */
 	public PagingCollection(Collection<T> collection, PageCriteria  pageCriteria)
 	{
@@ -74,8 +75,8 @@ public class PagingCollection<T> implements Paging<T>, Serializable, Collection<
 
 	
 	/**
-	 * @param arg0
-	 * @return
+	 * @param value the 
+	 * @return boolean if the object were added
 	 * @see java.util.Collection#add(java.lang.Object)
 	 */
 	public boolean add(T value)
@@ -91,12 +92,6 @@ public class PagingCollection<T> implements Paging<T>, Serializable, Collection<
 		return collection.add(value);
 	}// --------------------------------------------------------
 	
-	
-	/**
-	 * @param arg0
-	 * @return
-	 * @see java.util.Collection#addAll(java.util.Collection)
-	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public boolean addAll(Collection<? extends T> values)
 	{
@@ -118,104 +113,60 @@ public class PagingCollection<T> implements Paging<T>, Serializable, Collection<
 	public void clear()
 	{
 		collection.clear();
-	}
-
-	/**
-	 * @param arg0
-	 * @return
-	 * @see java.util.Collection#contains(java.lang.Object)
-	 */
+	}//------------------------------------------------
+	
 	public boolean contains(Object arg0)
 	{
 		return collection.contains(arg0);
-	}
-
-	/**
-	 * @param arg0
-	 * @return
-	 * @see java.util.Collection#containsAll(java.util.Collection)
-	 */
+	}//------------------------------------------------
+	
 	public boolean containsAll(Collection<?> arg0)
 	{
 		return collection.containsAll(arg0);
-	}
-
-	/**
-	 * @param arg0
-	 * @return
-	 * @see java.util.Collection#equals(java.lang.Object)
-	 */
+	}//------------------------------------------------
+	
 	public boolean equals(Object arg0)
 	{
 		return collection.equals(arg0);
-	}
-
-	/**
-	 * @return
-	 * @see java.util.Collection#hashCode()
-	 */
+	}//------------------------------------------------
+	
 	public int hashCode()
 	{
 		return collection.hashCode();
-	}
-
-	/**
-	 * @return
-	 * @see java.util.Collection#isEmpty()
-	 */
+	}//------------------------------------------------
+	
 	public boolean isEmpty()
 	{
 		if(collection == null)
 			return true;
 		
 		return collection.isEmpty();
-	}
-
-	/**
-	 * @return
-	 * @see java.util.Collection#iterator()
-	 */
+	}//------------------------------------------------
 	public Iterator<T> iterator()
 	{
 		if(this.collection == null)
 			return null;
 		
 		return collection.iterator();
-	}
-
-	/**
-	 * @param arg0
-	 * @return
-	 * @see java.util.Collection#remove(java.lang.Object)
-	 */
+	}//------------------------------------------------
+	
 	public boolean remove(Object arg0)
 	{
 		return collection.remove(arg0);
-	}
-
-	/**
-	 * @param arg0
-	 * @return
-	 * @see java.util.Collection#removeAll(java.util.Collection)
-	 */
+	}//------------------------------------------------
+	
 	public boolean removeAll(Collection<?> arg0)
 	{
 		return collection.removeAll(arg0);
-	}
-
-	/**
-	 * @param arg0
-	 * @return
-	 * @see java.util.Collection#retainAll(java.util.Collection)
-	 */
+	}//------------------------------------------------
 	public boolean retainAll(Collection<?> arg0)
 	{
 		return collection.retainAll(arg0);
 	}
 
 	/**
-	 * @return
-	 * @see java.util.Collection#size()
+	 * the size of the pages counts
+	 * @return pagination size
 	 */
 	public int size()
 	{
@@ -223,19 +174,13 @@ public class PagingCollection<T> implements Paging<T>, Serializable, Collection<
 	}
 
 	/**
-	 * @return
-	 * @see java.util.Collection#toArray()
+	 * @return java.util.Collection#toArray()
 	 */
 	public Object[] toArray()
 	{
 		return collection.toArray();
 	}
 
-	/**
-	 * @param arg0
-	 * @return
-	 * @see java.util.Collection#toArray(T[])
-	 */
 	@SuppressWarnings("hiding")
 	public <T> T[] toArray(T[] arg0)
 	{
