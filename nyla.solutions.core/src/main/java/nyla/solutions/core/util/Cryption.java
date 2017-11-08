@@ -69,9 +69,9 @@ public class Cryption
 	
 	
 	/**
-	 * CRYPTION_KEY_PROP = "CRYPTION_KEY_PROP"
+	 * CRYPTION_KEY_PROP = "CRYPTION_KEY"
 	 */
-	public static final String CRYPTION_KEY_PROP = "CRYPTION_KEY_PROP";
+	public static final String CRYPTION_KEY_PROP = "CRYPTION_KEY";
 
 	/**
 	 * Default algorithm is AES is used with a fixed key.
