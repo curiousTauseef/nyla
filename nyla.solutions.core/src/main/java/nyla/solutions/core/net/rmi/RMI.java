@@ -42,7 +42,7 @@ Microsoft Windows:
 start rmiregistry 2001
 
 
- rmi = new RMI("usxxgreeng3m1.corp.emc.com",27001);
+ rmi = new RMI("mycompany.com",27001);
  
  Remote command = rmi.lookup("commas");
 </pre>

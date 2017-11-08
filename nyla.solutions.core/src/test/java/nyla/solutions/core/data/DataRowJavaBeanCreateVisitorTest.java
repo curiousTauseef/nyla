@@ -24,7 +24,7 @@ public class DataRowJavaBeanCreateVisitorTest extends TestCase
 		DataRowCreator v = new DataRowCreator();
 		
 		UserProfile greg = new UserProfile();
-		greg.setEmail("gregory.green@emc.com");
+		greg.setEmail("gregory.green@nyla-solutions.com");
 		greg.setFirstName("Gregory");
 		greg.setLastName("Green");
 		greg.setLoginID("greeng3");
@@ -34,7 +34,7 @@ public class DataRowJavaBeanCreateVisitorTest extends TestCase
 		
 		DataRow dataRow = v.getDataRow();
 		
-		assertEquals(dataRow.retrieveString("email"),"gregory.green@emc.com" );
+		assertEquals(dataRow.retrieveString("email"),"gregory.green@nyla-solutions.com" );
 		assertEquals(dataRow.retrieveString("firstName"),"Gregory" );
 		assertEquals(dataRow.retrieveString("lastName"),"Green" );
 		assertEquals(dataRow.retrieveString("title"),"Senior Consultant" );
