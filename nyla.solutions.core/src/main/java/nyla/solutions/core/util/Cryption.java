@@ -69,9 +69,9 @@ public class Cryption
 	
 	
 	/**
-	 * CRYPTION_KEY = "CRYPTION_KEY"
+	 * CRYPTION_KEY_PROP = "CRYPTION_KEY_PROP"
 	 */
-	public static final String CRYPTION_KEY = "CRYPTION_KEY";
+	public static final String CRYPTION_KEY_PROP = "CRYPTION_KEY_PROP";
 
 	/**
 	 * Default algorithm is AES is used with a fixed key.
@@ -91,7 +91,7 @@ public class Cryption
 		byte[] keyBytes = Arrays.copyOf(keyText.getBytes(StandardCharsets.UTF_8), 16);
 
 		if (keyBytes.length < minKeySize)
-			throw new IllegalArgumentException("Minimum property byte size CRYPTION_KEY size is " + minKeySize);
+			throw new IllegalArgumentException("Minimum property byte size CRYPTION_KEY_PROP size is " + minKeySize);
 
 		try
 		{
@@ -111,11 +111,11 @@ public class Cryption
 
 	/**
 	 * 
-	 * @return Config.getProperty(CRYPTION_KEY)
+	 * @return Config.getProperty(CRYPTION_KEY_PROP)
 	 */
 	public static String getCryptionKey()
 	{
-		return Config.getProperty(CRYPTION_KEY);
+		return Config.getProperty(CRYPTION_KEY_PROP);
 	}//------------------------------------------------
 
 	/**
