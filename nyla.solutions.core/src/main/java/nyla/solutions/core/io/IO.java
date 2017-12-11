@@ -589,6 +589,18 @@ public class IO
 	 */
 	public static String readText(InputStream inputStream, boolean closeInputStream) throws IOException
 	{
+		return readText(inputStream,  closeInputStream,-1);
+	}
+	/**
+	 * Read the text input
+	 * @param limit the read limit
+	 * @param inputStream the input stream
+	 * @param closeInputStream
+	 * @return the file String content
+	 * @throws IOException when an unknown IO error occurs
+	 */
+	public static String readText(InputStream inputStream, boolean closeInputStream, int limit) throws IOException
+	{
 		Reader reader = null;
 
 		try
@@ -609,6 +621,10 @@ public class IO
 				tmp = buffreader.readLine();
 				if (tmp != null)
 					line.append(tmp);
+				
+				if( limit > 0 && line.length() > limit)
+					return line.toString();
+				
 			}
 
 			return line.toString();

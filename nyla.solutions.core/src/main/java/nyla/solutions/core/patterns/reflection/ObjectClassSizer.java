@@ -48,7 +48,7 @@ public class ObjectClassSizer
 	public ObjectClassSizer()
 	{
 		this.defaultTypeSizes = new HashMap<Class<?>, Long>();
-		//this.defaultTypeSizes.put(String.class, Long.valueOf(defaultStringSizeBytes));  //100 KB
+		this.defaultTypeSizes.put(String.class, Long.valueOf(defaultStringSizeBytes));  //100 KB
 		this.defaultTypeSizes.put(boolean.class,Long.valueOf(1));
 		this.defaultTypeSizes.put(Boolean.class,Long.valueOf(2));
 		this.defaultTypeSizes.put(byte.class,Long.valueOf(1));
@@ -188,7 +188,7 @@ public class ObjectClassSizer
 	}
 
 
-	private int defaultStringSizeBytes = Config.getPropertyInteger(ObjectClassSizer.class,"defaultStringSizeBytes", 1000).intValue();
+	private int defaultStringSizeBytes = Config.getPropertyInteger(ObjectClassSizer.class,"defaultStringSizeBytes", 16).intValue();
     
     private ReLookup<Long> fieldDefaultSizes = new ReLookup<Long>();
     private Map<Class<?>,Long> defaultTypeSizes;
