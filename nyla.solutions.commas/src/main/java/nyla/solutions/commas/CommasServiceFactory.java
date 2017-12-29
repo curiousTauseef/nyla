@@ -247,7 +247,9 @@ public class CommasServiceFactory extends ServiceFactory
 			
 			for (int i = 0; i < p.length; i++)
 			{
-				configurationBuilder = configurationBuilder.addUrls(ClasspathHelper.forPackage(packageRoots[i]));
+				String thePackage = p[i];
+				
+				configurationBuilder = configurationBuilder.addUrls(ClasspathHelper.forPackage(thePackage));
 			}
 			
 			//Reflections reflections = new Reflections(packageRoots);

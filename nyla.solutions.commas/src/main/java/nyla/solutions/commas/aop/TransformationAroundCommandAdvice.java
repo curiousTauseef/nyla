@@ -10,7 +10,7 @@ public class TransformationAroundCommandAdvice
 	/**
 	 * transform the arguments and return for a join point
 	 * @param proceedingJoinPoint
-	 * @return
+	 * @return transformed output
 	 * @throws Throwable
 	 */
 	public Object transform(ProceedingJoinPoint proceedingJoinPoint) throws Throwable 

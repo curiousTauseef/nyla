@@ -1,6 +1,6 @@
 package nyla.solutions.global.patterns.command.commas;
 
-import org.junit.Ignore;
+import org.junit.Test;
 
 import junit.framework.TestCase;
 import nyla.solutions.commas.Command;
@@ -9,7 +9,7 @@ import nyla.solutions.commas.CommasServiceFactory;
 import nyla.solutions.commas.json.JsonCommandSchema;
 import nyla.solutions.core.util.Debugger;
 
-@Ignore
+
 public class CommasServiceFactoryTest extends TestCase
 {
 
@@ -49,6 +49,7 @@ public class CommasServiceFactoryTest extends TestCase
 		
 	}*/
 	// --------------------------------------------------------
+	@Test
 	public void testCreateClass()
 	{
 		CommasServiceFactory factory = CommasServiceFactory.getCommasServiceFactory();
@@ -61,7 +62,7 @@ public class CommasServiceFactoryTest extends TestCase
 		
 		//Assert.assertEquals("World", results.getPayload());
 	}// --------------------------------------------------------
-	
+	@Test
 	public void testJson() throws Exception
 	{
 		CommasServiceFactory factory = CommasServiceFactory.getCommasServiceFactory();

@@ -12,13 +12,13 @@ public interface Advice
 
 	/**
 	 * Before advice in the form  a command
-	 * @return
+	 * @return command pre advice
 	 */
 	Command<?,?> getBeforeCommand();
 	
 	/**
 	 * After advice in the form  a command
-	 * @return
+	 * @return command post advice
 	 */
 	Command<?,?> getAfterCommand();
 	

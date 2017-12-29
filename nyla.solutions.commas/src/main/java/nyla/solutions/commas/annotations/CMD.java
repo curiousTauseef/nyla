@@ -37,7 +37,7 @@ public @interface CMD
 	
 	/**
 	 * The placeholder for an input container
-	 * @return
+	 * @return the input name
 	 */
 	public String inputName() default "";
 	
@@ -74,7 +74,7 @@ public @interface CMD
 	
 	/**
 	 * Command method attributes
-	 * @return
+	 * @return the list of attributes
 	 */
 	public Attribute[] attributes() default {};
 	

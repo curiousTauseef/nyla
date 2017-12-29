@@ -15,7 +15,8 @@ public class ToStringToBytesTransformer implements Command<byte[],Object>
 {
 	/**
 	 * Transform the object.toString method bytes
-	 * @see nyla.solutions.commas.Command#transform(java.lang.Object)
+	 * @param  source the object to convert
+	 * @return the converted bytes of the source
 	 */
 	public byte[] execute(Object source)
 	{

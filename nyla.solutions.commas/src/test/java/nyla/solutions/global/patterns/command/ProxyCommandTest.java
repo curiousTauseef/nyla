@@ -2,22 +2,29 @@ package nyla.solutions.global.patterns.command;
 
 import java.util.ArrayList;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import junit.framework.TestCase;
 import nyla.solutions.commas.ProxyCommand;
 
 public class ProxyCommandTest extends TestCase
 {
 
+	@Before
 	protected void setUp() throws Exception
 	{
 		super.setUp();
 	}
 
+	@After
 	protected void tearDown() throws Exception
 	{
 		super.tearDown();
 	}
 
+	@Test
 	public void testExecute()
 	{
 		ProxyCommand cmd = new ProxyCommand();
@@ -43,11 +50,12 @@ public class ProxyCommandTest extends TestCase
 		
 	}// ------------------------------------------------
 
+	@Test
 	public void tcase1(Boolean in1, String in2)
 	{
 		tcase1Executed = true;
 	}// ------------------------------------------------
-	
+	@Test
 	public Object  tcase2(ArrayList<Object> in)
 	{
 		tcase2Executed = true;
