@@ -19,6 +19,7 @@ import nyla.solutions.core.patterns.iteration.Paging;
 /**
  * Handles server side transformation of the JSON date times
  * @author Gregory Green
+ * @param <T> the Page collection type
  *
  */
 public class PagingSerializer<T> implements JsonSerializer<Paging<T>>, JsonDeserializer<Paging<T>>
@@ -27,9 +28,6 @@ public class PagingSerializer<T> implements JsonSerializer<Paging<T>>, JsonDeser
 	{
 		this.gson = new Gson();
 	}// --------------------------------------------------------
-	/**
-	 * De-serialize the element into an number 
-	 */
 	public Paging<T> deserialize(JsonElement jsonelement, Type type,
 			JsonDeserializationContext jsondeserializationcontext)
 			throws JsonParseException
@@ -73,9 +71,6 @@ public class PagingSerializer<T> implements JsonSerializer<Paging<T>>, JsonDeser
 		
 		return null;
 	}// -----------------------------------------------
-	/**
-	 * serialize number into a string
-	 */
 	public JsonElement serialize(Paging<T> paging, Type arg1,
 			JsonSerializationContext arg2)
 	{
@@ -85,16 +80,7 @@ public class PagingSerializer<T> implements JsonSerializer<Paging<T>>, JsonDeser
 		GSON gson = new GSON();
 	    
 	    PageCriteria pageCriteria = paging.getPageCriteria();
-	    
-	    /*JsonObject pageCriteriaJson = new JsonObject();
-	    pageCriteriaJson.addProperty("beginIndex",pageCriteria.getBeginIndex());
-	    pageCriteriaJson.addProperty("endIndex",pageCriteria.getEndIndex());
-	    pageCriteriaJson.addProperty("size",pageCriteria.getSize());
-	    pageCriteriaJson.addProperty("savePagination",String.valueOf(pageCriteria.isSavePagination()));
-	    pageCriteriaJson.addProperty("className",pageCriteria.getClassName());
-        */
-	    
-	    
+	    	    
 	    JsonObject results = new JsonObject();
 	    
 

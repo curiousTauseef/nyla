@@ -76,12 +76,13 @@ public class JacksonJSON extends JSON
 		mapper.writeValue(file, object);
 	}// --------------------------------------------------------
 	/**
-	 * 
+	 * @param <K>  the map key
+	 * @param <V> the map value
 	 * @param file the file to write
 	 * @param map the region/map data
 	 * @throws JsonGenerationException
 	 * @throws JsonMappingException
-	 * @throws IOException
+	 * @throws IOException when an IO occurs occurs
 	 */
 	public static <K, V> void writeToFile(File file, Map<K, V> map)
 			throws JsonGenerationException, JsonMappingException, IOException
@@ -156,7 +157,7 @@ public class JacksonJSON extends JSON
 	}// --------------------------------------------------------
 	/**
 	 * Create the Jackson ObjectMapper with all required settings
-	 * @return
+	 * @return the object mapper
 	 */
 	public static ObjectMapper createObjectMapper()
 	{
@@ -239,6 +240,7 @@ public class JacksonJSON extends JSON
 	}// --------------------------------------------------------
 	/**
 	 * 
+	 * @param <T> the TYPE
 	 * @param reader the reader
 	 * @param clz the classed
 	 * @return the class

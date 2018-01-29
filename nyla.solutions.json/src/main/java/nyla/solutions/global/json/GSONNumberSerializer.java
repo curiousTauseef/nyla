@@ -17,9 +17,7 @@ import com.google.gson.JsonSerializer;
  */
 public class GSONNumberSerializer implements JsonSerializer<Number>, JsonDeserializer<Number>
 {
-	/**
-	 * De-serialize the element into an number 
-	 */
+
 	public Number deserialize(JsonElement jsonelement, Type type,
 			JsonDeserializationContext jsondeserializationcontext)
 			throws JsonParseException
@@ -59,9 +57,6 @@ public class GSONNumberSerializer implements JsonSerializer<Number>, JsonDeseria
         else
             throw new JsonParseException((new StringBuilder()).append(getClass()).append(" cannot deserialize to ").append(type).toString());
 	}// -----------------------------------------------
-	/**
-	 * serialize number into a string
-	 */
 	public JsonElement serialize(Number number, Type arg1,
 			JsonSerializationContext arg2)
 	{

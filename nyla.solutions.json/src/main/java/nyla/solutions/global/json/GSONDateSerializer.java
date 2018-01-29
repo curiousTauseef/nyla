@@ -21,9 +21,6 @@ import nyla.solutions.core.util.Text;
  */
 public class GSONDateSerializer implements JsonSerializer<Date>, JsonDeserializer<Date>
 {
-	/**
-	 * De-serialize the element into an date 
-	 */
 	public Date deserialize(JsonElement jsonelement, Type type,
 			JsonDeserializationContext jsondeserializationcontext)
 			throws JsonParseException
@@ -48,9 +45,6 @@ public class GSONDateSerializer implements JsonSerializer<Date>, JsonDeserialize
         else
             throw new JsonParseException((new StringBuilder()).append(getClass()).append(" cannot deserialize to ").append(type).toString());
 	}// -----------------------------------------------
-	/**
-	 * serialize to data into a string
-	 */
 	public JsonElement serialize(Date date, Type arg1,
 			JsonSerializationContext arg2)
 	{

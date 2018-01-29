@@ -34,8 +34,9 @@ public abstract class JSON
 	 
 	 /**
 	  * Convert from a json to an object
+	 * @param <T> the TYPE
 	  * @param json the JSON text to convert
-	  * @param classOfT
+	  * @param classOfT the 
 	  * @return instance object
 	  */
 	public abstract <T> T fromJson(String json, Class<?> classOfT);

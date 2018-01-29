@@ -56,8 +56,8 @@ public class GSON extends JSON
 
 	
 	/**
-	 * @param src
-	 * @return
+	 * @param src the source object
+	 * @return the Json element
 	 * @see com.google.gson.Gson#toJsonTree(java.lang.Object)
 	 */
 	public JsonElement toJsonTree(Object src)

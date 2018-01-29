@@ -12,7 +12,8 @@ import nyla.solutions.global.security.data.SecurityCredential;
 import nyla.solutions.global.security.user.data.User;
 import nyla.solutions.global.util.Debugger;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;import org.apache.log4j.Logger;
+
 
 /**
  * <pre>

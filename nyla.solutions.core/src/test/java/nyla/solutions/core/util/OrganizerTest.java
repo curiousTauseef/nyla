@@ -14,8 +14,34 @@ import org.junit.Test;
 
 import nyla.solutions.core.data.MapEntry;
 
+/**
+ * Test cases for Organizer
+ * 
+ * @author Gregory Green
+ *
+ */
 public class OrganizerTest
 {
+	@Test
+	public void testFill()
+	{
+		assertNull(Organizer.fill(0,null));
+		
+		assertNull(Organizer.fill(1,null));
+		assertNull(Organizer.fill(3,null));
+		
+		String value = "";
+		Collection<String> results = Organizer.fill(1,value);
+		assertEquals(1, results.size());
+		
+		for (String string : results)
+		{
+			assertEquals(string,value);
+		}
+		
+	}//------------------------------------------------
+	
+	
 		@Test
 		public void testToPages()
 		{

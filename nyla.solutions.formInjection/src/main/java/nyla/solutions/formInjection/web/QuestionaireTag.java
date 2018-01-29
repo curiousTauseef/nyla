@@ -21,7 +21,8 @@ import nyla.solutions.formInjection.formatter.html.HTMLDecorator;
 import nyla.solutions.global.util.Debugger;
 import nyla.solutions.global.util.Text;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;import org.apache.log4j.Logger;
+
 
 
 /**
