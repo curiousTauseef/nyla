@@ -90,15 +90,15 @@ public class FileMonitor extends Observable
     * More than one file can be listened for. When the specified file is
     * created, modified or deleted, listeners are notified.
     * 
-    * @param aDirectory the directory to listen for.
-    * @param aFileNameFilter the file name
-    * @param aProcessCurrentFiles whether to process current names
+    * @param directory the directory to listen for.
+    * @param fileNameFilter the file name
+    * @param processCurrentFiles whether to process current names
     */
-   public synchronized void monitor(String aDirectory, String aFileNameFilter, boolean aProcessCurrentFiles)
+   public synchronized void monitor(String directory, String fileNameFilter, boolean processCurrentFiles)
    {
 
       timer.schedule(
-            new FileMonitorNotifier(this, aDirectory, aFileNameFilter, aProcessCurrentFiles)
+            new FileMonitorNotifier(this, directory, fileNameFilter, processCurrentFiles)
 	    , 0,
             pollingInterval);
    }//-------------------------------------------
@@ -145,9 +145,10 @@ public class FileMonitor extends Observable
        *           the directory to monitor
        * @param aFileFilter
        *           the file filter example *.exe"
+       * @param processCurrentFiles flag to process previous files
        */
       FileMonitorNotifier(FileMonitor aFileMonitor, String aDirectory,
-            String aFileFilter, boolean aPreviousCurrentFile)
+            String aFileFilter, boolean processCurrentFiles)
       {
          if (aDirectory == null || aDirectory.length() == 0)
             throw new IllegalArgumentException(
@@ -167,7 +168,7 @@ public class FileMonitor extends Observable
          //----------------------------------------------
          this.filter = new WildCardFilter(aFileFilter);
          
-         if(aPreviousCurrentFile) 
+         if(!processCurrentFiles) 
             init();
 
       }//--------------------------------------
@@ -208,9 +209,6 @@ public class FileMonitor extends Observable
             if(filesInDir == null)
             	return;
             
-            System.out.println("Looking for "+ directory+File.separator+this.filter);
-         
-
             File dirfile = null;
             Long lastModifiedTime = null;
             long newModifiedTime = 0;

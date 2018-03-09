@@ -872,7 +872,7 @@ public static String[] toStrings(Object object)
     * @throws IOException when an IO error occurs
     *  
     */
-   @SuppressWarnings("resource")
+   
 public static Collection<Object> parse(Reader aReader, String aStart, String aEnd, boolean aIgnoreCase)
    throws IOException
    {

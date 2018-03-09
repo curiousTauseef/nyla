@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -51,13 +52,37 @@ public class FileMonitorTest extends FileMonitor
 		//Write file to trigger observer
 		String filePath = "runtime/"+Text.generateId()+".txt"; 
 		IO.writeFile(filePath, "Hello");
-		Thread.sleep(200);
+		Thread.sleep(1000*2);
 		
 		//Check if observer was trigger
 		assertTrue(called);
 		
 		//Cleanup file
 		IO.delete(Paths.get(filePath).toFile());
+	}
+	
+	
+	@Test
+	public void testProcessPreviousFile()
+	throws Exception
+	{
+		//Create the file monitoring
+		FileMonitor monitor = new FileMonitor();
+	
+		boolean processCurrentFiles = false;
+		ArrayList<Boolean> hasEvent  = new ArrayList<Boolean>();
+		
+		Observer observer = (observable, arg) -> {hasEvent.add(Boolean.TRUE);};
+		monitor.addObserver(observer);
+		
+		monitor.monitor("runtime", "*.txt", processCurrentFiles);
+		Thread.sleep(1000*2);
+		assertTrue(hasEvent.isEmpty());
+		IO.touch(Paths.get("runtime/FileMonitor.txt").toFile());
+		Thread.sleep(1000*2);
+		
+		assertFalse(hasEvent.isEmpty());
+		
 	}
 
 }
