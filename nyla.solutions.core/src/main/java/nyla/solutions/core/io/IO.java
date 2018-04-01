@@ -28,13 +28,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import nyla.solutions.core.data.Data;
 import nyla.solutions.core.exception.RequiredException;
@@ -115,7 +118,7 @@ public class IO
 	
 		
 		return date;
-	}
+	}//------------------------------------------------
 	
 	/**
 	 * 
@@ -433,7 +436,7 @@ public class IO
 	{
 
 		if (folder == null)
-			throw new RequiredException("folder in IO");
+			return null;
 
 		if (!folder.isDirectory())
 			throw new RequiredException(folder.getAbsolutePath() + " is not a folder");
@@ -869,6 +872,9 @@ public class IO
 
 	public static File[] listFiles(File folder)
 	{
+		if(folder == null)
+			return null;
+		
 		if (!folder.isDirectory())
 			throw new RequiredException(folder.getAbsolutePath() + " is not a directory");
 
@@ -891,6 +897,52 @@ public class IO
 		return directory.list(filter);
 	}// --------------------------------------------
 
+	public static Set<File> listFileRecursive(String dir, String pattern)
+	{
+		if(dir  == null || dir.length() == 0)
+			dir = ".";
+		
+		return listFileRecursive(Paths.get(dir).toFile(), pattern);
+	}//------------------------------------------------
+	/**
+	 * List the file under a given directory
+	 * @param directory the directory
+	 * @param pattern the file pattern
+	 * @return the list of files
+	 */
+	public static Set<File> listFileRecursive(File directory, String pattern)
+	{
+		File[] files = listFiles(directory,pattern);
+		
+		Set<File> set = new HashSet<>(FILE_IO_BATCH_SIZE);
+		
+		if(files != null && files.length > 0)
+			set.addAll(Arrays.asList(files));
+		
+		//list directories
+		
+		File[] folders = listFolders(directory);
+		
+		
+		if(folders != null && folders.length > 0)
+		{
+			
+			for (File folder : folders)
+			{
+				
+				Set<File> nested = listFileRecursive(folder, pattern);
+				
+				if(nested != null)
+					set.addAll(nested);
+				
+			}
+		}
+		
+		if(set.isEmpty())
+			return null;
+		
+		return set;
+	}
 	/**
 	 * List the file under a given directory
 	 * @param directory the directory
@@ -901,7 +953,7 @@ public class IO
 	{
 
 		if (pattern == null || pattern.length() == 0)
-			throw new RequiredException("pattern in IO");
+			return null;
 
 		validateDirectory(directory);
 
@@ -1754,6 +1806,21 @@ public class IO
 			for (int i = 0; i < files.length; i++)
 				delete(files[i]);
 		}
+	}//------------------------------------------------
+	/**
+	 * 
+	 * @param directory the directory to make
+	 * @throws IOException when an unexpected IO error occurs
+	 */
+	public static void mkdir(String directory)
+	throws IOException
+	{
+		if(directory == null || directory.length() == 0)
+			return;
+		
+		mkdir(Paths.get(directory).toFile());
+		
 	}
+
 
 }

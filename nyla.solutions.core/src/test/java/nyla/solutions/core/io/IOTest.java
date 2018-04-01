@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 
@@ -175,8 +177,40 @@ public class IOTest
 	   
 	}//------------------------------------------------
 	@Test
+	public void testListFileRecursive()
+	throws Exception
+	{
+		String dir = "runtime/tmp/listfileRecursive";
+		//File parent  = null ;
+		Assert.assertNull(IO.listFileRecursive((File)null, null));
+		IO.mkdir(dir);
+		int LEN  =3;
+		for (int i = 0; i < LEN; i++)
+		{
+			String nestedDir = dir+"/dir"+i;
+			IO.mkdir(nestedDir);
+			
+			IO.writeFile(nestedDir+"/"+i+".txt", String.valueOf("i"));
+			
+		}
+		
+		
+		//parent = Paths.get(dir).toFile();
+		Set<File> results = IO.listFileRecursive(dir, "*.txt") ;
+		assertNotNull(results);
+		assertEquals(LEN,results.size());
+		
+		for (File file : results)
+		{
+			assertTrue("Is .txt "+ file.toString(),file.getName().endsWith(".txt"));
+		}
+		
+	}//------------------------------------------------
+	@Test
 	public void testlistFiles() throws Exception
 	{
+
+		
 		File[] files = IO.listFiles(new File("src/test/resources/iotest"), "*");
 		
 		Assert.assertNotNull(files);
