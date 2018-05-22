@@ -2,8 +2,8 @@ package nyla.solutions.office.organizer.scheduler;
 
 import java.util.Date;
 
-import nyla.solutions.core.data.Event;
-import nyla.solutions.core.data.TimeInterval;
+import nyla.solutions.core.data.clock.Appointment;
+import nyla.solutions.core.data.clock.TimeInterval;
 import nyla.solutions.core.security.user.data.User;
 
 
@@ -21,15 +21,15 @@ public interface SchedulerService
     * 
     * @param user
     * @param time
-    * @return
+    * @return the list of event appointments
     */
-   public Event[] listEvents(User user, Date time);
+   public Appointment[] listEvents(User user, Date time);
    
    /**
     * 
     * @param user
     * @param event
-    * @return
+    * @return the saved appointment event
     */
-   public Event saveEvent(User user, Event event);
+   public Appointment saveEvent(User user, Appointment event);
 }

@@ -199,6 +199,7 @@ public class JFreeChartFacade implements Chart
 	  }//---------------------------------------------
 	  /**
 	   * Plot a value on the chart
+	   * @param value the value to plot
 	   * @param label the column name
 	   * @param rowKey the row key data
 	   */
@@ -208,6 +209,9 @@ public class JFreeChartFacade implements Chart
 	  }//---------------------------------------------
 	  /**
 	   * Plot a value on the chart
+	   * @param value the value to plot
+	   * @param rowKey the row key
+	   * @param label the label
 	   */
 	  public void plotValue(Double value, Comparable<?> rowKey, Comparable<?> label)
 	  {

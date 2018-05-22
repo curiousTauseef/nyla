@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.TreeSet;
 
-import nyla.solutions.core.data.Event;
+import nyla.solutions.core.data.clock.Appointment;
 import nyla.solutions.core.data.Identifier;
 import nyla.solutions.core.exception.DuplicateRowException;
 import nyla.solutions.core.exception.NoDataFoundException;
@@ -32,7 +32,7 @@ public class FileSchedulerDAO implements SchedulerDAO
 	 * solutions.global.data.Identifier, java.util.Date)
 	 */
    @SuppressWarnings("unchecked")
-   public Collection<Event> selectEvents(Identifier owner, Date date)
+   public Collection<Appointment> selectEvents(Identifier owner, Date date)
    throws NoDataFoundException
    {
       
@@ -48,7 +48,7 @@ public class FileSchedulerDAO implements SchedulerDAO
       
       try
       {         
-         return (Collection<Event>) xml.toObject(file);
+         return (Collection<Appointment>) xml.toObject(file);
       }
       catch (Exception e)
       {
@@ -78,10 +78,10 @@ public class FileSchedulerDAO implements SchedulerDAO
     * @see nyla.solutions.office.organizer.scheduler.SchedulerDAO#deleteEvent(
     * solutions.global.data.Identifier, solutions.global.data.Event)
     */
-   public void deleteEvent(Identifier owner, Event event)
+   public void deleteEvent(Identifier owner, Appointment event)
    throws NoDataFoundException
    {
-      Collection<Event> events = this.selectEvents(owner, event.getTimeSlot().getStartDate());
+      Collection<Appointment> events = this.selectEvents(owner, event.getTimeSlot().getStartDate());
       
       events.remove(event);
       
@@ -100,10 +100,10 @@ public class FileSchedulerDAO implements SchedulerDAO
     * @see nyla.solutions.office.organizer.scheduler.SchedulerDAO#insertEvent(
     * solutions.global.data.Identifier, solutions.global.data.Event)
     */
-   public void insertEvent(Identifier owner, Event event) 
+   public void insertEvent(Identifier owner, Appointment event) 
    throws DuplicateRowException
    {
-      Collection<Event> events = null;
+      Collection<Appointment> events = null;
       try
       {
          try
@@ -116,7 +116,7 @@ public class FileSchedulerDAO implements SchedulerDAO
          catch (NoDataFoundException e)
          {
             Debugger.println(this, "Creating new evnets for owner "+owner);
-            events = new TreeSet<Event>();
+            events = new TreeSet<Appointment>();
             
          }
          

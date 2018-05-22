@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
-import nyla.solutions.core.data.Event;
-import nyla.solutions.core.data.Time;
-import nyla.solutions.core.data.TimeInterval;
-import nyla.solutions.core.data.TimeSlot;
+import nyla.solutions.core.data.clock.Appointment;
+import nyla.solutions.core.data.clock.Time;
+import nyla.solutions.core.data.clock.TimeInterval;
+import nyla.solutions.core.data.clock.TimeSlot;
 import nyla.solutions.core.exception.NoDataFoundException;
 import nyla.solutions.core.exception.SystemException;
 import nyla.solutions.core.patterns.servicefactory.ServiceFactory;
@@ -56,7 +56,7 @@ public class SchedulerMgr implements SchedulerService
       {
          dao = getSchedulerDAO(user);
 
-         Event[] events = listEvents(user, date);
+         Appointment[] events = listEvents(user, date);
          
          TimeInterval[] eventTimeSlot = new TimeInterval[events.length];
          
@@ -110,7 +110,7 @@ public class SchedulerMgr implements SchedulerService
     *
     * @see nyla.solutions.office.organizer.scheduler.SchedulerService#listEvents(solutions.global.security.user.data.User, java.util.Date)
     */
-   public Event[] listEvents(User user, Date date)
+   public Appointment[] listEvents(User user, Date date)
    {
       Debugger.dump(user);
       
@@ -119,9 +119,9 @@ public class SchedulerMgr implements SchedulerService
       {
          dao = getSchedulerDAO(user);
 
-         Collection<Event> events = dao.selectEvents(user, date);
+         Collection<Appointment> events = dao.selectEvents(user, date);
          
-         Event [] eventArray = new Event[events.size()];
+         Appointment [] eventArray = new Appointment[events.size()];
          events.toArray(eventArray);
          
          return eventArray;
@@ -141,7 +141,7 @@ public class SchedulerMgr implements SchedulerService
         	 dao.dispose();
       }
    }// --------------------------------------------
-   public Event saveEvent(User user, Event event)
+   public Appointment saveEvent(User user, Appointment event)
    {
       SchedulerDAO dao = null;
       try

@@ -3,7 +3,7 @@ package nyla.solutions.office.organizer.scheduler;
 import java.util.Collection;
 import java.util.Date;
 
-import nyla.solutions.core.data.Event;
+import nyla.solutions.core.data.clock.Appointment;
 import nyla.solutions.core.data.Identifier;
 import nyla.solutions.core.exception.DuplicateRowException;
 import nyla.solutions.core.exception.NoDataFoundException;
@@ -18,13 +18,13 @@ import nyla.solutions.core.patterns.Disposable;
  */
 public interface SchedulerDAO extends Disposable
 {
-   Collection<Event> selectEvents(Identifier owner, Date date)
+   Collection<Appointment> selectEvents(Identifier owner, Date date)
    throws NoDataFoundException;
    
-   void insertEvent(Identifier owner, Event event)
+   void insertEvent(Identifier owner, Appointment event)
    throws DuplicateRowException;
    
-   void deleteEvent(Identifier owner, Event event)
+   void deleteEvent(Identifier owner, Appointment event)
    throws NoDataFoundException;
    
 }
