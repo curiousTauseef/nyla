@@ -63,18 +63,18 @@ public interface Chart extends Binary, Type, Nameable
    /**
     * 
     * @param value the value to plot
-    * @param label the row label
-    * @param columnKey the column label key
+    * @param xAxisValue the row label
+    * @param labelCategories the column label key
     */
-   public void plotValue(double value, Comparable<?> rowKey, Comparable<?> label);
+   public void plotValue(double value, Comparable<?> labelCategories, Comparable<?> xAxisValue);
 
    /**
     * 
     * @param value the value to plot
-    * @param dataName the row label
-    * @param columnKey the column label key
+    * @param xAxisValue the row label
+    * @param labelCategories the column label key
     */
-   public void plotValue(Double value, Comparable<?> rowKey, Comparable<?> label);
+   public void plotValue(Double value, Comparable<?> labelCategories, Comparable<?> xAxisValue);
 
    /**
     * 

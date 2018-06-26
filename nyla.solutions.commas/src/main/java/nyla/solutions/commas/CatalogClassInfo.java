@@ -24,6 +24,7 @@ public class CatalogClassInfo implements Serializable, BeanClassInfo
 	/**
 	 * 
 	 * @param aClass the class to be wrapped
+	 * @param genericType the generic type
 	 */
 	public CatalogClassInfo(Class<?> aClass, Type genericType)
 	{
@@ -35,6 +36,7 @@ public class CatalogClassInfo implements Serializable, BeanClassInfo
 	/**
 	 * 
 	 * @param aClass the class to be wrapped
+	 * @param genericTypes the generic types
 	 */
 	public CatalogClassInfo(Class<?> aClass, Type[] genericTypes)
 	{

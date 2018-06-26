@@ -50,16 +50,31 @@ Attribute<Object,Object>
       return super.clone();
    }//----------------------------------------
    /**
-    * @param aOther the other property to compare
+    * @param other the other property to compare
     * @see java.lang.Comparable#compareTo(java.lang.Object)
     * @throws ClassCastException if the other is not a property
     */
-   public int compareTo(Object aOther)
+   @SuppressWarnings({ "unchecked", "rawtypes" })
+   public int compareTo(Object other)
    {
-      Property other = (Property)aOther;
+      Property otherProperty = (Property)other;
+      
+      if(this.name == null)
+    	  return -1;
       
       //compare names
-     return other.getName().compareTo(this.getName());
+     int compare = this.name.compareTo(otherProperty.getName());
+     
+     if(compare == 0)
+     {
+    	 Object value = this.getValue();
+    	 if(!(value instanceof Comparable))
+    		 return compare;
+    	 
+    	 return ((Comparable)value).compareTo(otherProperty.getValue());
+     }
+     
+     return compare;
    }//--------------------------------------------
    /**
     * 
@@ -116,46 +131,46 @@ Attribute<Object,Object>
       return name;
    }//--------------------------------------------
    /**
- * @see java.lang.Object#hashCode()
- */
-@Override
-public int hashCode()
-{
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + ((name == null) ? 0 : name.hashCode());
-	result = prime * result + ((value == null) ? 0 : value.hashCode());
-	return result;
-}
-/**
- * @see java.lang.Object#equals(java.lang.Object)
- */
-@Override
-public boolean equals(Object obj)
-{
-	if (this == obj)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		return result;
+	}
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Property other = (Property) obj;
+		if (name == null)
+		{
+			if (other.name != null)
+				return false;
+		}
+		else if (!name.equals(other.name))
+			return false;
+		if (value == null)
+		{
+			if (other.value != null)
+				return false;
+		}
+		else if (!value.equals(other.value))
+			return false;
 		return true;
-	if (obj == null)
-		return false;
-	if (getClass() != obj.getClass())
-		return false;
-	Property other = (Property) obj;
-	if (name == null)
-	{
-		if (other.name != null)
-			return false;
 	}
-	else if (!name.equals(other.name))
-		return false;
-	if (value == null)
-	{
-		if (other.value != null)
-			return false;
-	}
-	else if (!value.equals(other.value))
-		return false;
-	return true;
-}
    /**
     * 
     * @see nyla.solutions.core.data.Copier#copy(nyla.solutions.core.data.Copier)

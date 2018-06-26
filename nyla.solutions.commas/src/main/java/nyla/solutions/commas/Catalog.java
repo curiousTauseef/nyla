@@ -12,7 +12,7 @@ public interface Catalog
 	/**
 	 * The information form all commands in a commas service
 	 * @param commasName the service
-	 * @return
+	 * @return the commas info
 	 */
 	public CommasInfo getCommasInfo(String commasName);
 	

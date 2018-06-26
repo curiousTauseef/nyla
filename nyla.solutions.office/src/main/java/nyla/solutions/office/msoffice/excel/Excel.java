@@ -95,11 +95,12 @@ public class Excel implements Disposable
    
    /**
     * @return the writable workbook
-    * @throws IOException
+    * @param file the file the write
+    * @throws IOException for IO issues
     */
-   public static WritableWorkbook createWritableWorkbook(File  aFile) throws IOException
+   public static WritableWorkbook createWritableWorkbook(File  file) throws IOException
    {
-      WritableWorkbook writableWorkbook = Workbook.createWorkbook(aFile);
+      WritableWorkbook writableWorkbook = Workbook.createWorkbook(file);
       
       return writableWorkbook;
    }// --------------------------------------------
@@ -110,28 +111,31 @@ public class Excel implements Disposable
     * Singleton factory method
     * @return a single instance of the Excel object 
     * for the JVM
+    * @param file  file to convert
+    * @throws IOException for IO issues
     */
-   public static Excel getExcel(String aFile)
+   public static Excel getExcel(String file)
    throws IOException
    {
-      return new Excel(new File(aFile));
+      return new Excel(new File(file));
    }// --------------------------------------------
    /**
     * Singleton factory method
     * @return a single instance of the Excel object 
     * for the JVM
+    * @param file the file to convert
+    * @throws IOException when IO issues 
     */
-   public static Excel getExcel(File aFile)
+   public static Excel getExcel(File file)
    throws IOException
    {
-      return new Excel(aFile);
+      return new Excel(file);
    }//--------------------------------------------
 
    /**
     * Return the sheet within a workbook
     * @param aSheetName the sheet name
     * @return the sheet object
-    * @throws Exception
     */
    public ExcelSheet retrieveSheet(String aSheetName)   
    {
@@ -143,8 +147,8 @@ public class Excel implements Disposable
    }// --------------------------------------------
    /**
     * 
-    * @param aSheetNumber 1 or higher
-    * @return
+    * @param sheetNumber 1 or higher
+    * @return the excel sheet
     */
    public ExcelSheet retrieveSheet(int sheetNumber)   
    {
@@ -162,7 +166,9 @@ public class Excel implements Disposable
                String[] Headers = { "I_MatterNumber", "ERROR_DESC"};
                
                Excel.writeRow(closeFailureSheet, Headers,closeMatterFailureRow++);
+      @param aWritableSheet the write sheet
     * @param aInputs the columns to append
+    * @param aRowNumber the row number
     */
    public static void writeRow(WritableSheet aWritableSheet, Object [] aInputs, int aRowNumber)
    {
@@ -173,6 +179,7 @@ public class Excel implements Disposable
     * @param aRowNumber the row number
     * @param aInputs the columns to append
     * @param aObject appended to end of row
+    * @param aWritableSheet the write sheet
     */
    public static void writeRow(WritableSheet aWritableSheet, Object [] aInputs, Object aObject, int aRowNumber)
    {
@@ -233,9 +240,14 @@ public class Excel implements Disposable
 
    /**
     * User insert to load data from a file based on information in a given sheet
+    * @param <T>  the type
     * @param file the file to process
     * @param saver save record implementation 
     * @param sheetName the sheet name
+ * @param keyColumnPosition 
+ * @param className 
+    * @throws IOException for IO issues
+    *
     */
    public static  <T> void loadObjects(File file, KeyValueSaver<String, T> saver, String sheetName, int keyColumnPosition, String className)
    throws IOException
@@ -298,6 +310,8 @@ public class Excel implements Disposable
     * @param file
     * @param inserter
     * @param sheetName
+    * @throws IOException for IO issues
+    * @throws SQLException for SQL issues
     */
    public static void load(File file, Inserter inserter, String sheetName)
    throws IOException, SQLException
@@ -368,11 +382,6 @@ public class Excel implements Disposable
 		   
 	   
    }// --------------------------------------------
-   /**
-    * 
-    * 
-    * @see com.pfizer.ldm.global.patterns.Disposable#dispose()
-    */
    public void dispose()
    {
       try

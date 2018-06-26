@@ -42,7 +42,6 @@ public class ExcelReport  extends AbstractReport implements Executable
    /**
     * 
     * Constructor for ExcelReport initializes internal 
-    * @param file
     */
    public ExcelReport()
    {
@@ -61,11 +60,6 @@ public class ExcelReport  extends AbstractReport implements Executable
 	super(jdbcDriver, connectionURL, user, password.toCharArray());
    }// ----------------------------------------------
 
-   /**
-    * 
-    * Append the results of the data row to a CSV file
-    * @see solutions.dao.reporting.AbstractReport#printRow(solutions.dao.DataRow)
-    */
    public void printRow(Object[] row)
    {
       try
@@ -127,8 +121,9 @@ public class ExcelReport  extends AbstractReport implements Executable
    /**
     * 
     * @param args must contain the output file path
+ * @throws Exception 
     */
-   public static void main(String[] args)
+   public static void main(String[] args) throws Exception
    {
 	 if(args.length < 2)
 	 {
@@ -139,10 +134,13 @@ public class ExcelReport  extends AbstractReport implements Executable
       Environment env = new Environment();
       env.setArgs(args);
       
-     ExcelReport report = new ExcelReport();
-     report.filePath = args[0];
-     report.sql = args[1];
-     report.execute(env);
+     try(ExcelReport report = new ExcelReport())
+     {
+         report.filePath = args[0];
+         report.sql = args[1];
+         report.execute(env);
+     }
+
       
    }// --------------------------------------------
    

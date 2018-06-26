@@ -22,8 +22,7 @@ public class JxlSheet implements ExcelSheet
    }// --------------------------------------------
 
    /**
-    * Return the sheet name
-    * @see solutions.global.data.Nameable#getName()
+    * @return the sheet name
     */
    @Override
 	public String getName()
@@ -31,8 +30,8 @@ public class JxlSheet implements ExcelSheet
 		return this.sheet.getName();
 	}// --------------------------------------------------------
    /**
-    * Set the sheet name
-    * @see solutions.global.data.Nameable#setName(java.lang.String)
+    * @param name the sheet name
+    * 
     */
    @Override
 	public void setName(String name)
@@ -42,7 +41,7 @@ public class JxlSheet implements ExcelSheet
 	}// --------------------------------------------------------
    /**
     * @param row row count starts from zero
-    * @see nyla.solutions.office.msoffice.excel.ExcelSheet#getRow(int)
+    * @return the values in the row
     */
    public String[] getRow(int row)
 	{
@@ -62,9 +61,9 @@ public class JxlSheet implements ExcelSheet
 		return rowValues;
 	}// --------------------------------------------------------
    /**
-    * @param i the column
-    * @param j the row
-    * @return
+    * @param column the column
+    * @param row the row
+    * @return the cell
     * @see jxl.Sheet#getCell(int, int)
     */
    public String getCell(int column, int row)
@@ -103,7 +102,7 @@ public class JxlSheet implements ExcelSheet
    
    /**
     * @param cellName
-    * @return
+    * @return CELL name
     * @see jxl.Sheet#getCell(java.lang.String)
     */
    public String getCell(String cellName)
@@ -112,7 +111,7 @@ public class JxlSheet implements ExcelSheet
    }// --------------------------------------------------------
    
    /**
-	 * @return
+	 * @return the column count
 	 * @see jxl.Sheet#getColumns()
 	 */
 	public int getColumnCount()
@@ -121,7 +120,7 @@ public class JxlSheet implements ExcelSheet
 	}
 	
 	/**
-	 * @return
+	 * @return the row count
 	 * @see jxl.Sheet#getRows()
 	 */
 	public int getRowCount()

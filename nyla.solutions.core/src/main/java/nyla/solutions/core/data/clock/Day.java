@@ -3,15 +3,16 @@ package nyla.solutions.core.data.clock;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
-
 import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.util.Text;
 
 
 
 
 public class Day  implements Comparable<Day>, Serializable
 {
+	public static final String DAY_FORMAT = "MM/dd/yyyy";
+	
   /**
 	 * 
 	 */
@@ -19,7 +20,7 @@ public class Day  implements Comparable<Day>, Serializable
 	
 	
 /** The back end calendar instance of this day. */
-  protected final Calendar calendar_ = Calendar.getInstance();
+  protected final Calendar calendar_;
 
 
 
@@ -34,9 +35,18 @@ public class Day  implements Comparable<Day>, Serializable
    */
   public Day(int year, int month, int dayOfMonth)
   {
-    initialize(year, month, dayOfMonth);
+	  this();
+	  
+	calendar_.set(Calendar.YEAR, year);
+    calendar_.set(Calendar.MONTH, month);
+    calendar_.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+    
   }
 
+  public Day(String date)
+  {
+	  this(Text.toDate(date, DAY_FORMAT));
+  }
 
 
   /**
@@ -50,7 +60,9 @@ public class Day  implements Comparable<Day>, Serializable
    */
   public Day(int year, int dayOfYear)
   {
-    initialize(year, Calendar.JANUARY, 1);
+	  this();
+	  
+	calendar_.set(Calendar.YEAR, year);
     calendar_.set(Calendar.DAY_OF_YEAR, dayOfYear);
   }
 
@@ -61,12 +73,9 @@ public class Day  implements Comparable<Day>, Serializable
   public Day()
   {
     // Now (in the currenct locale of the client machine)
-    Calendar calendar = Calendar.getInstance();
-
-    // Prune time part
-    initialize(calendar.get(Calendar.YEAR),
-               calendar.get(Calendar.MONTH),
-               calendar.get(Calendar.DAY_OF_MONTH));
+    this.calendar_ = Calendar.getInstance();
+  
+    init();
   }
 
 
@@ -83,9 +92,8 @@ public class Day  implements Comparable<Day>, Serializable
     if (calendar == null)
       throw new IllegalArgumentException("calendar cannot be null");
 
-    initialize(calendar.get(Calendar.YEAR),
-               calendar.get(Calendar.MONTH),
-               calendar.get(Calendar.DAY_OF_MONTH));
+    this.calendar_ = (Calendar)calendar.clone();
+    init();
   }
 
 
@@ -103,13 +111,10 @@ public class Day  implements Comparable<Day>, Serializable
       throw new IllegalArgumentException("dat cannot be null");
 
     // Create a calendar based on given date
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(date);
+    this.calendar_ = Calendar.getInstance();
+    this.calendar_.setTime(date);
 
-    // Extract date values and use these only
-    initialize(calendar.get(Calendar.YEAR),
-               calendar.get(Calendar.MONTH),
-               calendar.get(Calendar.DAY_OF_MONTH));
+    init();
   }
 
 
@@ -138,34 +143,22 @@ public class Day  implements Comparable<Day>, Serializable
   {
     if (day == null)
       throw new IllegalArgumentException("day cannot be null");
+    
+    this.calendar_ = (Calendar)day.calendar_.clone();
 
-    initialize(day.getYear(), day.getMonth(), day.getDayOfMonth());
+    init();
   }
 
-
-
-  /**
-   * Initialize the internal calendar instance.
-   *
-   * @param year        Year of new day.
-   * @param month       Month of new day.
-   * @param dayOfMonth  Day of month of new day.
-   */
-  protected void initialize(int year, int month, int dayOfMonth)
-  {
-    calendar_.setLenient(true);
-    calendar_.setFirstDayOfWeek(Calendar.MONDAY);
-    calendar_.setTimeZone(TimeZone.getTimeZone("GMT"));
-    calendar_.set(Calendar.YEAR, year);
-    calendar_.set(Calendar.MONTH, month);
-    calendar_.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-    // Prune the time component
+public void init()
+{
+	// Prune the time component
     calendar_.set(Calendar.HOUR_OF_DAY, 0);
     calendar_.set(Calendar.MINUTE, 0);
     calendar_.set(Calendar.SECOND, 0);
     calendar_.set(Calendar.MILLISECOND, 0);
-  }
+}
+
+
 
 
 
@@ -205,7 +198,7 @@ public class Day  implements Comparable<Day>, Serializable
    */
   public Date getDate()
   {
-    return getCalendar().getTime();
+    return this.calendar_.getTime();
   }
 
 
@@ -698,16 +691,17 @@ public class Day  implements Comparable<Day>, Serializable
    */
   public String toString()
   {
-    StringBuffer s = new StringBuffer();
-
+    StringBuilder s = new StringBuilder();
+    if (getMonth() < 9)
+        s.append('0');
+    s.append(getMonth() + 1);
+    s.append('/');
     if (getDayOfMonth() < 10)
       s.append('0');
     s.append(getDayOfMonth());
     s.append('/');
-    if (getMonth() < 9)
-      s.append('0');
-    s.append(getMonth() + 1);
-    s.append('-');
+   
+
     s.append(getYear());
     s.append(" ");
     s.append(getDayName());
@@ -747,4 +741,28 @@ public class Day  implements Comparable<Day>, Serializable
       System.out.println(tuesday);
     }
   }
+
+  /**
+   * Compare based on month day year
+   * @param compared the day to compare
+   * @return if compared is the same day
+   */
+  public boolean isSameDay(Day compared)
+  {
+	  if(compared == null)
+		  return false;
+	 
+  	return this.getMonth() == compared.getMonth()
+  	&& this.getDayOfMonth() == compared.getDayOfMonth()
+  	&& this.getYear() == compared.getYear();
+  }
+
+	protected void initialize(int year, int month, int dayOfMonth)
+	{
+		// Prune the time component
+	    calendar_.set(Calendar.YEAR, year);
+	    calendar_.set(Calendar.MONTH, month);
+	    calendar_.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+	
+	}
 }

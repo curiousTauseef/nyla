@@ -3,7 +3,6 @@ package nyla.solutions.core.data;
 import java.io.Serializable;
 
 import nyla.solutions.core.data.Copier;
-import nyla.solutions.core.data.Data;
 import nyla.solutions.core.data.Numbered;
 import nyla.solutions.core.data.NumberedProperty;
 import nyla.solutions.core.data.Property;
@@ -18,7 +17,17 @@ import nyla.solutions.core.data.Property;
 public class NumberedProperty extends Property
 implements Comparable<Object>, Copier, Numbered
 {
-   /**
+	public NumberedProperty(String name, int value)
+	{
+		super(name, value);
+	}
+	
+   public NumberedProperty(int number)
+	{
+		super(null,number);
+	}
+
+/**
     * 
     * @see java.lang.Comparable#compareTo(java.lang.Object)
     */
@@ -32,41 +41,12 @@ implements Comparable<Object>, Copier, Numbered
          return comparedName;
       
       //compare numbers
-      Integer othernumber = Integer.valueOf(other.number);
+      Integer othernumber = other.getValueInteger();
       
-      return Integer.compare(this.number, othernumber.intValue());
+      return Integer.compare(this.getValueInteger(), othernumber.intValue());
       //----------------------------------------
    }
-	
-	   /**
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + number;
-		return result;
-	}
-	
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		NumberedProperty other = (NumberedProperty) obj;
-		if (number != other.number)
-			return false;
-		return true;
-	}
+
 
 /**
     * 
@@ -102,16 +82,20 @@ implements Comparable<Object>, Copier, Numbered
     */
    public int getNumber()
    {
-      return number;
+	   Integer v = (Integer)this.getValue();
+	   
+	   if(v == null)
+		   return 0;
+	   
+      return v.intValue();
    }
    /**
     * @param number The number to set.
     */
    public void setNumber(int number)
    {
-      this.number = number;
+     this.setValue(Integer.valueOf(number));
    }//--------------------------------------------
-   private int number = Data.NULL;
    static final long serialVersionUID = NumberedProperty.class.getName()
    .hashCode();
 }

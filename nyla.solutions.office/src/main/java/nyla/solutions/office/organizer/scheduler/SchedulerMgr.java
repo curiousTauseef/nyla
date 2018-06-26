@@ -19,12 +19,7 @@ import nyla.solutions.core.util.Scheduler;
 
 public class SchedulerMgr implements SchedulerService
 {
-   /**
-    * 
-    *
-    * @see nyla.solutions.office.organizer.scheduler.SchedulerService#listAvailableSlots(
-    * solutions.global.security.user.data.User, java.util.Date)
-    */
+
    public TimeInterval[] listAvailableSlots(User user, Date date)
    {
       try
@@ -105,11 +100,6 @@ public class SchedulerMgr implements SchedulerService
      
      return time;
    }// --------------------------------------------   
-   /**
-    * 
-    *
-    * @see nyla.solutions.office.organizer.scheduler.SchedulerService#listEvents(solutions.global.security.user.data.User, java.util.Date)
-    */
    public Appointment[] listEvents(User user, Date date)
    {
       Debugger.dump(user);

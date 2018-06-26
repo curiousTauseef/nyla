@@ -200,31 +200,31 @@ public class JFreeChartFacade implements Chart
 	  /**
 	   * Plot a value on the chart
 	   * @param value the value to plot
-	   * @param label the column name
-	   * @param rowKey the row key data
+	   * @param xAxisValue the column name
+	   * @param labelCategory the row key data
 	   */
-	  public void plotValue(double value, Comparable<?> rowKey, Comparable<?> label)
+	  public void plotValue(double value, Comparable<?> labelCategory, Comparable<?> xAxisValue)
 	  {
-		  dataset.addValue(value, rowKey, label);
+		  dataset.addValue(value, labelCategory, xAxisValue);
 	  }//---------------------------------------------
 	  /**
 	   * Plot a value on the chart
 	   * @param value the value to plot
-	   * @param rowKey the row key
-	   * @param label the label
+	   * @param labelCategory the row key
+	   * @param xAxisValue the label
 	   */
-	  public void plotValue(Double value, Comparable<?> rowKey, Comparable<?> label)
+	  public void plotValue(Double value, Comparable<?> labelCategory, Comparable<?> xAxisValue)
 	  {
 		  if(value == null)
 			  return; //ignore plot (no data)
 		  
-		  if(detectLegend && rowKey != null && rowKey.toString().length() > 0 &&
-				  label != null && label.toString().length() > 0)
+		  if(detectLegend && labelCategory != null && labelCategory.toString().length() > 0 &&
+				  xAxisValue != null && xAxisValue.toString().length() > 0)
 		  {
 			this.legend = true;		  
 		  }
 			  
-		  dataset.addValue(value.doubleValue(), rowKey, label);
+		  dataset.addValue(value.doubleValue(), labelCategory, xAxisValue);
 	  }//---------------------------------------------
 	  
 	  /**

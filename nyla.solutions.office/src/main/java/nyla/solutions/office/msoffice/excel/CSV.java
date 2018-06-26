@@ -35,8 +35,9 @@ public class CSV
  
    /**
     * 
-    * @param file
-    * @param objects
+    * @param file the file to append
+    * @param objects the row values
+    * @throws IOException when IO error occurs
     */
    public static void appendFile(java.io.File file, Object... objects)
    throws IOException

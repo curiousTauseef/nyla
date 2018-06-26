@@ -125,15 +125,57 @@ public class PagingCollection<T> implements Paging<T>, Serializable, Collection<
 		return collection.containsAll(arg0);
 	}//------------------------------------------------
 	
-	public boolean equals(Object arg0)
-	{
-		return collection.equals(arg0);
-	}//------------------------------------------------
 	
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PagingCollection<?> other = (PagingCollection<?>) obj;
+		if (collection == null)
+		{
+			if (other.collection != null)
+				return false;
+		}
+		else if (!collection.equals(other.collection))
+			return false;
+		if (first != other.first)
+			return false;
+		if (last != other.last)
+			return false;
+		if (pageCriteria == null)
+		{
+			if (other.pageCriteria != null)
+				return false;
+		}
+		else if (!pageCriteria.equals(other.pageCriteria))
+			return false;
+		return true;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
 	public int hashCode()
 	{
-		return collection.hashCode();
-	}//------------------------------------------------
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((collection == null) ? 0 : collection.hashCode());
+		result = prime * result + (first ? 1231 : 1237);
+		result = prime * result + (last ? 1231 : 1237);
+		result = prime * result + ((pageCriteria == null) ? 0 : pageCriteria.hashCode());
+		return result;
+	}
 	
 	public boolean isEmpty()
 	{

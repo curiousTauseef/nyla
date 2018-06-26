@@ -26,11 +26,7 @@ import nyla.solutions.xml.XMLInterpreter;
  */
 public class FileSchedulerDAO implements SchedulerDAO
 {  
-	/**
-	 * 
-	 * @see nyla.solutions.office.organizer.scheduler.SchedulerDAO#selectEvents(
-	 * solutions.global.data.Identifier, java.util.Date)
-	 */
+
    @SuppressWarnings("unchecked")
    public Collection<Appointment> selectEvents(Identifier owner, Date date)
    throws NoDataFoundException
@@ -73,11 +69,6 @@ public class FileSchedulerDAO implements SchedulerDAO
    public void dispose()
    { 
    }// --------------------------------------------
-   /**
-    * 
-    * @see nyla.solutions.office.organizer.scheduler.SchedulerDAO#deleteEvent(
-    * solutions.global.data.Identifier, solutions.global.data.Event)
-    */
    public void deleteEvent(Identifier owner, Appointment event)
    throws NoDataFoundException
    {
@@ -95,11 +86,6 @@ public class FileSchedulerDAO implements SchedulerDAO
       }
       
    }// --------------------------------------------
-   /**
-    * 
-    * @see nyla.solutions.office.organizer.scheduler.SchedulerDAO#insertEvent(
-    * solutions.global.data.Identifier, solutions.global.data.Event)
-    */
    public void insertEvent(Identifier owner, Appointment event) 
    throws DuplicateRowException
    {

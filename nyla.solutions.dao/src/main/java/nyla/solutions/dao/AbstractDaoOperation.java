@@ -17,10 +17,10 @@ import nyla.solutions.core.util.Debugger;
  * <i>Configuration properties</i>
  * 
 	#JDBC Connection
-	jdbc.user=asapmerck
-	jdbc.password={cryption}22 -62 -63 -72 -105 68 -125 34 -90 -115 -3 89 -86 86 2 114
+	jdbc.user=asap
+	jdbc.password=ABC
 	jdbc.driver=oracle.jdbc.OracleDriver
-	jdbc.connection.url=jdbc:oracle:thin:@sclo157.lss.emc.com:1521:xe
+	jdbc.connection.url=jdbc:oracle:thin:host:1521:xe
  * </pre>
  * @author Gregory Green
  *

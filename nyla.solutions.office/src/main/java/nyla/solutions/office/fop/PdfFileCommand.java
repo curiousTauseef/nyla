@@ -24,6 +24,8 @@ public class PdfFileCommand implements FileCommand<Boolean>
 	 * Creates the output PDF in the directory
 	 * 
 	 * this.outputPath/<file-name>.pdf
+	 * @param file the file create
+	 * @return success flag
 	 */
 	public Boolean execute(File file)
 	{		

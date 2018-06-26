@@ -35,7 +35,7 @@ public class ExcelFileDirDbLoaderCommand implements Command<Boolean, String[]>
 {
 	/**
 	 * @param args args[0] contains the directory name (prefix with rooDirectory if configured)
-	 * @see solutions.global.patterns.command.Command#execute(java.lang.Object)
+	 * @return success flag
 	 */
 	public Boolean execute(String[] args) 
 	{

@@ -22,6 +22,8 @@ public class TextTest extends TestCase
 		assertNotNull(Text.loadTemplate("test"));		
 		
 	}//------------------------------------------------
+	
+
 	@SuppressWarnings("rawtypes")
 	public void testText()
 	throws Exception

@@ -85,7 +85,7 @@ public class FOP
       /**
        * Converts an FO file to a PDF file using FOP
        * @param fo the FO file
-       * @param pdf the target PDF file
+       * @return the PDF bytes
        * @throws IOException In case of an I/O problem
        * @throws FOPException In case of a FOP problem
        */

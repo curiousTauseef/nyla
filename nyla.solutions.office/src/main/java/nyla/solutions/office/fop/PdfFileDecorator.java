@@ -24,6 +24,7 @@ public class PdfFileDecorator implements Fileable
 {
 	/**
 	 * The PDF file output and return the file handle
+	 * @return the file 
 	 */
 	public File getFile()
 	{
@@ -59,7 +60,7 @@ public class PdfFileDecorator implements Fileable
 		return foTextable;
 	}//---------------------------------------------
 	/**
-	 * @param fo the FO XML textable to set
+	 * @param foTextable the FO XML textable to set
 	 */
 	public void setFoTextable(Textable foTextable)
 	{

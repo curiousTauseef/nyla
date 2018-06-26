@@ -1,9 +1,10 @@
 package nyla.solutions.core.util;
 
-
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
+
+import nyla.solutions.core.data.clock.Day;
 import nyla.solutions.core.exception.ConfigException;
 import nyla.solutions.core.util.settings.ConfigSettings;
 import nyla.solutions.core.util.settings.Settings;
@@ -447,6 +448,11 @@ public class Config
 		return getSettings().getPropertyPassword(key);
 	}// ------------------------------------------------------------
 
+	
+	public static Day getDay(String key)
+	{
+		return new Day(getProperty(key));
+	}
 
 	/**
 	 * Get the an encrypted password
@@ -534,6 +540,12 @@ public class Config
 		
 		settings = theSettings;
 	}//------------------------------------------------
+	public static Day getPropertyDay(String key)
+	{
+		return new Day(getProperty(key));
+	}
 	private static Settings settings = null;
+
+
 
 }

@@ -33,6 +33,8 @@ public class FileableChartExecutable implements Executable, ChartDecorator, File
 	
 	/**
 	 * Save the chart to a file
+	 * @param environment the env
+	 * @return the return exit code
 	 */
 	public Integer execute(Environment environment)
 	{
@@ -50,8 +52,7 @@ public class FileableChartExecutable implements Executable, ChartDecorator, File
 		return chart;
 	}//---------------------------------------------
 	/**
-	 * @return
-	 * @see com.merck.mrl.eln.global.data.Binary#getBytes()
+	 * @return the bytes
 	 */
 	public byte[] getBytes()
 	{
@@ -63,8 +64,7 @@ public class FileableChartExecutable implements Executable, ChartDecorator, File
 	
 	
 	/**
-	 * @return
-	 * @see nyla.solutions.office.chart.Chart#getSeriesColors()
+	 * @return the series of colors
 	 */
 	public List<Color> getSeriesColors()
 	{
@@ -79,8 +79,7 @@ public class FileableChartExecutable implements Executable, ChartDecorator, File
 		chart.setSeriesColors(seriesColors);
 	}
 	/**
-	 * @return
-	 * @see com.merck.mrl.eln.global.data.Nameable#getName()
+	 * @return the name
 	 */
 	public String getName()
 	{
@@ -89,8 +88,7 @@ public class FileableChartExecutable implements Executable, ChartDecorator, File
 		return chart.getName();
 	}//---------------------------------------------
 	/**
-	 * @return
-	 * @see com.merck.mrl.eln.global.data.Type#getTypeName()
+	 * @return the type name
 	 */
 	public String getTypeName()
 	{
@@ -99,10 +97,9 @@ public class FileableChartExecutable implements Executable, ChartDecorator, File
 		return chart.getTypeName();
 	}//---------------------------------------------
 	/**
-	 * @param value
-	 * @param rowKey
-	 * @param label
-	 * @see com.merck.mrl.office.chart.Chart#plotValue(double, java.lang.Comparable, java.lang.Comparable)
+	 * @param value the value
+	 * @param rowKey the row key
+	 * @param label the label
 	 */
 	public void plotValue(double value, Comparable<?> rowKey, Comparable<?> label)
 	{
@@ -114,7 +111,6 @@ public class FileableChartExecutable implements Executable, ChartDecorator, File
 	 * @param value
 	 * @param rowKey
 	 * @param label
-	 * @see com.merck.mrl.office.chart.Chart#plotValue(java.lang.Double, java.lang.Comparable, java.lang.Comparable)
 	 */
 	public void plotValue(Double value, Comparable<?> rowKey, Comparable<?> label)
 	{
@@ -123,8 +119,7 @@ public class FileableChartExecutable implements Executable, ChartDecorator, File
 		chart.plotValue(value, rowKey, label);
 	}
 	/**
-	 * @param name
-	 * @see com.merck.mrl.eln.global.data.Nameable#setName(java.lang.String)
+	 * @param name the name
 	 */
 	public void setName(String name)
 	{
@@ -133,8 +128,7 @@ public class FileableChartExecutable implements Executable, ChartDecorator, File
 		chart.setName(name);
 	}//---------------------------------------------
 	/**
-	 * @param typeName
-	 * @see com.merck.mrl.eln.global.data.Type#setTypeName(java.lang.String)
+	 * @param typeName the type name
 	 */
 	public void setTypeName(String typeName)
 	{
@@ -194,64 +188,56 @@ public class FileableChartExecutable implements Executable, ChartDecorator, File
 
 
 	/**
-	 * @return
-	 * @see com.merck.mrl.office.chart.Chart#getCategoryLabel()
+	 * @return category label
 	 */
 	public String getCategoryLabel()
 	{
 		return chart.getCategoryLabel();
 	}
 	/**
-	 * @return
-	 * @see com.merck.mrl.office.chart.Chart#getHeight()
+	 * @return the height
 	 */
 	public int getHeight()
 	{
 		return chart.getHeight();
 	}
 	/**
-	 * @return
-	 * @see com.merck.mrl.office.chart.Chart#getTitle()
+	 * @return the title
 	 */
 	public String getTitle()
 	{
 		return chart.getTitle();
 	}
 	/**
-	 * @return
-	 * @see com.merck.mrl.office.chart.Chart#getValueLabel()
+	 * @return the value label
 	 */
 	public String getValueLabel()
 	{
 		return chart.getValueLabel();
 	}
 	/**
-	 * @param categoryLabel
-	 * @see com.merck.mrl.office.chart.Chart#setCategoryLabel(java.lang.String)
+	 * @param categoryLabel the category label
 	 */
 	public void setCategoryLabel(String categoryLabel)
 	{
 		chart.setCategoryLabel(categoryLabel);
 	}
 	/**
-	 * @param height
-	 * @see com.merck.mrl.office.chart.Chart#setHeight(int)
+	 * @param height the height
 	 */
 	public void setHeight(int height)
 	{
 		chart.setHeight(height);
 	}
 	/**
-	 * @param title
-	 * @see com.merck.mrl.office.chart.Chart#setTitle(java.lang.String)
+	 * @param title the title
 	 */
 	public void setTitle(String title)
 	{
 		chart.setTitle(title);
 	}
 	/**
-	 * @param valueLabel
-	 * @see com.merck.mrl.office.chart.Chart#setValueLabel(java.lang.String)
+	 * @param valueLabel the value label
 	 */
 	public void setValueLabel(String valueLabel)
 	{
@@ -260,7 +246,7 @@ public class FileableChartExecutable implements Executable, ChartDecorator, File
 
 
 	/**
-	 * @return
+	 * @return back color
 	 * @see nyla.solutions.office.chart.Chart#getBackgroundColor()
 	 */
 	public Color getBackgroundColor()
@@ -268,7 +254,7 @@ public class FileableChartExecutable implements Executable, ChartDecorator, File
 	   return chart.getBackgroundColor();
 	}
 	/**
-	 * @return
+	 * @return the byte array buffer size
 	 * @see nyla.solutions.office.chart.Chart#getByteArrayBufferSize()
 	 */
 	public int getByteArrayBufferSize()
@@ -276,24 +262,21 @@ public class FileableChartExecutable implements Executable, ChartDecorator, File
 	   return chart.getByteArrayBufferSize();
 	}
 	/**
-	 * @return
-	 * @see nyla.solutions.office.chart.Chart#getGraphType()
+	 * @return graph type
 	 */
 	public String getGraphType()
 	{
 	   return chart.getGraphType();
 	}
 	/**
-	 * @return
-	 * @see nyla.solutions.office.chart.Chart#getLegend()
+	 * @return if is using a legend
 	 */
 	public boolean isLegend()
 	{
 	   return chart.isLegend();
 	}
 	/**
-	 * @return
-	 * @see nyla.solutions.office.chart.Chart#getWidth()
+	 * @return the width
 	 */
 	public int getWidth()
 	{
