@@ -22,6 +22,18 @@ import nyla.solutions.core.data.MapEntry;
  */
 public class OrganizerTest
 {
+
+	@Test
+	public void testFirst()
+	{
+		assertNull(Organizer.first(null));
+		String [] text = {"first"};
+		
+		assertEquals("first",Organizer.first(text));
+		
+		String [] nums = {"one","second"};
+		assertEquals("one",Organizer.first(nums));
+	}
 	@Test
 	public void testFill()
 	{

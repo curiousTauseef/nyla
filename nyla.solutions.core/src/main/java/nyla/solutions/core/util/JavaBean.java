@@ -177,38 +177,48 @@ public class JavaBean
    }// --------------------------------------------------------
    /**
     * Set property
-    * @param aBean
-    * @param aPropName
-    * @param aValue
+    * @param bean the bean
+    * @param propertyName the property name
+    * @param value the value to set
     */
-   public static void setProperty(Object aBean, String aPropName, Object aValue)
+   public static void setProperty(Object bean, String propertyName, Object value)
    {
       try
       {
          //find key ignoreClase
          //PropertyUtils.setProperty(aBean, aPropName, aValue);
-    	  PropertyDescriptor propertyDescriptor = getPropertyDescriptor(aBean,aPropName);
-    	  propertyDescriptor.getWriteMethod().invoke(aBean, aValue);
+    	  PropertyDescriptor propertyDescriptor = getPropertyDescriptor(bean,propertyName);
+    	  if(propertyDescriptor == null)
+    	  {
+    		  throw new IllegalArgumentException("propertyName:"+propertyName+" not found for bean:"+bean);
+    	  }
+    	  Method writeMethod = propertyDescriptor.getWriteMethod();
+    	  
+    	  if(writeMethod == null)
+    	  {
+    		  throw new IllegalArgumentException("Write method not found for propertyName:"+propertyName+" for bean:"+bean);
+    	  }
+    	  writeMethod.invoke(bean, value);
     	  
       }
       catch(IllegalArgumentException e)
       {
-    	  if(!(aValue instanceof String))
+    	  if(!(value instanceof String))
     		  throw e;
     		  
     	try
   		{
     	  //convert value
-    	  PropertyDescriptor desc = getPropertyDescriptor(aBean, aPropName);
+    	  PropertyDescriptor desc = getPropertyDescriptor(bean, propertyName);
     	  
-    	  String text = (String)aValue;
+    	  String text = (String)value;
     	  
     
-			aValue = Text.toObject(text, desc.getPropertyType().getName());
+			value = Text.toObject(text, desc.getPropertyType().getName());
 			  
 			  //try again
-			  PropertyDescriptor propertyDescriptor = getPropertyDescriptor(aBean,aPropName);
-	    	  propertyDescriptor.getWriteMethod().invoke(aBean, aValue);
+			  PropertyDescriptor propertyDescriptor = getPropertyDescriptor(bean,propertyName);
+	    	  propertyDescriptor.getWriteMethod().invoke(bean, value);
 		}
 		catch(Exception innerError)
 		{
@@ -223,17 +233,17 @@ public class JavaBean
          try
          {
             //find key ignores         
-            Object key = Organizer.findByTextIgnoreCase(keySet(aBean),aPropName );
+            Object key = Organizer.findByTextIgnoreCase(keySet(bean),propertyName );
            
-            PropertyDescriptor propertyDescriptor = getPropertyDescriptor(aBean,String.valueOf(key));
-      	  propertyDescriptor.getWriteMethod().invoke(aBean, aValue);
+            PropertyDescriptor propertyDescriptor = getPropertyDescriptor(bean,String.valueOf(key));
+      	  propertyDescriptor.getWriteMethod().invoke(bean, value);
          }
          catch (Exception e1)
          {
             String typeName = "null";
             
-            if(aValue != null)
-               typeName = aValue.getClass().getName();
+            if(value != null)
+               typeName = value.getClass().getName();
             
             throw new SystemException("type="+typeName+" "+Debugger.toString(e));
          }
@@ -242,10 +252,10 @@ public class JavaBean
       {
          String typeName = "null";
          
-         if(aValue != null)
-            typeName = aValue.getClass().getName();
+         if(value != null)
+            typeName = value.getClass().getName();
          
-         throw new SystemException("type="+typeName+" "+e.getMessage(),e);
+         throw new SystemException("type="+typeName+" propery:"+propertyName+" ERROR:"+e.getMessage(),e);
       }
    }// --------------------------------------------
    /**

@@ -86,7 +86,19 @@ public final class Organizer
 	private Organizer()
 	{
 	}
-
+	/**
+	 * 
+	 * @param <T> the array of this type
+	 * @param array the array to select from
+	 * @return the first element
+	 */
+	public static <T> T first(T[] array)
+	{
+		if(array == null || array.length < 1)
+			return null;
+		
+		return array[0];
+	}//------------------------------------------------
 	/**
 	 * @param <T>
 	 *            the type class

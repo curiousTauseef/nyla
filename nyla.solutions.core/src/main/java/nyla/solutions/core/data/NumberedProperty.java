@@ -82,7 +82,14 @@ implements Comparable<Object>, Copier, Numbered
     */
    public int getNumber()
    {
-	   Integer v = (Integer)this.getValue();
+	   Object value = this.getValue();
+	   if(value == null)
+		   return 0;
+	   
+	   if(value instanceof String && ((String)value).length() == 0)
+		   return 0;
+	   
+	   Integer v = Integer.valueOf(this.getValue().toString());
 	   
 	   if(v == null)
 		   return 0;
