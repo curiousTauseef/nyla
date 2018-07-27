@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import nyla.solutions.core.data.NumberedProperty;
-import nyla.solutions.core.patterns.creational.Creator;
 import nyla.solutions.core.security.user.data.UserProfile;
 
 public class JavaBeanGeneratorCreatorTest
