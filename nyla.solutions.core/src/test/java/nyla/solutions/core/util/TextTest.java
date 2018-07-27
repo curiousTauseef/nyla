@@ -16,6 +16,17 @@ import junit.framework.TestCase;
  */
 public class TextTest extends TestCase
 {
+	@Test
+	public void testReplaceWithByChars()
+	{
+		//text, re, replaceText)(
+		assertEquals("SECURITY_USERNAME",Text.replaceForRegExprWith("security-username", "-","_").toUpperCase());
+		
+		assertEquals("SECURITY_USERNAME",Text.replaceForRegExprWith("security.username", "[-\\.]","_").toUpperCase());
+		assertEquals("SECURITY_USER_NAME",Text.replaceForRegExprWith("security.user-name", "[-\\.]","_").toUpperCase());
+		
+	}//------------------------------------------------
+	@Test
 	public void testLoadTemplate()
 	throws Exception
 	{
@@ -25,6 +36,7 @@ public class TextTest extends TestCase
 	
 
 	@SuppressWarnings("rawtypes")
+	@Test
 	public void testText()
 	throws Exception
 	{
@@ -93,13 +105,14 @@ public class TextTest extends TestCase
 		assertTrue(Text.matches(null, null));
 
 	}//------------------------------------------------
+	@Test
 	public void testFixedLengthIntInt()
 	{
 		assertEquals("001",Text.fixedLength(1, 3));
 		
 		assertEquals("04000",Text.fixedLength(4000, 5));
 	}
-
+	@Test
 	public void testFixedLengthStringIntChar()
 	{
 		assertEquals("YO ",Text.fixedLength("YO", 3,' '));

@@ -2,6 +2,35 @@
 This Java API provides support for basic application utilities (application configuration, 
 data encryption, debugger, text processing and more). 
 
+
+**Benefits**
+
+- Lots of implemented design patterns and utilities
+- very cloud native friendly
+- Default settings required ZERO additional runtime dependencies
+- Used by many of largest corporations in the world
+ 
+Available in the maven central repository
+
+See [http://mvnrepository.com/artifact/com.github.nyla-solutions/nyla.solutions.core](http://mvnrepository.com/artifact/com.github.nyla-solutions/nyla.solutions.core)
+
+
+**Maven dependencies**
+
+	
+	<dependency>
+	    <groupId>com.github.nyla-solutions</groupId>
+	    <artifactId>nyla.solutions.core</artifactId>
+	    <version>${VERSION}</version>
+	</dependency>
+	
+	Add it using Maven
+
+**Gradle**	
+	
+	compile group: 'com.github.nyla-solutions', name: 'nyla.solutions.core', version: $VERSION
+
+
 # Solutions Core Overview
 
 
@@ -275,6 +304,17 @@ Assert.assertTrue(unSorted.get(0) == josiah);
 ### Text
 
 Text is geared toward string based processing. It includes template engine support like Free Marker that builds composite strings/values dynamically at runtime (see http://freemarker.sourceforge.net/). There are also methods to support complex regular expressions with Boolean AND, OR and NOT logic, numerous string conversions, general text manipulation and parsing methods.
+
+Note that the default implementation uses the class
+
+nyla.solutions.core.patterns.decorator.BasicTextStyles
+
+To use Free Marker directory add a configuration properties
+
+	nyla.solutions.core.util.Text.textStyles=nyla.solutions.global.patterns.decorator.style.FreeMarkerTextStyles
+
+*Note:* You must add the freemarker JARs to the classpath to use this implementation.
+
 
 *USAGE*
 

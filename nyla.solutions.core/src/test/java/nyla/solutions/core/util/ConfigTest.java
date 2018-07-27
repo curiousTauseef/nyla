@@ -1,5 +1,7 @@
 package nyla.solutions.core.util;
 
+import java.util.Properties;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -75,6 +77,8 @@ public class ConfigTest extends TestCase
 		}
 		
 	}// --------------------------------------------------------
+	
+	@Test
 	public void testGetPropertyString()
 	{
 		//Get a default string property
@@ -154,7 +158,33 @@ public class ConfigTest extends TestCase
 		
 		assertTrue("All values formatted:"+property, property.indexOf("${") < 0);
 	}// --------------------------------------------------------
+	@Test
+	public void test_getEnvPropertyNames()
+	{
+		System.setProperty(Config.SYS_PROPERTY, "");
+		System.setProperty("SECURITY_USERNAME", "nyla");
+		Config.reLoad();
+		String username1 = Config.getPropertyEnv("security-username","");
+		
+		String username2 = Config.getPropertyEnv("SECURITY_USERNAME");
+		
+		assertEquals(username1,username2);
+	}//------------------------------------------------
 	
+	@Test
+	public void test_getEnvPropertyNamesWithProperties()
+	{
+		System.setProperty(Config.SYS_PROPERTY, "");
+		System.setProperty("SEC_PROP1", "prop1");
+		Config.reLoad();
+		Properties props = new Properties();
+		props.setProperty("sec-prop2", "prop2");
+		
+		assertNull(Config.getPropertyEnv("sec-no",props));
+		assertEquals("prop1",Config.getPropertyEnv("sec-prop1",props));
+		assertEquals("prop2",Config.getPropertyEnv("sec-prop2",props));
+		
+	}//------------------------------------------------
 	@Test
 	public void testGetDouble() throws Exception
 	{

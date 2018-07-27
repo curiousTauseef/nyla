@@ -2298,10 +2298,12 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
          return false;
       }
    }// --------------------------------------------
-   
+ 
    //private static final String encoding = Config.getProperty(Text.class,"encoding","ISO-8859-1");
    private static final Random random = new Random(Calendar.getInstance().getTime().getTime());
    private static TextStyles textStyles = null;    
    //private static final String TEMPLATE_PREFIX = "${";
    //private static final String TEMPLATE_SUFFIX = "}";  
+
+
 }

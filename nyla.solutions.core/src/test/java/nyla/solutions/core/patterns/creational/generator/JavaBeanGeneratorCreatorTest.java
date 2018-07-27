@@ -29,8 +29,6 @@ public class JavaBeanGeneratorCreatorTest
 		JavaBeanGeneratorCreator<UserProfile> creator = new JavaBeanGeneratorCreator<UserProfile>(UserProfile.class);
 		creator.randomizeProperty("email");
 		
-		assertTrue(creator instanceof Creator);
-		
 		UserProfile userProfile = creator.create();
 		assertNotNull(userProfile);
 		

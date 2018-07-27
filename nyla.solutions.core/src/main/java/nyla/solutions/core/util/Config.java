@@ -218,6 +218,24 @@ public class Config
 		return getSettings().getProperty(aClass, key, aDefault);
 
 	}// ---------------------------------------------
+	public static String getPropertyEnv(String key)
+	{
+		String env = sanitizeEnvVarNAme(key);
+		return getProperty(env);
+	}
+
+	public static String getPropertyEnv(String key, String aDefault)
+	{
+		String env = sanitizeEnvVarNAme(key);
+		
+		return getProperty(env, aDefault);
+	}
+
+	public static String sanitizeEnvVarNAme(String key)
+	{
+		String env = Text.replaceForRegExprWith(key, "[-\\. ]","_").toUpperCase();
+		return env;
+	}
 
 	/**
 	 * Retrieves a configuration property as a String object.
@@ -540,11 +558,27 @@ public class Config
 		
 		settings = theSettings;
 	}//------------------------------------------------
+	public static String getPropertyEnv(String key, Map<?,?> securityProps)
+	{
+		
+		Object value = securityProps.get(key);
+		if(value != null)
+			return value.toString();
+		
+		 value = getPropertyEnv(key, "");
+		 String text = value.toString();
+		 if(text.length() == 0)
+			 return null;
+		 
+		return text;
+	}
 	public static Day getPropertyDay(String key)
 	{
 		return new Day(getProperty(key));
 	}
 	private static Settings settings = null;
+
+	
 
 
 
