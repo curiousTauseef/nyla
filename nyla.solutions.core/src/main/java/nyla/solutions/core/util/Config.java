@@ -560,10 +560,14 @@ public class Config
 	}//------------------------------------------------
 	public static String getPropertyEnv(String key, Map<?,?> securityProps)
 	{
+		Object value = null;
 		
-		Object value = securityProps.get(key);
-		if(value != null)
-			return value.toString();
+		if(securityProps != null)
+		{
+			value = securityProps.get(key);
+			if(value != null)
+				return value.toString();			
+		}
 		
 		 value = getPropertyEnv(key, "");
 		 String text = value.toString();
