@@ -82,6 +82,8 @@ public class JavaBeanGeneratorCreator<T> implements Creator<T>
 			PropertyDescriptor pd = null;
 			Class<?> clz = null;
 			
+			final boolean throwExceptionForMissingProperty = false;
+			
 			for (String property : randomizeProperties)
 			{
 				pd = JavaBean.getPropertyDescriptor(obj, property);
@@ -89,7 +91,15 @@ public class JavaBeanGeneratorCreator<T> implements Creator<T>
 				
 				if(clz.isAssignableFrom(String.class))
 				{
-					JavaBean.setProperty(obj, property, Text.generateId());  
+					try
+					{
+						JavaBean.setProperty(obj, property, Text.generateId(),throwExceptionForMissingProperty);  
+					}
+					catch(IllegalArgumentException e)
+					{
+						throw new IllegalArgumentException("randomizeProperties:"+randomizeProperties+" invalid property:"+property,e);
+					}
+					
 				}
 				else if(clz.isAssignableFrom(Integer.class) || clz.isAssignableFrom(int.class) )
 				{
@@ -128,6 +138,10 @@ public class JavaBeanGeneratorCreator<T> implements Creator<T>
 		
 		this.randomizeProperties.add(property);
 	}//------------------------------------------------
+	public void randomizeAll()
+	{
+		this.randomizeProperties = JavaBean.getPropertyNames(this.clz);
+	}
 	/**
 	 * Randomized to records that are not in fixed list
 	 * @param fixedPropertyNames the fixed list of property names

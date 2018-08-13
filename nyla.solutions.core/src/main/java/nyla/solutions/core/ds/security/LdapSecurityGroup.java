@@ -30,6 +30,13 @@ public class LdapSecurityGroup extends SecurityGroup
 	
 			String startsWith = new StringBuilder(attributeName).append("=").toString();
 			
+			if(!dn.startsWith(startsWith))
+			{
+				//try uppercase DN
+				String upperCaseStartsWith = startsWith.toUpperCase();
+				if(dn.startsWith(upperCaseStartsWith))
+					startsWith = upperCaseStartsWith;
+			}
 
 			String results = nyla.solutions.core.util.Text.parseText(dn, startsWith, ",");
 			
@@ -118,7 +125,15 @@ public class LdapSecurityGroup extends SecurityGroup
 				.append(getName()).append("]");
 		return builder.toString();
 	}
+	
 
+	/**
+	 * @return the primaryLdapGroupName
+	 */
+	public String getPrimaryLdapGroupName()
+	{
+		return primaryLdapGroupName;
+	}
 
 
 	private final String primaryLdapGroupName;

@@ -69,9 +69,10 @@ import nyla.solutions.core.util.Debugger;
 
 public class LDAP implements Closeable
 {
-	   private static final String JAVA_NAMING_PROVIDER_URL = "java.naming.provider.url";
+	   public static final String JAVA_NAMING_PROVIDER_URL = "java.naming.provider.url";
+	   private static final boolean trace = Config.getPropertyBoolean("LDAP_TRACE", false);
 
-	/**
+	   /**
 	    * SERVER_URL_PROP = "LDAP_SERVER_URL"
 	    * 
 	    */
@@ -104,10 +105,17 @@ public class LDAP implements Closeable
 	    */
 	   public final static String MEMBEROF_ATTRIB_NM_PROP = "LDAP_MEMBEROF_ATTRIB_NM";
 	   
+	   
+	   /**
+	    * 
+	    */
+	   public final static String LDAP_USE_SSL_CONFIG_FACTORY_PROP = "LDAP_USE_SSL_CONFIG_FACTORY";
+	   
 	   /**
 	    * DEFAULT_uidAttributeName = Config.getProperty(UID_ATTRIB_NM_PROP,"uid")
 	    */
 	   public final static String DEFAULT_uidAttributeName = Config.getProperty(UID_ATTRIB_NM_PROP,"uid");
+	 
 	   	   
    /**
     * 
@@ -160,7 +168,6 @@ public class LDAP implements Closeable
       }
       catch (LoginException ex)
       {
-
          throw new NamingException("login problem: " + ex);
       }
 
@@ -174,7 +181,7 @@ public class LDAP implements Closeable
    }//------------------------------------------------------------------
    /**
     * 
-    * Constructor for LDAP initalizes internal 
+    * Constructor for LDAP initializes internal 
     * data settings.
     * @param url the LDAP server url i.e. ldap://directory.xxx.com
     * @throws NamingException
@@ -246,9 +253,9 @@ public class LDAP implements Closeable
 	{
 		Hashtable<String,Object>  env = new Hashtable<String,Object> ();
 	
-	      setupBasicProperties(env, url, false);
+	      setupBasicProperties(env, url);
 	
-	      setupSimpleSecurityProperties(env, userDN, pwd);
+	      setupSecurityProperties(env, userDN, pwd);
 	
 	      return openContext(env);
 	}// --------------------------------------------------------------
@@ -372,85 +379,14 @@ public class LDAP implements Closeable
 		}
    }//--------------------------------------------
 
-//   public LDAP(String url, String cacerts, String clientcerts,
-//
-//   char caKeystorePwd[], char clientKeystorePwd[], String caKeystoreType,
-//
-//   String clientKeystoreType, boolean tracing, boolean sslTracing,
-//
-//   String sslSocketFactory) throws NamingException
-//
-//   {
-//
-//      try
-//      {
-//
-//
-//         existanceConstraints = new SearchControls();
-//
-//         existanceConstraints.setSearchScope(0);
-//
-//         existanceConstraints.setCountLimit(0L);
-//
-//         existanceConstraints.setTimeLimit(0);
-//
-//         existanceConstraints.setReturningAttributes(new String[] {
-//
-//            "1.1" });
-//
-//         Hashtable<String,Object>  env = new Hashtable<String,Object> ();
-//
-//         setupBasicProperties(env, url, tracing);
-//
-//         setupSSLProperties(env, cacerts, clientcerts, caKeystorePwd,
-//
-//         clientKeystorePwd, caKeystoreType, clientKeystoreType,
-//
-//         sslTracing, sslSocketFactory);
-//
-//         ctx = openContext(env);
-//
-//      }
-//
-//      catch (NamingException e)
-//
-//      {
-//
-//        tho
-//
-//      }
-//
-//      catch (Exception e)
-//
-//      {
-//
-//         e.printStackTrace();
-//
-//      }
-//
-//   }
-
    /**
     * 
     * @param env the properties
 	 * @param url  the URL
 	 * @throws NamingException when naming error occurs
-	 * @deprecated Method setupBasicProperties is deprecated
     *  
     */
-
-   public static void setupBasicProperties(Hashtable<String,Object>   env, String url)
-   throws NamingException
-
-   {
-
-      setupBasicProperties(env, url, false);
-
-   }
-
-   public static void setupBasicProperties(Hashtable<String,Object>  env, String url,
-
-   boolean tracing) throws NamingException
+   public static void setupBasicProperties(Hashtable<String,Object>  env, String url) throws NamingException
 
    {
 
@@ -458,8 +394,7 @@ public class LDAP implements Closeable
 
          throw new NamingException("URL not specified in openContext()!");
 
-      if (tracing)
-
+      if (trace)
          env.put("com.sun.jndi.ldap.trace.ber", System.err);
 
       env.put("java.naming.ldap.version", "3");
@@ -488,119 +423,44 @@ public class LDAP implements Closeable
 
    }//--------------------------------------------
 
-   public static void setupSimpleSecurityProperties(Hashtable<String,Object>  env,
-
+   public static void setupSecurityProperties(Hashtable<String,Object>  env,
    String userDN, char pwd[])
 
    {
-
-      if (pwd == null)
-
-         pwd = new char[0];
-
-      env.put("java.naming.security.authentication", "simple");
-
-      env.put("java.naming.security.principal", userDN);
-
-      env.put("java.naming.security.credentials", new String(pwd));
-
-   }
-
-   /*
-    * 
-    * @deprecated Method setupSSLProperties is deprecated
-    *  
-    */
-   public static void setupSSLProperties(Hashtable<String,Object>  env, String cacerts,
-   String clientcerts, char caKeystorePwd[], char clientKeystorePwd[],
-   String caKeystoreType, String clientKeystoreType, boolean tracing,
-   boolean sslTracing, String sslSocketFactory) throws NamingException
-
-   {
-
-      try
-
+	        
+      if(userDN != null)
       {
+          if (pwd == null)
+              pwd = new char[0];
 
-         setupSSLProperties(env, cacerts, clientcerts, caKeystorePwd,
+          env.put("java.naming.security.authentication", "simple");
 
-         clientKeystorePwd, caKeystoreType, clientKeystoreType, sslTracing,
+          env.put("java.naming.security.principal", userDN);
 
-         sslSocketFactory);
-
+          env.put("java.naming.security.credentials", new String(pwd));
+    	  
+      }
+      
+      boolean useSslConfigFactory = Config.getPropertyBoolean(LDAP_USE_SSL_CONFIG_FACTORY_PROP,false).booleanValue();
+      
+      String url = (String)env.get(LDAP.JAVA_NAMING_PROVIDER_URL);
+      if(url != null && url.trim().toLowerCase().startsWith("ldaps")
+         && useSslConfigFactory)
+      {
+    	  	env.put("java.naming.security.protocol","ssl");
+    	  	env.put("java.naming.ldap.factory.socket", SSLConfigSocketFactory.class.getName());
       }
 
-      catch (NamingException e)
-
-      {
-
-         Debugger.printError(e);
-
-         throw e;
-
-      }
-
-      catch (Exception e)
-
-      {
-
-         throw new NamingException(Debugger.stackTrace(e));
-
-      }
-
-   }
-
-   public static void setupSSLProperties(Hashtable<String,Object>  env, String cacerts,
-
-   String clientcerts, char caKeystorePwd[], char clientKeystorePwd[],
-
-   String caKeystoreType, String clientKeystoreType, boolean sslTracing,
-
-   String sslSocketFactory) throws NamingException, Exception
-
-   {
-
-      if (cacerts == null)
-
-         throw new NamingException(
-
-         "Cannot use SSL without a trusted CA certificates JKS file.");
-
-      env.put("java.naming.security.protocol", "ssl");
-
-      if (sslSocketFactory.equals("com.ca.commons.jndi.JndiSocketFactory"))
-
-         JndiSocketFactory.init(cacerts, clientcerts, caKeystorePwd,
-
-         clientKeystorePwd, caKeystoreType, clientKeystoreType);
-
-      env.put("java.naming.ldap.factory.socket", sslSocketFactory);
-
-      if (clientcerts != null && clientKeystorePwd != null
-
-      && clientKeystorePwd.length > 0)
-
-         env.put("java.naming.security.authentication", "EXTERNAL");
-
-      if (sslTracing)
-
-         System.setProperty("javax.net.debug", "ssl handshake verbose");
-
-   }
-
+   }//------------------------------------------------
+   
    public static DirContext openContext(Hashtable<?,?> env) throws NamingException
-
    {
-
       DirContext ctx = new InitialDirContext(env);
       
-      
       return ctx;
-
    }// ------------------------------------------------
 
    public void renameEntry(Name oldDN, Name newDN) throws NamingException
-
    {
 
       Name rdn = newDN.getSuffix(newDN.size() - 1);
@@ -614,7 +474,6 @@ public class LDAP implements Closeable
    }
 
    public void copyEntry(Name fromDN, Name toDN) throws NamingException
-
    {
 
       addEntry(toDN, read(fromDN));
@@ -622,7 +481,6 @@ public class LDAP implements Closeable
    }
 
    public void addEntry(Name dn, Attributes atts) throws NamingException
-
    {
 
       ctx.createSubcontext(dn, atts);

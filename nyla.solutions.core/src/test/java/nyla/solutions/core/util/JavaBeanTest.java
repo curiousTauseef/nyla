@@ -2,11 +2,15 @@ package nyla.solutions.core.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
+
 import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import nyla.solutions.core.data.Named;
+import nyla.solutions.core.security.user.data.UserProfile;
 
 public class JavaBeanTest
 {
@@ -14,6 +18,18 @@ public class JavaBeanTest
 	@Before
 	public void setUp() throws Exception
 	{
+	}
+	
+	@Test
+	public void test_getPropertyNames()
+	{
+		UserProfile bean = new UserProfile();
+		
+		assertNull(JavaBean.getPropertyNames(null));
+		Set<String> names = JavaBean.getPropertyNames(bean);
+		assertTrue(names != null && names.contains("email"));
+		assertEquals(names,JavaBean.getPropertyNames(UserProfile.class));
+		
 	}
 
 	@SuppressWarnings("unchecked")

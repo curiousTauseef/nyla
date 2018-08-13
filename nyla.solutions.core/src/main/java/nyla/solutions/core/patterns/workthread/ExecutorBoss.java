@@ -186,11 +186,23 @@ public class ExecutorBoss implements Disposable
 			  return resultList;
 		 }// --------------------------------------------------------
 	
-	/**
-	 * 
-	 * @param queue
+		 /**
+		  * The start the work threads in foreground
+		  *  @param queue the queue
+		  *  @return the collection of futures
+		 */
+		 public Collection<Future<?>> startWorking(WorkQueue queue)
+		 {
+			 return startWorking(queue,false);
+		 }
+		 
+	 /**
+	  * The start the work threads
+	  *  @param queue the queue
+	  *  @param background determine to while for futures to complete
+	  *  @return the collection of futures
 	 */
-	 public void startWorking(WorkQueue queue) 
+	 public Collection<Future<?>> startWorking(WorkQueue queue, boolean background)
 	 {
 		 ArrayList<Future<?>> futures = new ArrayList<Future<?>>(queue.size());
 		 
@@ -200,6 +212,8 @@ public class ExecutorBoss implements Disposable
 		    	futures.add(executor.submit(queue.nextTask()));
 			}
 		    
+		    if(background)
+		    	return futures;
 		    
 		    try
 			{
@@ -208,6 +222,7 @@ public class ExecutorBoss implements Disposable
 					future.get(); //join submitted thread
 					
 				}
+				return futures;
 			}
 			catch (InterruptedException e)
 			{

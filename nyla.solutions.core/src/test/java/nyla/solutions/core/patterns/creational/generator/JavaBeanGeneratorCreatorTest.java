@@ -10,6 +10,16 @@ import nyla.solutions.core.security.user.data.UserProfile;
 public class JavaBeanGeneratorCreatorTest
 {
 	@Test
+	public void testRandomAll()
+	{
+		JavaBeanGeneratorCreator<UserProfile> creator = new JavaBeanGeneratorCreator<UserProfile>(UserProfile.class);
+		creator.randomizeAll();
+		
+		assertTrue(creator.getRandomizeProperties().contains("firstName"));
+		
+		assertTrue(creator.create().getEmail().length() > 0);
+	}
+	@Test
 	public void testFixedProperties()
 	{
 		JavaBeanGeneratorCreator<UserProfile> creator = new JavaBeanGeneratorCreator<UserProfile>(UserProfile.class);

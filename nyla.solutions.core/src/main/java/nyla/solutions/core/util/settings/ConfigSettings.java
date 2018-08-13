@@ -184,7 +184,7 @@ public class ConfigSettings extends AbstractSettings
 			if (mergeSystemProperties)
 			{
 				// add system properties
-				properties.putAll(System.getProperties());
+				properties.putAll((Properties)System.getProperties().clone());
 			}
 
 			// Envinronment SystemProperteis

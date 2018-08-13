@@ -56,4 +56,26 @@ public class LdapSecurityGroupTest
 		assertNotEquals(new LdapSecurityGroup("CN=abc,CN=user.com").hashCode(), new LdapSecurityGroup("CN=xyz,CN=xyz.com").hashCode());
 	}
 
+	@Test
+	public void testParsing()
+	{
+		/*
+		 * dapSecurityGroup [primaryLdapGroupName==NAMG_CLOUD_ENGINEERING_TEAM, getName()=CN=NAMG_CLOUD_ENGINEERING_TEAM,OU=ITROM,OU=GROUPS,
+		 * OU=ACCOUNTS,DC=NAM,DC=ENT,DC=DUKE-ENERGY,DC=COM], 
+		 */
+		
+		LdapSecurityGroup group1 = new LdapSecurityGroup("CN=NAMG_CLOUD_ENGINEERING_TEAM,OU=ITROM,OU=GROUPS,OU=ACCOUNTS,DC=NAM,DC=ENT,DC=DUKE-ENERGY,DC=COM");
+		assertEquals("NAMG_CLOUD_ENGINEERING_TEAM",group1.getPrimaryLdapGroupName());
+		
+		LdapSecurityGroup group2 = new LdapSecurityGroup("CN=NAMG_CLOUD_ENGINEERING_TEAM,OU=ITROM,OU=GROUPS,OU=ACCOUNTS,DC=NAM,DC=ENT,DC=DUKE-ENERGY,DC=COM","CN");
+		assertEquals("NAMG_CLOUD_ENGINEERING_TEAM",group2.getPrimaryLdapGroupName());
+
+		LdapSecurityGroup group3 = new LdapSecurityGroup("CN=NAMG_CLOUD_ENGINEERING_TEAM,OU=ITROM,OU=GROUPS,OU=ACCOUNTS,DC=NAM,DC=ENT,DC=DUKE-ENERGY,DC=COM","cn");
+		assertEquals("NAMG_CLOUD_ENGINEERING_TEAM",group3.getPrimaryLdapGroupName());
+		
+		
+		assertEquals(group1,group2);
+		assertEquals(group3,group2);		
+		
+	}
 }

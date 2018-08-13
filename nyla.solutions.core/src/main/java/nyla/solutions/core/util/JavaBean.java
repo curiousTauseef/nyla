@@ -183,6 +183,17 @@ public class JavaBean
     */
    public static void setProperty(Object bean, String propertyName, Object value)
    {
+	   setProperty(bean,propertyName,value,true);
+   }//------------------------------------------------
+   /**
+    * Set property
+    * @param bean the bean
+    * @param propertyName the property name
+    * @param value the value to set
+    * @param throwExceptionForMissingProperty determine if throw an exception if the property does not exist 
+    */
+   public static void setProperty(Object bean, String propertyName, Object value,boolean throwExceptionForMissingProperty)
+   {
       try
       {
          //find key ignoreClase
@@ -196,7 +207,10 @@ public class JavaBean
     	  
     	  if(writeMethod == null)
     	  {
-    		  throw new IllegalArgumentException("Write method not found for propertyName:"+propertyName+" for bean:"+bean);
+    		  if(throwExceptionForMissingProperty)
+    			  throw new IllegalArgumentException("Write method not found for propertyName:"+propertyName+" for bean:"+bean);
+    		  else
+    			  return; //ignore missing set method for property
     	  }
     	  writeMethod.invoke(bean, value);
     	  
@@ -542,7 +556,7 @@ public class JavaBean
        return bean;
    }//--------------------------------------------------------
    /**
-    * 
+    * Retrieve the list of properties that exists in a given collection
     * @param collection the collection of object
     * @param name the name of property
     * @return collection of objects
@@ -1335,7 +1349,40 @@ public static Object getMappedProperty(Object bean, String name, String key)
               java.lang.String.class
           });
       }
-  }
+  }//------------------------------------------------
+  /**
+   * 
+   * @param bean the bean or class
+   * @return set of property names
+   */
+	public static Set<String> getPropertyNames(Object bean)
+	{
+		if(bean == null)
+	          return null;
+	     
+		Class<?> clz = null;
+		if(bean instanceof Class<?>)
+			clz = (Class<?>)bean;
+		else
+			clz = bean.getClass();
+		
+		PropertyDescriptor[] propertyDescriptors = getPropertyDescriptors(clz);
+		if(propertyDescriptors == null || propertyDescriptors.length ==0)
+			return null;
+		HashSet<String> names = new HashSet<>(propertyDescriptors.length);
+		String name  = null;
+		for (int i = 0; i < propertyDescriptors.length; i++)
+		{
+			name = propertyDescriptors[i].getName();
+			
+			if("class".equals(name))
+				continue;
+			
+			names.add(name);
+		}
+		
+		return names;
+	}
 
    
 }
