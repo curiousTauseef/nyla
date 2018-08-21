@@ -201,14 +201,17 @@ public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
 	}//---------------------------------------------
 	/**
 	 * 
+	 * @param <K> the key
+	 * @param <V> the value
 	 * @return singleton instance cache
 	 */
-	public static Cache<Object,Object> getCache()
+	@SuppressWarnings("unchecked")
+	public static<K,V> Cache<K,V> getCache()
 	{
 		if(cache == null)
-			cache = new CacheFarm<Object,Object>();
+			cache = new CacheFarm<>();
 		
-		return cache;
+		return (Cache<K,V>)cache;
 		
 	}//---------------------------------------------
 	

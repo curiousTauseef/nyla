@@ -98,6 +98,19 @@ public class JavaBeanGeneratorCreatorTest
 		assertNotNull(u1.getEmail());
 		assertTrue(u1.getEmail().length() > 0);
 	}
+	@Test
+	public void testQABean()
+	{
+	
+			JavaBeanGeneratorCreator<GeneratorQABean> creator = new JavaBeanGeneratorCreator<GeneratorQABean>(GeneratorQABean.class);
+			creator.randomizeAll();
+			
+			GeneratorQABean bean = creator.create();
+			assertNotNull(bean);
+			assertNotNull(bean.getS1());
+
+		
+	}
 	
 	public static class LongObject
 	{

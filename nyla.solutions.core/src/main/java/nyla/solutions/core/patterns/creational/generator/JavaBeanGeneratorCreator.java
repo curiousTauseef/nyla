@@ -109,6 +109,14 @@ public class JavaBeanGeneratorCreator<T> implements Creator<T>
 				{
 					JavaBean.setProperty(obj, property, digits.generateLong());
 				}
+				else if (clz.isAssignableFrom(double.class)  || clz.isAssignableFrom(Double.class))
+				{
+					JavaBean.setProperty(obj, property, digits.generateDouble());
+				}
+				else if (clz.isAssignableFrom(float.class)  || clz.isAssignableFrom(Float.class))
+				{
+					JavaBean.setProperty(obj, property, digits.generateFloat());
+				}
 				else
 				{
 					throw new IllegalArgumentException("Unsupport generation for property:"+property+" of class:"+clz.getName()+" ");

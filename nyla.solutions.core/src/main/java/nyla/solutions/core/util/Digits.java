@@ -27,4 +27,15 @@ public class Digits
 	{
 		return Math.abs(random.nextLong()+1);
 	}
+	
+	public double generateDouble()
+	{
+		return random.nextDouble();
+	}
+	
+	public float generateFloat()
+	{
+		return random.nextFloat();
+	}
+	
 }
