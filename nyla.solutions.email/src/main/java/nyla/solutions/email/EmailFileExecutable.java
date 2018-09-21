@@ -18,6 +18,8 @@ public class EmailFileExecutable implements Function<Environment,Integer>
 {
 	/**
 	 * Send a file via email
+	 * @param env the environment env
+	 * @return  the exit code 0
 	 */
 	public Integer apply(Environment env)
 	{

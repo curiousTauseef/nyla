@@ -36,7 +36,7 @@ public class SSLConfigSocketFactory extends SocketFactory {
 
 	
 	  public static final String LDAP_SSL_KEYSTORE_PROP = "LDAP_SSL_KEYSTORE";
-	  public static final String LDAP_SSL_TRUSTSTORE_PROP = "LDAP-SSL_TRUSTSTORE";
+	  public static final String LDAP_SSL_TRUSTSTORE_PROP = "LDAP_SSL_TRUSTSTORE";
 	  public static final String LDAP_SSL_KEYSTORE_PASSWORS_PROP = "LDAP_SSL_KEYSTORE_PASSWORD";
 	  public static final String LDAP_SSL_TRUSTSTORE_PASSWORS_PROP = "LDAP_SSL_TRUSTSTORE_PASSSWORD";
 

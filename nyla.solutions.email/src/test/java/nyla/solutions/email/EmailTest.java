@@ -10,8 +10,10 @@ import nyla.solutions.core.util.Config;
 public class EmailTest
 {
 
+	@SuppressWarnings("resource")
 	@Test
 	public void testIsAuthenicationRequired()
+	throws Exception
 	{
 		
 		
@@ -33,6 +35,7 @@ public class EmailTest
 		Assert.assertTrue(!email.isAuthenicationRequired());
 	}
 	
+	@SuppressWarnings("resource")
 	@Test
 	public void testSendEmail()
 	{

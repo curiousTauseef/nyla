@@ -43,7 +43,7 @@ public abstract class AbstractValidation implements org.springframework.validati
       return typeClassName;
    }//--------------------------------------------
    /**
-    * @param typeName The typeName to set.
+    * @param typeClassName The typeName class to set.
     */
    public void setTypeClassName(String typeClassName)
    {

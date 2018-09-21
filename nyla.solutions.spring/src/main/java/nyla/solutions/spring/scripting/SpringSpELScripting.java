@@ -54,6 +54,8 @@ import nyla.solutions.core.util.Debugger;
 		Assert.assertEquals("5",results );
  * </pre>
  * @author Gregory Green
+ * @param <ReturnType> the return type of the expression
+ * @param <EvaluationObjectType>  the object to use
  *
  */
 public class SpringSpELScripting<ReturnType,EvaluationObjectType> implements Scripting<ReturnType,EvaluationObjectType>
@@ -65,9 +67,7 @@ public class SpringSpELScripting<ReturnType,EvaluationObjectType> implements Scr
 	{
 		parser = new SpelExpressionParser();
 	}//---------------------------------------------
-	/**
-	 * Evaluation the boolean based on the evaluation object
-	 */
+
 	@SuppressWarnings({ "unchecked" })
 	public ReturnType interpret(String expression, EvaluationObjectType evaluationObject)
 	{		

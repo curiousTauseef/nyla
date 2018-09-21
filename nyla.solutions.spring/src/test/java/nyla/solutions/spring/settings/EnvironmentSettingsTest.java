@@ -27,6 +27,8 @@ public class EnvironmentSettingsTest
 	public void setUp()
 	throws Exception
 	{
+		System.setProperty(Cryption.CRYPTION_KEY_PROP, "JUNIT_TESTING");
+		Config.reLoad();
 		Cryption cryption = new Cryption();
 		String encryptedPassword = Cryption.CRYPTION_PREFIX+cryption.encryptText("PASSWORD");
 		

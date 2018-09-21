@@ -316,7 +316,8 @@ public class IO
 			stream = new ObjectOutputStream(new BufferedOutputStream(out));
 
 			stream.writeObject(obj);
-
+			stream.flush();
+			
 			return out.toByteArray();
 		}
 		catch (Exception e)
@@ -784,6 +785,22 @@ public class IO
 
 		return line.toString();
 	}// --------------------------------------------
+	private static byte[] readBinary(InputStream inputStream) throws IOException
+	{
+		if (inputStream == null)
+			throw new IllegalArgumentException("inputStream is required");
+		
+		byte[] bytes = new byte[IO.FILE_IO_BATCH_SIZE];
+		
+		ByteArrayOutputStream ba = new ByteArrayOutputStream(FILE_IO_BATCH_SIZE);
+		int len = 0;
+		while((len = inputStream.read(bytes)) > 0)
+		{
+			ba.write(bytes, 0, len);
+		}
+		
+		return ba.toByteArray();
+	}// --------------------------------------------
 
 	/**
 	 * Read Class Path resource
@@ -809,7 +826,24 @@ public class IO
 
 		return readFully(new InputStreamReader(is, CHARSET));
 	}// -------------------------------------------
+	public static byte[] readBinaryClassPath(String path) 
+	throws IOException
+	{
+		ClassLoader classLoader = getDefaultClassLoader();
 
+		InputStream is;
+
+		if (classLoader != null)
+			is = classLoader.getResourceAsStream(path);
+		else
+			is = ClassLoader.getSystemResourceAsStream(path);
+		if (is == null)
+			throw new FileNotFoundException(
+			(new StringBuilder()).append(path).append(" cannot be opened because it does not exist").toString());
+
+		
+		return readBinary(is);
+	}// -------------------------------------------
 	public static ClassLoader getDefaultClassLoader()
 	{
 		ClassLoader cl = null;
@@ -1210,8 +1244,7 @@ public class IO
 
 	/**
 	 * 
-	 * @param fileName
-	 *            the full file path of which to read
+	 * @param fileName the full file path of which to read
 	 * @return string data
 	 * @throws IOException
 	 */
@@ -1338,20 +1371,20 @@ public class IO
 	/**
 	 * Write binary file data
 	 * 
-	 * @param aFileName
-	 * @param aData
+	 * @param fileName the file name
+	 * @param url the URL
 	 * @throws Exception
 	 */
-	public static void writeFile(String aFileName, URL aData) throws Exception
+	public static void writeFile(String fileName, URL url) throws Exception
 	{
 		OutputStream os = null;
 		InputStream is = null;
 
 		try
 		{
-			os = new FileOutputStream(aFileName);
+			os = new FileOutputStream(fileName);
 
-			is = aData.openStream();
+			is = url.openStream();
 			int BYTE_BUFFER_SIZE = Config.getPropertyInteger(BYTE_BUFFER_SIZE_PROP, FILE_IO_BATCH_SIZE).intValue();
 
 			byte[] bytes = new byte[BYTE_BUFFER_SIZE]; // 5 KB
@@ -1820,7 +1853,14 @@ public class IO
 		
 		mkdir(Paths.get(directory).toFile());
 		
-	}
-
+	}//------------------------------------------------
+	/**
+	 * The temporary directory
+	 * @return System.getProperty("java.io.tmpdir")
+	 */
+	public static String tempDir()
+	{
+		return System.getProperty("java.io.tmpdir");
+	}//------------------------------------------------
 
 }

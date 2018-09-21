@@ -19,7 +19,18 @@ import nyla.solutions.core.io.csv.CsvWriter;
 
 public class IOTest
 {
-	
+	@Test
+	public void test_readBinaryClassPath()
+	throws IOException
+	{
+		String path = "truststore.jks";
+		
+		byte [] bytes = IO.readBinaryClassPath(path);
+		
+		assertNotNull(bytes);
+		
+		assertEquals(new File("src/test/resources/truststore.jks").length(), bytes.length);
+	}
 	@Test
 	public void testFind() throws Exception
 	{

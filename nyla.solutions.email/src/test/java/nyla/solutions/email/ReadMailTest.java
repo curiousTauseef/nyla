@@ -17,6 +17,7 @@ public class ReadMailTest
 	 * 
 	 * @throws Exception
 	 */
+	@SuppressWarnings("resource")
 	@Category(IntegrationTest.class)
 	@Test
 	public void testRead()

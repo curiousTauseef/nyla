@@ -195,7 +195,7 @@ public class GenericValidation extends AbstractValidation implements org.springf
       return required;
    }//--------------------------------------------
    /**
-    * @param requiredCode The requiredCode to set.
+    * @param required The requiredCode to set.
     */
    public final void setRequired(boolean required)
    {

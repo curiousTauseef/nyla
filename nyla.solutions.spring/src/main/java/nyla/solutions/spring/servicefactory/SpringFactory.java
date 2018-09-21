@@ -208,6 +208,7 @@ public class SpringFactory extends ServiceFactory
 
       /**
        * Create object based on the object's full type name
+     * @param <T> the type to create
        * @param aClass the object/service name
        * @return an instance of the given class
        */
@@ -217,8 +218,9 @@ public class SpringFactory extends ServiceFactory
       }// --------------------------------------------
 
    /**
-    * 
-    * @param aServiceName the object/service name
+    * Create the service type 
+	 * @param aName the name of the name
+	 * @param <T>  the service type
     * @return an instance of the given class
     */
    @SuppressWarnings("unchecked")
@@ -229,7 +231,9 @@ public <T> T create(String aName)
    }// --------------------------------------------
    /**
     * 
-    * @param aServiceName the object/service name
+    * @param <T> the type
+    * @param aName the object/service name
+    * @param aParams the parameters to passed to the constructor
     * @return an instance of the given class
     */
    @SuppressWarnings("unchecked")
@@ -240,7 +244,9 @@ public <T> T create(String aName)
    }// --------------------------------------------
    /**
     * 
-    * @param aServiceName the object/service name
+    * @param <T> teh type
+    * @param aName the object/service name
+    * @param aParam the constructor parameters to pass 
     * @return an instance of the given class
     */
    @SuppressWarnings("unchecked")

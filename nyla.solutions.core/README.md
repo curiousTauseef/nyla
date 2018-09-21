@@ -588,7 +588,56 @@ Example HTML output:
 		</body>
 	</html>
 	
-	
+# Java Bean Generator Creator
+
+
+JavaBeanGeneratorCreator can be used to auto generate properties for any object.
+
+
+The following will auto generate random data for the "email" property.
+
+		JavaBeanGeneratorCreator<UserProfile> creator = new JavaBeanGeneratorCreator<UserProfile>(UserProfile.class);
+		creator.randomizeProperty("email");
+					
+		UserProfile userProfile = creator.create();
+		assertNotNull(userProfile);
+					
+		assertTrue(userProfile.getEmail() != null && userProfile.getEmail().length() > 0 );
+		
+The following auto generate all supported properties in the provided object.
+
+		JavaBeanGeneratorCreator<UserProfile> creator = new JavaBeanGeneratorCreator<UserProfile>(UserProfile.class);
+				creator.randomizeAll();
+		
+		JavaBeanGeneratorCreator<UserProfile> creator = new JavaBeanGeneratorCreator<UserProfile>(UserProfile.class);
+		creator.randomizeAll();
+		
+		assertTrue(creator.getRandomizeProperties().contains("firstName"));
+		
+		assertTrue(creator.create().getEmail().length() > 0);
+
+
+
+The following uses a proxy to generate new objects. The proxy is copied with only the indicated properties auto generated with each create method.
+
+
+		UserProfile protoype = new UserProfile();
+				protoype.setFirstName("Imani");
+				protoype.setLastName("Green");
+		
+		JavaBeanGeneratorCreator<UserProfile> creator = new JavaBeanGeneratorCreator<UserProfile>(protoype);
+		
+		creator.randomizeProperty("email");
+		
+		UserProfile u1 = creator.create();
+		assertEquals(u1.getFirstName(),protoype.getFirstName());
+		assertEquals(u1.getLastName(),protoype.getLastName());
+		assertNotNull(u1.getEmail());
+		assertTrue(u1.getEmail().length() > 0);
+
+
+
+
 # Cache Farm
 
 

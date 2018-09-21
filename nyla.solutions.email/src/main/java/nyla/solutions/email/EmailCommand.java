@@ -7,6 +7,8 @@ import nyla.solutions.core.util.Config;
 
 /**
  * @author Gregory Green
+ * @param <ReturnType> the return type
+ * @param <DecoratorType>  the wrapped object 
  *
  */
 public class EmailCommand<ReturnType,DecoratorType> implements Function<DecoratorType,Object>
@@ -20,8 +22,18 @@ public class EmailCommand<ReturnType,DecoratorType> implements Function<Decorato
 		textDecorator.setTarget(input);
 		
 		
-		Email email = new Email();
-		email.sendMail(to, subject, textDecorator.getText());
+		try(Email email = new Email())
+		{
+			email.sendMail(to, subject, textDecorator.getText());
+		}
+		catch(RuntimeException e)
+		{
+			throw e;
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(e.getMessage(),e);
+		}
 		return null;
 	}// --------------------------------------------------------
 	
