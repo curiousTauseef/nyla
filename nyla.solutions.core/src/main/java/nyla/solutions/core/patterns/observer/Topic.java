@@ -13,9 +13,10 @@ import nyla.solutions.core.util.Debugger;
  * 
  * <b>Topic</b> is a implementation of subject 
  * @author Gregory Green
+ * @param <T> the class type
  *
  */
-public class Topic implements Subject
+public class  Topic<T> implements Subject<T>
 {
 
 	/**
@@ -34,13 +35,7 @@ public class Topic implements Subject
    {
       this.setName(name);
    }//--------------------------------------------
-   
-   /**
-    * 
-    * 
-    * @see nyla.solutions.core.patterns.observer.Subject#add(nyla.solutions.core.patterns.observer.SubjectObserver)
-    */
-   public void add(SubjectObserver subjectObserver)
+   public void add(SubjectObserver<T> subjectObserver)
    {
       if (subjectObserver == null)
          throw new RequiredException("subjectObserver in Topic.add");
@@ -51,7 +46,7 @@ public class Topic implements Subject
          throw new IllegalArgumentException("Subject observer id required");
       
      //get previous
-      SubjectObserver prev = (SubjectObserver)observerMap.get(subjectObserver.getId());
+      SubjectObserver<?> prev = (SubjectObserver<?>)observerMap.get(subjectObserver.getId());
       
       if(prev != null && prev != subjectObserver)
       {
@@ -67,21 +62,21 @@ public class Topic implements Subject
     *
     * @see nyla.solutions.core.patterns.observer.Subject#notify(java.lang.Object)
     */
-   public void notify(Object object)
+   public void notify(T object)
    {
       //loop thru observers
-      SubjectObserver subjectObserver = null;
-      for (Iterator<SubjectObserver>  i = observerMap.values().iterator(); i.hasNext();)
+      SubjectObserver<T> subjectObserver = null;
+      for (Iterator<SubjectObserver<T>>  i = observerMap.values().iterator(); i.hasNext();)
       {
-         subjectObserver = (SubjectObserver) i.next();
+         subjectObserver = (SubjectObserver<T>) i.next();
          synchronized (subjectObserver) 
          {
-            subjectObserver.update(this, object);   
+            subjectObserver.update(this.getName(), object);   
          }         
       }
    }// --------------------------------------------
 
-   public void remove(SubjectObserver subjectObserver)
+   public void remove(SubjectObserver<T> subjectObserver)
    {
       if(subjectObserver == null || subjectObserver.getId() == null || subjectObserver.getId().length() == 0)
          return;//do nothing
@@ -107,23 +102,25 @@ public class Topic implements Subject
       
       this.name = name;
    }// --------------------------------------------
-   public int compareTo(Object object)
+   @SuppressWarnings("unchecked")
+public int compareTo(Object object)
    {
       if(!(object instanceof Subject))
          return -1;
       
-      Subject subject = (Subject)object;
+      Subject<T> subject = (Subject<T>)object;
       
       return this.name.compareTo(subject.getName());
    }// --------------------------------------------
-   public void copy(Copier from)
+   @SuppressWarnings("unchecked")
+public void copy(Copier from)
    {
       if(!(from instanceof Topic))
       {
          return;
       }
       
-      Topic topic = (Topic)from;
+      Topic<T> topic = (Topic<T>)from;
       this.name = topic.name;
       this.observerMap = topic.observerMap;
    }// --------------------------------------------
@@ -145,6 +142,7 @@ public class Topic implements Subject
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -154,7 +152,7 @@ public class Topic implements Subject
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Topic other = (Topic) obj;
+		Topic<T> other = (Topic<T>) obj;
 		if (name == null)
 		{
 			if (other.name != null)
@@ -181,5 +179,5 @@ public class Topic implements Subject
       return this.getClass().getName()+" name="+name;
    }
    private String name = this.getClass().getName();
-   private Map<String,SubjectObserver> observerMap = new HashMap<String,SubjectObserver> ();
+   private Map<String,SubjectObserver<T>> observerMap = new HashMap<String,SubjectObserver<T>> ();
 }

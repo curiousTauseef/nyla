@@ -1,20 +1,27 @@
 package nyla.solutions.core.util.settings;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Observer;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 
 import nyla.solutions.core.exception.ConfigException;
 import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.io.FileMonitor;
+import nyla.solutions.core.patterns.observer.SubjectObserver;
+import nyla.solutions.core.patterns.observer.SubjectRegistry;
 import nyla.solutions.core.util.Config;
+import nyla.solutions.core.util.Debugger;
 import nyla.solutions.core.util.Text;
 
 public class ConfigSettings extends AbstractSettings
@@ -84,16 +91,18 @@ public class ConfigSettings extends AbstractSettings
 		// thread through took care of loading the properties.
 		try
 		{
-
+			this.file = null;
+			
 			boolean alwaysReload = this.isAlwaysReload();
 
 			boolean useFormatting = this.isUseFormatting();
 
-			String file = getSystemPropertyFile();
-			if (file != null && file.length() > 0)
+			String filePath = getSystemPropertyFile();
+			if (filePath != null && filePath.length() > 0)
 			{
 				// System.out.println("CONFIG: LOADING CONFIG properties from "+
 				// file);
+				this.file = Paths.get(filePath).toFile();
 				FileInputStream fis = new FileInputStream(file);
 
 				try
@@ -105,7 +114,7 @@ public class ConfigSettings extends AbstractSettings
 					// properties from "+
 					// file);
 
-					configSourceLocation = file;
+					configSourceLocation = file.getAbsolutePath();
 				}
 				catch (Exception e)
 				{
@@ -264,6 +273,15 @@ public class ConfigSettings extends AbstractSettings
 		{
 			throw new ConfigException(e.getMessage(), e);
 		}
+		
+		try
+		{
+			this.registry.notify(this.getClass().getName(), this);
+		}
+		catch(Exception e)
+		{
+			Debugger.printWarn(e);
+		}
 	}// ------------------------------------------------------------
 
 	/**
@@ -299,13 +317,34 @@ public class ConfigSettings extends AbstractSettings
 	{
 		return configSourceLocation;
 	}// --------------------------------------------------------
-		// private static long lastCheckTime = 0;
+	@Override
+	public synchronized void registerObserver(SubjectObserver<Settings> settingsObserver)
+	{
+		if (settingsObserver == null)
+			throw new IllegalArgumentException("settingsObserver is required");
+		
+		if(file != null)
+		{
+			if(fileMonitor == null)
+				fileMonitor = new FileMonitor();				
+			
+			fileMonitor.monitor(file.getParent(), file.getName(), false);
+			Observer fileEventBridge = (observable,o) -> {this.reLoad();};
+			
+			fileMonitor.addObserver(fileEventBridge);
+		}
+		
+		registry.register(getClass().getName(), settingsObserver);
+	}
 
+	private SubjectRegistry registry = new SubjectRegistry();
 	private boolean mergeSystemProperties = true;
 	private boolean mergeEnvProperties = true;
 	private boolean setSystemProperties = false;
 
+	private File file = null;
+	private FileMonitor fileMonitor = null;
 	private String configSourceLocation = null;
 	private Properties properties = null; // configuration properties
-
+	
 }

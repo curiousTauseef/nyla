@@ -15,7 +15,7 @@ import nyla.solutions.core.util.Text;
  * @author Gregory Green
  *
  */
-public class SubjectTimerObserver implements SubjectObserver, TimeInterval
+public class SubjectTimerObserver implements SubjectObserver<Object>, TimeInterval
 {
    /**
     * Constructor for SubjectTimerObserver initializes internal
@@ -32,22 +32,18 @@ public class SubjectTimerObserver implements SubjectObserver, TimeInterval
    {
       this.decorator = timeIntervalDecorator;
    }//--------------------------------------------
-   /**
-    *
-    * @see nyla.solutions.core.patterns.observer.SubjectObserver#update(nyla.solutions.core.patterns.observer.Subject, java.lang.Object)
-    */
-   public void update(Subject subject, Object data)
+   public void update(String subjectName, Object data)
    {
-         Debugger.println(this,"Recieve subject="+subject);
+         Debugger.println(this,"Recieve subject="+subjectName);
          
-         if(isStart(subject))
+         if(isStart(subjectName))
          {          
             this.startData = data;
             this.startDate = Calendar.getInstance().getTime();
             Debugger.printInfo(this,"TIMER START DATE ["+Text.formatDate(startDate)+"]\n "+Text.toString(startData));
             
          }
-         else if(isEnd(subject))
+         else if(isEnd(subjectName))
          {            
             this.endData = data;
             this.endDate = Calendar.getInstance().getTime();
@@ -59,32 +55,27 @@ public class SubjectTimerObserver implements SubjectObserver, TimeInterval
          }   
          else
          {
-            throw new SystemException("Unknown subject "+subject.getName());
+            throw new SystemException("Unknown subject "+subjectName);
          }
    }//--------------------------------------------
-   /**
-    * 
-    * @param subject the subject
-    * @return true is subject name matches the regular expression
-    */
-   public boolean isStart(Subject subject)
+    public boolean isStart(String name)
    {
-      if(subject == null || subject.getName() == null || this.startSubjectNamePattern == null)
+      if(name == null || this.startSubjectNamePattern == null)
          return false;
       
-      return Text.matches(subject.getName(), this.startSubjectNamePattern);
+      return Text.matches(name, this.startSubjectNamePattern);
    }//--------------------------------------------
    /**
     * 
-    * @param subject the subject
+    * @param name the subject name
     * @return true is subject name matches the regular expression
     */
-   public boolean isEnd(Subject subject)
+   public boolean isEnd(String name)
    {
-      if(subject == null || subject.getName() == null || this.endSubjectNamePattern == null)
+      if(name == null || this.endSubjectNamePattern == null)
          return false;
       
-      return Text.matches(subject.getName(), this.endSubjectNamePattern);
+      return Text.matches(name, this.endSubjectNamePattern);
    }//--------------------------------------------
    /**
     * @return this.getClass().getName()+"START:"+startSubjectNamePattern+" END:"+endSubjectNamePattern

@@ -1,22 +1,24 @@
 package nyla.solutions.core.util;
 
+import static org.junit.Assert.*;
+
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import junit.framework.TestCase;
 import nyla.solutions.core.exception.ConfigException;
+import nyla.solutions.core.io.IO;
+import nyla.solutions.core.patterns.observer.SubjectObserver;
 import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Debugger;
+import nyla.solutions.core.util.settings.Settings;
 
-public class ConfigTest extends TestCase
+public class ConfigTest
 {
 
-	public ConfigTest(String name)
-	{
-		super(name);
-	}
 	/**
 	 * 
 	 * @throws Exception
@@ -193,6 +195,46 @@ public class ConfigTest extends TestCase
 		
 		test = Double.valueOf(5.55);
 		Assert.assertTrue(test.equals(Config.getPropertyDouble("doesnotexits",5.55)));
+	}
+	
+	public static boolean isCalled;
+	
+	@Test
+	public void testFileObserver() throws Exception
+	{
+		
+		File config = Paths.get("src/test/resources/config/configTest.properties").toFile();
+		
+		System.setProperty(Config.SYS_PROPERTY, config.getAbsolutePath());
+		
+		SubjectObserver<Settings> settingsObserver = new SubjectObserver<Settings>()
+		{
+			private String name = "test";
+			
+			@Override
+			public String getId()
+			{
+				return name;
+			}
+			
+			@Override
+			public void update(String subjectName, Settings data)
+			{
+				System.out.println("subjectNAme:"+subjectName+" data:"+data);
+				isCalled = true;
+			}
+		};
+		
+		Config.reLoad();
+		
+		Config.registerObserver(settingsObserver);
+		IO.touch(config);
+		Thread.sleep(1000);
+		IO.touch(config);
+		Thread.sleep(1000);
+		IO.touch(config);
+		assertTrue(isCalled);
+		
 	}
 
 }

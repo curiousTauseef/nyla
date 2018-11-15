@@ -15,9 +15,4 @@ public interface Nameable
     */
    public String getName();
    
-   /**
-    * 
-    * @param name the name to set to
-    */
-   public void setName(String name);
 }

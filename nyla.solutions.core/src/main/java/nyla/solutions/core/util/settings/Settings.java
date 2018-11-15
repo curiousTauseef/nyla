@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import nyla.solutions.core.exception.ConfigException;
+import nyla.solutions.core.patterns.observer.SubjectObserver;
 
 /**
  * Interface for configuration settings
@@ -309,4 +310,6 @@ public interface Settings
 	{
 		return System.getProperty("user.dir");
 	}
+
+	void registerObserver(SubjectObserver<Settings> settingsObserver);
 }

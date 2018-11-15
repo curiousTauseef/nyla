@@ -5,6 +5,8 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
+import nyla.solutions.core.Identifiable;
+
 
 /**
  * 
@@ -17,7 +19,7 @@ import java.util.Map;
  * @author Gregory Green
  * @version 1.0
  */
-public class LoginCredential implements SecurityCredential, Principal, Serializable
+public class LoginCredential implements SecurityCredential, Principal, Serializable, Identifiable
 {
 
    /**
@@ -185,8 +187,7 @@ public class LoginCredential implements SecurityCredential, Principal, Serializa
    }
    /**
     * 
-    *this.setLoginID(id)
-    * @see nyla.solutions.core.data.Identifier#setId(java.lang.String)
+    * @param id the ID 
     */
    public void setId(String id)
    {

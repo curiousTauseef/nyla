@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import nyla.solutions.core.data.clock.Day;
 import nyla.solutions.core.exception.ConfigException;
+import nyla.solutions.core.patterns.observer.SubjectObserver;
 import nyla.solutions.core.util.settings.ConfigSettings;
 import nyla.solutions.core.util.settings.Settings;
 
@@ -576,11 +577,18 @@ public class Config
 		 
 		return text;
 	}
+	public static void registerObserver(SubjectObserver<Settings> settingsObserver)
+	{
+		getSettings().registerObserver(settingsObserver);
+		
+	}
 	public static Day getPropertyDay(String key)
 	{
 		return new Day(getProperty(key));
 	}
 	private static Settings settings = null;
+
+	
 
 	
 
