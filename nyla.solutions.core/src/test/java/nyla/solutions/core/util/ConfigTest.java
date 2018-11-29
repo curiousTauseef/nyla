@@ -18,6 +18,11 @@ import nyla.solutions.core.util.settings.Settings;
 
 public class ConfigTest
 {
+	/**
+	 * Config reload testing
+	 */
+	static boolean isCalled;
+	
 
 	/**
 	 * 
@@ -190,14 +195,16 @@ public class ConfigTest
 	@Test
 	public void testGetDouble() throws Exception
 	{
+		System.setProperty(Config.SYS_PROPERTY, "src/test/resources/config.properties");
+		Config.reLoad();
+		
 		Double test = Double.valueOf(30.500000);
-		Assert.assertTrue(test.equals(Config.getPropertyDouble("nyla.solutions.core.util.ConfigTest.test.config.double")));
+		Assert.assertEquals(test,Config.getPropertyDouble("nyla.solutions.core.util.ConfigTest.test.config.double"));
 		
 		test = Double.valueOf(5.55);
 		Assert.assertTrue(test.equals(Config.getPropertyDouble("doesnotexits",5.55)));
 	}
 	
-	public static boolean isCalled;
 	
 	@Test
 	public void testFileObserver() throws Exception

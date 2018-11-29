@@ -19,7 +19,7 @@ import nyla.solutions.core.security.data.SecurityCredential;
  * @version 1.0
  */
 public interface User extends Comparable<Object>, Cloneable, 
-Principal, PrimaryKey, SecurityCredential, Serializable
+Principal, SecurityCredential, Serializable
 {  
     /**
      * 
