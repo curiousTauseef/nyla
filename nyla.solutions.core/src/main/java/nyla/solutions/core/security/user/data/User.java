@@ -3,8 +3,6 @@ package nyla.solutions.core.security.user.data;
 
 import java.io.Serializable;
 import java.security.Principal;
-
-import nyla.solutions.core.data.PrimaryKey;
 import nyla.solutions.core.security.data.SecurityCredential;
 
 

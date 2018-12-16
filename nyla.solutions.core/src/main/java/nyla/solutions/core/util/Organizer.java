@@ -309,7 +309,21 @@ public final class Organizer
 			}
 		}
 	}// --------------------------------------------------------
-
+	@SuppressWarnings(
+	{ "unchecked" })
+	public static <T> List<T> toList(T...args)
+	{
+		if(args == null || args.length ==0)
+			return null;
+		
+		ArrayList<T> list = new ArrayList<>(args.length);
+		for (T t : args)
+		{
+			list.add(t);
+		}
+		
+		return list;
+	}//------------------------------------------------
 	@SuppressWarnings(
 	{ "unchecked", "rawtypes" })
 	public static <T> List<Collection<T>> toPages(Collection<T> collection, int pageSize)

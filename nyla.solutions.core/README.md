@@ -148,6 +148,33 @@ Note the following is a property file used for the sample usage code below.
   Assert.assertTrue("All values formatted:"+property, property.indexOf("${") < 0);
 ```
 
+Support observer pattern for file configuration changes
+
+		File config = Paths.get("src/test/resources/config/configTest.properties").toFile();
+		
+		System.setProperty(Config.SYS_PROPERTY, config.getAbsolutePath());
+		
+		SubjectObserver<Settings> settingsObserver = new SubjectObserver<Settings>()
+		{
+			private String name = "test";
+			
+			@Override
+			public String getId()
+			{
+				return name;
+			}
+			
+			@Override
+			public void update(String subjectName, Settings data)
+			{
+				System.out.println("subjectNAme:"+subjectName+" data:"+data);
+				isCalled = true;
+			}
+		};
+		
+		Config.registerObserver(settingsObserver);
+		IO.touch(config);
+		// observer will be called
 
 ###	Cryption
 

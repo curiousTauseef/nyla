@@ -53,7 +53,14 @@ public class OrganizerTest
 		
 	}//------------------------------------------------
 	
-	
+	@Test
+	public void testToList() throws Exception
+	{
+		assertNull(Organizer.toList());
+		
+		assertTrue(Organizer.toList("a","b").size() ==2);
+		
+	}//------------------------------------------------
 		@Test
 		public void testToPages()
 		{
