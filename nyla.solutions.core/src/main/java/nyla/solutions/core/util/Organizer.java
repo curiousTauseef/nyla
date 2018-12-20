@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -142,7 +143,7 @@ public final class Organizer
 	 *            the flatten output type
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> void flatten(Collection<Object> input,
+	public static <T> void flatten(Collection<?> input,
 	Collection<T> flattenOutput)
 	{
 		if (input == null || input.isEmpty() || flattenOutput == null)
@@ -150,7 +151,9 @@ public final class Organizer
 
 		for (Object inputObj : input)
 		{
-
+			if(inputObj == null)
+				continue;
+			
 			if (inputObj instanceof Collection)
 				flatten((Collection<Object>) inputObj, flattenOutput);
 			else
@@ -323,6 +326,30 @@ public final class Organizer
 		}
 		
 		return list;
+	}//------------------------------------------------
+	
+	@SuppressWarnings(
+	{ "unchecked" })
+	public static <T> Set<T> toSet(T...args)
+	{
+		if(args == null || args.length ==0)
+			return null;
+		
+		HashSet<T> set = new HashSet<>(args.length);
+		
+		fill(set,args);
+		return set;
+	}//------------------------------------------------
+	@SuppressWarnings("unchecked")
+	public static <T> void fill(Collection<T> collection,T...args)
+	{
+		if(collection == null || args == null)
+			return;
+		
+		for (T t : args)
+		{
+			collection.add(t);
+		}
 	}//------------------------------------------------
 	@SuppressWarnings(
 	{ "unchecked", "rawtypes" })

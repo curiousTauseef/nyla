@@ -276,10 +276,26 @@ implements User, Copier, Comparable<Object>
       return this.getLoginID();
    }// --------------------------------------------
 
-    private String email = "";
+	/**
+	 * @return the phone
+	 */
+	public String getPhone()
+	{
+		return phone;
+	}
+	/**
+	 * @param phone the phone to set
+	 */
+	public void setPhone(String phone)
+	{
+		this.phone = phone;
+	}
+
+	private String email = "";
     private String loginID = "";
     private String firstName = "";
     private String lastName = "";  
     private String title = "";
+    private String phone;
     static final long serialVersionUID = UserProfile.class.getName().hashCode();
 }

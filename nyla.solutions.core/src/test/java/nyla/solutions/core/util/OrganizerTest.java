@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 import org.junit.Test;
@@ -22,6 +24,26 @@ import nyla.solutions.core.data.MapEntry;
  */
 public class OrganizerTest
 {
+	
+	@Test
+	public void testFlatten() throws Exception
+	{
+		Collection<String> c = Collections.singleton(null);
+		ArrayList<String> a = new ArrayList<>();
+		Organizer.flatten(c, a);
+		
+		assertTrue(a.isEmpty());
+		
+		
+		c = new HashSet<>(10);
+		
+		a = new ArrayList<>();
+		Organizer.flatten(c, a);
+		
+		assertTrue(a.isEmpty());
+		
+		
+	}
 
 	@Test
 	public void testFirst()
@@ -52,7 +74,15 @@ public class OrganizerTest
 		}
 		
 	}//------------------------------------------------
-	
+	@Test
+	public void testToSet() throws Exception
+	{
+		assertNull(Organizer.toSet());
+		
+		assertTrue(Organizer.toSet("a","b") !=null);
+		assertTrue(Organizer.toSet("a","b").size() ==2);
+		
+	}//------------------------------------------------
 	@Test
 	public void testToList() throws Exception
 	{
