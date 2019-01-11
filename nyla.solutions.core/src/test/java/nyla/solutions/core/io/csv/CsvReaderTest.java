@@ -10,6 +10,11 @@ import nyla.solutions.core.io.IO;
 import nyla.solutions.core.io.csv.CsvReader.DataType;
 import nyla.solutions.core.io.csv.formulas.SumStatsByMillisecondsFormular;
 
+/**
+ * The CSV Reader test
+ * @author Gregory Green
+ *
+ */
 public class CsvReaderTest
 {
 

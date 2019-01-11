@@ -38,61 +38,7 @@ import nyla.solutions.core.operations.logging.SystemOutLog;
  * The logClass class name indicated must implement the 
  * nyla.solutions.core.operations.Log interface.
  * 
- * Sample Property File
- * 
- *#-------------------------------
- *# Debugger log instance uses Log4J
- *# You can directly include the log4J properties in the configuration property files (@see Config object)
- *# Log4J properties
- *#
- *log4j.rootLogger=DEBUG, stdout
- *log4j.logger.PACKAGE_NAME=ERROR,file_error
- *log4j.logger.YYY=DEBUG, file_all
- *log4j.logger.org.apache=ERROR,stdout
- *log4j.logger.org.springframework=ERROR,stdout 	
- * 	
- *#Standard OUT
- *log4j.appender.stdout=org.apache.log4j.ConsoleAppender
- *log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
- *#log4j.appender.stdout.layout.ConversionPattern=%d [%F:%L] - %x %m%n
- *#log4j.appender.stdout.layout.ConversionPattern= %p: %d{HH:mm:ss} [%F:%L] - %x %m%n
- *#log4j.appender.stdout.layout.ConversionPattern=%d{HH:mm:ss} [%c:%L] %m%n
- *#log4j.appender.stdout.layout.ConversionPattern=%d{HH:mm:ss} %m%n
- *log4j.appender.stdout.layout.ConversionPattern=%p: %d [%c] - %m%n
- * 
- *#
- *# FILE Output
- *log4j.file_all.category=DEBUG
- *log4j.appender.file_all=org.apache.log4j.RollingFileAppender
- *log4j.appender.file_all.File=/temp/logs/system.log
- *log4j.appender.file_all.MaxFileSize=10MB
- *log4j.appender.file_all.MaxBackupIndex=3
- *log4j.appender.file_all.layout=org.apache.log4j.PatternLayout
- *log4j.appender.file_all.layout.ConversionPattern=%p: %d [%c] - %m%n
- * 	
- * 	
- *#
- *# FILE Output
- *#log4j.file_error.category=ERROR
- *log4j.appender.file_error=org.apache.log4j.RollingFileAppender
- *log4j.appender.file_error.File=temp/logs/error.log
- *log4j.appender.file_error.MaxFileSize=10MB
- *log4j.appender.file_error.MaxBackupIndex=3
- *log4j.appender.file_error.layout=org.apache.log4j.PatternLayout
- *log4j.appender.file_error.layout.ConversionPattern=%p: %d [%c] - %m%n
- * 	
- * 	
- *#Emailing example
- *#email appender
- *log4j.appender.mail=org.apache.log4j.net.SMTPAppender
- *log4j.appender.mail.BufferSize=1
- *log4j.appender.mail.SMTPHost=smtp.myservername.xx
- *log4j.appender.mail.From=fromemail@myservername.xx
- *log4j.appender.mail.To=toemail@myservername.xx
- *log4j.appender.mail.Subject=Log ...
- *log4j.appender.mail.threshold=error
- *log4j.appender.mail.layout=org.apache.log4j.PatternLayout
- *log4j.appender.mail.layout.ConversionPattern=%d{ABSOLUTE} %5p %c{1}:%L - %m%n
+ *
  * 
  * </pre>
  * 
@@ -101,6 +47,11 @@ import nyla.solutions.core.operations.logging.SystemOutLog;
  */
 public class Debugger
 {
+	//For println level messaging
+	private static boolean DEBUG = Config.getPropertyBoolean(Debugger.class,"DEBUG",true).booleanValue();
+	private static Log defaultLogger;
+
+	
 	/**
 	 * LOG_CLASS_NAME_PROP = "Log.logClass"
 	 */
@@ -414,40 +365,23 @@ public class Debugger
 	/**
 	 * 
 	 * Print aObject information and the caller module for tracing *
-	 * @param aCaller the calling object
+	 * @param caller the calling object
 	 * @param message the message/object to print 
 	 * 
 	 */
-
-	public static void println(Object aCaller, Object message)
+	public static void println(Object caller, Object message)
 	{
-
-		Class<?> c = Debugger.class;
-
+		if (!DEBUG)
+			return;
 		
-		if (DEBUG)
-		{
+		StringBuilder text = new StringBuilder();
 
-			if (aCaller != null)
-			{
-				
-				Class<?> callerClass = aCaller.getClass();
+		Class<?> c = callerBuilder(caller, text);
 
-				if (callerClass.isAssignableFrom(Class.class))
-				{
-
-					c = (Class<?>) aCaller;
-				}
-				else
-				{
-
-					c = aCaller.getClass();
-				}
-			}
-
-			getLog(c).debug(message);
-
-		}
+		if(message instanceof Throwable)
+			getLog(c).debug(text.append(stackTrace((Throwable)message)));
+		else
+			getLog(c).debug(text.append(message));
 
 	} // -----------------------------------------
 	/**
@@ -467,11 +401,12 @@ public class Debugger
 	 */
 	public static void println(Object message)
 	{
-		if (DEBUG)
-		{
-			getLog(Debugger.class).debug(message);
+		if (!DEBUG)
+			return;
+		
+		getLog(Debugger.class).debug(message);
 
-		}
+		
 	} // -----------------------------------------
 	/**
 	 * Print a error message. 
@@ -482,32 +417,15 @@ public class Debugger
 	 */
 	public static void printError(Object caller, Object message)
 	{
-
+		
 		StringBuilder text = new StringBuilder();
-		Class<?> c = Debugger.class;
 
-		if (caller != null)
-		{
-			if (caller instanceof Class)
-			{
-				c = (Class<?>) caller;
-				text.append(c.getName()).append(": ");
-			}
-			else
-			if (caller instanceof String)
-			{
+		Class<?> c = callerBuilder(caller, text);
 
-				text.append(caller).append(": ");
-			}
-			else
-			{
-				c = caller.getClass();
-				text.append(c.getName()).append(": ");
-
-			}
-		}
-
-		getLog(c).debug(text.append(message));
+		if(message instanceof Throwable)
+			getLog(c).error(text.append(stackTrace((Throwable)message)));
+		else
+			getLog(c).error(text.append(message));
 
 	} // -----------------------------------------
 	/**
@@ -541,13 +459,9 @@ public class Debugger
 	{
 
 		if (message instanceof Throwable)
-
 		{
-
 			Throwable e = (Throwable) message;
-
 			e.printStackTrace();
-
 		}
 
 		Log log = getLog(Debugger.class);
@@ -566,22 +480,15 @@ public class Debugger
 	 */
 	public static void printFatal(Object caller, Object message)
 	{
+		
+		StringBuilder text = new StringBuilder();
 
-		if (message instanceof Throwable)
+		Class<?> c = callerBuilder(caller, text);
 
-		{
-
-			Throwable e = (Throwable) message;
-
-			e.printStackTrace();
-
-		}
-
-		Log log = getLog(Debugger.class);
-		if(log != null)
-			log.fatal(message);
+		if(message instanceof Throwable)
+			getLog(c).fatal(text.append(stackTrace((Throwable)message)));
 		else
-			System.err.println(message);
+			getLog(c).fatal(text.append(message));
 
 	} // -----------------------------------------
 	/**
@@ -591,45 +498,15 @@ public class Debugger
 	 */
 	public static void printInfo(Object caller, Object message)
 	{
-
+		
 		StringBuilder text = new StringBuilder();
 
-		Class<?> c = Debugger.class;
+		Class<?> c = callerBuilder(caller, text);
 
-		if (caller != null)
-		{
-
-			if (caller instanceof Class)
-			{
-
-				c = (Class<?>) caller;
-				text.append(c.getName()).append(": ");
-
-			}
-
-			else
-
-			if (caller instanceof String)
-
-			{
-
-				text.append(caller ).append(": ");
-
-			}
-
-			else
-
-			{
-
-				c = caller.getClass();
-
-				text.append(c.getName()).append(": ");
-
-			}
-
-		}
-
-		getLog(c).info(text.append(message));
+		if(message instanceof Throwable)
+			getLog(c).info(text.append(stackTrace((Throwable)message)));
+		else
+			getLog(c).info(text.append(message));
 
 	} // -----------------------------------------
 	/**
@@ -638,16 +515,14 @@ public class Debugger
 	 */
 	public static void printInfo(Object message)
 	{
-
+		
 		if (message instanceof Throwable)
 		{
 
 			Throwable e = (Throwable) message;
 
 			getLog(Debugger.class).info(stackTrace(e));
-
 		}
-
 		else
 
 			getLog(Debugger.class).info(message);
@@ -665,23 +540,27 @@ public class Debugger
 
 		StringBuilder text = new StringBuilder();
 
+		Class<?> c = callerBuilder(caller, text);
+
+		if(message instanceof Throwable)
+			getLog(c).warn(text.append(stackTrace((Throwable)message)));
+		else
+			getLog(c).warn(text.append(message));
+
+	} // -----------------------------------------
+
+	private static Class<?> callerBuilder(Object caller, StringBuilder text)
+	{
 		Class<?> c = Debugger.class;
 
 		if (caller != null)
 		{
-
 			if (caller instanceof Class)
-
 			{
-
 				c = (Class<?>) caller;
-
 				text.append(c.getName()).append(": ");
-
 			}
-
 			else
-
 			if (caller instanceof String)
 			{
 				text.append(caller ).append(": ");
@@ -693,13 +572,8 @@ public class Debugger
 			}
 
 		}
-
-		if(message instanceof Throwable)
-			getLog(c).warn(text.append(stackTrace((Throwable)message)));
-		else
-			getLog(c).warn(text.append(message));
-
-	} // -----------------------------------------
+		return c;
+	}//------------------------------------------------
 	/**
 	 * Print A WARN message. The stack trace will be printed if
 	 * the given message is an exception.
@@ -722,8 +596,35 @@ public class Debugger
 			getLog(Debugger.class).warn(message);
 
 	} // -----------------------------------------
-
-	private static boolean DEBUG = Config.getPropertyBoolean(Debugger.class,"DEBUG",true).booleanValue();
-	private static Log defaultLogger;
+	public static void println(Object caller, String format, Object... args)
+	{
+		Object msg = String.format(format, args);
+		
+		println(caller,msg);
+	}//------------------------------------------------
+	public static void printInfo(Object caller, String format, Object... args)
+	{
+		Object msg = String.format(format, args);
+		
+		printInfo(caller,msg);
+	}//------------------------------------------------
+	public static void printWarn(Object caller, String format, Object... args)
+	{
+		Object msg = String.format(format, args);
+		
+		printWarn(caller,msg);
+	}//------------------------------------------------
+	public static void printError(Object caller, String format, Object... args)
+	{
+		Object msg = String.format(format, args);
+		
+		printError(caller,msg);
+	}//------------------------------------------------
+	public static void printFatal(Object caller, String format, Object... args)
+	{
+		Object msg = String.format(format, args);
+		
+		printFatal(caller,msg);
+	}//------------------------------------------------
 
 } // end class

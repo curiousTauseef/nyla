@@ -1,5 +1,8 @@
 package nyla.solutions.core.util;
 
+import static org.junit.Assert.*;
+
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -7,15 +10,51 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import junit.framework.TestCase;
-
 /**
  * Test cases for Text
  * @author Gregory Green
  *
  */
-public class TextTest extends TestCase
+public class TextTest 
 {
+	
+	@Test
+	public void testReadTemplateFromClasspath() throws Exception
+	{
+		Map<String, String> map = new HashMap<>();
+		String path = "invalid";
+		String results =  null;
+		try
+		{
+			results = Text.formatTextFromClassPath(path,map);
+			fail();
+		}
+		catch(IOException e)
+		{
+		}
+		
+		path = "templates/test.txt";
+		results = Text.formatTextFromClassPath(path,map);
+		assertNotNull(results);
+		
+	}//------------------------------------------------
+	
+	@Test
+	public void testSplitIntegers() throws Exception
+	{
+		assertNull(Text.splitRE(null,",",Integer.class));
+		
+		String line = "1,2,3";
+		
+		Integer[] ints = Text.splitRE(line, ",",Integer.class);
+		
+		assertNotNull(ints);
+		
+		assertEquals(ints.length,3);
+		
+		assertEquals(Integer.valueOf(1),ints[0]);
+		
+	}
 	@Test
 	public void testReplaceWithByChars()
 	{
@@ -25,6 +64,14 @@ public class TextTest extends TestCase
 		assertEquals("SECURITY_USERNAME",Text.replaceForRegExprWith("security.username", "[-\\.]","_").toUpperCase());
 		assertEquals("SECURITY_USER_NAME",Text.replaceForRegExprWith("security.user-name", "[-\\.]","_").toUpperCase());
 		
+	}//------------------------------------------------
+	@Test
+	public void testMerge() throws Exception
+	{
+		assertEquals("1,2",Text.merge(",",1,2));
+		assertEquals("1",Text.merge(",",1));
+		assertNull(Text.merge(""));
+		assertNull(Text.merge(null));
 	}//------------------------------------------------
 	@Test
 	public void testLoadTemplate()

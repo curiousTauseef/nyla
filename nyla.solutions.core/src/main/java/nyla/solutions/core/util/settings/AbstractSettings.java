@@ -1,5 +1,6 @@
 package nyla.solutions.core.util.settings;
 
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -72,6 +73,10 @@ public abstract class AbstractSettings implements Settings
 	public static final String SYS_PROPERTY = "config.properties";
 
 	public static final String DEFAULT_PROP_FILE_NAME = SYS_PROPERTY;
+	
+	private boolean alwaysReload = false;
+	private boolean useFormatting = false;
+
 
 	/* (non-Javadoc)
 	 * @see nyla.solutions.core.util.Settings#interpret(java.lang.String)
@@ -703,8 +708,14 @@ public abstract class AbstractSettings implements Settings
 		return useFormatting;
 	}// --------------------------------------------------------
 
+	@Override
+	public void loadArgs(List<String> arguments)
+	{		
+		if(arguments == null || arguments.isEmpty())
+			return;
+		
+		this.setProperties(ArgsParser.parse(arguments));
+	}//------------------------------------------------
 
-	private boolean alwaysReload = false;
-		private boolean useFormatting = false;
 
 }

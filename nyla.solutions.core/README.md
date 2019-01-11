@@ -37,7 +37,7 @@ See [http://mvnrepository.com/artifact/com.github.nyla-solutions/nyla.solutions.
 ##	Package: nyla.solutions.core.util
 ###	Config
 
-This class provides a central mechanism for applications to access key/value property settings and encrypted passwords. There are several ways to specify the configuration property file location.
+This class provides a central mechanism for applications to access key/value property settings and encrypted passwords. Developer can get access to environment variable, system Java properties and other property. It also supports type conversion from property strings to numbers, booleans and arrays. There are several ways to specify the configuration properties.
  
 	1.	Add file config.properties to CLASSPATH. This file will be loaded as a Java resource bundle. 
 	2.	Add the JVM argument -Dconfig.properties where the value is equal to the location of the configuration file.

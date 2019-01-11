@@ -177,7 +177,7 @@ public class ClassPath extends ClassLoader
 	 * @return the create instance
 	 * @throws SetupException when an initialize issue occurs
 	 */
-	public static <T> T newInstance(String className, Object[] initargs) 
+	public static <T> T newInstance(String className, Object... initargs) 
 	throws SetupException
 	{
 		return newInstance(toClass(className),initargs);		
@@ -190,7 +190,7 @@ public class ClassPath extends ClassLoader
 	 * @return the create instance
 	 * @throws SetupException when an initialize issue occurs
 	 */
-	public static <T> T newInstance(Class<?> aClass, Object[] initargs) 
+	public static <T> T newInstance(Class<?> aClass, Object... initargs) 
 	throws SetupException
 	{
 		Class<?>[] parameterTypes = null;

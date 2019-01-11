@@ -1,6 +1,5 @@
 package nyla.solutions.core.util;
 
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -9,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -38,6 +38,7 @@ import nyla.solutions.core.exception.RequiredException;
 import nyla.solutions.core.exception.SetupException;
 import nyla.solutions.core.exception.SystemException;
 import nyla.solutions.core.io.IO;
+import nyla.solutions.core.operations.ClassPath;
 import nyla.solutions.core.patterns.decorator.BasicTextStyles;
 import nyla.solutions.core.patterns.decorator.TextStyles;
 
@@ -79,7 +80,11 @@ public class Text
     */
    public static final String TEMPLATE_CLASSPATH_ROOT = Config.getProperty(Text.class,"TEMPLATE_CLASSPATH_ROOT","templates");
 
-	 
+
+   //private static final String encoding = Config.getProperty(Text.class,"encoding","ISO-8859-1");
+   private static final Random random = new Random(Calendar.getInstance().getTime().getTime());
+   private static TextStyles textStyles = null;    
+   
    private static final String[] fixedNumberPrefixLookup =
    {
 	   "0","00","000","0000","00000","000000","0000000","00000000","000000000","0000000000"
@@ -628,8 +633,7 @@ public static String[] toStrings(Object object)
 
       }
 
-      ArrayList<String> resultList = new ArrayList<String>();
-
+      ArrayList<String> resultList = new ArrayList<String>(16);
       int start = 0;
 
 
@@ -660,12 +664,38 @@ public static String[] toStrings(Object object)
         throw new IllegalArgumentException("Unexpected empty list");
      }
      
+     resultList.trimToSize();
+     
      String[] results = new String[resultList.size()];
      
      resultList.toArray(results);
      
      return results;
    }// --------------------------------------------
+   /**
+    * Split Regular expressions
+    * @param <T> the class type
+    * @param line the line to convert
+    * @param re the regular express
+    * @param class1 the class to convert to
+    * @return the array of the converted class types
+    */
+	@SuppressWarnings("unchecked")
+	public static<T> T[] splitRE(String line, String re, Class<T> class1)
+	{
+		String[] text = splitRE(line, re);
+		
+		
+		if(text  == null || text.length ==0)
+			return null;
+		
+		T[] results = (T[])Array.newInstance(class1, text.length);
+		for (int i=0;i< text.length;i++)
+		{
+			results[i] = ClassPath.newInstance(class1, text[i]);
+		}
+		return results;
+	}//------------------------------------------------
 
    /**
     * 
@@ -2298,12 +2328,56 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
          return false;
       }
    }// --------------------------------------------
- 
-   //private static final String encoding = Config.getProperty(Text.class,"encoding","ISO-8859-1");
-   private static final Random random = new Random(Calendar.getInstance().getTime().getTime());
-   private static TextStyles textStyles = null;    
-   //private static final String TEMPLATE_PREFIX = "${";
-   //private static final String TEMPLATE_SUFFIX = "}";  
+   public  static <T>  String mergeArray(String separator, T[] merging)
+	{
+	   if(merging == null || merging.length ==0 )
+			return null;
+		
+		StringBuilder text = new StringBuilder();
+		
+		if(separator == null)
+			separator = "";
+		
+		for (Object merge : merging)
+		{
+			if(text.length() >0 && separator !=null)
+				text.append(separator);
+			
+			text.append(merge);
+		}
+		
+		return text.toString();
+	}
+   /**
+    * Example: assertEquals("1,2",Text.merge(",",1,2));
+    * @param separator the merge separator
+    * @param merging the array of object string to merge
+    * @return the merged text
+    */
+	public  static  String merge(String separator, Object... merging)
+	{
+		Object[] objs = merging;
+		
+		return mergeArray(separator, objs);
+	}//------------------------------------------------
+	/**
+	 * Example usage:
+	 * 
+	 * String path = "templates/test.txt";
+	 * String results = Text.formatTextFromClassPath(path,map);
+	 * @param path the class path (ex: /templates/test.txt)
+	 * @param map the bind variable map
+	 * @return the formatted template
+	 * @throws IOException when the template path cannot be read
+	 */
+	public static String formatTextFromClassPath(String path, Map<?, ?> map)
+	throws IOException
+	{
+		String template = IO.readClassPath(path);
+		return format(template, map);
+	}
+	 
+
 
 
 }

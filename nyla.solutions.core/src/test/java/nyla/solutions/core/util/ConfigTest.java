@@ -37,6 +37,16 @@ public class ConfigTest
 		
 		
 	}//------------------------------------------------
+	
+	@Test
+	public void test_loadFromArguments() throws Exception
+	{
+		String[] args  = { "--LOCATOR_HOST=localhost"};
+		Config.loadArgs(args);
+		
+		assertEquals("localhost",Config.getProperty("LOCATOR_HOST"));
+	}//------------------------------------------------
+	
 	@Test
 	public void testLoadFromSystemProperties() throws Exception
 	{
@@ -244,4 +254,14 @@ public class ConfigTest
 		
 	}
 
+	
+	@Test
+	public void test_loadFromArgumentsFixed() throws Exception
+	{
+		String [] args = {"--LOCATOR_HOST=localhost"};
+		Config.loadArgs(args);
+		 String host = Config.getProperty("LOCATOR_HOST");
+		 assertEquals("localhost",host);
+	}//------------------------------------------------
+	
 }

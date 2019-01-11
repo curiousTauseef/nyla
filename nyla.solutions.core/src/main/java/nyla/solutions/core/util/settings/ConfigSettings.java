@@ -26,7 +26,17 @@ import nyla.solutions.core.util.Text;
 
 public class ConfigSettings extends AbstractSettings
 {
-
+	/**
+	 * Default construction
+	 */
+	public ConfigSettings()
+	{
+	}
+	
+	public ConfigSettings(Map<Object,Object> properties)
+	{
+		this.setProperties(properties);
+	}//------------------------------------------------
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -91,12 +101,13 @@ public class ConfigSettings extends AbstractSettings
 		// thread through took care of loading the properties.
 		try
 		{
+			
 			this.file = null;
 			
 			boolean alwaysReload = this.isAlwaysReload();
 
 			boolean useFormatting = this.isUseFormatting();
-
+	
 			String filePath = getSystemPropertyFile();
 			if (filePath != null && filePath.length() > 0)
 			{
@@ -164,6 +175,7 @@ public class ConfigSettings extends AbstractSettings
 				{
 				}
 			}//end else
+			
 			
 
 			//Determine global settings
@@ -260,6 +272,9 @@ public class ConfigSettings extends AbstractSettings
 					System.setProperty(key, properties.getProperty(key));
 				}
 			}
+			
+			
+			
 		}
 		catch (ConfigException e)
 		{
@@ -283,6 +298,8 @@ public class ConfigSettings extends AbstractSettings
 			Debugger.printWarn(e);
 		}
 	}// ------------------------------------------------------------
+
+	
 
 	/**
 	 * @return the system property file

@@ -14,7 +14,7 @@ import java.util.List;
 import nyla.solutions.core.io.csv.formulas.CsvFormula;
 
 /**
- * 
+ * CSV reader utility class
  * @author Gregory Green
  *
  */
@@ -73,7 +73,7 @@ public class CsvReader
 			case Long: return (T)Long.valueOf(-1);
 			default: return null;
 		}
-	}
+	}//------------------------------------------------
 	@SuppressWarnings("unchecked")
 	private <T> T toType(String cell,DataType  dataType)
 	{
@@ -98,7 +98,7 @@ public class CsvReader
 		csvFormula.calc(this);
 	}//------------------------------------------------
 	
-	private List<String> parse(String line)
+	public static List<String> parse(String line)
 	{
 		if(line == null || line.length() ==0)
 			return null;

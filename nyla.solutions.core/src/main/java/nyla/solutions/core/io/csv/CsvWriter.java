@@ -10,6 +10,11 @@ import nyla.solutions.core.io.IO;
 import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Text;
 
+/**
+ * CSV writer utilty
+ * @author Gregory Green
+ *
+ */
 public class CsvWriter
 {
 	/**
@@ -18,6 +23,9 @@ public class CsvWriter
 	public static final String SEPARATOR = Config.getProperty(CsvWriter.class.getName() + ".separator", ",");
 	
 	private final File file;
+	private String replacement = Config.getProperty(this.getClass().getName() + ".replacement", "");
+	
+	
 
 	public CsvWriter(File file)
 	{
@@ -44,7 +52,7 @@ public class CsvWriter
 		}
 
 		IO.writeAppend(file, new StringBuilder(text.toString()).append(IO.newline()).toString());
-	}
+	}//------------------------------------------------
 	/**
 	 * 
 	 * @param row the row to append
@@ -167,6 +175,33 @@ public class CsvWriter
 		
 		builder.append(toCell(cell));
 	}//------------------------------------------------
-	private String replacement = Config.getProperty(this.getClass().getName() + ".replacement", "");
-	
+	/**
+	 * Add formatted CSV cells to a builder
+	 * @param builder the string builder
+	 * @param cells the cells to format as CSV cells in a row
+	 */
+	public static void addCells(StringBuilder builder, String... cells)
+	{
+		if(builder == null || cells == null || cells.length == 0)
+			return;
+		
+		for (String cell : cells)
+		{
+			addCell(builder,cell);
+		}
+	}//------------------------------------------------
+	/**
+	 * Create a CSV line
+	 * @param cells the cells for format
+	 * @return the CSF formatted line
+	 */
+	public static String toCSV(String... cells)
+	{
+		if(cells == null || cells.length == 0)
+			return null;
+		
+		StringBuilder builder = new StringBuilder();
+		addCells(builder, cells);
+		return builder.toString();
+	}
 }

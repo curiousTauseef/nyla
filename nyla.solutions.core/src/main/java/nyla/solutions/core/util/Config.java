@@ -586,8 +586,20 @@ public class Config
 	{
 		return new Day(getProperty(key));
 	}
+	
+	/**
+	 * Parse input arguments and add to configuration properties
+	 * @param args the input arguments
+	 */
+	public static void loadArgs(String[] args)
+	{
+		getSettings().loadArgs(args);
+		
+	}
+
 	private static Settings settings = null;
 
+	
 	
 
 	

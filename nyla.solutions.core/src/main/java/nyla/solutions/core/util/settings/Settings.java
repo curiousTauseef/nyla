@@ -1,5 +1,7 @@
 package nyla.solutions.core.util.settings;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -311,5 +313,27 @@ public interface Settings
 		return System.getProperty("user.dir");
 	}
 
+	/**
+	 * 
+	 * @param settingsObserver the setting observer
+	 */
 	void registerObserver(SubjectObserver<Settings> settingsObserver);
+
+	/**
+	 * 
+	 * @param args the arguments to load
+	 */
+	default void loadArgs(String[] args)
+	{
+		if(args == null || args.length ==0)
+			return;
+		
+		loadArgs(Arrays.asList(args));
+	}
+
+	/**
+	 * 
+	 * @param arguments the arguments to load
+	 */
+	void loadArgs(List<String> arguments);
 }

@@ -1,17 +1,29 @@
 package nyla.solutions.core.util;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
 import nyla.solutions.core.util.Debugger;
 
-//@Ignore
-public class DebuggerTest extends TestCase
+public class DebuggerTest
 {
-
-	public DebuggerTest(String name)
+	
+	@Test
+	public void testFormattedMessages() throws Exception
 	{
-		super(name);
+		Debugger.println(this, "Hello %s", "World");
+		Thread.sleep(10);
+		Debugger.printInfo(this, "Hello %s", "World");
+		Thread.sleep(10);
+		Debugger.printError(this, "Error Hello %s", "World");
+		Thread.sleep(10);
+		Debugger.printWarn(this, "Warn Hello %s", "World");
+		Thread.sleep(10);
+		Debugger.printFatal(this, "Fatal Hello %s", "World");
 	}
 
+	@Test
 	@SuppressWarnings("null")
 	public void testPrintlnObjectObject()
 	{
