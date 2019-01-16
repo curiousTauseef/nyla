@@ -1,8 +1,12 @@
 package nyla.solutions.core.io.csv;
 
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -137,6 +141,40 @@ public class CsvReaderTest
 			Assert.assertEquals(-1, formula.getMin());
 			Assert.assertEquals(-1, formula.getMax());
 			
+	}
+	@Test
+	public void testParse() throws Exception
+	{
+		assertNull(CsvReader.parse(null));
+		assertNull(CsvReader.parse(""));
+		List<String> results = CsvReader.parse("1,2");
+		assertNotNull(results);
+		assertEquals("1", results.get(0));
+		assertEquals("2", results.get(1));
+		
+		results = CsvReader.parse("\"1,2\"");
+		assertEquals("1,2", results.get(0));
+		
+		
+		results = CsvReader.parse("0,\"1,2\"");
+		assertEquals("0", results.get(0));
+		assertEquals("1,2", results.get(1));
+		
+		results = CsvReader.parse("0,\"1,2\",\"Greg's\"");
+		assertEquals("0", results.get(0));
+		assertEquals("1,2", results.get(1));
+		assertEquals("Greg's", results.get(2));
+		
+		results = CsvReader.parse("0,\"1,2\",\"Greg's\",\"last");
+		assertEquals("last", results.get(3));
+		
+		
+		results = CsvReader.parse("\"0\",\"The \"\"GOOD\"\"\",2");
+		
+		assertEquals("0", results.get(0));
+		assertEquals("The \"GOOD\"", results.get(1));
+		assertEquals("2", results.get(2));
+		
 	}
 
 }

@@ -66,7 +66,10 @@ public class ConfigSettings extends AbstractSettings
 	@Override
 	public synchronized void setProperties(Map<Object, Object> properties)
 	{
-		this.properties = new Properties();
+		if(this.properties == null)
+			this.properties = new Properties();
+		
+		
 		this.properties.putAll(properties);
 	}// --------------------------------------------
 

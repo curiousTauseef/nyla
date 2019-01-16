@@ -674,6 +674,40 @@ Cache Farm is a simple singleton implementation of cached key/value pairs.
 	Cache<Object,Object> cacheFarm = CacheFarm.getCache();
 	cacheFarm.put("key",myObject);
 	
+# CSV 
+
+The following is used to parse CSV lines nyla.solutions.core.io.csv.CsvReader
+
+
+		List<String> results = CsvReader.parse("1,2");
+		assertNotNull(results);
+		assertEquals("1", results.get(0));
+		assertEquals("2", results.get(1));
+		
+		results = CsvReader.parse("\"1,2\"");
+		assertEquals("1,2", results.get(0));
+		
+		
+		results = CsvReader.parse("0,\"1,2\"");
+		assertEquals("0", results.get(0));
+		assertEquals("1,2", results.get(1));
+		
+		results = CsvReader.parse("0,\"1,2\",\"Greg's\"");
+		assertEquals("0", results.get(0));
+		assertEquals("1,2", results.get(1));
+		assertEquals("Greg's", results.get(2));
+		
+		results = CsvReader.parse("0,\"1,2\",\"Greg's\",\"last");
+		assertEquals("last", results.get(3));
+		
+		
+		results = CsvReader.parse("\"0\",\"The \"\"GOOD\"\"\",2");
+		
+		assertEquals("0", results.get(0));
+		assertEquals("The \"GOOD\"", results.get(1));
+		assertEquals("2", results.get(2));
+	
+	
 # LDAP
 
 

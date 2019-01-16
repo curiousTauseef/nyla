@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -100,36 +99,97 @@ public class CsvReader
 	
 	public static List<String> parse(String line)
 	{
+		
 		if(line == null || line.length() ==0)
 			return null;
 		
-		String[] cells = line.split(",");
+		final short START = 2;
+		final short TERM = 3;
+		final short QUOTED_TERM = 4;
+		final short start_ESCAPEDDOUBLEQUOTE =5;
 		
-		int startIndex, endIndex;
-				
-		for (int i = 0; i < cells.length; i++)
+		short state = START;
+		
+		int length = line.length();
+		ArrayList<String> tokens = new ArrayList<>(10);
+		
+		StringBuilder buffer = new StringBuilder();
+		
+		char currentChar;
+		for (int i = 0; i < length; i++)
 		{
-			cells[i] = cells[i].trim();
+			currentChar = line.charAt(i);
 			
-
-			
-			if(cells[i].startsWith("\""))
+			switch(state)
 			{
+				case START:
+					if(currentChar == '"')
+					{
+						state = QUOTED_TERM;
+					}
+					else if(currentChar != ',')
+					{
+						  state = TERM;
+						  buffer.append(currentChar);
+					}
 
-				startIndex = 1;
-				endIndex = cells[i].length();
-				if(cells[i].endsWith("\""))
-				{
-					endIndex--;
-				}
-				cells[i] = cells[i].substring(startIndex, endIndex).replace("\"\"","\"");
+				break; 
+				case QUOTED_TERM:
+					if(currentChar != '"')
+					{
+						buffer.append(currentChar);
+					}
+					else
+					{
+						if(line.length() > (i+ 1) && line.charAt(i+1) != '"')
+						{
+							state = START;
+							tokens.add(buffer.toString());
+							buffer.setLength(0);							
+						}
+						else if(line.length() > (i+ 1) && line.charAt(i+1) == '"')
+						{
+							state = start_ESCAPEDDOUBLEQUOTE;
+						}
+					}
+				break;
+				case start_ESCAPEDDOUBLEQUOTE:
+					
+					buffer.append(currentChar);
+
+					state = QUOTED_TERM;
+				break;
+				case TERM: 
+					if(currentChar == ',')
+					{
+						state = START;
+						
+						if(buffer.length() > 0)
+						{
+							tokens.add(buffer.toString());
+							buffer.setLength(0);
+						}
+						
+					}
+					else if(currentChar == '"' && line.charAt(i+1) == '"' )
+					{
+						state = start_ESCAPEDDOUBLEQUOTE;
+					}
+					else
+							buffer.append(line.charAt(i));
+				break;
 			}
 		}
 		
-		if(cells == null || cells.length == 0)
-			return Collections.singletonList(line);
+		if(buffer.length() > 0)
+			tokens.add(buffer.toString());
+			
+		tokens.trimToSize();
 		
-		return Arrays.asList(cells);
+		if(tokens.isEmpty())
+			return null;
+		
+		return tokens;
 	
 	}//------------------------------------------------
 	/**
