@@ -223,7 +223,17 @@ public class Scheduler
 	private Runnable runnable = null;
 	
    }// ----------------------------------------------
+	public static boolean isDateOrTime(Class<?> clz)
+	{
+		if(clz == null)
+			return false;
+		String className = clz.getName();
+		
+	
+		return className.matches("(java.time.Local*|java.util.Date|java.sql.(Date|Time|DateTime))");
+	}//------------------------------------------------
    //private static ThreadGroup scheduleThreadGroup = new ThreadGroup(Scheduler.class.getName());
    private Timer timer = new Timer();
+
    
 }

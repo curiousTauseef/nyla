@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import nyla.solutions.core.patterns.conversion.Converter;
+import nyla.solutions.core.security.user.data.UserProfile;
 import nyla.solutions.core.util.Text;
 
 /**
@@ -21,7 +22,6 @@ public class BeanPropertiesToCsvConverter<ObjectType> implements Converter<Objec
 	private final static String QUOTE = "\"";
 	private final static String NEWLINE = System.getProperty("line.separator","\n");
 	private TreeMap<String,Method> methods;
-	private final String headerRow;
 	
 	
 	public BeanPropertiesToCsvConverter(Class<ObjectType> objectClass)
@@ -44,29 +44,8 @@ public class BeanPropertiesToCsvConverter<ObjectType> implements Converter<Objec
 	
 			methods.put(methodName, m);
 		}
-		
-		StringBuilder csv = new StringBuilder();
-		for (String keyMethodName : methods.keySet())
-		{
-			if(csv.length() != 0)
-				csv.append(SEPARATOR);
-			
-			csv.append(QUOTE).append(format(toFieldName(keyMethodName))).append(QUOTE);
-			
-		}
-		csv.append(NEWLINE);
-		
-		this.headerRow = csv.toString();
-		
+				
 	}//------------------------------------------------
-	
-	/**
-	 * @return the headerRow
-	 */
-	public String getHeaderRow()
-	{
-		return headerRow;
-	}
 
 
 	@Override
@@ -86,6 +65,10 @@ public class BeanPropertiesToCsvConverter<ObjectType> implements Converter<Objec
 		{
 			m = entry.getValue();
 			methodName = m.getName();
+			
+			if(methodName == "getClass")
+				continue;
+			
 			try
 			{
 				value = m.invoke(sourceObject, args);
@@ -108,13 +91,6 @@ public class BeanPropertiesToCsvConverter<ObjectType> implements Converter<Objec
 		
 	}
 
-
-	private String toFieldName(String methodName)
-	{		
-		return new StringBuilder().append(
-				Character.toLowerCase(methodName.charAt(3)))
-				.append(methodName.substring(4)).toString(); 
-	}
 	
 	   /**
 	    * 
@@ -126,5 +102,11 @@ public class BeanPropertiesToCsvConverter<ObjectType> implements Converter<Objec
 	      String text = Text.toString(object);
 	      return Text.replace("\"", "\"\"", text);
 	   }// --------------------------------------------
+
+
+	public String toHeaderRow(Class<?> class1)
+	{
+		return new BeanPropertiesToCsvHeaderConverter<ObjectType>().toHeaderRow(class1);
+	}
 	
 }

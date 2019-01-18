@@ -21,7 +21,6 @@ public class BeanPropertiesToCsvConverterTest
 		BeanPropertiesToCsvConverter<UserProfile> converter = new BeanPropertiesToCsvConverter<UserProfile>(UserProfile.class);
 		
 		String csv = converter.convert(user);
-		System.out.println("header:"+converter.getHeaderRow());
 		System.out.println("csv:"+csv);
 		
 		Assert.assertTrue(csv.contains(user.getFirstName()));

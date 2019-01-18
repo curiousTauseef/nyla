@@ -12,12 +12,14 @@ public class JavaBeanGeneratorCreatorTest
 	@Test
 	public void testRandomAll()
 	{
-		JavaBeanGeneratorCreator<UserProfile> creator = new JavaBeanGeneratorCreator<UserProfile>(UserProfile.class);
-		creator.randomizeAll();
+		JavaBeanGeneratorCreator<SimpleObject> creator = 
+		new JavaBeanGeneratorCreator<SimpleObject>(SimpleObject.class).randomizeAll();
 		
-		assertTrue(creator.getRandomizeProperties().contains("firstName"));
+		assertTrue(creator.getRandomizeProperties().contains("fieldString"));
 		
-		assertTrue(creator.create().getEmail().length() > 0);
+		SimpleObject so = creator.create();
+		
+		assertTrue(so.getFieldString().length() > 0);
 	}
 	@Test
 	public void testFixedProperties()

@@ -2,10 +2,17 @@ package nyla.solutions.core.patterns.creational.generator;
 
 
 import java.beans.PropertyDescriptor;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import nyla.solutions.core.exception.SetupException;
 import nyla.solutions.core.operations.ClassPath;
 import nyla.solutions.core.patterns.creational.Creator;
 import nyla.solutions.core.util.Digits;
@@ -61,7 +68,7 @@ public class JavaBeanGeneratorCreator<T> implements Creator<T>
 	 */
 	public JavaBeanGeneratorCreator(Class<T> clz, T prototype)
 	{
-		this.clz  = clz;
+		this.creationClass  = clz;
 		this.prototype = prototype;
 	}//------------------------------------------------
 	/**
@@ -73,7 +80,7 @@ public class JavaBeanGeneratorCreator<T> implements Creator<T>
 	{
 		try
 		{
-			T obj = ClassPath.newInstance(clz);
+			T obj = ClassPath.newInstance(creationClass);
 			
 			//Copy prototype properties
 			if(this.prototype != null)
@@ -86,40 +93,110 @@ public class JavaBeanGeneratorCreator<T> implements Creator<T>
 			
 			for (String property : randomizeProperties)
 			{
-				pd = JavaBean.getPropertyDescriptor(obj, property);
-				clz = pd.getPropertyType();
-				
-				if(clz.isAssignableFrom(String.class))
+				try
 				{
-					try
+					pd = JavaBean.getPropertyDescriptor(obj, property);
+					clz = pd.getPropertyType();
+					
+					if(clz.isAssignableFrom(Class.class) || clz.isEnum())
+						continue;
+					
+					if(clz.isAssignableFrom(String.class))
 					{
-						JavaBean.setProperty(obj, property, Text.generateId(),throwExceptionForMissingProperty);  
+						try
+						{
+							JavaBean.setProperty(obj, property, Text.generateId(),throwExceptionForMissingProperty);  
+						}
+						catch(IllegalArgumentException e)
+						{
+							throw new IllegalArgumentException("randomizeProperties:"+randomizeProperties+" invalid property:"+property,e);
+						}
+						
 					}
-					catch(IllegalArgumentException e)
+					else if(clz.isAssignableFrom(Integer.class) || clz.isAssignableFrom(int.class) )
 					{
-						throw new IllegalArgumentException("randomizeProperties:"+randomizeProperties+" invalid property:"+property,e);
+						JavaBean.setProperty(obj, property, digits.generateInteger());
+					}
+					else if (clz.isAssignableFrom(long.class)  || clz.isAssignableFrom(Long.class))
+					{
+						JavaBean.setProperty(obj, property, digits.generateLong());
 					}
 					
+					else if (clz.isAssignableFrom(short.class)  || clz.isAssignableFrom(Short.class))
+					{
+						JavaBean.setProperty(obj, property, digits.generateShort());
+					}
+					else if (clz.isAssignableFrom(double.class)  || clz.isAssignableFrom(Double.class))
+					{
+						JavaBean.setProperty(obj, property, digits.generateDouble());
+					}
+					else if (clz.isAssignableFrom(char.class)  || clz.isAssignableFrom(Character.class))
+					{
+						JavaBean.setProperty(obj, property, Text.generateId().charAt(0));
+					}
+					else if (clz.isAssignableFrom(float.class)  || clz.isAssignableFrom(Float.class))
+					{
+						JavaBean.setProperty(obj, property, digits.generateFloat());
+					}
+					else if (clz.isAssignableFrom(byte.class)  || clz.isAssignableFrom(Byte.class))
+					{
+						JavaBean.setProperty(obj, property,Byte.valueOf(Text.generateId().getBytes()[0]));
+					}
+					else if (clz.isAssignableFrom(boolean.class)  || clz.isAssignableFrom(Boolean.class))
+					{
+						if(Calendar.getInstance().getTime().getTime()%2 ==0)
+							JavaBean.setProperty(obj, property, true);
+						else
+							JavaBean.setProperty(obj, property, false);
+					}
+					else if (clz.equals(BigDecimal.class))
+					{
+						JavaBean.setProperty(obj, property,digits.generateBigDecimal());
+					}
+					else if (clz.equals(java.sql.Time.class))
+					{
+						JavaBean.setProperty(obj, property, 
+						new java.sql.Time(
+						Calendar.getInstance().getTime().getTime()));
+					}
+					else if (clz.equals(java.sql.Date.class))
+					{
+						JavaBean.setProperty(obj, property, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+					}
+					else if (clz.equals(java.util.Date.class))
+					{
+						JavaBean.setProperty(obj, property, Calendar.getInstance().getTime());
+					}
+					//Timestamp
+					else if (clz.equals(java.sql.Timestamp.class))
+					{
+						JavaBean.setProperty(obj, property, new java.sql.Timestamp(Calendar.getInstance().getTime().getTime()));
+					}
+					else if (clz.equals(java.util.Calendar.class))
+					{
+						JavaBean.setProperty(obj, property, Calendar.getInstance());
+					}
+					else if (clz.equals(LocalTime.class))
+					{
+						JavaBean.setProperty(obj, property, LocalTime.now());
+					}
+					else if (clz.equals(LocalDate.class))
+					{
+						JavaBean.setProperty(obj, property, LocalDate.now());
+					}
+					else if (clz.equals(LocalDateTime.class))
+					{
+						JavaBean.setProperty(obj, property, LocalDateTime.now());
+					}
+					else
+					{
+						JavaBean.setProperty(obj, property, ClassPath.newInstance(clz));
+					}
 				}
-				else if(clz.isAssignableFrom(Integer.class) || clz.isAssignableFrom(int.class) )
+				catch (Exception e)
 				{
-					JavaBean.setProperty(obj, property, digits.generateInteger());
-				}
-				else if (clz.isAssignableFrom(long.class)  || clz.isAssignableFrom(Long.class))
-				{
-					JavaBean.setProperty(obj, property, digits.generateLong());
-				}
-				else if (clz.isAssignableFrom(double.class)  || clz.isAssignableFrom(Double.class))
-				{
-					JavaBean.setProperty(obj, property, digits.generateDouble());
-				}
-				else if (clz.isAssignableFrom(float.class)  || clz.isAssignableFrom(Float.class))
-				{
-					JavaBean.setProperty(obj, property, digits.generateFloat());
-				}
-				else
-				{
-					throw new IllegalArgumentException("Unsupport generation for property:"+property+" of class:"+clz.getName()+" ");
+					throw new SetupException("Cannot create property:"+property+" for object class:"
+									+this.creationClass.getName()+"  ERROR:"+e.getMessage(),e); 
 				}
 			}
 			
@@ -138,27 +215,32 @@ public class JavaBeanGeneratorCreator<T> implements Creator<T>
 	/**
 	 * Setup property to generate a random value
 	 * @param property the property randomize
+	 * @return the creator instance
 	 */
-	public void randomizeProperty(String property)
+	public JavaBeanGeneratorCreator<T> randomizeProperty(String property)
 	{
 		if(property  ==null || property.length() == 0)
-			return;
+			return this;
 		
 		this.randomizeProperties.add(property);
+		
+		return this;
 	}//------------------------------------------------
-	public void randomizeAll()
+	public  JavaBeanGeneratorCreator<T> randomizeAll()
 	{
-		this.randomizeProperties = JavaBean.getPropertyNames(this.clz);
+		this.randomizeProperties = JavaBean.getPropertyNames(this.creationClass);
+		return this;
 	}
 	/**
 	 * Randomized to records that are not in fixed list
 	 * @param fixedPropertyNames the fixed list of property names
+	 * @return the creator factory
 	 */
-	public void fixedProperties(String... fixedPropertyNames)
+	public  JavaBeanGeneratorCreator<T> fixedProperties(String... fixedPropertyNames)
 	{
 		if(fixedPropertyNames == null || fixedPropertyNames.length == 0)
 		{
-			return;
+			return this;
 		}
 		
 		HashSet<String> fixSet = new HashSet<>(Arrays.asList(fixedPropertyNames));
@@ -170,10 +252,10 @@ public class JavaBeanGeneratorCreator<T> implements Creator<T>
 			map  =JavaBean.toMap(this.prototype);
 		}
 		else
-			map = JavaBean.toMap(ClassPath.newInstance(this.clz));
+			map = JavaBean.toMap(ClassPath.newInstance(this.creationClass));
 		
 		if(map == null || map.isEmpty())
-			return;
+			return this;
 		
 		String propertyName = null;
 		for(Object propertyNameObject : map.keySet())
@@ -184,7 +266,9 @@ public class JavaBeanGeneratorCreator<T> implements Creator<T>
 				this.randomizeProperty(propertyName);
 			}
 		}
-	}
+		
+		return this;
+	}//------------------------------------------------
 	
 	/**
 	 * @return the randomizeProperties
@@ -196,7 +280,7 @@ public class JavaBeanGeneratorCreator<T> implements Creator<T>
 
 	private Digits digits = new Digits();
 	private Set<String> randomizeProperties =  new HashSet<String>();
-	private final Class<T> clz;
+	private final Class<T> creationClass;
 	private final T prototype;
 	
 

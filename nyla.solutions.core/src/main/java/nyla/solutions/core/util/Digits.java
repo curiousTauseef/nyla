@@ -1,5 +1,6 @@
 package nyla.solutions.core.util;
 
+import java.math.BigDecimal;
 import java.util.Random;
 
 /**
@@ -36,6 +37,15 @@ public class Digits
 	public float generateFloat()
 	{
 		return random.nextFloat();
+	}
+	public short generateShort()
+	{
+		return Integer.valueOf(random.nextInt()).shortValue();
+	}
+	public BigDecimal generateBigDecimal()
+	{
+
+		return BigDecimal.valueOf(random.nextDouble());
 	}
 	
 }

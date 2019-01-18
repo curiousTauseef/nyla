@@ -2,7 +2,9 @@ package nyla.solutions.core.io.csv;
 import java.lang.reflect.Method;
 import java.util.TreeMap;
 
+import nyla.solutions.core.operations.ClassPath;
 import nyla.solutions.core.patterns.conversion.Converter;
+import nyla.solutions.core.util.Scheduler;
 import nyla.solutions.core.util.Text;
 
 /**
@@ -23,6 +25,14 @@ public class BeanPropertiesToCsvHeaderConverter<ObjectType> implements Converter
 	{
 		
 		Class<?> objectClass = (Class<?>)sourceObject.getClass();
+		
+		return toHeaderRow(objectClass);
+		
+	}//------------------------------------------------
+	public String toHeaderRow(Class<?> objectClass)
+	{
+		if(ClassPath.isPrimitive(objectClass) || Scheduler.isDateOrTime(objectClass))
+			return new StringBuilder(objectClass.getSimpleName()).append("\n").toString();
 	
 		Method[]  methodArray = objectClass.getMethods();
 		
@@ -36,7 +46,7 @@ public class BeanPropertiesToCsvHeaderConverter<ObjectType> implements Converter
 		{
 			m = methodArray[i];
 			methodName = m.getName();
-			if(! methodName.startsWith(GET_PREFIX) || m.getParameterCount() != 0)
+			if(! methodName.startsWith(GET_PREFIX) || m.getParameterCount() != 0 || methodName.equals("getClass"))
 				continue; //not properties
 			
 	
@@ -55,8 +65,7 @@ public class BeanPropertiesToCsvHeaderConverter<ObjectType> implements Converter
 		csv.append(NEWLINE);
 		
 		return csv.toString();
-		
-	}//------------------------------------------------
+	}
 	
 
 

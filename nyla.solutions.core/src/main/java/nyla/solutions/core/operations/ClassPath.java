@@ -117,7 +117,7 @@ public class ClassPath extends ClassLoader
 			return false;
 		
 		String className = aClass.getName();
-		return className.matches("(float|char|short|double|int|long|byte|boolean|(java.lang.(Date|Long|Integer|String|Float|Double|Short|Byte|Boolean)))");
+		return className.matches("(float|char|short|double|int|long|byte|boolean|(java.lang.(Long|Integer|String|Float|Double|Short|Byte|Boolean)))");
 		
 	}// -----------------------------------------------
 	/**
@@ -315,7 +315,7 @@ public class ClassPath extends ClassLoader
 						}//end for constructors
 						
 						//not able to success use another constructor
-						throw new SetupException("Trying to create "+aClass.getName()+" "+e.getMessage());	
+						throw new SetupException("Trying to create class with name:"+aClass.getName()+" ERROR:"+e.getMessage());	
 					}//end catch
 			}// -----------------------------------------------'
 	/**
