@@ -25,6 +25,24 @@ public class OrganizerTest
 {
 	
 	@Test
+	public void testAt() throws Exception
+	{
+		String [] args = {"0","1"};
+		
+		assertNull(Organizer.at(0, null));
+		assertEquals("0",Organizer.at(0, args));
+		assertEquals("1",Organizer.at(1, args));
+		assertNull(Organizer.at(3, args));
+		assertNull(Organizer.at(-1, args));
+		
+		Integer [] nums = {1,2,3}; 
+		assertEquals(Integer.valueOf(1),Organizer.at(0, nums));
+		assertEquals(Integer.valueOf(2),Organizer.at(1, nums));
+		assertNull(Organizer.at(4, nums));
+		assertNull(Organizer.at(-1, nums));
+	}//------------------------------------------------
+	
+	@Test
 	public void testFlatten() throws Exception
 	{
 		Collection<String> c = Collections.singleton(null);

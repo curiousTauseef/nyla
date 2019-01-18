@@ -80,6 +80,8 @@ import nyla.solutions.core.patterns.iteration.PagingCollection;
 public final class Organizer
 {
 
+	private static Log logger = Debugger.getLog(Organizer.class);
+	
 	/**
 	 * 
 	 * Constructor for Organizer initializes internal
@@ -1338,5 +1340,22 @@ public final class Organizer
 		return list;
 	}//------------------------------------------------
 
-	private static Log logger = Debugger.getLog(Organizer.class);
+
+	/**
+	 * Get element by index
+	 * @param <T> the input type
+	 * @param i the index
+	 * @param args the input argument
+	 * @return the object at the index
+	 */
+	public  static <T> T at(int i, T[] args)
+	{
+		if(args == null || i < 0)
+			return null;
+		
+		if(i>= args.length)
+			return null;
+		
+		return args[i];
+	}
 }

@@ -6,7 +6,6 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import nyla.solutions.core.patterns.conversion.Converter;
-import nyla.solutions.core.security.user.data.UserProfile;
 import nyla.solutions.core.util.Text;
 
 /**
