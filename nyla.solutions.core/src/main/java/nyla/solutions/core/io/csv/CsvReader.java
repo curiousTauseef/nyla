@@ -178,6 +178,7 @@ public class CsvReader
 					else
 							buffer.append(line.charAt(i));
 				break;
+				default: throw new RuntimeException("Unknown parse state:"+state);
 			}
 		}
 		

@@ -2,6 +2,12 @@ package nyla.solutions.core.security.data;
 
 import java.io.Serializable;
 
+/**
+ * Permission that returns if the permission is exists 
+ * in the prevented permission
+ * @author Gregory Green
+ *
+ */
 public class SecurityPermissionContains implements Permission, Serializable
 {
 	
@@ -64,11 +70,11 @@ public class SecurityPermissionContains implements Permission, Serializable
 		if(permission == null)
 			return false;
 		
-		String string = permission.getText();
-		if(string == null || string.length() == 0)
+		String txtPermission = permission.getText();
+		if(txtPermission == null || txtPermission.length() == 0)
 			return false;
 		
-		return string.contains(this.text);
+		return txtPermission.contains(this.text) || this.text.contains(txtPermission);
 	}
 
 	

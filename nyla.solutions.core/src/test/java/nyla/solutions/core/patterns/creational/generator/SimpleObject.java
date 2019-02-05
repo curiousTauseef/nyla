@@ -44,29 +44,44 @@ public class SimpleObject implements Serializable
 	 */
 	public java.sql.Date getFieldSqlDate()
 	{
-		return fieldSqlDate;
+		if(fieldSqlDate == null)
+			return null;
+		
+		return new java.sql.Date(this.fieldSqlDate.getTime());
 	}
+	
 	/**
 	 * @param fieldSqlDate the fieldSqlDate to set
 	 */
 	public void setFieldSqlDate(java.sql.Date fieldSqlDate)
 	{
-		this.fieldSqlDate = fieldSqlDate;
+		if(fieldSqlDate == null)
+			this.fieldSqlDate  = null;
+		else
+			this.fieldSqlDate = new java.sql.Date(fieldSqlDate.getTime());
 	}
+	
 	/**
 	 * @return the fieldDate
 	 */
 	public Date getFieldDate()
 	{
-		return fieldDate;
+		if(fieldDate == null)
+			return null;
+		
+		return new Date(fieldDate.getTime());
 	}
+	
 	/**
 	 * @param fieldDate the fieldDate to set
 	 */
 	public void setFieldDate(Date fieldDate)
 	{
-		this.fieldDate = fieldDate;
-	}
+		if(fieldDate == null)
+			return;
+		else
+			this.fieldDate = new Date(fieldDate.getTime());
+	}//------------------------------------------------
 	/**
 	 * @return the fieldTime
 	 */
@@ -86,15 +101,22 @@ public class SimpleObject implements Serializable
 	 */
 	public Timestamp getFieldTimestamp()
 	{
-		return fieldTimestamp;
+		if(fieldTimestamp == null)
+			return null;
+		
+		return new Timestamp(fieldTimestamp.getTime());
 	}
 	/**
 	 * @param fieldTimestamp the fieldTimestamp to set
 	 */
 	public void setFieldTimestamp(Timestamp fieldTimestamp)
 	{
-		this.fieldTimestamp = fieldTimestamp;
+		if(fieldTimestamp == null)
+			this.fieldTimestamp = null;
+		else
+			this.fieldTimestamp = new Timestamp(fieldTimestamp.getTime());
 	}
+	
 	/**
 	 * @return the fieldCalendar
 	 */

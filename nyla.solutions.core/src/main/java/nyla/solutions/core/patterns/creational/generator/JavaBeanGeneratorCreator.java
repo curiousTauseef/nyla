@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import nyla.solutions.core.exception.SetupException;
+import nyla.solutions.core.io.IO;
 import nyla.solutions.core.operations.ClassPath;
 import nyla.solutions.core.patterns.creational.Creator;
 import nyla.solutions.core.util.Digits;
@@ -140,7 +141,7 @@ public class JavaBeanGeneratorCreator<T> implements Creator<T>
 					}
 					else if (clz.isAssignableFrom(byte.class)  || clz.isAssignableFrom(Byte.class))
 					{
-						JavaBean.setProperty(obj, property,Byte.valueOf(Text.generateId().getBytes()[0]));
+						JavaBean.setProperty(obj, property,Byte.valueOf(Text.generateId().getBytes(IO.CHARSET)[0]));
 					}
 					else if (clz.isAssignableFrom(boolean.class)  || clz.isAssignableFrom(Boolean.class))
 					{
