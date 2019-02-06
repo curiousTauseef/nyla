@@ -74,7 +74,7 @@ public class SecurityPermissionContains implements Permission, Serializable
 		if(txtPermission == null || txtPermission.length() == 0)
 			return false;
 		
-		return txtPermission.contains(this.text) || this.text.contains(txtPermission);
+		return this.text.contains(txtPermission) || txtPermission.contains(this.text) ;
 	}
 
 	
