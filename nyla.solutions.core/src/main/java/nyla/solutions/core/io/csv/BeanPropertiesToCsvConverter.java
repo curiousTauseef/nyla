@@ -65,7 +65,7 @@ public class BeanPropertiesToCsvConverter<ObjectType> implements Converter<Objec
 			m = entry.getValue();
 			methodName = m.getName();
 			
-			if(methodName == "getClass")
+			if(methodName.equals("getClass"))
 				continue;
 			
 			try
