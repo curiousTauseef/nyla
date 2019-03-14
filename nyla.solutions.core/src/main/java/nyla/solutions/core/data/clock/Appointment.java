@@ -36,10 +36,10 @@ public class Appointment implements Serializable, Comparable<Appointment>
 		time.setHour24(startHour24);
 
 		TimeSlot timeSlot = new TimeSlot();
-		timeSlot.setStartDate(time.getDate());
+		timeSlot.setStartDate(time.getLocalDateTime());
 
 		time.addSeconds(durationSeconds);
-		timeSlot.setEndDate(time.getDate());
+		timeSlot.setEndDate(time.getLocalDateTime());
 
 		event.setTimeSlot(timeSlot);
 

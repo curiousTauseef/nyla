@@ -1,8 +1,8 @@
 package nyla.solutions.core.data.clock;
 
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 import nyla.solutions.core.exception.RequiredException;
 import nyla.solutions.core.util.Scheduler;
@@ -16,6 +16,10 @@ import nyla.solutions.core.util.Scheduler;
  */
 public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 {
+	private  Optional<LocalDateTime> start;
+	private  Optional<LocalDateTime> end;
+
+	
 	/**
 	* 
 	*/
@@ -27,32 +31,23 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 	 */
 	public TimeSlot()
 	{
+		this.start = Optional.empty();
+		this.end = Optional.empty();
 	}// --------------------------------------------
 
-	/**
-	 * 
-	 * Constructor for TimeSlot initializes internal
-	 * 
-	 * @param start
-	 *            the start time
-	 * @param end
-	 *            the end time
-	 */
-	public TimeSlot(Date start, Date end)
+	public TimeSlot(LocalDateTime start, LocalDateTime end)
 	{
-		setStartDate(start);
-		setEndDate(end);
-	}// --------------------------------------------
-
+		this.start = Optional.of(start);
+		this.end = Optional.of(end);
+	}
+	
 	/**
 	 * 
 	 * @return the duration in hours
 	 */
-	public double getDurationhours()
+	public long getDurationhours()
 	{
-		check();
-
-		return Scheduler.durationHours(start, end);
+		return Scheduler.durationHours(start.orElse(null), end.orElse(null));
 	}// --------------------------------------------
 
 	/**
@@ -65,26 +60,25 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 	 */
 	public TimeSlot nextTimeSlot(int intervalSeconds, Time cutOffTime)
 	{
-		Date newStart = (Date) this.end.clone();
+		//Date newStart = (Date) this.end.clone();
 
-		Calendar newEnd = Calendar.getInstance();
-		newEnd.setTime(newStart);
-		newEnd.add(Calendar.SECOND, intervalSeconds);
+		LocalDateTime newEnd = this.end.get().plusSeconds(intervalSeconds);
+		//newEnd.add(Calendar.SECOND, intervalSeconds);
 
-		Date newEndDate = newEnd.getTime();
+		//Date newEndDate = newEnd.getTime();
 
-		TimeSlot newTimeSlot = new TimeSlot(newStart, newEndDate);
+		TimeSlot newTimeSlot = new TimeSlot(this.end.get(), newEnd);
 
-		if (cutOffTime == null || cutOffTime.getDate() == null)
+		if (cutOffTime == null)
 			return newTimeSlot;
 
 		// check cut off time
-		if (newEndDate.after(cutOffTime.getDate()))
+		if (newEnd.isAfter(cutOffTime.getLocalDateTime()))
 		{
 			return null;
 		}
 
-		if (newTimeSlot.getEndDate().after(cutOffTime.getDate()))
+		if (newTimeSlot.getEndDate().isAfter(cutOffTime.getLocalDateTime()))
 			return null;
 
 		return newTimeSlot;
@@ -96,9 +90,7 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 	 */
 	public double getDurationMinutes()
 	{
-		check();
-
-		return Scheduler.durationMinutes(start, end);
+		return Scheduler.durationMinutes(start.get(), end.get());
 	}// --------------------------------------------
 
 	/**
@@ -107,63 +99,28 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 	 */
 	public double getDurationSeconds()
 	{
-		check();
-
-		return Scheduler.durationSeconds(start, end);
+		return Scheduler.durationSeconds(start.get(), end.get());
 	}// --------------------------------------------
-
-	/**
-	 * Check that start is after end
-	 */
-	private void check()
-	{
-		if (start == null)
-			return;
-
-		if (end == null)
-			return;
-
-		if (start.after(end))
-		{
-			throw new IllegalStateException("Start " + start + "must be before end " + end);
-		}
-	}// --------------------------------------------
-
 	/**
 	 *
 	 * @see nyla.solutions.core.data.clock.TimeInterval#getStartDate()
 	 */
-	public Date getStartDate()
+	public LocalDateTime getStartDate()
 	{
-		if (start == null)
-			return null;
 
-		return new Date(start.getTime());
+		return start.orElseGet(null);
 	}// --------------------------------------------
-
-	/**
-	 * @param start the start date
-	 */
-	public void setStartDate(Date start)
-	{
-		if (start == null)
-			this.start = null;
-		else
-			this.start = new Date(start.getTime());
-
-		check();
-	}
 
 	/**
 	 *
 	 * @return the end date
 	 */
-	public Date getEndDate()
+	public LocalDateTime getEndDate()
 	{
 		if (end == null)
 			return null;
 
-		return (Date) end.clone();
+		return end.get();
 	}// --------------------------------------------
 
 	/**
@@ -172,26 +129,15 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 	 */
 	public Time getEndTime()
 	{
-		return new Time(end);
+		return new Time(end.get());
 	}// --------------------------------------------
 
 	public Time getStartTime()
 	{
-		return new Time(start);
+		return new Time(this.start.get());
 	}// --------------------------------------------
 
-	/**
-	 * @param end the end date
-	 */
-	public void setEndDate(Date end)
-	{
-		if (end == null)
-			this.end = null;
-		else
-			this.end = new Date(end.getTime());
 
-		check();
-	}// --------------------------------------------
 
 	/**
 	 * 
@@ -205,19 +151,15 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 		if (day == null)
 			throw new RequiredException("date in TimeSlot.firstSlot");
 
-		Date startDate = Scheduler.toDate(day, start);
+		LocalDateTime startDate = Scheduler.toDate(day, start);
 
-		java.util.Calendar end = java.util.Calendar.getInstance();
+		LocalDateTime end = startDate.plusSeconds(intervalSeconds);
 
-		end.setTime(startDate);
 
-		// add seconds
-		end.add(Calendar.SECOND, intervalSeconds);
-
-		return new TimeSlot(startDate, end.getTime());
+		return new TimeSlot(startDate, end);
 	}// --------------------------------------------
 
-	/**
+	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -230,7 +172,7 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 		return result;
 	}
 
-	/**
+	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -258,7 +200,7 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 		else if (!start.equals(other.start))
 			return false;
 		return true;
-	}// ------------------------------------------------
+	}
 
 	public int compareTo(Object object)
 	{
@@ -267,7 +209,12 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 		if (this.equals(other))
 			return 0;
 
-		if (this.start.before(other.start))
+		if(this.start.isEmpty())
+			return -1;
+		else if(other.start.isEmpty())
+			return 1;
+		
+		if (this.start.get().isBefore(other.start.get()))
 		{
 			return -1;
 		}
@@ -278,7 +225,19 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 		}
 	}// --------------------------------------------
 
-	private Date start = null;
-	private Date end = null;
+
+	@Override
+	public void setStartDate(LocalDateTime start)
+	{
+		this.start = Optional.of(start);
+		
+	}
+
+	@Override
+	public void setEndDate(LocalDateTime end)
+	{
+		this.end = Optional.of(end);
+		
+	}
 
 }

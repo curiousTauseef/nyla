@@ -1,14 +1,30 @@
 package nyla.solutions.core.data.clock;
 
 import java.io.Serializable;
+import java.time.DayOfWeek;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Year;
+import java.time.format.TextStyle;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+
 import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.util.Scheduler;
 import nyla.solutions.core.util.Text;
 
 
 
-
+/**
+ * Data structure to represent a Day
+ * @author Gregory Green
+ *
+ */
 public class Day  implements Comparable<Day>, Serializable
 {
 	public static final String DAY_FORMAT = "MM/dd/yyyy";
@@ -19,12 +35,20 @@ public class Day  implements Comparable<Day>, Serializable
 	private static final long serialVersionUID = 7895096174662828704L;
 	
 	
-/** The back end calendar instance of this day. */
-  protected final Calendar calendar_;
+	/** The back end calendar instance of this day. */
+	  protected final LocalDate localDate;
 
 
 
   /**
+	 * @return the localDate
+	 */
+	public LocalDate getLocalDate()
+	{
+		return localDate;
+	}
+
+/**
    * Create a new day. The day is lenient meaning that illegal day
    * parameters can be specified and results in a recomputed day with
    * legal month/day values.
@@ -35,12 +59,7 @@ public class Day  implements Comparable<Day>, Serializable
    */
   public Day(int year, int month, int dayOfMonth)
   {
-	  this();
-	  
-	calendar_.set(Calendar.YEAR, year);
-    calendar_.set(Calendar.MONTH, month);
-    calendar_.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-    
+	localDate = LocalDate.of(year, month, dayOfMonth);
   }
 
   public Day(String date)
@@ -60,10 +79,7 @@ public class Day  implements Comparable<Day>, Serializable
    */
   public Day(int year, int dayOfYear)
   {
-	  this();
-	  
-	calendar_.set(Calendar.YEAR, year);
-    calendar_.set(Calendar.DAY_OF_YEAR, dayOfYear);
+	  this.localDate = LocalDate.ofYearDay(year, dayOfYear);
   }
 
   /**
@@ -72,15 +88,16 @@ public class Day  implements Comparable<Day>, Serializable
    */
   public Day()
   {
-    // Now (in the currenct locale of the client machine)
-    this.calendar_ = Calendar.getInstance();
-  
-    init();
+    // Now (in the current locale of the client machine)
+    this.localDate = LocalDate.now();
   }
+  public Day(LocalDate theCalendar)
+  {
+	super();
+	this.localDate = theCalendar;
+   }
 
-
-
-  /**
+/**
    * Create a new day based on a java.util.Calendar instance.
    * NOTE: The time component from calendar will be pruned.
    *
@@ -92,8 +109,7 @@ public class Day  implements Comparable<Day>, Serializable
     if (calendar == null)
       throw new IllegalArgumentException("calendar cannot be null");
 
-    this.calendar_ = (Calendar)calendar.clone();
-    init();
+    this.localDate = Scheduler.toLocalDate(calendar.getTime());
   }
 
 
@@ -110,11 +126,7 @@ public class Day  implements Comparable<Day>, Serializable
     if (date == null)
       throw new IllegalArgumentException("dat cannot be null");
 
-    // Create a calendar based on given date
-    this.calendar_ = Calendar.getInstance();
-    this.calendar_.setTime(date);
-
-    init();
+    this.localDate = Scheduler.toLocalDateTime(date).toLocalDate();
   }
 
 
@@ -144,21 +156,9 @@ public class Day  implements Comparable<Day>, Serializable
     if (day == null)
       throw new IllegalArgumentException("day cannot be null");
     
-    this.calendar_ = (Calendar)day.calendar_.clone();
+    this.localDate = day.localDate;
 
-    init();
   }
-
-public void init()
-{
-	// Prune the time component
-    calendar_.set(Calendar.HOUR_OF_DAY, 0);
-    calendar_.set(Calendar.MINUTE, 0);
-    calendar_.set(Calendar.SECOND, 0);
-    calendar_.set(Calendar.MILLISECOND, 0);
-}
-
-
 
 
 
@@ -174,21 +174,6 @@ public void init()
   }
 
 
-
-  /**
-   * Return a Calendar instance representing the same day
-   * as this instance. For use by secondary methods requiring
-   * java.util.Calendar as input.
-   *
-   * @return  Calendar equivalent representing this day.
-   */
-  public Calendar getCalendar()
-  {
-    return (Calendar) calendar_.clone();
-  }
-
-
-
   /**
    * Return a Date instance representing the same date
    * as this instance. For use by secondary methods requiring
@@ -196,9 +181,9 @@ public void init()
    *
    * @return  Date equivalent representing this day.
    */
-  public Date getDate()
+  public LocalDate getDate()
   {
-    return this.calendar_.getTime();
+    return this.localDate;
   }
 
 
@@ -218,7 +203,7 @@ public void init()
      
      Day day = (Day)object;     
 
-    return calendar_.getTime().compareTo(day.calendar_.getTime());
+    return localDate.compareTo(day.localDate);
   }// --------------------------------------------
 
 
@@ -236,7 +221,7 @@ public void init()
     if (day == null)
       throw new IllegalArgumentException("day cannot be null");
 
-    return calendar_.after(day.calendar_);
+    return localDate.isAfter(day.localDate);
   }
 
 
@@ -253,7 +238,7 @@ public void init()
     if (day == null)
       throw new IllegalArgumentException("day cannot be null");
 
-    return calendar_.before(day.calendar_);
+    return localDate.isBefore(day.localDate);
   }
 
 
@@ -275,7 +260,7 @@ public void init()
     Day day = (Day) object;
 
 
-    return calendar_.equals(day.calendar_);
+    return localDate.equals(day.localDate);
   }
 
 
@@ -287,7 +272,7 @@ public void init()
    */
   public int hashCode()
   {
-    return calendar_.hashCode();
+    return localDate.hashCode();
   }
 
 
@@ -299,7 +284,7 @@ public void init()
    */
   public int getYear()
   {
-    return calendar_.get(Calendar.YEAR);
+    return localDate.getYear();
   }
 
 
@@ -312,7 +297,7 @@ public void init()
    */
   public int getMonth()
   {
-    return calendar_.get(Calendar.MONTH);
+    return localDate.getMonthValue();
   }
 
 
@@ -325,24 +310,7 @@ public void init()
    */
   public int getMonthNo()
   {
-    // It is tempting to return getMonth() + 1 but this is conceptually
-    // wrong, as Calendar month is an enumeration and the values are tags
-    // only and can be anything.
-    switch (getMonth()) {
-      case Calendar.JANUARY   : return 1;
-      case Calendar.FEBRUARY  : return 2;
-      case Calendar.MARCH     : return 3;
-      case Calendar.APRIL     : return 4;
-      case Calendar.MAY       : return 5;
-      case Calendar.JUNE      : return 6;
-      case Calendar.JULY      : return 7;
-      case Calendar.AUGUST    : return 8;
-      case Calendar.SEPTEMBER : return 9;
-      case Calendar.OCTOBER   : return 10;
-      case Calendar.NOVEMBER  : return 11;
-      case Calendar.DECEMBER  : return 12;
-      default : throw new SystemException("Invalid mongth: " + getMonth());
-    }
+   return this.localDate.getMonthValue();
   }// --------------------------------------------
 
 
@@ -354,7 +322,7 @@ public void init()
    */
   public int getDayOfMonth()
   {
-    return calendar_.get(Calendar.DAY_OF_MONTH);
+    return localDate.getDayOfMonth();
   }
 
 
@@ -367,7 +335,7 @@ public void init()
    */
   public int getDayOfYear()
   {
-    return calendar_.get(Calendar.DAY_OF_YEAR);
+    return localDate.getDayOfYear();
   }
 
 
@@ -378,9 +346,9 @@ public void init()
    *
    * @return  Day of week of this day.
    */
-  public int getDayOfWeek()
+  public DayOfWeek getDayOfWeek()
   {
-    return calendar_.get(Calendar.DAY_OF_WEEK);
+    return localDate.getDayOfWeek();
   }
 
 
@@ -393,8 +361,7 @@ public void init()
    */
   public int getDayNumberOfWeek()
   {
-    return getDayOfWeek() == Calendar.SUNDAY ?
-                           7 : getDayOfWeek() - Calendar.SUNDAY;
+	  return this.localDate.get(ChronoField.DAY_OF_WEEK);
   }
 
 
@@ -407,7 +374,7 @@ public void init()
    */
   public int getWeekOfYear()
   {
-    return calendar_.get(Calendar.WEEK_OF_YEAR);
+    return localDate.get(ChronoField.ALIGNED_WEEK_OF_YEAR);
   }
 
 
@@ -420,14 +387,8 @@ public void init()
    */
   public Day addDays(int nDays)
   {
-    // Create a clone
-    Calendar calendar = (Calendar) calendar_.clone();
-
-    // Add/remove the specified number of days
-    calendar.add(Calendar.DAY_OF_MONTH, nDays);
-
-    // Return new instance
-    return new Day(calendar);
+	 
+	return new Day(this.localDate.plusDays(nDays));
   }
 
 
@@ -461,14 +422,7 @@ public void init()
    */
   public Day addMonths(int nMonths)
   {
-    // Create a clone
-    Calendar calendar = (Calendar) calendar_.clone();
-
-    // Add/remove the specified number of days
-    calendar.add(Calendar.MONTH, nMonths);
-
-    // Return new instance
-    return new Day(calendar);
+    return new Day(this.localDate.plusMonths(nMonths));
   }
 
 
@@ -499,14 +453,7 @@ public void init()
    */
   public Day addYears(int nYears)
   {
-    // Create a clone
-    Calendar calendar = (Calendar) calendar_.clone();
-
-    // Add/remove the specified number of days
-    calendar.add(Calendar.YEAR, nYears);
-
-    // Return new instance
-    return new Day(calendar);
+	  return new Day(this.localDate.plusYears(nYears));
   }
 
 
@@ -531,7 +478,7 @@ public void init()
    */
   public int getDaysInYear()
   {
-    return calendar_.getActualMaximum(Calendar.DAY_OF_YEAR);
+    return Year.now().length();
   }
 
 
@@ -543,7 +490,7 @@ public void init()
    */
   public boolean isLeapYear()
   {
-    return getDaysInYear() == calendar_.getMaximum(Calendar.DAY_OF_YEAR);
+    return this.localDate.isLeapYear();
   }
 
 
@@ -556,7 +503,7 @@ public void init()
    */
   public static boolean isLeapYear(int year)
   {
-    return (new Day(year, Calendar.JANUARY, 1)).isLeapYear();
+    return new Day(year, Calendar.JANUARY, 1).isLeapYear();
   }
 
 
@@ -568,7 +515,7 @@ public void init()
    */
   public int getDaysInMonth()
   {
-    return calendar_.getActualMaximum(Calendar.DAY_OF_MONTH);
+    return localDate.getMonth().length(Year.now().isLeap());
   }
 
 
@@ -580,16 +527,8 @@ public void init()
    */
   public String getDayName()
   {
-    switch (getDayOfWeek()) {
-      case Calendar.MONDAY    : return "Monday";
-      case Calendar.TUESDAY   : return "Tuesday";
-      case Calendar.WEDNESDAY : return "Wednesday";
-      case Calendar.THURSDAY  : return "Thursday";
-      case Calendar.FRIDAY    : return "Friday";
-      case Calendar.SATURDAY  : return "Saturday";
-      case Calendar.SUNDAY    : return "Sunday";
-      default : throw new SystemException("Invalid day of week: " + getDayOfWeek());
-    }
+    return this.localDate.getDayOfWeek()
+    .getDisplayName(TextStyle.SHORT, Locale.US);
   }// --------------------------------------------
   
 
@@ -601,17 +540,9 @@ public void init()
    * @return  Number of days between this and day.
    * @throws IllegalArgumentException  If day is null.
    */
-  public int daysBetween(Day day)
+  public long daysBetween(Day day)
   {
-    if (day == null)
-      throw new IllegalArgumentException("day cannot be null");
-
-    long millisBetween = Math.abs(calendar_.getTime().getTime() -
-                                  day.calendar_.getTime().getTime());
-    
-    Double results = Double.valueOf((millisBetween / (1000.00 * 60.00 * 60 * 24)));
-    
-    return results.intValue();
+    return Duration.between(this.localDate, day.localDate).toDays();
   }
 
 
@@ -635,14 +566,11 @@ public void init()
     if (dayOfWeek < 0 || dayOfWeek > 6)
       throw new IllegalArgumentException("Invalid day of week: " + dayOfWeek);
 
-    Day first = new Day(year, month, 1);
-
-    int offset = dayOfWeek - first.getDayOfWeek();
-    if (offset < 0) offset = 7 + offset;
-
-    int dayNo = (n - 1) * 7 + offset + 1;
-
-    return dayNo > first.getDaysInMonth() ? null : new Day(year, month, dayNo);
+    LocalDateTime localDateTime = LocalDateTime.of(year, month, 0, 0, 0);
+    return new Day(localDateTime
+    		.with(TemporalAdjusters
+    		.next(DayOfWeek.of(dayOfWeek)))
+    				.toLocalDate());
   }
 
 
@@ -709,39 +637,6 @@ public void init()
     return s.toString();
   }
 
-
-
-  /**
-   * Testing this class.
-   *
-   * @param arguments  Not used.
-   */
-  public static void main(String[] arguments)
-  {
-    // This proves that there are 912 days between the two major
-    // terrorist attacks, not 911 as is common knowledge.
-    Day september11 = new Day(2001, Calendar.SEPTEMBER, 11);
-    Day march11     = new Day(2004, Calendar.MARCH,     11);
-    System.out.println(september11.daysBetween(march11));
-
-    // This proves that Kennedy was president for 1037 days,
-    // not 1000 as is the popular belief nor 1036 which is the
-    // bluffers reply. Nerds knows when to add one...
-    Day precidency   = new Day(1961, Calendar.JANUARY,  20);
-    Day assasination = new Day(1963, Calendar.NOVEMBER, 22);
-    System.out.println(precidency.daysBetween(assasination) + 1);
-
-    // Niel Armstrong walked the moon on a Sunday
-    Day nielOnMoon = new Day(1969, Calendar.JULY, 20);
-    System.out.println(nielOnMoon.getDayName());
-
-    // Find last tuesdays for 2005
-    for (int i = 0; i < 12; i++) {
-      Day tuesday = Day.getLastOfMonth(Calendar.TUESDAY, i, 2005);
-      System.out.println(tuesday);
-    }
-  }
-
   /**
    * Compare based on month day year
    * @param compared the day to compare
@@ -756,13 +651,4 @@ public void init()
   	&& this.getDayOfMonth() == compared.getDayOfMonth()
   	&& this.getYear() == compared.getYear();
   }
-
-	protected void initialize(int year, int month, int dayOfMonth)
-	{
-		// Prune the time component
-	    calendar_.set(Calendar.YEAR, year);
-	    calendar_.set(Calendar.MONTH, month);
-	    calendar_.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-	
-	}
 }

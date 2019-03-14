@@ -13,6 +13,11 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -123,12 +128,15 @@ public class Text
     * SPECIAL_END = "${END} used for the parse method (end tag)
     */
    public static final String SPECIAL_END = "${END}";
-   
+  
    /**
-    * DATE_FORMAT = Config.getProperty(Text.class.getName()+".formatDate","MM/dd/yyyy hh:mm:ss a")
+    * dateFormat = Config.getProperty(Text.class,"dateFormat", "MM/dd/yyyy")
     */
-   public static final String DATE_FORMAT = Config.getProperty(Text.class.getName()+".DATE_FORMAT","MM/dd/yyyy hh:mm:ss:SS a");
+   public static final String  DATETIME_FORMAT = Config.getProperty(Text.class,"dateFormat", "M/dd/yyyy hh:mm:ss:SS a");
 
+
+  public static final String DATE_FORMAT = Config.getProperty(Text.class,"dateFormat", "MM/dd/yyyy");
+  
    /**
     * Append newline to text
     * @param text the text
@@ -332,12 +340,7 @@ public class Text
        String s2 = s1.replaceAll("\\n", "\r\n");
        return s2;
    }// ----------------------------------------------
-   
-   /**
-    * dateFormat = Config.getProperty(Text.class,"dateFormat", "MM/dd/yyyy")
-    */
-   public static final String  dateFormat = Config.getProperty(Text.class,"dateFormat", "MM/dd/yyyy");
-   
+  
   /**
    * 
    * @param lines tokens separated by \t\n\r
@@ -721,7 +724,7 @@ public static String[] toStrings(Object object)
     */
    public static Date toDate(String text)   
    {
-          return toDate(text,dateFormat);
+          return toDate(text,DATE_FORMAT);
          
    }// --------------------------------------------
    
@@ -1868,7 +1871,22 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
 	   return format(bindText, map);
 	   
    }// --------------------------------------------------------
-   
+   public static final String formatDate(LocalDate date) {
+	   return formatDate(date, Text.DATE_FORMAT);
+   }
+   /**
+    * The formatted date
+    * @param date the date to format
+    * @return Formatted date based on default data format
+    */
+   public static final String formatDate(LocalDateTime date) {
+	   return formatDate(date, Text.DATE_FORMAT);
+   }//------------------------------------------------
+   public static final String formatDate(TemporalAccessor date, String format) {
+	   DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+	   
+	   return formatter.format(date);
+   }//------------------------------------------------
    /**
     * 
     * Templates location is based on the configuration property "temp.dir"
@@ -1904,7 +1922,6 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
     */
    public static final String formatDate(Date date) {
   
-      
       return formatDate(DATE_FORMAT, date);
 
    }//--------------------------------------------
@@ -1916,7 +1933,10 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
      
       return formatDate(DATE_FORMAT, date.getTime());
    }//--------------------------------------------
-   
+    public static final String formatDate(String format, LocalDate date) 
+    {
+    	return formatDate( format, Scheduler.toDate(date));
+    }
    /**
     * Formats a java.util.Date object into the provided format
     * 
@@ -2375,8 +2395,24 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
 	{
 		String template = IO.readClassPath(path);
 		return format(template, map);
+	}//------------------------------------------------
+	public static LocalDateTime toLocalDateTime(String text)
+	{
+		return toLocalDateTime(text,DATETIME_FORMAT);
+	}//------------------------------------------------
+	public static LocalDateTime toLocalDateTime(String text,String format)
+	{
+		try
+		{
+			DateTimeFormatter df =  DateTimeFormatter.ofPattern(format);
+			return LocalDateTime.parse(text, df);
+		}
+		catch (DateTimeParseException e)
+		{
+			throw new FormatException(e.getMessage()+" FORMAT:"+format);
+		}
 	}
-	 
+	
 
 
 

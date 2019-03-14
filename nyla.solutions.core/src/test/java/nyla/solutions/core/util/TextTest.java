@@ -3,6 +3,8 @@ package nyla.solutions.core.util;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -152,6 +154,31 @@ public class TextTest
 		assertTrue(Text.matches(null, null));
 
 	}//------------------------------------------------
+	@Test
+	public void test_toLocalDateTime() throws Exception
+	{
+		LocalDateTime results = Text.toLocalDateTime("03/10/2013 00:00:00:00 AM");
+		Debugger.println("results:"+results);
+		
+		assertNotNull(results);
+	}//------------------------------------------------
+	@Test
+	public void test_FormatLocalDateTime() throws Exception
+	{
+		String results = Text.formatDate(LocalDateTime.now());
+		Debugger.println("results:"+results);
+		
+		assertNotNull(results);
+	}//------------------------------------------------
+	@Test
+	public void test_FormatLocalDate() throws Exception
+	{
+		String results = Text.formatDate(LocalDate.now());
+		Debugger.println("results:"+results);
+		
+		assertNotNull(results);
+	}//------------------------------------------------
+
 	@Test
 	public void testFixedLengthIntInt()
 	{

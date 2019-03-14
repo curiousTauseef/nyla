@@ -1,5 +1,9 @@
 package nyla.solutions.core.util;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -28,6 +32,8 @@ import nyla.solutions.core.data.clock.TimeSlot;
 public class Scheduler
 {
    public static final String DATE_FORMAT = "mm/dd/yyyy";
+   private static final long ZERO = 0;
+   private Timer timer = new Timer();
 	   
    /**
     * 
@@ -76,14 +82,14 @@ public class Scheduler
     * @param end the finish time
     * @return duration in milliseconds
     */
-   public static long durationMS(Date start,Date end)
+   public static long durationMS(LocalDateTime start,LocalDateTime end)
    {
       if(start == null || end == null)
       {
          return 0;
       }
       
-      return end.getTime() - start.getTime();
+      return Duration.between(start, end).toMillis();
    }//--------------------------------------------
    /**
     * 1 millisecond = 0.001 seconds
@@ -91,9 +97,9 @@ public class Scheduler
     * @param end finish time
     * @return duration in seconds
     */
-   public static double durationSeconds(Date start, Date end)
+   public static double durationSeconds(LocalDateTime start, LocalDateTime end)
    {
-      return durationMS(start, end) * 0.001;
+	   return Duration.between(start, end).toSeconds();
    }//--------------------------------------------
    /**
     * 1 seconds = 1/60 minutes
@@ -101,9 +107,10 @@ public class Scheduler
     * @param end finish time
     * @return duration in minutes
     */
-   public static double durationMinutes(Date start, Date end)
+   public static double durationMinutes(LocalDateTime start, LocalDateTime end)
    {
-      return durationSeconds(start, end)/(60.0);
+	   
+      return Duration.between(start, end).toMinutes();
    }//--------------------------------------------
    /**
     * 1 Hours = 60 minutes
@@ -111,9 +118,12 @@ public class Scheduler
     * @param end finish time
     * @return duration in hours
     */
-   public static double durationHours(Date start,Date end)
+   public static long durationHours(LocalDateTime start,LocalDateTime end)
    {
-      return durationMinutes(start, end)/(60.0);
+	   if(start == null || end == null)
+		   return ZERO;
+	   
+      return Duration.between(start, end).toHours();
    }//--------------------------------------------
    public static Collection<TimeSlot> calculateAvailableSots(Collection<TimeInterval> takenTimeSlots, Date date, int intervalSeconds,Time startTime, Time endTime)
    {
@@ -161,12 +171,13 @@ public class Scheduler
       
       return slots;
    }// --------------------------------------------
-   public static Date toDate(Day day, Time time)
+   public static LocalDateTime toDate(Day day, Time time)
    {
 
-      time.setDay(day);
+      time.assignDate(LocalDateTime.of(day.getLocalDate(),
+      time.getLocalDateTime().toLocalTime()));
       
-      return time.getDate();
+      return time.getLocalDateTime();
    }// --------------------------------------------
    /**
     * Schedule runnable to run a given interval
@@ -232,8 +243,44 @@ public class Scheduler
 	
 		return className.matches("(java.time.Local*|java.util.Date|java.sql.(Date|Time|DateTime))");
 	}//------------------------------------------------
-   //private static ThreadGroup scheduleThreadGroup = new ThreadGroup(Scheduler.class.getName());
-   private Timer timer = new Timer();
-
+	public static LocalDateTime yesterday()
+	{
+		return LocalDateTime.now().minusDays(1);
+	}//------------------------------------------------
+	public static LocalDateTime toLocalDateTime(Date date)
+	{
+		if(date == null)
+			return null;
+		
+		return date.toInstant().atZone(ZoneId.systemDefault())
+		.toLocalDateTime();
+	}//------------------------------------------------
+	public static Date toDate(LocalDate date)
+	{
+		if(date == null)
+			return null;
+		
+		return  java.util.Date
+	      .from(date.atStartOfDay(ZoneId.systemDefault())
+	      .toInstant());
+	}
+	public static Date toDate(LocalDateTime date)
+	{
+		if(date == null)
+			return null;
+		
+		return  java.util.Date
+	      .from(date.atZone(ZoneId.systemDefault())
+	      .toInstant());
+	}//------------------------------------------------
+	public static LocalDate toLocalDate(Date time)
+	{
+		return time.toInstant().atZone(ZoneId.systemDefault())
+		.toLocalDate();
+	}//------------------------------------------------
+	public static LocalDateTime tomorrow()
+	{
+		return LocalDateTime.now().plusDays(1);
+	}
    
 }

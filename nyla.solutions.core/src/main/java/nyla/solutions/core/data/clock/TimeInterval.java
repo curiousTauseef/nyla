@@ -1,30 +1,30 @@
 package nyla.solutions.core.data.clock;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public interface TimeInterval
 {
    /**
     * @return the start
     */
-   public abstract Date getStartDate();
+   public abstract LocalDateTime getStartDate();
    // --------------------------------------------
 
    /**
     * @param start the start to set
     */
-   public abstract void setStartDate(Date start);
+   public abstract void setStartDate(LocalDateTime start);
    //----------------------------------------------
    
    /**
     * @return the end
     */
-   public abstract Date getEndDate();
+   public abstract LocalDateTime getEndDate();
    // --------------------------------------------
 
    /**
     * @param end the end to set
     */
-   public abstract void setEndDate(Date end);
+   public abstract void setEndDate(LocalDateTime end);
    // --------------------------------------------
 }

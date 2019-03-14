@@ -1,8 +1,6 @@
 package nyla.solutions.core.patterns.observer;
 
-import java.util.Calendar;
-import java.util.Date;
-
+import java.time.LocalDateTime;
 import nyla.solutions.core.data.clock.TimeInterval;
 import nyla.solutions.core.exception.SystemException;
 import nyla.solutions.core.patterns.decorator.TimeIntervalDecorator;
@@ -39,14 +37,14 @@ public class SubjectTimerObserver implements SubjectObserver<Object>, TimeInterv
          if(isStart(subjectName))
          {          
             this.startData = data;
-            this.startDate = Calendar.getInstance().getTime();
+            this.startDate = LocalDateTime.now();
             Debugger.printInfo(this,"TIMER START DATE ["+Text.formatDate(startDate)+"]\n "+Text.toString(startData));
             
          }
          else if(isEnd(subjectName))
          {            
             this.endData = data;
-            this.endDate = Calendar.getInstance().getTime();
+            this.endDate = LocalDateTime.now();
             
             Debugger.printInfo(this,"TIMER END DATE ["+endDate+"]\n "+endData);
             
@@ -133,17 +131,17 @@ public class SubjectTimerObserver implements SubjectObserver<Object>, TimeInterv
    /**
     * @return the startDate
     */
-   public Date getStartDate()
+   public LocalDateTime getStartDate()
    {
 	   if(startDate == null)
 		   return null;
 	   
-      return new Date(startDate.getTime());
+      return startDate;
    }//--------------------------------------------
    /**
     * @param startDate the startDate to set
     */
-   public void setStartDate(Date startDate)
+   public void setStartDate(LocalDateTime startDate)
    {
 	   if(startDate == null)
 		 {
@@ -151,30 +149,22 @@ public class SubjectTimerObserver implements SubjectObserver<Object>, TimeInterv
 		   return;
 		 }
 	   
-      this.startDate = new Date(startDate.getTime()) ;
+      this.startDate = startDate ;
    }//--------------------------------------------
    /**
     * @return the endDate
     */
-   public Date getEndDate()
-   {
-	   if(endDate == null)
-		   return null;
-	   
-      return new Date(endDate.getTime());
+   public LocalDateTime getEndDate()
+   {	   
+      return endDate;
    }//--------------------------------------------
    /**
     * @param endDate the endDate to set
     */
-   public void setEndDate(Date endDate)
+   public void setEndDate(LocalDateTime endDate)
    {
-	   if(endDate == null)
-	   {
-		   this.endDate = null;
-		   return;
-	   }
 	   
-      this.endDate = new Date(endDate.getTime());
+      this.endDate = endDate;
    }//--------------------------------------------   
    /**
     * @return the startData
@@ -208,8 +198,8 @@ public class SubjectTimerObserver implements SubjectObserver<Object>, TimeInterv
    private Object startData = null;
    private Object endData = null;
    private TimeIntervalDecorator decorator = null;
-   private Date startDate = null;
-   private Date endDate = null;
+   private LocalDateTime startDate = null;
+   private LocalDateTime endDate = null;
    private String startSubjectNamePattern = null;
    private String endSubjectNamePattern = null;
 }
