@@ -56,11 +56,11 @@ public interface TextStyles extends Styles
 	 * 
 	 * Default dateFormat MM/dd/yyyy
 	 * 
-	 * Functions <#if x = 1> x is 1 <#elseif x = 2> x is 2 <#elseif x = 3>
+	 * Functions &lt;#if x = 1&gt; x is 1 &lt;#elseif x = 2&gt; x is 2 &lt;#elseif x = 3&gt;
 	 * 
-	 * x is 3 <#elseif x = 4> x is 4 <#else> x is not 1 nor 2 nor 3 nor 4 </#if>
+	 * x is 3 &lt#elseif x = 4&gt; x is 4 &lt#else&gt; x is not 1 nor 2 nor 3 nor 4 &lt;/#if&gt;
 	 * 
-	 * <#if Tithes_1?exists> OK <#else> <#assign Tithes_1= 0> </#if>
+	 * &lt;#if Tithes_1?exists&gt; OK &lt;#else&gt; &lt;#assign Tithes_1= 0&gt; &lt;/#if&gt;
 	 * 
 	 * Date formating ${lastUpdated?string("yyyy-MM-dd HH:mm:ss zzzz")}
 	 * 

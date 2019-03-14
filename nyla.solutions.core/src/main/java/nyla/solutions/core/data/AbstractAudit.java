@@ -3,12 +3,6 @@ package nyla.solutions.core.data;
 import java.io.Serializable;
 import java.util.*;
 
-import nyla.solutions.core.data.AbstractAudit;
-import nyla.solutions.core.data.Auditable;
-import nyla.solutions.core.data.Copier;
-import nyla.solutions.core.data.Criteria;
-import nyla.solutions.core.data.Data;
-
 
 /**
  * 
@@ -142,7 +136,7 @@ implements Auditable, Copier, Serializable
    {
 	   if(createDate == null)
 	   {
-		   this.createDate = null;
+		   this.createDate = createDate;
 		   return;
 	   }
 	   
@@ -202,7 +196,7 @@ implements Auditable, Copier, Serializable
    {
 	   if(updateDate == null)
 	   {
-		   this.updateDate = null;
+		   this.updateDate = updateDate;
 		   return;
 	   }
 

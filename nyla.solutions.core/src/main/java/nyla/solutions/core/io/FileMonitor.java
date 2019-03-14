@@ -9,17 +9,18 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import nyla.solutions.core.operations.ClassPath;
+import nyla.solutions.core.patterns.observer.SubjectObserver;
+import nyla.solutions.core.patterns.observer.Topic;
 import nyla.solutions.core.util.Config;
 
 /**
  * Observable for the file watching
  */
-public class FileMonitor extends Observable
+public class FileMonitor extends Topic<FileEvent>
 {
 
    public FileMonitor()
@@ -30,7 +31,7 @@ public class FileMonitor extends Observable
     * Create a file monitor instance with specified polling interval.
     * 
     * @param pollingInterval
-    *           Polling interval in milli seconds.
+    *           Polling interval in milliseconds.
     */
    public FileMonitor(long pollingInterval)
    {
@@ -111,23 +112,22 @@ public class FileMonitor extends Observable
     */
    protected synchronized void notifyChange(File file)
    {
-      this.setChanged();
+      
       
       System.out.println("Notify change file="+file.getAbsolutePath());
       
-      this.notifyObservers(FileEvent.createChangedEvent(file));
+   
+      this.notify(FileEvent.createChangedEvent(file));
    }//---------------------------------------------------
    /**
     * 
     * @param file file that was added
     */
    protected synchronized void notifyAdd(File file)
-   {
-      this.setChanged();
-      
+   {   
       System.out.println("Notify added file="+file.getAbsolutePath());
 
-      this.notifyObservers(FileEvent.createAddedEvent(file));
+      this.notify(FileEvent.createAddedEvent(file));
    }//---------------------------------------------------
 
 /**
@@ -341,6 +341,7 @@ public class FileMonitor extends Observable
       FileMonitor fileMonitor =new FileMonitor();
       
       String [] arrayString = null;
+      SubjectObserver<FileEvent> observer = null;
       for(int i=0; i < args.length;i++)
       {
          if("-monitor".equals(args[i]))
@@ -375,7 +376,9 @@ public class FileMonitor extends Observable
                throw new IllegalArgumentException("no observer specific in -observer argument "+usage);
             }
                
-            fileMonitor.addObserver((Observer)Class.forName(args[i+1]).newInstance());
+            //fileMonitor.addObserver((Observer)Class.forName(args[i+1]).newInstance());
+            observer = ClassPath.newInstance(args[i+1]);
+            fileMonitor.add(observer);
             i = i+1;
          }
        }//end for

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import nyla.solutions.core.exception.SetupException;
 import nyla.solutions.core.exception.SystemException;
+import nyla.solutions.core.operations.ClassPath;
 import nyla.solutions.core.util.Config;
 
 
@@ -139,7 +140,7 @@ public abstract class ServiceFactory
               
               if(configurationFile  == null || configurationFile.length() == 0)
               {
-                 return (ServiceFactory)factoryClass.newInstance();
+                 return (ServiceFactory)ClassPath.newInstance(factoryClassName);
               }
               //Called passing configuration file to constructor
               Object[] inputs = { configurationFile };

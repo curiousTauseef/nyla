@@ -26,11 +26,6 @@ Attribute<Object,Object>
 {
    public Property()
    {
-
-      name = null;
-
-      value = null;
-
    }//--------------------------------------------
    /**
     * 
@@ -41,8 +36,8 @@ Attribute<Object,Object>
     */
    public Property(String aName,Serializable aValue )
    {
-      this.setName(aName);
-      this.setValue(aValue);
+      this.name = aName;
+      this.value = aValue;
       
    }//--------------------------------------------
    public Object clone() throws CloneNotSupportedException

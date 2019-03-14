@@ -19,14 +19,10 @@ implements Comparable<Object>, Mappable<Object,Object>, Serializable, Nameable, 
     * Constructor for NumberNamed initializes internal
     * 
     * data settings.
-    * 
-    * 
     *  
     */
-
    public NumberNamed()
    {
-
    }//--------------------------------------------
 
    public static class NumberComparator
@@ -110,14 +106,11 @@ implements Comparable<Object>, Mappable<Object,Object>, Serializable, Nameable, 
 
    {
 
-      List<NumberNamed> list = null;
+      List<NumberNamed> list;
 
       if (aNamedVOs instanceof List)
-
          list = (List<NumberNamed>) aNamedVOs;
-
       else
-
          list = new ArrayList<NumberNamed>(aNamedVOs);
 
       Collections.sort(list, new NumberComparator());

@@ -44,7 +44,7 @@ public class FilesToEmailsConverter implements Converter<File, Set<String>>
 			    {
 			    	Set<String> results = convert(path.toFile());
 			    	
-			    	if(results != null && !results.isEmpty())
+			    	if(!results.isEmpty())
 			    	{
 			    		emails.addAll(results);
 			    	}

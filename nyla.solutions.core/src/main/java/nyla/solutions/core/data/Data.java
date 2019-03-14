@@ -1,8 +1,5 @@
 package nyla.solutions.core.data;
 
-
-
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +17,6 @@ import nyla.solutions.core.util.Debugger;
  * @version 1.0 
 
  */
-
 public abstract class Data 
 implements Serializable
 {
@@ -32,42 +28,28 @@ implements Serializable
 
 
 
-/**
-
+	/**
     * Represent a true value
-
     */
-
    public static final int NULL = -1;
 
    
 
    /**
-
     * Represent a true value
-
     */
-
    public static final String TRUE = "T";
 
-   
-
    /**
-
     * Represent a flag value
-
     */
-
    public static final String FALSE = "F";
 
    
 
    /**
-
     * Represent a true value
-
     */
-
    public static final String YES = "Y";
 
    
@@ -121,14 +103,11 @@ implements Serializable
    public static <T> Collection<T> sortByCriteria(Collection<T> aVOs)
    {
 
-      List<T> list = null;
+      final List<T> list;
 
       if (aVOs instanceof List)
-
          list = (List<T>) aVOs;
-
       else
-
          list = new ArrayList<T>(aVOs);
 
       Collections.sort(list, new CriteriaComparator());
@@ -147,15 +126,7 @@ implements Serializable
    public static<T> Collection<T> sortByUpdateDate(Collection<T> collection)
    {
 
-      List<T> list = null;
-
-      if (collection instanceof List)
-
-         list = (List<T>) collection;
-
-      else
-
-         list = new ArrayList<T>(collection);
+       List<T> list = collection instanceof List ? (List<T>) collection : new ArrayList<T>(collection); 
 
       Collections.sort(list, new UpdateDateComparator());
 
@@ -213,23 +184,15 @@ implements Serializable
        * @return 0 when equals < 0 less >0 greater than
        *  @throws ClassCastException if first or second is not an instance of this class
        */
-
       public int compare(Object first, Object second)
-
       {
-
          if (first == null)
             return 1;
-
-         Updateable vo1 = (Updateable) first;
-
-         Updateable vo2 = (Updateable) second;
-
-         if (vo1.getUpdateDate() == null)
-
+         
+         if (((Updateable)first).getUpdateDate() == null)
             return -1;
 
-         return vo1.getUpdateDate().compareTo(vo2.getUpdateDate());
+         return ((Updateable)first).getUpdateDate().compareTo(((Updateable)second).getUpdateDate());
 
       }
       

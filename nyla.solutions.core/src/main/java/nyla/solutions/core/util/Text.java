@@ -165,7 +165,7 @@ public class Text
 		  
 		   try
 			{
-				textStyles = (TextStyles)Class.forName(className).newInstance(); 
+				textStyles = (TextStyles)ClassPath.newInstance(className); 
 			}
 			catch (Exception e)
 			{

@@ -1,8 +1,10 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'findbugs'
 apply plugin: 'maven'
 apply plugin: 'signing'
+//apply plugin: 'findbugs'
+//apply plugin: 'pmd'
+
 
 sourceCompatibility = 1.8
 version = '1.2.2'
@@ -59,7 +61,7 @@ repositories {
 
 dependencies {
       testCompile group: 'junit', name: 'junit', version: '4.12'
-}
+ }
 
 test {
     systemProperties 'property': 'value'
@@ -110,3 +112,4 @@ uploadArchives {
 	    }
 	  }
 	}
+	

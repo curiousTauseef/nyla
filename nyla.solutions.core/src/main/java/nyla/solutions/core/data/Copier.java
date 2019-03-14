@@ -1,9 +1,5 @@
 package nyla.solutions.core.data;
 
-import nyla.solutions.core.data.Copier;
-
-
-
 
 /**
  * <pre>

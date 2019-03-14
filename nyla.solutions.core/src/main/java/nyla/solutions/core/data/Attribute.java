@@ -2,9 +2,6 @@ package nyla.solutions.core.data;
 
 import java.io.Serializable;
 
-import nyla.solutions.core.data.Mappable;
-import nyla.solutions.core.data.Nameable;
-
 /**
  * <pre>
  * Attribute provides a set of functions to

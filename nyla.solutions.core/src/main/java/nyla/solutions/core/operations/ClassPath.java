@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
@@ -262,30 +263,38 @@ public class ClassPath extends ClassLoader
 					{
 						return (T)Calendar.getInstance().getTime();
 					}				
-					else if(Long.class.equals(aClass))
+					else if(Long.class.equals(aClass) ||
+							long.class.equals(aClass))
 					{
 						return (T)Long.valueOf(0);
 					}		
-					else if(Character.class.equals(aClass))
+					else if(Character.class.equals(aClass) ||
+							char.class.equals(aClass) )
 					{
 						return (T) Character.valueOf('\0');
 					}
-					else if(Float.class.equals(aClass))
+					else if(Float.class.equals(aClass) ||
+							float.class.equals(aClass))
 					{
-						return (T)new Float(0);
+						return (T)Float.valueOf(0);
 					}
-					else if(Double.class.equals(aClass))
+					else if(Double.class.equals(aClass) || 
+						   double.class.equals(aClass))
 					{
 						return (T)Double.valueOf(0);
 					}				
 					
-					return (T)aClass.newInstance();	
+					Constructor<T> constructor = (Constructor<T>)aClass.getDeclaredConstructor();
+					
+					
+					return (T)constructor.newInstance();
+					
 				}
 				catch(IllegalAccessException e)
 				{
 					throw new SetupException("Trying to create "+aClass.getName()+" "+e.getMessage());
 				}
-				catch(InstantiationException e)
+				catch(NoSuchMethodException | InvocationTargetException | InstantiationException e)
 				{
 						//Get constructor
 						Constructor<?>[] constructors = aClass.getConstructors();

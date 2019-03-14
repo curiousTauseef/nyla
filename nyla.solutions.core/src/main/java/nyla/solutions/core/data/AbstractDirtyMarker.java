@@ -1,25 +1,17 @@
 package nyla.solutions.core.data;
 
-import nyla.solutions.core.data.DirtyMarker;
-
-
 public abstract class AbstractDirtyMarker implements DirtyMarker
-
 {
-
-
-
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = -465283367943502334L;
 	public AbstractDirtyMarker()
-
     {
 
         dirty = false;
 
-        isnew = true;
+        New = true;
 
         deleted = false;
 
@@ -96,7 +88,7 @@ public abstract class AbstractDirtyMarker implements DirtyMarker
     public void setNew(boolean aNew)
     {
 
-        isnew = aNew;
+    	New = aNew;
 
     }//--------------------------------------------
     /**
@@ -106,7 +98,7 @@ public abstract class AbstractDirtyMarker implements DirtyMarker
     public void resetNew()
     {
 
-        isnew = false;
+    	New = false;
 
     }//--------------------------------------------
     /**
@@ -116,7 +108,7 @@ public abstract class AbstractDirtyMarker implements DirtyMarker
      */
     public boolean isNew()
     {
-        return isnew;
+        return New;
     }//--------------------------------------------
     /**
      * Set deleted flag
@@ -141,14 +133,14 @@ public abstract class AbstractDirtyMarker implements DirtyMarker
     {
         deleted = false;
     }//--------------------------------------------
-    public Object clone()
+    public AbstractDirtyMarker clone()
     throws CloneNotSupportedException
     {
-        return super.clone();
+        return (AbstractDirtyMarker)super.clone();
     }//--------------------------------------------
 
     private boolean dirty;
-    private boolean isnew;
+    private boolean New;
     private boolean deleted;
 }
 

@@ -26,10 +26,10 @@ implements User, Copier, Comparable<Object>
     * @return clone of object
     * @throws CloneNotSupportedException object cannot be cloned
     */
-    public Object clone()
+    public UserProfile clone()
         throws CloneNotSupportedException
     {
-        return super.clone();
+        return (UserProfile)super.clone();
     }//--------------------------------------------
     public String getFirstName()
     {

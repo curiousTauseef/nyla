@@ -225,15 +225,7 @@ public class ConfigTest
 		System.setProperty(Config.SYS_PROPERTY, config.getAbsolutePath());
 		
 		SubjectObserver<Settings> settingsObserver = new SubjectObserver<Settings>()
-		{
-			private String name = "test";
-			
-			@Override
-			public String getId()
-			{
-				return name;
-			}
-			
+		{	
 			@Override
 			public void update(String subjectName, Settings data)
 			{

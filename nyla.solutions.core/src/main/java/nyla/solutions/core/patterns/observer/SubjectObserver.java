@@ -1,8 +1,5 @@
 package nyla.solutions.core.patterns.observer;
 
-import java.util.Observable;
-import java.util.Observer;
-
 import nyla.solutions.core.data.Identifier;
 
 /**
@@ -12,7 +9,7 @@ import nyla.solutions.core.data.Identifier;
  * @param <T> the update data type
  *
  */
-public interface SubjectObserver<T> extends Identifier, Observer
+public interface SubjectObserver<T> extends Identifier
 {
    /**
     * 
@@ -31,11 +28,11 @@ public interface SubjectObserver<T> extends Identifier, Observer
 		return this.getClass().getName();
 	}
    
-   @SuppressWarnings("unchecked")
-   @Override
-	default void update(Observable o, Object arg)
-	{
-	   update(String.valueOf(o),(T)arg);
-	}
+//   @SuppressWarnings("unchecked")
+//   @Override
+//	default void update(Observable o, Object arg)
+//	{
+//	   update(String.valueOf(o),(T)arg);
+//	}
 
 }

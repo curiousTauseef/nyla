@@ -11,6 +11,14 @@ import nyla.solutions.core.data.Nameable;
  */
 public interface Subject<T> extends Nameable
 {
+	/**
+	 * The subject name
+	 * @return the class name
+	 */
+	public default String getName()
+	{
+		return getClass().getName();
+	}//------------------------------------------------
    /**
     * 
     * @param obsever the observer to add

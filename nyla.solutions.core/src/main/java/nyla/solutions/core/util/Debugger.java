@@ -12,6 +12,7 @@ import java.util.Set;
 
 import nyla.solutions.core.exception.ConfigException;
 import nyla.solutions.core.exception.SetupException;
+import nyla.solutions.core.operations.ClassPath;
 import nyla.solutions.core.operations.logging.Log;
 import nyla.solutions.core.operations.logging.SystemOutLog;
 
@@ -67,7 +68,7 @@ public class Debugger
 			logClass = Class.forName(Config.getProperty(LOG_CLASS_NAME_PROP,
 					SystemOutLog.class.getName()));
 			         
-			defaultLogger = (Log) logClass.newInstance();
+			defaultLogger = (Log) ClassPath.newInstance(logClass);
 
 		}
 		catch(SetupException e)
@@ -91,14 +92,6 @@ public class Debugger
 		{
 			throw new SetupException("Check value of "+LOG_CLASS_NAME_PROP+" in confi file"+Config.getLocation(),e);
 		}
-		catch (IllegalAccessException e)
-		{
-			throw new SetupException("Check value of "+LOG_CLASS_NAME_PROP+" in confi file"+Config.getLocation(),e);
-		}	
-		catch (InstantiationException e)
-		{
-			throw new SetupException("Check value of "+LOG_CLASS_NAME_PROP+" in confi file"+Config.getLocation(),e);
-		}			
 
 	} // ------------------------------------------------------
 
@@ -132,7 +125,7 @@ public class Debugger
 			if (logger == null)
 			{
 				// create an put in map
-				logger = (Log) logClass.newInstance();
+				logger = (Log) ClassPath.newInstance(logClass);
 				logger.setLoggingClass(c);
 				logMap.put(c, logger);
 			}

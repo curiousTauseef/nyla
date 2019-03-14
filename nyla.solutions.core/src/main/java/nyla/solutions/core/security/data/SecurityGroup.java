@@ -2,7 +2,6 @@ package nyla.solutions.core.security.data;
 
 import java.io.Serializable;
 import java.security.Principal;
-import java.security.acl.Group;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -19,7 +18,7 @@ import nyla.solutions.core.patterns.expression.BooleanExpression;
  * @version 1.0
  */
 public class SecurityGroup
-implements Group, Serializable, BooleanExpression<Principal>
+implements Principal, Serializable, BooleanExpression<Principal>
 {
  
    public SecurityGroup(String aGroupName)
@@ -60,10 +59,10 @@ public boolean equals(Object obj)
 		return true;
 	if (obj == null)
 		return false;
-	if (!Group.class.isAssignableFrom(obj.getClass()))
+	if (!SecurityGroup.class.isAssignableFrom(obj.getClass()))
 		return false;
 	
-	Group other = (Group) obj;
+	SecurityGroup other = (SecurityGroup) obj;
 
 	return this.name.equals(other.getName());
 
@@ -86,7 +85,7 @@ public int hashCode()
    /**
     * 
     * Recursively look into groups for members
-    * @see java.security.acl.Group#isMember(java.security.Principal)
+    * @param principal the principal to check 
     * @return true if the principal is a member of the group
     */
    public boolean isMember(Principal principal)
@@ -121,9 +120,9 @@ public int hashCode()
                    flag = groupimpl.isMemberRecurse(principal, vector);
            } 
            else
-           if(principal1 instanceof Group)
+           if(principal1 instanceof SecurityGroup)
            {
-               Group group1 = (Group)principal1;
+        	   SecurityGroup group1 = (SecurityGroup)principal1;
                if(!vector.contains(group1))
                    flag = group1.isMember(principal);
            }
@@ -141,10 +140,10 @@ public int hashCode()
 			return Boolean.TRUE;
 		if (obj == null)
 			return Boolean.FALSE;
-		if (!Group.class.isAssignableFrom(obj.getClass()))
+		if (!SecurityGroup.class.isAssignableFrom(obj.getClass()))
 			return Boolean.FALSE;
 		
-		Group other = (Group) obj;
+		SecurityGroup other = (SecurityGroup) obj;
 
 		return Boolean.valueOf(this.name.equals(other.getName()));
    }

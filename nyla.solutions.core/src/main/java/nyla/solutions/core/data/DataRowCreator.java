@@ -1,5 +1,6 @@
 package nyla.solutions.core.data;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import nyla.solutions.core.patterns.creational.RowObjectCreator;
@@ -32,7 +33,7 @@ public class DataRowCreator implements JavaBeanVisitor, RowObjectCreator<DataRow
 	@Override
 	public void visitProperty(String name, Object value, Object object)
 	{
-		map.put(name, value);
+		dataRow.put(name, (Serializable)value);
 	}// --------------------------------------------------------
 	/**
 	 * 
@@ -41,7 +42,7 @@ public class DataRowCreator implements JavaBeanVisitor, RowObjectCreator<DataRow
 	@SuppressWarnings("unchecked")
 	public DataRow getDataRow()
 	{
-		return new DataRow((HashMap<String,Object>)map.clone());
+		return new DataRow((HashMap<String,Serializable>)dataRow.clone());
 	}// --------------------------------------------------------
 	
 	@Override
@@ -63,10 +64,10 @@ public class DataRowCreator implements JavaBeanVisitor, RowObjectCreator<DataRow
 	 */
 	public void clear()
 	{
-		map.clear();
+		dataRow.clear();
 	}
 	
-	private HashMap<String, Object> map = new HashMap<String, Object>();
+	private transient HashMap<String, Serializable> dataRow = new HashMap<String, Serializable>();
 
 
 

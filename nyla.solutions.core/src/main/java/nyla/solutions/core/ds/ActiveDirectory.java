@@ -134,25 +134,23 @@ public class ActiveDirectory
 		if (url != null && url.length() > 0)
 		{
 			// XXX really important that this one happens first!!
-			url = url.replaceAll("[%]", "%25");
-
-			url = url.replaceAll(" ", "%20");
-			url = url.replaceAll("[<]", "%3c");
-			url = url.replaceAll("[>]", "%3e");
-			url = url.replaceAll("[\"]", "%3f");
-			url = url.replaceAll("[#]", "%23");
-			url = url.replaceAll("[{]", "%7b");
-			url = url.replaceAll("[}]", "%7d");
-			url = url.replaceAll("[|]", "%7c");
-			url = url.replaceAll("[\\\\]", "%5c"); // double check this
+			return url.replaceAll("[%]", "%25")
+				.replaceAll(" ", "%20")
+				.replaceAll("[<]", "%3c")
+				.replaceAll("[>]", "%3e")
+				.replaceAll("[\"]", "%3f")
+			.replaceAll("[#]", "%23")
+			.replaceAll("[{]", "%7b")
+			.replaceAll("[}]", "%7d")
+			.replaceAll("[|]", "%7c")
+			.replaceAll("[\\\\]", "%5c") // double check this
 													// one :-)
-			url = url.replaceAll("[\\^]", "%5e");
-			url = url.replaceAll("[~]", "%7e");
-			url = url.replaceAll("[\\[]", "%5b");
-			url = url.replaceAll("[\\]]", "%5d");
-			url = url.replaceAll("[']", "%27");
-
-			url = url.replaceAll("[?]", "%3f");
+			.replaceAll("[\\^]", "%5e")
+			.replaceAll("[~]", "%7e")
+			.replaceAll("[\\[]", "%5b")
+			.replaceAll("[\\]]", "%5d")
+			.replaceAll("[']", "%27")
+			.replaceAll("[?]", "%3f");
 		}
 
 		return url;

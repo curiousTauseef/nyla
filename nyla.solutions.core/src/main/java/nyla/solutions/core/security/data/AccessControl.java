@@ -12,7 +12,6 @@ public interface AccessControl
 	 * @param permission
 	 *            the permission
 	 * @return the boolean if the permission was set
-	 * @see java.security.acl.AclEntry#addPermission(java.security.acl.Permission)
 	 */
 	boolean addPermission(Permission permission);
 	
@@ -28,7 +27,6 @@ public interface AccessControl
 	 * 
 	 * @param permission the permission to remove
 	 *  @return the permission that was removed
-	 * @see java.security.acl.AclEntry#removePermission(java.security.acl.Permission)
 	 */
 	boolean removePermission(Permission permission);
 	
@@ -36,28 +34,15 @@ public interface AccessControl
 	 * 
 	 * @param permission the permission to check
 	 * @return the permission is allowed
-	 * @see java.security.acl.AclEntry#checkPermission(java.security.acl.Permission)
 	 */
 	boolean checkPermission(Permission permission);
 	
 	/**
 	 * @return list of the permissions
 	 * 
-	 * @see java.security.acl.AclEntry#permissions()
 	 */
 	List<Permission> getPermissions();
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-
-	
-	/**
-	 * 
-	 * @see java.security.acl.AclEntry#setNegativePermissions()
-	 */
 	void setNegativePermissions();
 	
 

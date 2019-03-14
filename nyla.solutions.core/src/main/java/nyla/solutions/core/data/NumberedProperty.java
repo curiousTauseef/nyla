@@ -2,11 +2,6 @@ package nyla.solutions.core.data;
 
 import java.io.Serializable;
 
-import nyla.solutions.core.data.Copier;
-import nyla.solutions.core.data.Numbered;
-import nyla.solutions.core.data.NumberedProperty;
-import nyla.solutions.core.data.Property;
-
 /**
  * <pre>
  * NumberedProperty represents a number name/value object

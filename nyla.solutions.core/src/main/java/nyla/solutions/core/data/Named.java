@@ -3,13 +3,6 @@ package nyla.solutions.core.data;
 import java.io.Serializable;
 import java.util.*;
 
-import nyla.solutions.core.data.Copier;
-import nyla.solutions.core.data.Data;
-import nyla.solutions.core.data.Nameable;
-import nyla.solutions.core.data.Named;
-import nyla.solutions.core.data.Textable;
-
-
 public class Named 
 implements Comparable<Object>, Serializable, Nameable, Textable
 {

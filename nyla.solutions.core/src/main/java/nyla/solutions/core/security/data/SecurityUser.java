@@ -2,7 +2,6 @@ package nyla.solutions.core.security.data;
 
 import java.io.Serializable;
 import java.security.Principal;
-import java.security.acl.Group;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,7 +21,7 @@ public class SecurityUser implements Principal, Serializable, BooleanExpression<
 	{
 		this(name,null);
 	}
-	public SecurityUser(String name,Set<Group> groups)
+	public SecurityUser(String name,Set<SecurityGroup> groups)
 	{
 		super();
 		this.setName(name);
@@ -99,7 +98,7 @@ public class SecurityUser implements Principal, Serializable, BooleanExpression<
 		return builder.toString();
 	}
 
-	public void addGroup(Group group)
+	public void addGroup(SecurityGroup group)
 	{
 		this.groups.add(group);
 	}
@@ -107,23 +106,23 @@ public class SecurityUser implements Principal, Serializable, BooleanExpression<
 	/**
 	 * @return the groups
 	 */
-	public Set<Group> getGroups()
+	public Set<SecurityGroup> getGroups()
 	{
 		if(groups.isEmpty())
 			return null;
 		
-		return new HashSet<Group>(groups);
+		return new HashSet<SecurityGroup>(groups);
 	}
 
 	/**
 	 * @param groups the groups to set
 	 */
-	public void setGroups(Set<Group> groups)
+	public void setGroups(Set<SecurityGroup> groups)
 	{
 		if(groups == null)
 			this.groups.clear();
 		else	
-			this.groups = new HashSet<Group>(groups);
+			this.groups = new HashSet<SecurityGroup>(groups);
 	}
 
 	@Override
@@ -147,7 +146,7 @@ public class SecurityUser implements Principal, Serializable, BooleanExpression<
 	}
 
 
-	private Set<Group> groups = new HashSet<Group>();
+	private Set<SecurityGroup> groups = new HashSet<SecurityGroup>();
 
 	private String name;
 }

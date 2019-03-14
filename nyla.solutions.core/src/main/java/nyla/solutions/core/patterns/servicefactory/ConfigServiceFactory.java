@@ -83,7 +83,7 @@ public class ConfigServiceFactory extends ServiceFactory implements SetUpable
 					try
 					{
 						className = (String)entry.getValue();
-						serviceObject = Class.forName(className).newInstance();
+						serviceObject = ClassPath.newInstance(className);
 						
 						factoryMap.put(key, serviceObject);
 					}

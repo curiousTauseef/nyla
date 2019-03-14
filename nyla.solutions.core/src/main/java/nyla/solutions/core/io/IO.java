@@ -71,7 +71,7 @@ public class IO
 	public static final Charset CHARSET = Charset.forName(CHARSET_NM);
 
 	/**
-	 * File name cannot have characters /\<>*:?|
+	 * File name cannot have characters certain special characters
 	 */
 	public static final String DEFAULT_FILE_NM_INVALID_CHARACTERS_RE = "\\/|\\\\|:|\"|\\*|\\?|<|>|\\|";
 

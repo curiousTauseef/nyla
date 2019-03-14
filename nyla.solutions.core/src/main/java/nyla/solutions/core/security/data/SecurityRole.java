@@ -53,7 +53,6 @@ implements java.security.Principal
 	 * @param permission
 	 *            the permission to check
 	 * @return the boolean if the permission is allowed
-	 * @see java.security.acl.AclEntry#checkPermission(java.security.acl.Permission)
 	 */
 	public boolean checkPermission(Permission permission)
 	{
@@ -74,7 +73,6 @@ implements java.security.Principal
 
 	/**
 	 * @return the principal for the role
-	 * @see java.security.acl.AclEntry#getPrincipal()
 	 */
 	public Principal getPrincipal()
 	{
@@ -84,17 +82,12 @@ implements java.security.Principal
 
 	/**
 	 * @return if negative permission
-	 * @see java.security.acl.AclEntry#isNegative()
 	 */
 	public boolean isNegative()
 	{
 		return super.isNegative();
 	}// ------------------------------------------------
 
-	/**
-	 * 
-	 * @see java.security.acl.AclEntry#setNegativePermissions()
-	 */
 	public void setNegativePermissions()
 	{
 		super.setNegativePermissions();

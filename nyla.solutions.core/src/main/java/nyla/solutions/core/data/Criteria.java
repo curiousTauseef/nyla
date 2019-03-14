@@ -2,11 +2,6 @@ package nyla.solutions.core.data;
 
 import java.io.Serializable;
 
-import nyla.solutions.core.data.Copier;
-import nyla.solutions.core.data.Criteria;
-import nyla.solutions.core.data.Data;
-import nyla.solutions.core.data.Identifier;
-import nyla.solutions.core.data.PrimaryKey;
 
 /**
  * 
@@ -18,7 +13,6 @@ import nyla.solutions.core.data.PrimaryKey;
  * @author Gregory Green
  * @version 1.0
  */
-
 public class Criteria extends Data 
 implements Comparable<Object>, PrimaryKey, Cloneable, Copier, Serializable, Identifier
 {
@@ -29,11 +23,8 @@ implements Comparable<Object>, PrimaryKey, Cloneable, Copier, Serializable, Iden
     */
 
    protected Criteria()
-
    {
-
       primaryKey = -1;
-
    }//--------------------------------------------
   
    /**
@@ -47,10 +38,17 @@ implements Comparable<Object>, PrimaryKey, Cloneable, Copier, Serializable, Iden
    public Criteria(int aPK) throws IllegalArgumentException
 
    {
+	   if(aPK < 0)
+		{
+		   this.primaryKey = Data.NULL;
+		}
+	   else
+	   {
+		   this.primaryKey = aPK;
+		   this.id = String.valueOf(this.primaryKey);
+	   }
 
-      primaryKey = -1;
-
-      setPrimaryKey(aPK);
+      
 
    }//--------------------------------------------
 
@@ -66,32 +64,27 @@ implements Comparable<Object>, PrimaryKey, Cloneable, Copier, Serializable, Iden
 
       primaryKey = -1;
 
-      setPrimaryKeyObject(criteria);
+      if(criteria == null )
+      {
+    	  return;
+      }
+      
+      this.id = criteria.id;
+      this.primaryKey = criteria.primaryKey;
 
    }//--------------------------------------------
 
    /**
-
     * 
-
     * Constructor for Criteria initializes internal 
-
     * data settings.
-
     * @param aPK the primary key the set
-
     * @throws IllegalArgumentException
-
     */
 
    public Criteria(String aPK) throws IllegalArgumentException
-
    {
-
-      primaryKey = -1;
-
-      setPrimaryKeyString(aPK);
-
+     this.id = aPK;
    }//--------------------------------------------
 
    /**
@@ -101,15 +94,14 @@ implements Comparable<Object>, PrimaryKey, Cloneable, Copier, Serializable, Iden
     * @see PrimaryKey#getPrimaryKey()
     */
    public int getPrimaryKey()
-
    {
 
       return primaryKey;
 
    }//--------------------------------------------
-   public Object clone() throws CloneNotSupportedException
+   public Criteria clone() throws CloneNotSupportedException
    {
-      return super.clone();    
+      return (Criteria)super.clone();    
    }//--------------------------------------------   
 
    /**
@@ -121,7 +113,7 @@ implements Comparable<Object>, PrimaryKey, Cloneable, Copier, Serializable, Iden
    throws IllegalArgumentException
    {
 
-      if (primaryKey < 1)
+      if (primaryKey <= NULL)
       {
          this.primaryKey = Data.NULL;
       }
@@ -154,23 +146,15 @@ implements Comparable<Object>, PrimaryKey, Cloneable, Copier, Serializable, Iden
    {
 
       if (aCriteria == null)
-
       {
-
          return;
-
       }
-
       else
-
       {
 
          setPrimaryKey(aCriteria.getPrimaryKey());
-
          return;
-
       }
-
    }//--------------------------------------------
 
    /**

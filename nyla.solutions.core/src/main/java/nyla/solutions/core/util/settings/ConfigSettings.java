@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.MissingResourceException;
-import java.util.Observer;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -349,9 +348,9 @@ public class ConfigSettings extends AbstractSettings
 				fileMonitor = new FileMonitor();				
 			
 			fileMonitor.monitor(file.getParent(), file.getName(), false);
-			Observer fileEventBridge = (observable,o) -> {this.reLoad();};
-			
-			fileMonitor.addObserver(fileEventBridge);
+			//Observer fileEventBridge = (observable,o) -> {this.reLoad();};
+			//fileMonitor.addObserver(fileEventBridge);
+			fileMonitor.add((observable,o) -> this.reLoad());
 		}
 		
 		registry.register(getClass().getName(), settingsObserver);

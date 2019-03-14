@@ -1,7 +1,6 @@
 package nyla.solutions.core.ds.security;
 
 import java.security.Principal;
-import java.security.acl.Group;
 
 import nyla.solutions.core.security.data.SecurityGroup;
 
@@ -77,9 +76,9 @@ public class LdapSecurityGroup extends SecurityGroup
 		if (super.equals(obj))
 			return true;
 		
-		if (!Group.class.isAssignableFrom(obj.getClass()))
+		if (!SecurityGroup.class.isAssignableFrom(obj.getClass()))
 			return false;
-		Group other = (Group) obj;
+		SecurityGroup other = (SecurityGroup) obj;
 		
 		String otherGroupName = other.getName();
 		if(otherGroupName == null)
@@ -99,9 +98,9 @@ public class LdapSecurityGroup extends SecurityGroup
 		if (super.equals(obj))
 			return true;
 		
-		if (!Group.class.isAssignableFrom(obj.getClass()))
+		if (!SecurityGroup.class.isAssignableFrom(obj.getClass()))
 			return false;
-		Group other = (Group) obj;
+		SecurityGroup other = (SecurityGroup) obj;
 		
 		String otherGroupName = other.getName();
 		if(otherGroupName == null)

@@ -1,10 +1,5 @@
 package nyla.solutions.core.data;
 
-import nyla.solutions.core.data.Createable;
-import nyla.solutions.core.data.Updateable;
-
-
-
 /**
 
  * <pre>

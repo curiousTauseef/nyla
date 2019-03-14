@@ -163,7 +163,7 @@ public class Environment
 	public void setArgs(String[] args)
 	{
 		if(args == null)
-			this.args = null;
+			this.args = args;
 		else
 			this.args = args.clone();
 	}

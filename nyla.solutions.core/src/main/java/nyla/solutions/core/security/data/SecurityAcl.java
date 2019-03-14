@@ -1,7 +1,6 @@
 package nyla.solutions.core.security.data;
 
 import java.security.Principal;
-import java.security.acl.Group;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -238,12 +237,12 @@ public class SecurityAcl implements Acl, AclEditor
 	 */
 
 	@Override
-	public boolean checkPermission(Set<Group> groups, Permission permission)
+	public boolean checkPermission(Set<SecurityGroup> groups, Permission permission)
 	{
 		if (groups == null || groups.isEmpty())
 			return false;
 
-		for (Group group : groups)
+		for (SecurityGroup group : groups)
 		{
 			if (checkPermission(group, permission))
 				return true;

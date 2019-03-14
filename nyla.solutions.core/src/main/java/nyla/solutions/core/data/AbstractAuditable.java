@@ -4,12 +4,6 @@ package nyla.solutions.core.data;
 import java.io.Serializable;
 import java.util.*;
 
-import nyla.solutions.core.data.AbstractAuditable;
-import nyla.solutions.core.data.Auditable;
-import nyla.solutions.core.data.Copier;
-import nyla.solutions.core.data.Criteria;
-import nyla.solutions.core.data.Data;
-
 import java.sql.Timestamp;
 
 /**
@@ -17,18 +11,10 @@ import java.sql.Timestamp;
  * <pre>
  * 
  * 
- *  
- * 
  *  AbstractAudit is a value object representation of the 
- * 
  *  AbstractAudit table and associated entities.
- * 
- *     
- * 
  *  
  * </pre>
- * 
- * 
  * 
  * @author Gregory Green
  * 
@@ -152,9 +138,7 @@ implements Auditable, Copier, Serializable
     */
 
    public AbstractAuditable()
-
    {
-
       super();
 
    }//--------------------------------------------
@@ -166,9 +150,7 @@ implements Auditable, Copier, Serializable
     * @throws IllegalArgumentException
     *  
     */
-
    public AbstractAuditable(int aPK) throws IllegalArgumentException
-
    {
 
       super(aPK);
@@ -239,7 +221,7 @@ implements Auditable, Copier, Serializable
    public void setCreateDate(Date createDate)
    {
 	   if(createDate == null)
-		   this.createDate = null;
+		   this.createDate = createDate;
 	   else
 		   this.createDate = new Date(createDate.getTime());
 
@@ -294,7 +276,7 @@ implements Auditable, Copier, Serializable
    public void setUpdateDate(Timestamp updateDate)
    {
 	   if(updateDate == null)
-		   this.updateDate = null;
+		   this.updateDate = updateDate;
 	   else
 		   this.updateDate = (Timestamp)updateDate.clone();
 

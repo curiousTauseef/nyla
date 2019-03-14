@@ -5,11 +5,10 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 
 import org.junit.Test;
 
+import nyla.solutions.core.patterns.observer.SubjectObserver;
 import nyla.solutions.core.util.Text;
 
 public class FileMonitorTest extends FileMonitor
@@ -24,10 +23,11 @@ public class FileMonitorTest extends FileMonitor
 		FileMonitor fileMonitor = new FileMonitor();
 		
 		//Create an observer to be called for a file appears
-		Observer printFileObserver = new Observer()
+		//Observer printFileObserver = new Observer()
+		SubjectObserver<FileEvent> printFileObserver = new SubjectObserver<FileEvent>()
 		{
 			@Override
-			public void update(Observable o, Object arg)
+			public void update(String topic, FileEvent arg)
 			{
 				//Each argment is an instance of FileEvent
 				FileEvent fileEvent = (FileEvent)arg;
@@ -44,7 +44,8 @@ public class FileMonitorTest extends FileMonitor
 		};
 		
 		//Register the observer with the file monitor
-		fileMonitor.addObserver(printFileObserver);
+		//fileMonitor.addObserver(printFileObserver);
+		fileMonitor.add(printFileObserver);
 		
 		//Set the file, pattern and whether current files should trigger event
 		fileMonitor.monitor("runtime/", "*.txt", false);
@@ -72,8 +73,9 @@ public class FileMonitorTest extends FileMonitor
 		boolean processCurrentFiles = false;
 		ArrayList<Boolean> hasEvent  = new ArrayList<Boolean>();
 		
-		Observer observer = (observable, arg) -> {hasEvent.add(Boolean.TRUE);};
-		monitor.addObserver(observer);
+		SubjectObserver<FileEvent> observer = (observable, arg) -> {hasEvent.add(Boolean.TRUE);};
+		//monitor.addObserver(observer);
+		monitor.add(observer);
 		
 		monitor.monitor("runtime", "*.txt", processCurrentFiles);
 		Thread.sleep(1000*2);

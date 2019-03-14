@@ -13,8 +13,9 @@ import java.util.Map;
  * @author Gregory Green
  *
  */
-public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, Object>
+public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, Serializable>
 {
+	private static final int START_WITH_ZERO = 1;
 	/**
 	 * 
 	 */
@@ -37,7 +38,7 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 	 * 
 	 * @param inputs initial row values
 	 */
-	public  DataRow(Map<String,Object> inputs)
+	public  DataRow(Map<String,Serializable> inputs)
 	{
 		this();
 		
@@ -98,7 +99,7 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 		 }
 		 catch(ArrayIndexOutOfBoundsException e)
 		 {
-			 if(aPosition < 1)
+			 if(aPosition < START_WITH_ZERO)
 				 throw new ArrayIndexOutOfBoundsException("Invalid Position "+aPosition+" less than 1 ");
 			 
 			 throw e;
@@ -133,28 +134,16 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 			 
 		   positionEntries.set(aPosition-1, obj);
 	   }// --------------------------------------------------------
-	   /**
-	    * 
-	    * @param map the map to add
-	    */
-	   /*public void assignMap(Map<String,Object> map)
-	   {
-			if(nameEntries == null)
-				nameEntries = new  HashMap<String, Object>(map);
-			else
-				nameEntries.putAll(map);
-	   }*/
-	   // --------------------------------------------------------
 	   
 		/**
 		 * @param key the key to store
 		 * @param value the value for the key
 		 * @see java.util.HashMap#put(java.lang.Object, java.lang.Object)
 		 */
-		public void assignObject(String key, Object value)
+		public void assignObject(String key, Serializable value)
 		{
 			if(nameEntries == null)
-				nameEntries = new  HashMap<String, Object>();
+				nameEntries = new  HashMap<String, Serializable>();
 			
 			nameEntries.put(key, value);
 		}// --------------------------------------------------------
@@ -176,7 +165,7 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 	      if(text == null || text.length() == 0)
 	    	  return null;
 	      
-	      return new Double(text);
+	      return  Double.valueOf(text);
 	   }// --------------------------------------------
 	   /**
 	 * @param aPosition the position
@@ -221,12 +210,14 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 	 */
 	   public String[] getStrings()
 	   {
+		   String [] strings;
+		   
 	      try
 	      {
 	         if(this.positionEntries == null || this.positionEntries.isEmpty())
 	            return null;
 	         
-	         String [] strings = new String[this.size()];
+	         strings = new String[this.size()];
 	         
 	         for(int i = 0;i < this.size();i++)
 	         {
@@ -360,7 +351,7 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 
 		 */
 		@Override
-		public Map<String, Object> getMap()
+		public Map<String, Serializable> getMap()
 		{
 			
 			return this.nameEntries;
@@ -370,13 +361,13 @@ public class DataRow implements Arrayable<Object>, Serializable, Mapped<String, 
 		 * @see nyla.solutions.core.data.Mapped#setMap(java.util.Map)
 		 */
 		//@Override
-		public void setMap(Map<String, Object> map)
+		public void setMap(Map<String, Serializable> map)
 		{
 			this.nameEntries = map;
 		}// --------------------------------------------------------
 
 	    private final ArrayList<Object> positionEntries;
-	    private Map<String, Object> nameEntries;
+	    private Map<String, Serializable> nameEntries;
 	    private int rowNum;
 
 }

@@ -1,14 +1,5 @@
 package nyla.solutions.core.data;
 
-import nyla.solutions.core.data.Copier;
-import nyla.solutions.core.data.Data;
-import nyla.solutions.core.data.Mappable;
-import nyla.solutions.core.data.Nameable;
-import nyla.solutions.core.data.PrimaryKey;
-import nyla.solutions.core.data.Status;
-
-
-
 /**
  * <pre>
  * Status is a value object representation of an object that has a status
