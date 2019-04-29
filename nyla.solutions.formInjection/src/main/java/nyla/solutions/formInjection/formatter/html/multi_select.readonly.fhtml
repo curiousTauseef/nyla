@@ -1,7 +1,0 @@
-  <div class="answer">
-    <input id="${answerID}" name="${inputName}" type="hidden" value="${answerValue}"/>
-   <span id="${answerID}_Text" class="answer">
-       ${answerText}
-    </span>
-    <br/>
-  </div>

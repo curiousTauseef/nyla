@@ -1,2 +1,0 @@
-<input id="${answer.inputName}" type="text" name="${answer.inputName}">
-<a href="javascript:doNothing()" onClick="showCalendarById('${answer.inputName}');return false;"> <img src="${contextPath}/skins/default/images/button_calendar.gif" border=0></a>

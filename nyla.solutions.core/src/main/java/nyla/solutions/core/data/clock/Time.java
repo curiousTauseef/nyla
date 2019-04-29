@@ -178,7 +178,7 @@ public class Time implements Serializable
 
 	public long secondsBetween(Time time)
 	{
-		return Duration.between(this.localDateTime, time.localDateTime).toSeconds();
+		return Duration.between(this.localDateTime, time.localDateTime).getSeconds();
 	}
 
 	public long minutesBetween(Time time)

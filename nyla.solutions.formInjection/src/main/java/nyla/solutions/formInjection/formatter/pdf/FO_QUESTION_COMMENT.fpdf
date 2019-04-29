@@ -1,5 +1,0 @@
-<fo:block font-size="9pt" font-family="Helvetica" color="gray"> 
- <fo:inline  font-family="ZapfDingbats">&#x27A4;</fo:inline> 
-  <fo:inline font-size="9pt" font-family="Helvetica" font-weight="bold"> Additional information submitted: </fo:inline>
-    ${text}
-</fo:block>

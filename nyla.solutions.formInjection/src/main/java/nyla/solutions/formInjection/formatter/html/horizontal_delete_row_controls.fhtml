@@ -1,5 +1,0 @@
-<tr id="deleteRowControl">
- <td colspan="3">
-    <IMG src="${imagePath}/form_delete_dynamic_row.gif" onclick="deleteRow('${tableId}', ${rowNumber});"/>
- </td>
- </tr>

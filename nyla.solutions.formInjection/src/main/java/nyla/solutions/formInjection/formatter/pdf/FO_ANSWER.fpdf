@@ -1,3 +1,0 @@
-<fo:block  font-size="10pt" font-family="Helvetica">
- ${text}
-</fo:block>

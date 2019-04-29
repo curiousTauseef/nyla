@@ -1,4 +1,0 @@
-<input type="text" name="myDateField">
-<a href="javascript:doNothing()" onClick="setDateField(document.myForm.myDateField);top.newWin=window.open('calendar.html','cal','dependent=yes,width=210,height=230,screenX=200,screenY=300,titlebar=yes')"> <img src="calendar.gif" border=0></a>
-
-<img id="img_${inputName}" src="/gcsm/skins/default/images/button_calendar.gif" style="cursor:hand" onclick="showCalendar(this)">

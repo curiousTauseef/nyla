@@ -209,9 +209,9 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 		if (this.equals(other))
 			return 0;
 
-		if(this.start.isEmpty())
+		if(!this.start.isPresent())
 			return -1;
-		else if(other.start.isEmpty())
+		else if(!other.start.isPresent())
 			return 1;
 		
 		if (this.start.get().isBefore(other.start.get()))

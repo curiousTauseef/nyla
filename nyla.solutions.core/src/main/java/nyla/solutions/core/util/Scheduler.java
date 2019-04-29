@@ -99,7 +99,7 @@ public class Scheduler
     */
    public static double durationSeconds(LocalDateTime start, LocalDateTime end)
    {
-	   return Duration.between(start, end).toSeconds();
+	   return Duration.between(start, end).getSeconds();
    }//--------------------------------------------
    /**
     * 1 seconds = 1/60 minutes

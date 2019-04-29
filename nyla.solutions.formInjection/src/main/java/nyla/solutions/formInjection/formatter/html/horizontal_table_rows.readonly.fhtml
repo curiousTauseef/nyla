@@ -1,9 +1,0 @@
-    <tr id="row${rowNumber}">
-      <td>
-         <table width="100%" class="horizontalRow">
-            ${answers}
-         </table>
-         <br/>
-         <hr/>         
-      </td>
-   </tr>

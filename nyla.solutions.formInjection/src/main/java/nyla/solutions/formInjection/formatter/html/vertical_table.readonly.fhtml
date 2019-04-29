@@ -1,8 +1,0 @@
-
- <table  class="${styleClass}" id="${tableId}" width="100%" border="0"  cellspacing="0">
-   <tr class="questionTableHeader">
-      <td width="100%" colspan="${colspan}"> ${questionNumber} ${questionText} ${help} </td>
-   </tr> 
-  ${columns}
-   ${rows}
- </table>

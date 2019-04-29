@@ -1,3 +1,0 @@
-    <tr id="row${rowNumber}">
-            ${answers}
-      </tr>
