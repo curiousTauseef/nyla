@@ -15,7 +15,39 @@ public class CryptionTest extends TestCase
 	{
 		super(name);
 	}// --------------------------------------------------------
+	@Test
+	public void test_removePrefix()
+	{
+		Cryption c = new Cryption();
+		assertNull(c.removePrefix(null));
+		assertEquals("",c.removePrefix(""));
+		assertEquals("",c.removePrefix("{cryption}"));
+		assertEquals("a",c.removePrefix("{cryption}a"));
+		assertEquals("a{cryption}",c.removePrefix("{cryption}a{cryption}"));
+		
+	}//------------------------------------------------
 	
+	@Test
+	public void test_newWithString()
+	throws Exception
+	{
+		Cryption c = new Cryption("test");
+		
+		String text = "hello";
+		assertEquals(text,c.decryptText(c.encryptText(text)));
+		
+	}
+	
+	@Test
+	public void test_newWithPrefix()
+	throws Exception
+	{
+		Cryption c = new Cryption("test");
+		
+		String text = "{cryption}"+c.encryptText("hello");
+		assertEquals("hello",c.decryptText(text));
+		
+	}
 	public void testCryption() throws Exception
 	{
 		//The cryption default constructor using the 

@@ -1037,9 +1037,9 @@ public static Collection<Object> parse(Reader aReader, String aStart, String aEn
       Characters 
       x The character x 
       \\ The backslash character 
-      \0n The character with octal value 0n (0 <= n <= 7) 
-      \0nn The character with octal value 0nn (0 <= n <= 7) 
-      \0mnn The character with octal value 0mnn (0 <= m <= 3, 0 <= n <= 7) 
+      \0n The character with octal value 0n (0 &lt;= n  &amp;lt;= 7) 
+      \0nn The character with octal value 0nn (0  &amp;lt;= n  &amp;lt;= 7) 
+      \0mnn The character with octal value 0mnn (0  &amp;lt;= m  &amp;lt;= 3, 0  &amp;lt;= n  &amp;lt;= 7) 
       \xhh The character with hexadecimal value 0xhh 
      
       \t The tab character ('\u0009') 
@@ -1055,9 +1055,9 @@ public static Collection<Object> parse(Reader aReader, String aStart, String aEn
       [^abc] Any character except a, b, or c (negation) 
       [a-zA-Z] a through z or A through Z, inclusive (range) 
       [a-d[m-p]] a through d, or m through p: [a-dm-p] (union) 
-      [a-z&&[def]] d, e, or f (intersection) 
-      [a-z&&[^bc]] a through z, except for b and c: [ad-z] (subtraction) 
-      [a-z&&[^m-p]] a through z, and not m through p: [a-lq-z](subtraction) 
+      [a-z &amp; &amp;[def]] d, e, or f (intersection) 
+      [a-z &amp; &amp;[^bc]] a through z, except for b and c: [ad-z] (subtraction) 
+      [a-z &amp; &amp;[^m-p]] a through z, and not m through p: [a-lq-z](subtraction) 
         
       Predefined character classes 
       . Any character (may or may not match line terminators) 
@@ -1075,7 +1075,7 @@ public static Collection<Object> parse(Reader aReader, String aStart, String aEn
       \p{Alpha} An alphabetic character:[\p{Lower}\p{Upper}] 
       \p{Digit} A decimal digit: [0-9] 
       \p{Alnum} An alphanumeric character:[\p{Alpha}\p{Digit}] 
-      \p{Punct} Punctuation: One of !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ 
+      \p{Punct} Punctuation: One of !"#$% &amp;'()*+,-./:;&lt;=&gt;?@[\]^_`{|}~ 
       \p{Graph} A visible character: [\p{Alnum}\p{Punct}] 
       \p{Print} A printable character: [\p{Graph}] 
       \p{Blank} A space or a tab: [ \t] 
@@ -1088,7 +1088,7 @@ public static Collection<Object> parse(Reader aReader, String aStart, String aEn
       \p{Lu} An uppercase letter (simple category) 
       \p{Sc} A currency symbol 
       \P{InGreek} Any character except one in the Greek block (negation) 
-      [\p{L}&&[^\p{Lu}]]  Any letter except an uppercase letter (subtraction) 
+      [\p{L} &amp; &amp;[^\p{Lu}]]  Any letter except an uppercase letter (subtraction) 
         
       Boundary matchers 
       ^ The beginning of a line 
@@ -1143,9 +1143,9 @@ public static Collection<Object> parse(Reader aReader, String aStart, String aEn
       (?idmsux-idmsux:X)   X, as a non-capturing group with the given flags on - off 
       (?=X) X, via zero-width positive lookahead 
       (?!X) X, via zero-width negative lookahead 
-      (?<=X) X, via zero-width positive lookbehind 
-      (?<!X) X, via zero-width negative lookbehind 
-      (?>X) X, as an independent, non-capturing group 
+      (?&lt;=X) X, via zero-width positive lookbehind 
+      (?&lt;!X) X, via zero-width negative lookbehind 
+      (?&gt;X) X, as an independent, non-capturing group 
 
     * @param aMatchRegExp
     * @param aText
@@ -1802,9 +1802,6 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
    }//------------------------------------------------------------
 
    /**
-    * 
-    * 
-    * 
     * Inserts values from the object template into the Bind Str
     * 
     * For example if bindStr "Today is ${DAY}" and bindPara DAY="Monday"
@@ -1814,24 +1811,24 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
     * Default dateFormat MM/dd/yyyy
     * 
     * Functions
-    * <#if x = 1>
+    * &lt;#if x = 1&gt;
         x is 1
-      <#elseif x = 2>
+      &lt;#elseif x = 2&gt;
         x is 2
-      <#elseif x = 3>
+      &lt;#elseif x = 3&gt;
       
         x is 3
-      <#elseif x = 4>
+      &lt;#elseif x = 4&gt;
         x is 4
-      <#else>
+      &lt;#else&gt;
         x is not 1 nor 2 nor 3 nor 4
-      </#if>  
+      &lt;/#if&gt;  
       
-      <#if Tithes_1?exists>
+      &lt;#if Tithes_1?exists&gt;
      OK
-    <#else>
-       <#assign Tithes_1= 0>
- </#if>
+    &lt;#else&gt;
+       &lt;#assign Tithes_1= 0&gt;
+ &lt;/#if&gt;
  
    Date formating ${lastUpdated?string("yyyy-MM-dd HH:mm:ss zzzz")}
     * 

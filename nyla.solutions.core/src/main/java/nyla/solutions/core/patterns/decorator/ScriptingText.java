@@ -13,8 +13,8 @@ import nyla.solutions.core.util.Text;
 /**
  * <pre>
  * Sample
- * 	&lt;bean id="solutions.global.patterns.scripting.Scripting" class="solutions.global.patterns.scripting.SpringFramework">
-	&lt;/bean>
+ * 	&lt;bean id="solutions.global.patterns.scripting.Scripting" class="solutions.global.patterns.scripting.SpringFramework"&gt;
+	&lt;/bean&gt;
    
 	&lt;bean id="solutions.global.patterns.decorator.ScriptingText" class="solutions.global.patterns.decorator.ScriptingText"&gt;
 	     &lt;property name="expression" value="${new java.text.SimpleDateFormat('MM/dd/yyyy').format(T(java.util.Calendar).getInstance().getTime())}"/&gt;
@@ -24,13 +24,13 @@ import nyla.solutions.core.util.Text;
 		&lt;property name="variables"&gt;			      	
 			      	&lt;map&gt;
 		   				&lt;entry&gt;
-			      			&lt;key&gt;&lt;value>title&lt;/value&gt;&lt;/key&gt;
+			      			&lt;key&gt;&lt;value&gt;title&lt;/value&gt;&lt;/key&gt;
 			      			&lt;value&gt;Test title*lt;/value&gt;
 		   				&lt;/entry&gt;
 
 					&lt;/map&gt;
 		&lt;/property&gt;
-	&lt;/bean>
+	&lt;/bean&gt;
 
  * </pre>
  * @author Gregory Green

@@ -73,6 +73,8 @@ public class Cryption
 	 */
 	public static final String CRYPTION_KEY_PROP = "CRYPTION_KEY";
 
+	private final byte[] formattedKeyBytes;
+	
 	/**
 	 * Default algorithm is AES is used with a fixed key.
 	 * 
@@ -80,35 +82,10 @@ public class Cryption
 	 */
 	public Cryption()
 	{
-
-		this.algorithm = DEFAULT_ALGORITHM;
-
-		int minKeySize = Config.getPropertyInteger(MIN_KEY_BYTE_SIZE_PROP, 8)
-		.intValue();
-
-		String keyText = getCryptionKey();
-
-		byte[] keyBytes = Arrays.copyOf(keyText.getBytes(StandardCharsets.UTF_8), 16);
-
-		if (keyBytes.length < minKeySize)
-			throw new IllegalArgumentException("Minimum property byte size CRYPTION_KEY_PROP size is " + minKeySize);
-
-		try
-		{
-			SecretKeySpec skeySpec = new SecretKeySpec(keyBytes, algorithm);
-			this.encryptCipher = Cipher.getInstance(algorithm);
-			this.encryptCipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-			this.decryptCipher = Cipher.getInstance(algorithm);
-			decryptCipher.init(Cipher.DECRYPT_MODE, skeySpec);
-
-		}
-		catch (Exception e)
-		{
-			throw new SetupException(Debugger.stackTrace(e));
-		}
-
+		this(getCryptionKey(),DEFAULT_ALGORITHM);
+		
 	}// --------------------------------------------
-
+	
 	/**
 	 * 
 	 * @return Config.getProperty(CRYPTION_KEY_PROP)
@@ -137,13 +114,18 @@ public class Cryption
 		int minKeySize = Config.getPropertyInteger(MIN_KEY_BYTE_SIZE_PROP, 8)
 		.intValue();
 
+		
+		if(algorithm.equals(DEFAULT_ALGORITHM))
+			keyBytes = Arrays.copyOf(keyBytes, 16);
+		
 		if (keyBytes.length < minKeySize)
-
 			throw new IllegalArgumentException("Minum key size is " + minKeySize);
-
+		
+		this.formattedKeyBytes = Arrays.copyOf(keyBytes,keyBytes.length);
+		
 		try
 		{
-			SecretKeySpec skeySpec = new SecretKeySpec(keyBytes, algorithm);
+			SecretKeySpec skeySpec = new SecretKeySpec(formattedKeyBytes, algorithm);
 			this.encryptCipher = Cipher.getInstance(algorithm);
 			this.encryptCipher.init(Cipher.ENCRYPT_MODE, skeySpec);
 			this.decryptCipher = Cipher.getInstance(algorithm);
@@ -156,6 +138,18 @@ public class Cryption
 		}
 
 	}// --------------------------------------------
+
+	public Cryption(String keyText)
+	{
+		this(keyText,DEFAULT_ALGORITHM);
+		
+		
+	}
+	public Cryption(String keyText, String algorithm)
+	{
+		
+		this(keyText.getBytes(StandardCharsets.UTF_8),DEFAULT_ALGORITHM);
+	}
 
 	/**
 	 * 
@@ -237,7 +231,9 @@ public class Cryption
 		}
 		catch (BadPaddingException e)
 		{
-			throw new SystemException(e);
+			Debugger.printError("CRYPTION_KEY mismatch: "+new String(this.formattedKeyBytes, StandardCharsets.UTF_8));
+			
+			throw new java.lang.SecurityException("Decrypt error, please check if the text was encrypted with the same "+CRYPTION_KEY_PROP+" property key ERROR:"+e.getMessage());
 		}
 
 	}// --------------------------------------------
@@ -400,12 +396,25 @@ public class Cryption
 	}// --------------------------------------------
 	private static byte[] toBytesFromByteText(String aByteText)
 	{
-		return Base64.getDecoder().decode(aByteText);
+		return Base64.getDecoder().decode(removePrefix(aByteText));
 	}// --------------------------------------------
-
+	/**
+	 * Remove prefix {cryption}
+	 * @param text the text to check
+	 * @return the text with removed prefix
+	 */
+	public static String removePrefix(String text)
+	{
+		if(text == null || text.length() == 0 || !text.startsWith(CRYPTION_PREFIX))
+			return text;
+		
+		return text.substring(CRYPTION_PREFIX.length());
+	}
 	private final Cipher decryptCipher;
 	private final Cipher encryptCipher;
 	private final String algorithm;
 	private static Cryption canonical = null;
+
+	
 
 }

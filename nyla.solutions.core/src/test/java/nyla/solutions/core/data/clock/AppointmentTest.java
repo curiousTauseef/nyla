@@ -11,6 +11,11 @@ import nyla.solutions.core.util.Scheduler;
 public class AppointmentTest extends Appointment
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4251380207362258208L;
+
 	@Test
 	public void test_twoAppointmentCompare()
 	{
