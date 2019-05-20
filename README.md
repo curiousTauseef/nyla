@@ -739,6 +739,7 @@ Set the following configuration properties in order to enable secure LDAP commun
 
 |  Property | Notes  |
 |---|---|
+| LDAP_USE_SSL_CONFIG_FACTORY  | Boolean value (true or false) to determine if LDAPS is used with the following configurations properties |
 |  "LDAP_SSL_KEYSTORE"         | The SSL KEYSTORE file path location |
 |  "LDAP_SSL_TRUSTSTORE"          | The SSL KEYSTORE file path location |
 | "LDAP_SSL_KEYSTORE_PASSWORD"    | The password for the key store  |
