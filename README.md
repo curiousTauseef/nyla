@@ -730,12 +730,13 @@ The object nyla.solutions.core.ds.LDAP provides a simple wrapper for LDAP authen
 Set the following configuration properties in order to enable secure LDAP communication.
 
 
-Property  | Notes
---------- | _______
+| Property  | Notes |
+| --------- | _______ |
 
-"LDAP_SSL_KEYSTORE"    			| The SSL KEYSTORE file path location
-"LDAP_SSL_TRUSTSTORE" 			| The SSL KEYSTORE file path location
-"LDAP_SSL_KEYSTORE_PASSWORD"    | The password for the key store "LDAP_SSL_TRUSTSTORE_PASSSWORD" | The password for the trust store
+| "LDAP_SSL_KEYSTORE"    			| The SSL KEYSTORE file path location |
+| "LDAP_SSL_TRUSTSTORE" 			| The SSL KEYSTORE file path location |
+| "LDAP_SSL_KEYSTORE_PASSWORD"    | The password for the key store  |
+| "LDAP_SSL_TRUSTSTORE_PASSSWORD" | The password for the trust store |
 
 
 # Security 
