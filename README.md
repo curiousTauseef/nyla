@@ -330,7 +330,7 @@ Assert.assertTrue(unSorted.get(0) == josiah);
 
 ### Text
 
-Text is geared toward string based processing. It includes template engine support like Free Marker that builds composite strings/values dynamically at runtime (see http://freemarker.sourceforge.net/). There are also methods to support complex regular expressions with Boolean AND, OR and NOT logic, numerous string conversions, general text manipulation and parsing methods.
+nyla.solutions.core.util.Text is geared toward string based processing. It includes template engine support like Free Marker that builds composite strings/values dynamically at runtime (see http://freemarker.sourceforge.net/). There are also methods to support complex regular expressions with Boolean AND, OR and NOT logic, numerous string conversions, general text manipulation and parsing methods.
 
 Note that the default implementation uses the class
 
@@ -438,6 +438,8 @@ Use the nyla.solutions.core.util.PROXY method to execute methods generically.
 
 # IO
 
+See package nyla.solutions.core.io
+
 ## FileMonitor
 
 You can use the nyla.solutions.core.io.FileMonitor observer pattern to 
@@ -488,7 +490,7 @@ notify object that implement the Observer interface.
 
 ## Search Patterns
 
-See nyla.solutions.core.patterns.search
+See package nyla.solutions.core.patterns.search
 
 ### ReLookup
 
@@ -539,7 +541,7 @@ The RELookup supports negative logic (NOT) for expressions. This is accomplished
 
 # Fault Pattern
 
-See nyla.solutions.core.exception.fault
+See package nyla.solutions.core.exception.fault
 
 Use the FaultsHtmlTextDecorator to get HTML summary of the FaultException or just objects the implement the nyla.solutions.core.exception.fault.Fault interface.
 
@@ -617,6 +619,7 @@ Example HTML output:
 	
 # Java Bean Generator Creator
 
+See package nyla.solutions.core.patterns.creational.generator
 
 JavaBeanGeneratorCreator can be used to auto generate properties for any object.
 
@@ -667,6 +670,7 @@ The following uses a proxy to generate new objects. The proxy is copied with onl
 
 # Cache Farm
 
+See package nyla.solutions.core.patterns.cache
 
 Cache Farm is a simple singleton implementation of cached key/value pairs.
 
@@ -675,6 +679,8 @@ Cache Farm is a simple singleton implementation of cached key/value pairs.
 	cacheFarm.put("key",myObject);
 	
 # CSV 
+
+See package nyla.solutions.core.io.csv
 
 The following is used to parse CSV lines nyla.solutions.core.io.csv.CsvReader
 
@@ -710,6 +716,7 @@ The following is used to parse CSV lines nyla.solutions.core.io.csv.CsvReader
 	
 # LDAP
 
+See package nyla.solutions.core.ds
 
 The object nyla.solutions.core.ds.LDAP provides a simple wrapper for LDAP authentication and searching.
 
@@ -740,6 +747,8 @@ Set the following configuration properties in order to enable secure LDAP commun
 
 # Security 
 
+See package nyla.solutions.core.security.data
+
 **Access Control List**
 	
 	 Principal caller = null;
@@ -756,6 +765,8 @@ Set the following configuration properties in order to enable secure LDAP commun
 		assertFalse(securityAcl.checkPermission(principal, "CLUSTER"));	
 
 # Graphics
+
+See package nyla.solutions.core.media
 
 Capture screen shots
 
