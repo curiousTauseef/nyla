@@ -18,12 +18,11 @@ public class CryptionTest extends TestCase
 	@Test
 	public void test_removePrefix()
 	{
-		Cryption c = new Cryption();
-		assertNull(c.removePrefix(null));
-		assertEquals("",c.removePrefix(""));
-		assertEquals("",c.removePrefix("{cryption}"));
-		assertEquals("a",c.removePrefix("{cryption}a"));
-		assertEquals("a{cryption}",c.removePrefix("{cryption}a{cryption}"));
+		assertNull(Cryption.removePrefix(null));
+		assertEquals("",Cryption.removePrefix(""));
+		assertEquals("",Cryption.removePrefix("{cryption}"));
+		assertEquals("a",Cryption.removePrefix("{cryption}a"));
+		assertEquals("a{cryption}",Cryption.removePrefix("{cryption}a{cryption}"));
 		
 	}//------------------------------------------------
 	

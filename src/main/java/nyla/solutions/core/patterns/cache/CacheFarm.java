@@ -5,13 +5,7 @@ import java.util.Enumeration;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
-
-import nyla.solutions.core.exception.NoDataFoundException;
 import nyla.solutions.core.exception.NotImplementedException;
-import nyla.solutions.core.exception.RequiredException;
-
-
-
 
 
 public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
@@ -214,38 +208,7 @@ public class CacheFarm<K,V> implements Cache<K,V>, Cloneable
 		return (Cache<K,V>)cache;
 		
 	}//---------------------------------------------
-	
-	/**
-	 * @see nyla.solutions.core.patterns.cache.Cache#getObject(java.lang.Class)
-	 */
-	public Object getObject(Class<?> objClass)
-	throws NoDataFoundException
-	{
-		String name = objClass.getName();
-		Object obj = this.get(objClass.getName());
-		
-		if(obj == null)
-			throw new NoDataFoundException("name="+name+" no found in keys="+this.map.keySet());
-		
-		
-		return obj;
-	}//---------------------------------------------
 
-	/**
-	 * @see nyla.solutions.core.patterns.cache.Cache#setObject(java.lang.Class, java.lang.Object)
-	 */
-	@SuppressWarnings("unchecked")
-	public void setObject(Class<?> objClass, V obj)
-	{
-		if(objClass == null)
-			throw new RequiredException("objClass in CacheFarm");
-		
-		if(obj == null)
-			throw new RequiredException("obj in CacheFarm");
-		
-		this.map.put((K)objClass.getName(), obj);
-		
-	}//---------------------------------------------
 	/**
 	 * Remove object from cache
 	 * @param objClass the object class to remove by name

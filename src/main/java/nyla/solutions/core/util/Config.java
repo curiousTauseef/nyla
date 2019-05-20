@@ -72,6 +72,10 @@ public class Config
 
 	public static final String DEFAULT_PROP_FILE_NAME = SYS_PROPERTY;
 
+
+	private static Settings settings = null;
+
+	
 	/**
 	 * Property may reference properties in example ${prop.name}+somethingElse
 	 * @param property the property
@@ -559,13 +563,19 @@ public class Config
 		
 		settings = theSettings;
 	}//------------------------------------------------
-	public static String getPropertyEnv(String key, Map<?,?> securityProps)
+	/**
+	 * Do environment variable name friend configuration lookup
+	 * @param key the Environment variable 
+	 * @param properties the default properties
+	 * @return from properties or environment/configurations
+	 */
+	public static String getPropertyEnv(String key, Map<?,?> properties)
 	{
 		Object value = null;
 		
-		if(securityProps != null)
+		if(properties != null)
 		{
-			value = securityProps.get(key);
+			value = properties.get(key);
 			if(value != null)
 				return value.toString();			
 		}
@@ -576,12 +586,12 @@ public class Config
 			 return null;
 		 
 		return text;
-	}
+	}//------------------------------------------------
 	public static void registerObserver(SubjectObserver<Settings> settingsObserver)
 	{
 		getSettings().registerObserver(settingsObserver);
 		
-	}
+	}//------------------------------------------------
 	public static Day getPropertyDay(String key)
 	{
 		return new Day(getProperty(key));
@@ -595,15 +605,21 @@ public class Config
 	{
 		getSettings().loadArgs(args);
 		
+	}//------------------------------------------------
+	/**
+	 * Lookup a property using a default if not found
+	 * @param key other property key
+	 * @param properties the default props
+	 * @param defaultValue the default value to use if not found
+	 * @return the found property value
+	 */
+	public static String getPropertyEnv(String key, Properties properties, String defaultValue)
+	{
+		String value = getPropertyEnv(key, properties);
+		if(value == null || value.length() == 0)
+			return defaultValue;
+		
+		
+		return value;
 	}
-
-	private static Settings settings = null;
-
-	
-	
-
-	
-
-
-
 }

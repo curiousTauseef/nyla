@@ -1,6 +1,5 @@
 package nyla.solutions.core.data;
 
-import java.io.Serializable;
 
 /**
  * <pre>
@@ -13,7 +12,7 @@ import java.io.Serializable;
  * @version 1.0
  */
 
-public interface Mappable<K,V> extends Serializable, Key<K>
+public interface Mappable<K,V> extends Key<K>
 {
   
    /**

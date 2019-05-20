@@ -714,20 +714,29 @@ The following is used to parse CSV lines nyla.solutions.core.io.csv.CsvReader
 The object nyla.solutions.core.ds.LDAP provides a simple wrapper for LDAP authentication and searching.
 
 
-	String url = "ldap://host:389";
-	String dn = "CN=serviceAcct,OU=nyla,ou=com";
-	String uidAttributeName = "uid";
-	String username = "balou";
-	String rootDn = "OU=nyla,ou=com";
-	int timeoutSecs = 5;
+		String adminDN = "uid=admin,ou=system";
+		char[] adminPwd  ="secret".toCharArray();
+		String user = "imani";
+		char[] pwd = "password".toCharArray();
 	  
-	  try(LDAP ldap = new LDAP(url, dn,password))
-	   {     
-	                
-	         Principal principal =  ldap.authenicate(username, password, rootDn, uidAttribNm, timeoutSecs);
-              assertNotNull(principal);
+	     try(LDAP ldap = new LDAP("ldap://localhost", adminDN, adminPwd))
+		{
+			Principal principal = ldap.authenicate(user,pwd,"ou=system","uid","memberOf","CN",100);
+			assertEquals(user,principal.getName());
+		}
 
-         }
+**LDAPS** (or LDAP over SSL/TLS support)
+
+Set the following configuration properties in order to enable secure LDAP communication.
+
+
+Property  | Notes
+--------- | _______
+
+"LDAP_SSL_KEYSTORE"    			| The SSL KEYSTORE file path location
+"LDAP_SSL_TRUSTSTORE" 			| The SSL KEYSTORE file path location
+"LDAP_SSL_KEYSTORE_PASSWORD"    | The password for the key store "LDAP_SSL_TRUSTSTORE_PASSSWORD" | The password for the trust store
+
 
 # Security 
 
@@ -752,6 +761,42 @@ Capture screen shots
 
 	Graphics.printScreen(0, 0, 1000, 800, "png", new File("runtime/tmp/output/screenshot.png"));
 
+# Expirations
+
+See package nyla.solutions.core.data.expiration
+
+**ExpiringKeyValueLookup** 
+
+
+The ExpiringKeyValueLookup class can be used for simple hash based look ups with expiring content.
+This is a good class to use for implementing caching.
+
+*Example Code*
+
+		ExpiringKeyValueLookup<String,String> bag = ExpiringKeyValueLookup.withExpirationMS(1000);
+		assertNotNull(bag);
+		bag.putEntry("1","1");
+		
+		assertEquals("1",bag.getValue("1"));
+		Thread.sleep(1001);
+		
+		assertNull(bag.getValue("1"));
+	}
+
+**ExpiringItem**
+
+The ExpiringItem class can be used for a single value with expiring content.
+
+*Example Code*
+	
+	ExpiringItem<String> e = new ExpiringItem<>("hello",
+			LocalDateTime.now().plusSeconds(1));
+		
+		assertEquals("hello",e.value());
+		
+		Thread.sleep(1050);
+		
+		assertNull(e.value());
 
 # Building
 
