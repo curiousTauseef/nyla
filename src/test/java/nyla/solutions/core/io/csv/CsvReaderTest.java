@@ -4,6 +4,7 @@ package nyla.solutions.core.io.csv;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.StringReader;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -174,6 +175,21 @@ public class CsvReaderTest
 		assertEquals("0", results.get(0));
 		assertEquals("The \"GOOD\"", results.get(1));
 		assertEquals("2", results.get(2));
+		
+	}
+	
+	@Test
+	public void testMultipleStringReader()
+	throws Exception
+	{
+		StringReader reader = new StringReader("one\ntwo");
+		CsvReader r = new CsvReader(reader);
+		
+		
+		List<String> row = r.row(0);
+		assertEquals("one",row.get(0));
+		row = r.row(1);
+		assertEquals("two",row.get(0));
 		
 	}
 

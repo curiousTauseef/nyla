@@ -221,7 +221,7 @@ implements Auditable, Copier, Serializable
    public void setCreateDate(Date createDate)
    {
 	   if(createDate == null)
-		   this.createDate = createDate;
+		   this.createDate = null;
 	   else
 		   this.createDate = new Date(createDate.getTime());
 
@@ -276,7 +276,7 @@ implements Auditable, Copier, Serializable
    public void setUpdateDate(Timestamp updateDate)
    {
 	   if(updateDate == null)
-		   this.updateDate = updateDate;
+		   this.updateDate = null;
 	   else
 		   this.updateDate = (Timestamp)updateDate.clone();
 

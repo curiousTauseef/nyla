@@ -601,8 +601,8 @@ public class Day  implements Comparable<Day>, Serializable
    */
   public static Day getLastOfMonth(int dayOfWeek, int month, int year)
   {
-    Day day = Day.getNthOfMonth(5, dayOfWeek, month, year);
-    return day != null ? day : Day.getNthOfMonth(4, dayOfWeek, month, year);
+    return Day.getNthOfMonth(5, dayOfWeek, month, year);
+    //return day != null ? day : Day.getNthOfMonth(4, dayOfWeek, month, year);
   }
 
 

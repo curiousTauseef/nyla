@@ -79,7 +79,7 @@ public class MethodCallFact implements Serializable
    public void setArguments(Object[] arguments)
    {
 	   if(arguments == null)
-		   this.arguments = arguments;
+		   this.arguments = null;
 	   else
 		   this.arguments = arguments.clone();
    }// ----------------------------------------------

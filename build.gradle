@@ -2,14 +2,27 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
 apply plugin: 'signing'
-//apply plugin: 'findbugs'
-//apply plugin: 'pmd'
+
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.9"
+  }
+}
+
+apply plugin: "com.github.spotbugs"
+
+spotbugs {
+ //includeFilter = file("spotbugs-exclude.xml")
+ }
 
 
 sourceCompatibility = 1.8
-version = '1.2.4'
-
-
+version = '1.2.5'
 
 jar {
     manifest {

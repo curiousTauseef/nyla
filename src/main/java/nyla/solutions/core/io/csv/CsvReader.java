@@ -3,6 +3,7 @@ package nyla.solutions.core.io.csv;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -25,17 +26,42 @@ public class CsvReader
 	 */
 	public static enum DataType { String, Long};
 	
-	private final File file;
+	//private final File file;
 	private final ArrayList<List<String>> data;
 	
-	public CsvReader(File file)
+	/**
+	 * Read based on a reader
+	 * @param reader the input reader
+	 * @throws IOException when a reading error occurs
+	 */
+	public CsvReader(Reader reader)
 	throws IOException
 	{
-		this.file = file;
+		data = new ArrayList<List<String>>(10);
+		
+		try (BufferedReader r  = new BufferedReader(reader))
+		{
+			String line  =null;
+		    while ((line = r.readLine()) != null) 
+		    {
+		    	this.data.add(parse(line));
+		    }
+		} 
+	}
+	/**
+	 * Constructor for a file
+	 * @param file the file input
+	 * @throws IOException
+	 */
+	public CsvReader(File file)
+	throws IOException
+	{	
+		if (file == null)
+			throw new IllegalArgumentException("file is required");
 		
 		if(!file.exists())
 		{
-			throw new IllegalArgumentException("File:"+this.file.getAbsolutePath()+" does not exist");
+			throw new IllegalArgumentException("File:"+file.getAbsolutePath()+" does not exist");
 		}
 		
 	    String line = null;
@@ -49,6 +75,7 @@ public class CsvReader
 		} 
 		
 	}//------------------------------------------------
+	
 	public <T> T get(int row, int col, DataType dataType)
 	{
 		List<String> rowList = row(row);

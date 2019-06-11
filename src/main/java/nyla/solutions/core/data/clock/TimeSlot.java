@@ -2,8 +2,6 @@ package nyla.solutions.core.data.clock;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Optional;
-
 import nyla.solutions.core.exception.RequiredException;
 import nyla.solutions.core.util.Scheduler;
 
@@ -16,8 +14,8 @@ import nyla.solutions.core.util.Scheduler;
  */
 public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 {
-	private  Optional<LocalDateTime> start;
-	private  Optional<LocalDateTime> end;
+	private  LocalDateTime start;
+	private  LocalDateTime end;
 
 	
 	/**
@@ -31,14 +29,14 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 	 */
 	public TimeSlot()
 	{
-		this.start = Optional.empty();
-		this.end = Optional.empty();
+		this.start = null;
+		this.end = null;
 	}// --------------------------------------------
 
 	public TimeSlot(LocalDateTime start, LocalDateTime end)
 	{
-		this.start = Optional.of(start);
-		this.end = Optional.of(end);
+		this.start = start;
+		this.end = end;
 	}
 	
 	/**
@@ -47,8 +45,19 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 	 */
 	public long getDurationhours()
 	{
-		return Scheduler.durationHours(start.orElse(null), end.orElse(null));
+		return Scheduler.durationHours(start, end);
 	}// --------------------------------------------
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		StringBuilder builder = new StringBuilder();
+		builder.append("TimeSlot [start=").append(start).append(", end=").append(end).append("]");
+		return builder.toString();
+	}
 
 	/**
 	 * 
@@ -62,12 +71,12 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 	{
 		//Date newStart = (Date) this.end.clone();
 
-		LocalDateTime newEnd = this.end.get().plusSeconds(intervalSeconds);
+		LocalDateTime newEnd = this.end.plusSeconds(intervalSeconds);
 		//newEnd.add(Calendar.SECOND, intervalSeconds);
 
 		//Date newEndDate = newEnd.getTime();
 
-		TimeSlot newTimeSlot = new TimeSlot(this.end.get(), newEnd);
+		TimeSlot newTimeSlot = new TimeSlot(this.end, newEnd);
 
 		if (cutOffTime == null)
 			return newTimeSlot;
@@ -90,7 +99,7 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 	 */
 	public double getDurationMinutes()
 	{
-		return Scheduler.durationMinutes(start.get(), end.get());
+		return Scheduler.durationMinutes(start, end);
 	}// --------------------------------------------
 
 	/**
@@ -99,7 +108,7 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 	 */
 	public double getDurationSeconds()
 	{
-		return Scheduler.durationSeconds(start.get(), end.get());
+		return Scheduler.durationSeconds(start, end);
 	}// --------------------------------------------
 	/**
 	 *
@@ -108,7 +117,7 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 	public LocalDateTime getStartDate()
 	{
 
-		return start.orElseGet(null);
+		return start;
 	}// --------------------------------------------
 
 	/**
@@ -120,7 +129,7 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 		if (end == null)
 			return null;
 
-		return end.get();
+		return end;
 	}// --------------------------------------------
 
 	/**
@@ -129,12 +138,12 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 	 */
 	public Time getEndTime()
 	{
-		return new Time(end.get());
+		return new Time(end);
 	}// --------------------------------------------
 
 	public Time getStartTime()
 	{
-		return new Time(this.start.get());
+		return new Time(this.start);
 	}// --------------------------------------------
 
 
@@ -209,12 +218,12 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 		if (this.equals(other))
 			return 0;
 
-		if(!this.start.isPresent())
+		if(this.start == null)
 			return -1;
-		else if(!other.start.isPresent())
+		else if(other.start == null)
 			return 1;
 		
-		if (this.start.get().isBefore(other.start.get()))
+		if (this.start.isBefore(other.start))
 		{
 			return -1;
 		}
@@ -229,14 +238,14 @@ public class TimeSlot implements Serializable, Comparable<Object>, TimeInterval
 	@Override
 	public void setStartDate(LocalDateTime start)
 	{
-		this.start = Optional.of(start);
+		this.start = start;
 		
 	}
 
 	@Override
 	public void setEndDate(LocalDateTime end)
 	{
-		this.end = Optional.of(end);
+		this.end = end;
 		
 	}
 

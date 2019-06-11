@@ -135,12 +135,9 @@ implements Auditable, Copier, Serializable
    public void setCreateDate(Date createDate)
    {
 	   if(createDate == null)
-	   {
-		   this.createDate = createDate;
-		   return;
-	   }
-	   
-	   this.createDate = new Date(createDate.getTime());
+		   this.createDate = null;
+	   else
+		   this.createDate = new Date(createDate.getTime());
 		
 
    }//--------------------------------------------------
@@ -194,11 +191,6 @@ implements Auditable, Copier, Serializable
 
    public void setUpdateDate(Date updateDate)
    {
-	   if(updateDate == null)
-	   {
-		   this.updateDate = updateDate;
-		   return;
-	   }
 
       this.updateDate = new Date(updateDate.getTime());
 
@@ -238,9 +230,7 @@ implements Auditable, Copier, Serializable
     * @throws IllegalArgumentException when primary if not provided or invalid
     *  
     */
-
    public void setPrimaryKeyString(String primaryKey) throws IllegalArgumentException
-
    {
 
       super.setPrimaryKeyString(primaryKey);
