@@ -176,7 +176,7 @@ public class CsvReaderTest
 		assertEquals("The \"GOOD\"", results.get(1));
 		assertEquals("2", results.get(2));
 		
-	}
+	}//------------------------------------------------
 	
 	@Test
 	public void testMultipleStringReader()

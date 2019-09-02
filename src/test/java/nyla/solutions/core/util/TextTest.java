@@ -157,7 +157,23 @@ public class TextTest
 	@Test
 	public void test_toLocalDateTime() throws Exception
 	{
+	
 		LocalDateTime results = Text.toLocalDateTime("03/10/2013 00:00:00:00 AM");
+		Debugger.println("results:"+results);
+		
+		assertNotNull(results);
+	}//------------------------------------------------
+	
+	@Test
+	public void test_toLocalDateWithFormat() throws Exception
+	{
+		assertNotNull(Text.toLocalDate("03/10/2013",null));
+		assertNotNull(Text.toLocalDate("03/10/2013",""));
+		assertNotNull(Text.toLocalDate("12/10/2013",""));
+		assertNull(Text.toLocalDate("","M/dd/yyyy"));
+		assertNull(Text.toLocalDate(null,"M/dd/yyyy"));
+		
+		LocalDate results = Text.toLocalDate("03/10/2013","M/dd/yyyy");
 		Debugger.println("results:"+results);
 		
 		assertNotNull(results);

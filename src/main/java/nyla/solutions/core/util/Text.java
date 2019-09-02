@@ -135,7 +135,7 @@ public class Text
    public static final String  DATETIME_FORMAT = Config.getProperty(Text.class,"dateFormat", "M/dd/yyyy hh:mm:ss:SS a");
 
 
-  public static final String DATE_FORMAT = Config.getProperty(Text.class,"dateFormat", "MM/dd/yyyy");
+  public static final String DATE_FORMAT = Config.getProperty(Text.class,"dateFormat", "M/dd/yyyy");
   
    /**
     * Append newline to text
@@ -2406,10 +2406,33 @@ if the text does not contain the word �USA�. Note that multiple �${NOT}�
 		}
 		catch (DateTimeParseException e)
 		{
-			throw new FormatException(e.getMessage()+" FORMAT:"+format);
+			throw new FormatException(e.getMessage()+" FORMAT:"+format,e);
+		}
+	}//------------------------------------------------
+	/**
+	 * 
+	 * @param text the data text
+	 * @param format the data Format ex: M/dd/yyy
+	 * @return the locate date
+	 */
+	public static LocalDate toLocalDate(String text,String format)
+	{
+		if(text == null || text.length() == 0)
+			return null;
+		
+		try
+		{
+			if(format == null || format.length() == 0)
+				format = DATE_FORMAT;
+			
+			DateTimeFormatter df =  DateTimeFormatter.ofPattern(format);
+			return LocalDate.parse(text, df);
+		}
+		catch (DateTimeParseException e)
+		{
+			throw new FormatException(e.getMessage()+" FORMAT:"+format,e);
 		}
 	}
-	
 
 
 
